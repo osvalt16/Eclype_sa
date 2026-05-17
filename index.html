@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Star Atlas SAGE C4 — Top 10 des meilleurs ratios d'achat par catégorie sur le Marketplace">
+<meta property="og:title" content="Star Atlas — Top 10 Ratios Marketplace">
+<meta property="og:description" content="Meilleur rapport Prix Marché / Valeur ATLAS par catégorie">
+<meta property="og:url" content="https://osvalt16.github.io/Stats-Marketplace/">
+<title>Star Atlas — Top 10 Ratios Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   VARIABLES
+═══════════════════════════════════════════════════ */
+:root {
+  --navy:        #040d1c;
+  --navy-card:   #071628;
+  --navy-row:    #081932;
+  --gold:        #c9a84c;
+  --gold-light:  #e8c96a;
+  --gold-dim:    #7a6130;
+  --gold-glow:   rgba(201,168,76,0.13);
+  --gold-glow2:  rgba(201,168,76,0.07);
+  --teal:        #1ab8cc;
+  --teal-dim:    rgba(26,184,204,0.15);
+  --white:       #dce8f5;
+  --white-dim:   rgba(220,232,245,0.48);
+  --border:      rgba(201,168,76,0.25);
+  --border-dim:  rgba(201,168,76,0.09);
+  --green:       #3dd68c;
+  --orange:      #e89d3d;
+  --red:         #e05252;
+}
+
+/* ═══════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════════════
+   STARFIELD
+═══════════════════════════════════════════════════ */
+.stars {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at  7% 11%, rgba(255,255,255,.75) 0%,transparent 100%),
+    radial-gradient(1px 1px at 21% 37%, rgba(255,255,255,.50) 0%,transparent 100%),
+    radial-gradient(1px 1px at 36%  4%, rgba(255,255,255,.80) 0%,transparent 100%),
+    radial-gradient(1px 1px at 50% 57%, rgba(255,255,255,.40) 0%,transparent 100%),
+    radial-gradient(1px 1px at 64% 19%, rgba(255,255,255,.65) 0%,transparent 100%),
+    radial-gradient(2px 2px at 74% 71%, rgba(255,255,255,.70) 0%,transparent 100%),
+    radial-gradient(1px 1px at 88% 32%, rgba(255,255,255,.50) 0%,transparent 100%),
+    radial-gradient(1px 1px at  3% 81%, rgba(255,255,255,.40) 0%,transparent 100%),
+    radial-gradient(1px 1px at 93% 90%, rgba(255,255,255,.60) 0%,transparent 100%),
+    radial-gradient(1px 1px at 42% 87%, rgba(255,255,255,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 16% 61%, rgba(255,255,255,.50) 0%,transparent 100%),
+    radial-gradient(1px 1px at 58% 95%, rgba(255,255,255,.40) 0%,transparent 100%),
+    radial-gradient(1px 1px at  1% 47%, rgba(201,168,76,.45)  0%,transparent 100%),
+    radial-gradient(1px 1px at 70%  9%, rgba(201,168,76,.30)  0%,transparent 100%),
+    radial-gradient(1px 1px at 83% 53%, rgba(26,184,204,.40)  0%,transparent 100%),
+    radial-gradient(1px 1px at 28% 76%, rgba(26,184,204,.30)  0%,transparent 100%),
+    radial-gradient(2px 2px at 53% 27%, rgba(255,255,255,.90)  0%,transparent 100%),
+    radial-gradient(1px 1px at 32% 49%, rgba(255,255,255,.30)  0%,transparent 100%),
+    radial-gradient(1px 1px at 77% 84%, rgba(255,255,255,.45)  0%,transparent 100%),
+    radial-gradient(1px 1px at 45% 14%, rgba(255,255,255,.60)  0%,transparent 100%),
+    radial-gradient(1px 1px at 62% 43%, rgba(255,255,255,.35)  0%,transparent 100%),
+    radial-gradient(1px 1px at 11% 28%, rgba(255,255,255,.55)  0%,transparent 100%),
+    radial-gradient(1px 1px at 96% 66%, rgba(255,255,255,.40)  0%,transparent 100%),
+    radial-gradient(1px 1px at 38% 72%, rgba(201,168,76,.25)   0%,transparent 100%);
+}
+
+/* Ambient glow top */
+.glow-top {
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 400px; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%,
+    rgba(12,35,80,0.9) 0%, transparent 70%);
+}
+
+/* ═══════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════ */
+.page-wrapper {
+  position: relative; z-index: 1;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 20px 100px;
+}
+
+/* ═══════════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════════ */
+header {
+  padding: 54px 0 40px;
+  text-align: center;
+}
+
+.header-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--gold-glow);
+  border-radius: 2px;
+  padding: 5px 20px;
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  animation: aFadeDown 0.55s ease both;
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px var(--gold);
+  animation: aBlink 2.4s ease infinite;
+}
+@keyframes aBlink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(24px, 3.6vw, 48px);
+  font-weight: 900;
+  letter-spacing: 5px;
+  line-height: 1.1;
+  background: linear-gradient(135deg,
+    var(--gold-light) 0%,
+    var(--gold) 40%,
+    #fffbe8 65%,
+    var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: aFadeDown 0.6s 0.08s ease both;
+}
+
+.subtitle {
+  font-size: 12px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--white-dim); margin-top: 10px;
+  animation: aFadeDown 0.6s 0.14s ease both;
+}
+
+.divider-gold {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 28px 0;
+  animation: aFadeIn 0.9s 0.18s ease both;
+}
+.divider-dim {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-dim), transparent);
+  margin: 38px 0 0;
+}
+
+/* Notice API */
+.data-notice {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(232,157,61,0.08);
+  border: 1px solid rgba(232,157,61,0.3);
+  border-radius: 2px;
+  padding: 7px 18px;
+  font-size: 11px; letter-spacing: 1.5px;
+  color: var(--orange);
+  animation: aFadeDown 0.6s 0.22s ease both;
+}
+
+/* Legend */
+.legend {
+  display: flex; align-items: center; justify-content: center;
+  gap: 28px; flex-wrap: wrap;
+  margin: 18px 0 0;
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  animation: aFadeIn 0.7s 0.28s ease both;
+}
+.legend-item  { display: flex; align-items: center; gap: 7px; color: var(--white-dim); }
+.ldot         { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.ldot.good    { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.ldot.mid     { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+.ldot.bad     { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+/* ═══════════════════════════════════════════════════
+   CATEGORY NAV
+═══════════════════════════════════════════════════ */
+.cat-nav {
+  display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+  margin: 36px 0 50px;
+  animation: aFadeIn 0.7s 0.3s ease both;
+}
+.cat-btn {
+  background: transparent;
+  border: 1px solid var(--border-dim);
+  border-radius: 2px;
+  color: var(--white-dim);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.cat-btn:hover {
+  background: var(--gold-glow2);
+  border-color: rgba(201,168,76,0.5);
+  color: var(--gold-light);
+}
+.cat-btn.active {
+  background: var(--gold-glow);
+  border-color: var(--gold);
+  color: var(--gold-light);
+  box-shadow: 0 0 12px rgba(201,168,76,0.12);
+}
+
+/* ═══════════════════════════════════════════════════
+   CATEGORY SECTION
+═══════════════════════════════════════════════════ */
+.category-section {
+  margin-bottom: 62px;
+  animation: aFadeUp 0.5s ease both;
+}
+
+.section-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 14px;
+}
+.section-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--gold-glow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.section-meta {}
+.section-sup  { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold-dim); }
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 17px; font-weight: 700; letter-spacing: 2px;
+  color: var(--gold-light);
+}
+.section-tag {
+  margin-left: auto;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--white-dim);
+  border: 1px solid var(--border-dim);
+  padding: 4px 12px; border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════════════
+   TABLE
+═══════════════════════════════════════════════════ */
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--navy-card);
+  box-shadow:
+    0 10px 50px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(201,168,76,0.12);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  background: linear-gradient(90deg,
+    rgba(201,168,76,0.13) 0%,
+    rgba(201,168,76,0.05) 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold);
+  padding: 13px 18px;
+  text-align: left;
+  white-space: nowrap;
+}
+th.r, td.r { text-align: right; }
+th.c, td.c { text-align: center; }
+
+tbody tr {
+  border-bottom: 1px solid var(--border-dim);
+  transition: background 0.15s ease;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+tbody tr:hover { background: rgba(201,168,76,0.05); }
+
+td {
+  padding: 12px 18px;
+  font-size: 13px; font-weight: 500;
+  color: var(--white);
+  vertical-align: middle;
+}
+
+/* ── Rank cell ── */
+.rank-cell {
+  font-family: 'Cinzel', serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--gold-dim);
+  width: 60px;
+}
+.rank-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 2px;
+  border: 1px solid var(--border-dim);
+}
+.r1 .rank-badge { color: var(--gold-light); background: rgba(232,201,106,0.14); border-color: rgba(232,201,106,0.45); box-shadow: 0 0 10px rgba(232,201,106,0.15); }
+.r2 .rank-badge { color: #c8c8c8;           background: rgba(200,200,200,0.09); border-color: rgba(200,200,200,0.30); }
+.r3 .rank-badge { color: #d4884a;            background: rgba(212,136,74,0.11);  border-color: rgba(212,136,74,0.30); }
+
+/* ── Item name ── */
+.item-name { font-weight: 600; font-size: 14px; letter-spacing: 0.3px; }
+.item-sub  { font-size: 10px; letter-spacing: 1px; color: var(--white-dim); text-transform: uppercase; margin-top: 2px; }
+
+/* ── Ratio cell ── */
+.ratio-val    { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; }
+.ratio-bar    { height: 3px; border-radius: 2px; margin-top: 5px; background: rgba(255,255,255,0.06); overflow: hidden; max-width: 130px; }
+.ratio-fill   { height: 100%; border-radius: 2px; }
+.ratio-signal { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px; opacity: 0.72; }
+
+.good .ratio-val, .good .ratio-signal { color: var(--green); }
+.good .ratio-fill  { background: linear-gradient(90deg,#1a7a4a,var(--green)); }
+.mid  .ratio-val, .mid  .ratio-signal { color: var(--orange); }
+.mid  .ratio-fill  { background: linear-gradient(90deg,#8a5010,var(--orange)); }
+.bad  .ratio-val, .bad  .ratio-signal { color: var(--red); }
+.bad  .ratio-fill  { background: linear-gradient(90deg,#7a1818,var(--red)); }
+
+/* ── Price ── */
+.price-val  { font-weight: 700; font-size: 14px; color: var(--teal); }
+.price-unit { font-size: 10px; color: var(--white-dim); letter-spacing: 1px; }
+
+/* ── Volume ── */
+.vol-val   { font-weight: 600; font-size: 13px; }
+.vol-label { font-size: 10px; color: var(--white-dim); letter-spacing: 1px; text-transform: uppercase; }
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════ */
+footer {
+  text-align: center;
+  padding: 40px 0 20px;
+  border-top: 1px solid var(--border-dim);
+  margin-top: 20px;
+}
+.footer-logo { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 4px; color: var(--gold-dim); text-transform: uppercase; }
+.footer-sub  { font-size: 10px; letter-spacing: 3px; color: var(--white-dim); margin-top: 7px; text-transform: uppercase; }
+.footer-link { color: var(--gold-dim); text-decoration: none; transition: color 0.2s; }
+.footer-link:hover { color: var(--gold); }
+
+/* ═══════════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════════ */
+@keyframes aFadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes aFadeUp   { from{opacity:0;transform:translateY(18px)}  to{opacity:1;transform:translateY(0)} }
+@keyframes aFadeIn   { from{opacity:0}                              to{opacity:1} }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  th, td { padding: 10px 12px; }
+  .section-tag { display: none; }
+}
+@media (max-width: 680px) {
+  th, td { padding: 9px 10px; font-size: 12px; }
+  .item-sub { display: none; }
+  .ratio-bar { max-width: 80px; }
+}
+@media (max-width: 500px) {
+  .ratio-bar, .ratio-signal { display: none; }
+  th:nth-child(5), td:nth-child(5) { display: none; }
+  h1 { letter-spacing: 2px; }
+}
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+<div class="glow-top"></div>
+
+<div class="page-wrapper">
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div class="header-badge">
+      <span class="badge-dot"></span>
+      Star Atlas · SAGE C4 · Marketplace Analytics
+    </div>
+    <h1>TOP 10 RATIOS D'ACHAT</h1>
+    <p class="subtitle">Meilleur rapport Prix Marché / Valeur ATLAS — Par Catégorie</p>
+    <div class="divider-gold"></div>
+    <div class="data-notice">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+        <circle cx="6.5" cy="6.5" r="6" stroke="#e89d3d" stroke-width="1"/>
+        <rect x="6" y="5.5" width="1" height="4.5" fill="#e89d3d"/>
+        <circle cx="6.5" cy="4" r="0.8" fill="#e89d3d"/>
+      </svg>
+      Données placeholder · Connexion API SAGE C4 à venir
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="ldot good"></div>Ratio ≤ 0.45 — Sous-évalué</div>
+      <div class="legend-item"><div class="ldot mid"></div> Ratio 0.46–0.70 — Neutre</div>
+      <div class="legend-item"><div class="ldot bad"></div> Ratio > 0.70 — Surévalué</div>
+    </div>
+  </header>
+
+  <!-- ══ NAV ══ -->
+  <nav class="cat-nav" id="catNav"></nav>
+
+  <!-- ══ CATEGORIES ══ -->
+  <main id="main"></main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-logo">Star Atlas Marketplace Analytics</div>
+    <div class="footer-sub">
+      <a href="https://osvalt16.github.io/Stats-Marketplace/" class="footer-link">osvalt16.github.io/Stats-Marketplace</a>
+      &nbsp;·&nbsp; SAGE C4 &nbsp;·&nbsp; Données live à venir
+    </div>
+  </footer>
+
+</div><!-- /page-wrapper -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DATA — Toutes les catégories avec données placeholder
+   Ratio = Prix marché / Valeur estimée en ATLAS
+   < 0.45 → sous-évalué (vert) | 0.45-0.70 → neutre (orange) | > 0.70 → surévalué (rouge)
+═══════════════════════════════════════════════════════════════ */
+const CATEGORIES = [
+  { id:"composants",   label:"Composants",           icon:"⚙️",
+    items:[
+      {r:1,  name:"Impulse Engine MK3",    sub:"Engine · Tier 3",    ratio:0.31, price:"0.0024 USDC", vol:"12,840", vl:"disponibles"},
+      {r:2,  name:"Power Plant Alpha",     sub:"Power · Tier 2",     ratio:0.38, price:"0.0018 USDC", vol:"9,210",  vl:"disponibles"},
+      {r:3,  name:"Scanner Array B2",      sub:"Scanner · Tier 2",   ratio:0.44, price:"0.0031 USDC", vol:"7,650",  vl:"disponibles"},
+      {r:4,  name:"Fuel Tank XT-1",        sub:"Fuel · Tier 1",      ratio:0.51, price:"0.0009 USDC", vol:"18,300", vl:"disponibles"},
+      {r:5,  name:"Shield Module Delta",   sub:"Shield · Tier 3",    ratio:0.57, price:"0.0045 USDC", vol:"5,120",  vl:"disponibles"},
+      {r:6,  name:"Cargo Expander I",      sub:"Cargo · Tier 1",     ratio:0.63, price:"0.0007 USDC", vol:"21,400", vl:"disponibles"},
+      {r:7,  name:"Thruster Pack Omega",   sub:"Drive · Tier 4",     ratio:0.70, price:"0.0068 USDC", vol:"3,870",  vl:"disponibles"},
+      {r:8,  name:"Nav Computer C3",       sub:"Nav · Tier 3",       ratio:0.75, price:"0.0029 USDC", vol:"6,340",  vl:"disponibles"},
+      {r:9,  name:"Coolant System MK2",    sub:"Thermal · Tier 2",   ratio:0.81, price:"0.0022 USDC", vol:"8,900",  vl:"disponibles"},
+      {r:10, name:"Stabilizer Ring S",     sub:"Frame · Tier 1",     ratio:0.89, price:"0.0011 USDC", vol:"14,220", vl:"disponibles"},
+    ]},
+  { id:"vaisseaux",    label:"Vaisseaux",             icon:"🚀",
+    items:[
+      {r:1,  name:"Fimbul BYOS Ecos",      sub:"Fimbul · XX-Small",  ratio:0.18, price:"2.40 USDC",    vol:"340",   vl:"listés"},
+      {r:2,  name:"Pearce X4",             sub:"Pearce · X-Small",   ratio:0.24, price:"1.85 USDC",    vol:"520",   vl:"listés"},
+      {r:3,  name:"Opal Jet",              sub:"Opal · XX-Small",    ratio:0.29, price:"0.72 USDC",    vol:"1,240", vl:"listés"},
+      {r:4,  name:"Vzus Ambwe",            sub:"Vzus · Small",       ratio:0.35, price:"4.10 USDC",    vol:"210",   vl:"listés"},
+      {r:5,  name:"Rainbow Chi",           sub:"Tufa · XX-Small",    ratio:0.41, price:"0.95 USDC",    vol:"870",   vl:"listés"},
+      {r:6,  name:"Calico Compakt Hero",   sub:"Calico · Small",     ratio:0.48, price:"3.20 USDC",    vol:"290",   vl:"listés"},
+      {r:7,  name:"Fimbul Lowbie",         sub:"Fimbul · X-Small",   ratio:0.54, price:"1.60 USDC",    vol:"410",   vl:"listés"},
+      {r:8,  name:"Pearce R6",             sub:"Pearce · Small",     ratio:0.61, price:"5.80 USDC",    vol:"185",   vl:"listés"},
+      {r:9,  name:"Tufa Feist",            sub:"Tufa · X-Small",     ratio:0.67, price:"2.10 USDC",    vol:"320",   vl:"listés"},
+      {r:10, name:"Calico Evac",           sub:"Calico · XX-Small",  ratio:0.73, price:"0.88 USDC",    vol:"760",   vl:"listés"},
+    ]},
+  { id:"r4",           label:"R4",                    icon:"🔩",
+    items:[
+      {r:1,  name:"Arco",       sub:"Mineral · R4",  ratio:0.22, price:"0.00041 USDC", vol:"2.1M",  vl:"en stock"},
+      {r:2,  name:"Biomass",    sub:"Organic · R4",  ratio:0.27, price:"0.00038 USDC", vol:"1.8M",  vl:"en stock"},
+      {r:3,  name:"Carbon",     sub:"Raw · R4",      ratio:0.33, price:"0.00029 USDC", vol:"3.4M",  vl:"en stock"},
+      {r:4,  name:"Diamond",    sub:"Mineral · R4",  ratio:0.40, price:"0.00055 USDC", vol:"980K",  vl:"en stock"},
+      {r:5,  name:"Hydrogen",   sub:"Gas · R4",      ratio:0.46, price:"0.00021 USDC", vol:"4.7M",  vl:"en stock"},
+      {r:6,  name:"Iron",       sub:"Metal · R4",    ratio:0.52, price:"0.00033 USDC", vol:"2.6M",  vl:"en stock"},
+      {r:7,  name:"Lumanite",   sub:"Mineral · R4",  ratio:0.58, price:"0.00062 USDC", vol:"720K",  vl:"en stock"},
+      {r:8,  name:"Nitrogen",   sub:"Gas · R4",      ratio:0.65, price:"0.00019 USDC", vol:"5.2M",  vl:"en stock"},
+      {r:9,  name:"Rochinol",   sub:"Organic · R4",  ratio:0.71, price:"0.00047 USDC", vol:"1.1M",  vl:"en stock"},
+      {r:10, name:"Titanium",   sub:"Metal · R4",    ratio:0.78, price:"0.00058 USDC", vol:"890K",  vl:"en stock"},
+    ]},
+  { id:"consommables", label:"Consommables",           icon:"🧪",
+    items:[
+      {r:1,  name:"Ammunition Subatomic",  sub:"Ammo · T1",  ratio:0.26, price:"0.0012 USDC", vol:"540K", vl:"en stock"},
+      {r:2,  name:"Food Provision Basic",  sub:"Food · T1",  ratio:0.32, price:"0.0008 USDC", vol:"820K", vl:"en stock"},
+      {r:3,  name:"Fuel Pellet MK1",       sub:"Fuel · T1",  ratio:0.38, price:"0.0006 USDC", vol:"1.2M", vl:"en stock"},
+      {r:4,  name:"Toolkit Standard",      sub:"Tool · T1",  ratio:0.45, price:"0.0019 USDC", vol:"310K", vl:"en stock"},
+      {r:5,  name:"Ammo Railgun T2",       sub:"Ammo · T2",  ratio:0.51, price:"0.0038 USDC", vol:"180K", vl:"en stock"},
+      {r:6,  name:"Ration Pack Elite",     sub:"Food · T2",  ratio:0.57, price:"0.0024 USDC", vol:"250K", vl:"en stock"},
+      {r:7,  name:"Fuel Cell Advanced",    sub:"Fuel · T2",  ratio:0.63, price:"0.0017 USDC", vol:"420K", vl:"en stock"},
+      {r:8,  name:"Repair Kit Heavy",      sub:"Tool · T2",  ratio:0.70, price:"0.0042 USDC", vol:"140K", vl:"en stock"},
+      {r:9,  name:"Plasma Charge T3",      sub:"Ammo · T3",  ratio:0.76, price:"0.0091 USDC", vol:"72K",  vl:"en stock"},
+      {r:10, name:"Neural Stim Pack",      sub:"Food · T3",  ratio:0.83, price:"0.0065 USDC", vol:"95K",  vl:"en stock"},
+    ]},
+  { id:"modules",      label:"Modules Vaisseaux",      icon:"🛠️",
+    items:[
+      {r:1,  name:"Warp Drive Core I",     sub:"Drive · T1",    ratio:0.20, price:"0.0082 USDC", vol:"4,200",  vl:"disponibles"},
+      {r:2,  name:"Turret Mount Light",    sub:"Weapon · T1",   ratio:0.28, price:"0.0055 USDC", vol:"6,700",  vl:"disponibles"},
+      {r:3,  name:"Armor Plate Mk2",       sub:"Defense · T2",  ratio:0.36, price:"0.0120 USDC", vol:"3,100",  vl:"disponibles"},
+      {r:4,  name:"EMP Jammer Basic",      sub:"EW · T1",       ratio:0.43, price:"0.0064 USDC", vol:"5,400",  vl:"disponibles"},
+      {r:5,  name:"Mining Laser T2",       sub:"Mining · T2",   ratio:0.50, price:"0.0148 USDC", vol:"2,800",  vl:"disponibles"},
+      {r:6,  name:"Stealth Module Alpha",  sub:"Stealth · T2",  ratio:0.57, price:"0.0210 USDC", vol:"1,900",  vl:"disponibles"},
+      {r:7,  name:"Sensor Booster S",      sub:"Sensor · T1",   ratio:0.63, price:"0.0038 USDC", vol:"7,200",  vl:"disponibles"},
+      {r:8,  name:"Plasma Shield T3",      sub:"Defense · T3",  ratio:0.70, price:"0.0350 USDC", vol:"1,100",  vl:"disponibles"},
+      {r:9,  name:"Cargo Expander XL",     sub:"Cargo · T2",    ratio:0.76, price:"0.0095 USDC", vol:"3,600",  vl:"disponibles"},
+      {r:10, name:"Auto Repair Drone Bay", sub:"Repair · T2",   ratio:0.83, price:"0.0180 USDC", vol:"2,200",  vl:"disponibles"},
+    ]},
+  { id:"drones",       label:"Drones",                 icon:"🤖",
+    items:[
+      {r:1,  name:"Mining Drone Mk1",      sub:"Mining · T1",    ratio:0.25, price:"0.0035 USDC", vol:"8,400",  vl:"disponibles"},
+      {r:2,  name:"Scout Drone Alpha",     sub:"Recon · T1",     ratio:0.31, price:"0.0028 USDC", vol:"11,200", vl:"disponibles"},
+      {r:3,  name:"Combat Drone T2",       sub:"Combat · T2",    ratio:0.38, price:"0.0095 USDC", vol:"3,600",  vl:"disponibles"},
+      {r:4,  name:"Salvage Drone Beta",    sub:"Salvage · T1",   ratio:0.45, price:"0.0042 USDC", vol:"6,300",  vl:"disponibles"},
+      {r:5,  name:"Repair Drone MK2",      sub:"Repair · T2",    ratio:0.52, price:"0.0078 USDC", vol:"4,700",  vl:"disponibles"},
+      {r:6,  name:"EW Drone Sigma",        sub:"EW · T2",        ratio:0.58, price:"0.0110 USDC", vol:"2,900",  vl:"disponibles"},
+      {r:7,  name:"Cargo Drone I",         sub:"Logistics · T1", ratio:0.65, price:"0.0021 USDC", vol:"14,500", vl:"disponibles"},
+      {r:8,  name:"Mining Drone Mk3",      sub:"Mining · T3",    ratio:0.72, price:"0.0190 USDC", vol:"1,800",  vl:"disponibles"},
+      {r:9,  name:"Hunter Drone X",        sub:"Combat · T3",    ratio:0.78, price:"0.0265 USDC", vol:"1,200",  vl:"disponibles"},
+      {r:10, name:"Recon Drone Omega",     sub:"Recon · T3",     ratio:0.85, price:"0.0145 USDC", vol:"2,400",  vl:"disponibles"},
+    ]},
+  { id:"ingredients",  label:"Ingrédients",            icon:"🌿",
+    items:[
+      {r:1,  name:"Crystallized Hydrogen", sub:"Ingredient", ratio:0.19, price:"0.00082 USDC", vol:"3.8M",  vl:"en stock"},
+      {r:2,  name:"Refined Biomass",       sub:"Ingredient", ratio:0.26, price:"0.00071 USDC", vol:"2.4M",  vl:"en stock"},
+      {r:3,  name:"Smelted Iron",          sub:"Ingredient", ratio:0.34, price:"0.00095 USDC", vol:"1.9M",  vl:"en stock"},
+      {r:4,  name:"Polymer Sheet",         sub:"Ingredient", ratio:0.41, price:"0.00130 USDC", vol:"1.2M",  vl:"en stock"},
+      {r:5,  name:"Carbon Alloy",          sub:"Ingredient", ratio:0.48, price:"0.00110 USDC", vol:"1.5M",  vl:"en stock"},
+      {r:6,  name:"Electro-Mineral Mix",   sub:"Ingredient", ratio:0.55, price:"0.00165 USDC", vol:"870K",  vl:"en stock"},
+      {r:7,  name:"Titanium Alloy Ingot",  sub:"Ingredient", ratio:0.62, price:"0.00210 USDC", vol:"640K",  vl:"en stock"},
+      {r:8,  name:"Nano-Fiber Mesh",       sub:"Ingredient", ratio:0.69, price:"0.00280 USDC", vol:"480K",  vl:"en stock"},
+      {r:9,  name:"Plasma Gel",            sub:"Ingredient", ratio:0.76, price:"0.00320 USDC", vol:"390K",  vl:"en stock"},
+      {r:10, name:"Quantum Crystal",       sub:"Ingredient", ratio:0.84, price:"0.00450 USDC", vol:"210K",  vl:"en stock"},
+    ]},
+  { id:"organiques",   label:"Composants Organiques",  icon:"🧬",
+    items:[
+      {r:1,  name:"Bio-Polymer Fiber",     sub:"Organic Comp", ratio:0.21, price:"0.00058 USDC", vol:"1.6M",  vl:"en stock"},
+      {r:2,  name:"Algae Concentrate",     sub:"Organic Comp", ratio:0.29, price:"0.00044 USDC", vol:"2.1M",  vl:"en stock"},
+      {r:3,  name:"Chitin Shell Dust",     sub:"Organic Comp", ratio:0.37, price:"0.00067 USDC", vol:"980K",  vl:"en stock"},
+      {r:4,  name:"Mycelium Extract",      sub:"Organic Comp", ratio:0.44, price:"0.00089 USDC", vol:"720K",  vl:"en stock"},
+      {r:5,  name:"Enzyme Catalyst",       sub:"Organic Comp", ratio:0.51, price:"0.00120 USDC", vol:"540K",  vl:"en stock"},
+      {r:6,  name:"Neural Tissue Sample",  sub:"Organic Comp", ratio:0.58, price:"0.00145 USDC", vol:"410K",  vl:"en stock"},
+      {r:7,  name:"Bioluminescent Gel",    sub:"Organic Comp", ratio:0.65, price:"0.00175 USDC", vol:"300K",  vl:"en stock"},
+      {r:8,  name:"Spore Resin",           sub:"Organic Comp", ratio:0.72, price:"0.00210 USDC", vol:"240K",  vl:"en stock"},
+      {r:9,  name:"Keratin Matrix",        sub:"Organic Comp", ratio:0.78, price:"0.00250 USDC", vol:"180K",  vl:"en stock"},
+      {r:10, name:"Synth-Blood Plasma",    sub:"Organic Comp", ratio:0.86, price:"0.00310 USDC", vol:"120K",  vl:"en stock"},
+    ]},
+  { id:"minerais",     label:"Minerais",               icon:"⛏️",
+    items:[
+      {r:1,  name:"Arco Ore",              sub:"Ore · Common",   ratio:0.17, price:"0.00018 USDC", vol:"8.2M",  vl:"en stock"},
+      {r:2,  name:"Silica Ore",            sub:"Ore · Common",   ratio:0.23, price:"0.00022 USDC", vol:"6.4M",  vl:"en stock"},
+      {r:3,  name:"Pyroxene Crystal",      sub:"Ore · Uncommon", ratio:0.31, price:"0.00035 USDC", vol:"3.8M",  vl:"en stock"},
+      {r:4,  name:"Magnetite Chunk",       sub:"Ore · Uncommon", ratio:0.39, price:"0.00041 USDC", vol:"2.9M",  vl:"en stock"},
+      {r:5,  name:"Volcanite",             sub:"Ore · Rare",     ratio:0.46, price:"0.00072 USDC", vol:"1.1M",  vl:"en stock"},
+      {r:6,  name:"Iridium Vein",          sub:"Ore · Rare",     ratio:0.53, price:"0.00098 USDC", vol:"780K",  vl:"en stock"},
+      {r:7,  name:"Dark Matter Shard",     sub:"Ore · Epic",     ratio:0.60, price:"0.00210 USDC", vol:"320K",  vl:"en stock"},
+      {r:8,  name:"Neutronium Ore",        sub:"Ore · Epic",     ratio:0.67, price:"0.00280 USDC", vol:"240K",  vl:"en stock"},
+      {r:9,  name:"Celestite Dust",        sub:"Ore · Rare",     ratio:0.74, price:"0.00125 USDC", vol:"560K",  vl:"en stock"},
+      {r:10, name:"Lumanite Raw",          sub:"Ore · Uncommon", ratio:0.81, price:"0.00059 USDC", vol:"1.5M",  vl:"en stock"},
+    ]},
+  { id:"hab",          label:"HAB",                    icon:"🏠",
+    items:[
+      {r:1,  name:"Crew Quarters Alpha",   sub:"HAB · T1", ratio:0.23, price:"0.45 USDC",   vol:"1,240", vl:"listés"},
+      {r:2,  name:"Officers Deck Mk1",     sub:"HAB · T2", ratio:0.31, price:"1.20 USDC",   vol:"680",   vl:"listés"},
+      {r:3,  name:"Barracks Pod B",        sub:"HAB · T1", ratio:0.39, price:"0.38 USDC",   vol:"1,850", vl:"listés"},
+      {r:4,  name:"VIP Cabin Suite",       sub:"HAB · T3", ratio:0.47, price:"3.40 USDC",   vol:"310",   vl:"listés"},
+      {r:5,  name:"Med Bay Unit",          sub:"HAB · T2", ratio:0.54, price:"0.92 USDC",   vol:"540",   vl:"listés"},
+      {r:6,  name:"Engineering Bay",       sub:"HAB · T2", ratio:0.61, price:"1.05 USDC",   vol:"490",   vl:"listés"},
+      {r:7,  name:"Science Lab Module",    sub:"HAB · T3", ratio:0.68, price:"2.80 USDC",   vol:"240",   vl:"listés"},
+      {r:8,  name:"Crew Lounge Standard",  sub:"HAB · T1", ratio:0.74, price:"0.28 USDC",   vol:"2,100", vl:"listés"},
+      {r:9,  name:"Command Hub Alpha",     sub:"HAB · T3", ratio:0.81, price:"4.60 USDC",   vol:"180",   vl:"listés"},
+      {r:10, name:"Dormitory Block C",     sub:"HAB · T1", ratio:0.88, price:"0.21 USDC",   vol:"2,800", vl:"listés"},
+    ]},
+  { id:"mining",       label:"Assets Mining",          icon:"🏗️",
+    items:[
+      {r:1,  name:"Laser Drill Array T1",  sub:"Mining Asset", ratio:0.20, price:"0.82 USDC",   vol:"2,400", vl:"listés"},
+      {r:2,  name:"Extractor Rig Mk2",     sub:"Mining Asset", ratio:0.28, price:"2.10 USDC",   vol:"1,100", vl:"listés"},
+      {r:3,  name:"Ore Processor Alpha",   sub:"Mining Asset", ratio:0.36, price:"1.55 USDC",   vol:"1,600", vl:"listés"},
+      {r:4,  name:"Survey Probe S",        sub:"Mining Asset", ratio:0.43, price:"0.48 USDC",   vol:"3,200", vl:"listés"},
+      {r:5,  name:"Deep Core Drill T2",    sub:"Mining Asset", ratio:0.50, price:"4.70 USDC",   vol:"620",   vl:"listés"},
+      {r:6,  name:"Refinery Module M",     sub:"Mining Asset", ratio:0.57, price:"3.20 USDC",   vol:"840",   vl:"listés"},
+      {r:7,  name:"Asteroid Anchor",       sub:"Mining Asset", ratio:0.64, price:"1.80 USDC",   vol:"1,300", vl:"listés"},
+      {r:8,  name:"Mobile Smelter Unit",   sub:"Mining Asset", ratio:0.71, price:"5.60 USDC",   vol:"480",   vl:"listés"},
+      {r:9,  name:"Conveyor Array I",      sub:"Mining Asset", ratio:0.78, price:"2.40 USDC",   vol:"960",   vl:"listés"},
+      {r:10, name:"Coolant Tank XL",       sub:"Mining Asset", ratio:0.85, price:"0.95 USDC",   vol:"2,100", vl:"listés"},
+    ]},
+  { id:"equipements",  label:"Équipements",            icon:"🎒",
+    items:[
+      {r:1,  name:"Pilot Suit Mk1",        sub:"Gear · T1", ratio:0.22, price:"0.35 USDC",   vol:"3,800", vl:"listés"},
+      {r:2,  name:"EVA Jetpack Basic",     sub:"Gear · T1", ratio:0.30, price:"0.58 USDC",   vol:"2,700", vl:"listés"},
+      {r:3,  name:"Combat Exo T2",         sub:"Gear · T2", ratio:0.38, price:"1.80 USDC",   vol:"1,100", vl:"listés"},
+      {r:4,  name:"Stealth Cloak Alpha",   sub:"Gear · T2", ratio:0.45, price:"2.40 USDC",   vol:"820",   vl:"listés"},
+      {r:5,  name:"Neural Interface I",    sub:"Gear · T2", ratio:0.52, price:"1.95 USDC",   vol:"990",   vl:"listés"},
+      {r:6,  name:"Tactical Vest Pro",     sub:"Gear · T2", ratio:0.59, price:"1.20 USDC",   vol:"1,400", vl:"listés"},
+      {r:7,  name:"Rebreather Mk3",        sub:"Gear · T3", ratio:0.66, price:"3.60 USDC",   vol:"540",   vl:"listés"},
+      {r:8,  name:"Power Gauntlet T3",     sub:"Gear · T3", ratio:0.73, price:"4.80 USDC",   vol:"380",   vl:"listés"},
+      {r:9,  name:"Sensor Goggles Adv",    sub:"Gear · T2", ratio:0.80, price:"2.10 USDC",   vol:"720",   vl:"listés"},
+      {r:10, name:"Hazmat Suit Omega",     sub:"Gear · T3", ratio:0.87, price:"5.50 USDC",   vol:"290",   vl:"listés"},
+    ]},
+  { id:"spacestation", label:"Space Station",          icon:"🛸",
+    items:[
+      {r:1,  name:"Station Core Alpha",   sub:"Station · T1", ratio:0.15, price:"48.0 USDC",    vol:"72",  vl:"listés"},
+      {r:2,  name:"Docking Bay Module",   sub:"Station · T1", ratio:0.22, price:"12.5 USDC",    vol:"210", vl:"listés"},
+      {r:3,  name:"Trade Hub Unit",       sub:"Station · T2", ratio:0.30, price:"95.0 USDC",    vol:"38",  vl:"listés"},
+      {r:4,  name:"Defense Turret Bay",   sub:"Station · T1", ratio:0.38, price:"18.0 USDC",    vol:"145", vl:"listés"},
+      {r:5,  name:"Fuel Depot Node",      sub:"Station · T2", ratio:0.46, price:"35.0 USDC",    vol:"85",  vl:"listés"},
+      {r:6,  name:"Shipyard Module M",    sub:"Station · T2", ratio:0.53, price:"72.0 USDC",    vol:"47",  vl:"listés"},
+      {r:7,  name:"Research Lab Node",    sub:"Station · T3", ratio:0.61, price:"140.0 USDC",   vol:"22",  vl:"listés"},
+      {r:8,  name:"Command Center T3",    sub:"Station · T3", ratio:0.68, price:"210.0 USDC",   vol:"15",  vl:"listés"},
+      {r:9,  name:"Barracks Wing",        sub:"Station · T1", ratio:0.75, price:"28.0 USDC",    vol:"98",  vl:"listés"},
+      {r:10, name:"Power Core Omega",     sub:"Station · T3", ratio:0.82, price:"185.0 USDC",   vol:"18",  vl:"listés"},
+    ]},
+  { id:"structures",   label:"Structures",             icon:"🏛️",
+    items:[
+      {r:1,  name:"Outpost Foundation T1", sub:"Structure", ratio:0.18, price:"6.40 USDC",   vol:"380",   vl:"listés"},
+      {r:2,  name:"Storage Vault Alpha",   sub:"Structure", ratio:0.26, price:"4.20 USDC",   vol:"540",   vl:"listés"},
+      {r:3,  name:"Market Stall Basic",    sub:"Structure", ratio:0.34, price:"2.80 USDC",   vol:"720",   vl:"listés"},
+      {r:4,  name:"Defense Wall Section",  sub:"Structure", ratio:0.42, price:"3.50 USDC",   vol:"620",   vl:"listés"},
+      {r:5,  name:"Power Generator T2",    sub:"Structure", ratio:0.49, price:"9.80 USDC",   vol:"290",   vl:"listés"},
+      {r:6,  name:"Comms Tower Mk2",       sub:"Structure", ratio:0.56, price:"7.20 USDC",   vol:"340",   vl:"listés"},
+      {r:7,  name:"Hangar Bay Medium",     sub:"Structure", ratio:0.63, price:"15.0 USDC",   vol:"180",   vl:"listés"},
+      {r:8,  name:"Refinery Outpost T2",   sub:"Structure", ratio:0.70, price:"18.5 USDC",   vol:"145",   vl:"listés"},
+      {r:9,  name:"Command Bunker Alpha",  sub:"Structure", ratio:0.77, price:"22.0 USDC",   vol:"112",   vl:"listés"},
+      {r:10, name:"Orbital Relay Node",    sub:"Structure", ratio:0.85, price:"11.0 USDC",   vol:"240",   vl:"listés"},
+    ]},
+  { id:"claimstakes",  label:"Claim Stakes",           icon:"📍",
+    items:[
+      {r:1,  name:"Claim Stake Bronze",    sub:"Stake · T1", ratio:0.14, price:"1.20 USDC",   vol:"2,100", vl:"listés"},
+      {r:2,  name:"Claim Stake Silver",    sub:"Stake · T2", ratio:0.21, price:"3.80 USDC",   vol:"980",   vl:"listés"},
+      {r:3,  name:"Claim Stake Gold",      sub:"Stake · T3", ratio:0.30, price:"8.50 USDC",   vol:"420",   vl:"listés"},
+      {r:4,  name:"Sector Claim Alpha",    sub:"Stake · T2", ratio:0.39, price:"5.20 USDC",   vol:"640",   vl:"listés"},
+      {r:5,  name:"Region Mark T3",        sub:"Stake · T3", ratio:0.47, price:"12.0 USDC",   vol:"280",   vl:"listés"},
+      {r:6,  name:"Pioneer Flag Mk1",      sub:"Stake · T1", ratio:0.54, price:"0.95 USDC",   vol:"2,800", vl:"listés"},
+      {r:7,  name:"Territorial Beacon",    sub:"Stake · T2", ratio:0.62, price:"4.60 USDC",   vol:"750",   vl:"listés"},
+      {r:8,  name:"Domain Stake Elite",    sub:"Stake · T3", ratio:0.70, price:"18.0 USDC",   vol:"190",   vl:"listés"},
+      {r:9,  name:"Claim Marker Standard", sub:"Stake · T1", ratio:0.77, price:"0.72 USDC",   vol:"3,400", vl:"listés"},
+      {r:10, name:"Frontier Post Flag",    sub:"Stake · T2", ratio:0.84, price:"3.10 USDC",   vol:"870",   vl:"listés"},
+    ]},
+  { id:"data",         label:"Data",                   icon:"💾",
+    items:[
+      {r:1,  name:"Sector Map Frag. I",    sub:"Data · Common",   ratio:0.16, price:"0.0180 USDC", vol:"48K",   vl:"en stock"},
+      {r:2,  name:"Nav Chart MRZ",         sub:"Data · Uncommon", ratio:0.24, price:"0.0420 USDC", vol:"22K",   vl:"en stock"},
+      {r:3,  name:"Resource Scan T2",      sub:"Data · Uncommon", ratio:0.32, price:"0.0280 USDC", vol:"31K",   vl:"en stock"},
+      {r:4,  name:"Intel Package Alpha",   sub:"Data · Rare",     ratio:0.40, price:"0.0850 USDC", vol:"9,400", vl:"en stock"},
+      {r:5,  name:"Star Chart Complete",   sub:"Data · Rare",     ratio:0.47, price:"0.1200 USDC", vol:"6,800", vl:"en stock"},
+      {r:6,  name:"Warp Lane Data Set",    sub:"Data · Uncommon", ratio:0.55, price:"0.0550 USDC", vol:"17K",   vl:"en stock"},
+      {r:7,  name:"Faction Intel T3",      sub:"Data · Epic",     ratio:0.62, price:"0.2400 USDC", vol:"3,200", vl:"en stock"},
+      {r:8,  name:"Trade Route Map",       sub:"Data · Rare",     ratio:0.70, price:"0.0980 USDC", vol:"8,100", vl:"en stock"},
+      {r:9,  name:"Encrypted Coords",      sub:"Data · Epic",     ratio:0.77, price:"0.3200 USDC", vol:"1,800", vl:"en stock"},
+      {r:10, name:"Galaxy Survey v2",      sub:"Data · Rare",     ratio:0.84, price:"0.1450 USDC", vol:"5,400", vl:"en stock"},
+    ]},
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════════ */
+const rCls = r => r <= 0.45 ? 'good' : r <= 0.70 ? 'mid' : 'bad';
+const rLbl = r => r <= 0.45 ? '▲ Sous-évalué' : r <= 0.70 ? '◆ Neutre' : '▼ Surévalué';
+const rkCls= n => n===1?'r1':n===2?'r2':n===3?'r3':'';
+
+/* ═══════════════════════════════════════════════════════════════
+   BUILD NAV
+═══════════════════════════════════════════════════════════════ */
+function buildNav() {
+  const nav = document.getElementById('catNav');
+
+  const all = document.createElement('button');
+  all.className = 'cat-btn active';
+  all.textContent = 'Toutes';
+  all.dataset.id = 'all';
+  nav.appendChild(all);
+
+  CATEGORIES.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn';
+    btn.textContent = cat.label;
+    btn.dataset.id = cat.id;
+    nav.appendChild(btn);
+  });
+
+  nav.addEventListener('click', e => {
+    const btn = e.target.closest('.cat-btn');
+    if (!btn) return;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const id = btn.dataset.id;
+    document.querySelectorAll('.category-section').forEach(s => {
+      s.style.display = (id === 'all' || s.dataset.id === id) ? '' : 'none';
+    });
+    if (id !== 'all') {
+      const el = document.querySelector(`.category-section[data-id="${id}"]`);
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUILD SECTIONS
+═══════════════════════════════════════════════════════════════ */
+function buildSections() {
+  const main = document.getElementById('main');
+
+  CATEGORIES.forEach((cat, ci) => {
+    const sec = document.createElement('section');
+    sec.className = 'category-section';
+    sec.dataset.id = cat.id;
+    sec.style.animationDelay = (ci * 0.03) + 's';
+
+    const rows = cat.items.map(item => {
+      const cls = rCls(item.ratio);
+      const lbl = rLbl(item.ratio);
+      const rkc = rkCls(item.r);
+      const bar = Math.min(100, item.ratio * 100).toFixed(1);
+      return `
+        <tr>
+          <td class="rank-cell ${rkc}"><span class="rank-badge">${item.r}</span></td>
+          <td>
+            <div class="item-name">${item.name}</div>
+            <div class="item-sub">${item.sub}</div>
+          </td>
+          <td>
+            <div class="${cls}">
+              <div class="ratio-val">${item.ratio.toFixed(2)}</div>
+              <div class="ratio-bar"><div class="ratio-fill" style="width:${bar}%"></div></div>
+              <div class="ratio-signal">${lbl}</div>
+            </div>
+          </td>
+          <td class="r">
+            <div class="price-val">${item.price}</div>
+            <div class="price-unit">/ unit</div>
+          </td>
+          <td class="r">
+            <div class="vol-val">${item.vol}</div>
+            <div class="vol-label">${item.vl}</div>
+          </td>
+        </tr>`;
+    }).join('');
+
+    sec.innerHTML = `
+      <div class="section-header">
+        <div class="section-icon">${cat.icon}</div>
+        <div class="section-meta">
+          <div class="section-sup">Catégorie</div>
+          <div class="section-title">${cat.label}</div>
+        </div>
+        <div class="section-tag">Top 10</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="c">Rang</th>
+              <th>Nom de l'item</th>
+              <th>Ratio d'achat</th>
+              <th class="r">Prix actuel</th>
+              <th class="r">Volume / Qté</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="divider-dim"></div>
+    `;
+    main.appendChild(sec);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FUTURE API HOOK — décommenter quand SAGE C4 PTR est disponible
+   
+   async function fetchLiveData() {
+     try {
+       const res = await fetch('https://galaxy.staratlas.com/nfts'); // endpoint à confirmer
+       const data = await res.json();
+       // Traiter data et mettre à jour CATEGORIES[...]
+       // puis re-render les sections
+     } catch(e) {
+       console.warn('API SAGE C4 non disponible, données statiques utilisées.', e);
+     }
+   }
+   fetchLiveData();
+═══════════════════════════════════════════════════════════════ */
+
+buildNav();
+buildSections();
+</script>
+</body>
+</html>
