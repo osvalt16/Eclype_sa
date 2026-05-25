@@ -82,6 +82,17 @@
     border:1px solid var(--border-or); padding:0.5rem 1.3rem;
     transition:all 0.3s;
   }
+  .nav-connexion {
+    font-family:'Cinzel',serif; font-size:0.7rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--texte-pale); text-decoration:none;
+    border:1px solid var(--border-violet); padding:0.5rem 1.3rem;
+    transition:all 0.3s; margin-right:0.5rem;
+  }
+  .nav-connexion:hover {
+    border-color:var(--violet-glow); color:var(--violet-glow);
+    box-shadow:0 0 15px rgba(139,92,246,0.2);
+  }
   .nav-cta:hover {
     background:rgba(201,162,39,0.1); border-color:var(--or);
     box-shadow:0 0 20px rgba(201,162,39,0.2);
@@ -538,7 +549,7 @@
     <li><a href="#discord">Discord</a></li>
     <li><a href="dashboard.html">Dashboard</a></li>
   </ul>
-  <a href="#candidature" class="nav-cta">Rejoindre la flotte</a>
+  <a href="dashboard.html" class="nav-connexion">Connexion</a><a href="#candidature" class="nav-cta">Rejoindre la flotte</a>
 </nav>
 
 <!-- HERO -->
@@ -783,69 +794,7 @@
           <button class="cal-tab" onclick="filterEvents('farm', this)">Mining</button>
         </div>
         <div class="events-list" id="events-list">
-          <div class="event-card" data-type="raid">
-            <div class="event-date"><div class="event-day">28</div><div class="event-month">Mai</div></div>
-            <div class="event-info">
-              <span class="event-type type-raid">Fleet Op</span>
-              <div class="event-name">Opération Secteur Outter Ring</div>
-              <div class="event-meta">Flotte complète · Vaisseaux combat requis · Lead : FVCK</div>
-            </div>
-            <div class="event-heure">21:00<small>heure FR</small></div>
-          </div>
-          <div class="event-card" data-type="pvp">
-            <div class="event-date"><div class="event-day">30</div><div class="event-month">Mai</div></div>
-            <div class="event-info">
-              <span class="event-type type-pvp">PvP</span>
-              <div class="event-name">Guild War — Prise de secteur</div>
-              <div class="event-meta">Guilde vs Guilde · Zone Inner · Roster complet</div>
-            </div>
-            <div class="event-heure">20:00<small>heure FR</small></div>
-          </div>
-          <div class="event-card" data-type="event">
-            <div class="event-date"><div class="event-day">01</div><div class="event-month">Juin</div></div>
-            <div class="event-info">
-              <span class="event-type type-event">Événement</span>
-              <div class="event-name">SAGE C4 — Tournament Season</div>
-              <div class="event-meta">Serveur entier · Récompenses ATLAS · Tous membres</div>
-            </div>
-            <div class="event-heure">19:30<small>heure FR</small></div>
-          </div>
-          <div class="event-card" data-type="farm">
-            <div class="event-date"><div class="event-day">04</div><div class="event-month">Juin</div></div>
-            <div class="event-info">
-              <span class="event-type type-farm">Mining</span>
-              <div class="event-name">Mining Run — MRZ Cluster Alpha</div>
-              <div class="event-meta">5-8 flottes · Zone MRZ · Ressources partagées</div>
-            </div>
-            <div class="event-heure">20:30<small>heure FR</small></div>
-          </div>
-          <div class="event-card" data-type="raid">
-            <div class="event-date"><div class="event-day">07</div><div class="event-month">Juin</div></div>
-            <div class="event-info">
-              <span class="event-type type-raid">Fleet Op</span>
-              <div class="event-name">Conquest — Prise de Starbase ennemie</div>
-              <div class="event-meta">Flotte d'élite · IRZ · Inscription obligatoire</div>
-            </div>
-            <div class="event-heure">21:00<small>heure FR</small></div>
-          </div>
-          <div class="event-card" data-type="pvp">
-            <div class="event-date"><div class="event-day">10</div><div class="event-month">Juin</div></div>
-            <div class="event-info">
-              <span class="event-type type-pvp">PvP</span>
-              <div class="event-name">Ranked — Classement SAGE C4</div>
-              <div class="event-meta">Pilotes confirmés · Top leaderboard · XP boost</div>
-            </div>
-            <div class="event-heure">20:00<small>heure FR</small></div>
-          </div>
-          <div class="event-card passe" data-type="farm">
-            <div class="event-date"><div class="event-day">21</div><div class="event-month">Mai</div></div>
-            <div class="event-info">
-              <span class="event-type type-farm">Mining</span>
-              <div class="event-name">Mining Run — Outter Ring ✓</div>
-              <div class="event-meta">Terminé · Record de ressources · Butin distribué</div>
-            </div>
-            <div class="event-heure">21:00<small>terminé</small></div>
-          </div>
+          <div class="event-card-loading" style="text-align:center;padding:2rem;color:var(--texte-pale);font-style:italic;border:1px dashed var(--border-violet);">Chargement des opérations...</div>
         </div>
       </div>
       <div>
@@ -885,17 +834,17 @@
       <div class="form-row">
         <div class="form-group">
           <label>Pseudo Star Atlas *</label>
-          <input type="text" placeholder="VotrePseudo">
+          <input type="text" id="cand-pseudo" placeholder="VotrePseudo">
         </div>
         <div class="form-group">
           <label>Discord *</label>
-          <input type="text" placeholder="pseudo#0000">
+          <input type="text" id="cand-discord" placeholder="pseudo#0000">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Rôle souhaité *</label>
-          <select>
+          <select id="cand-role">
             <option value="" disabled selected>Choisir un rôle</option>
             <option>Fleet Commander</option>
             <option>Fighter</option>
@@ -907,7 +856,7 @@
         </div>
         <div class="form-group">
           <label>Faction actuelle *</label>
-          <select>
+          <select id="cand-faction">
             <option value="" disabled selected>Votre faction</option>
             <option>MUD Territory</option>
             <option>ONI Region</option>
@@ -917,14 +866,14 @@
       </div>
       <div class="form-group">
         <label>Vaisseaux &amp; flotte</label>
-        <textarea placeholder="Listez vos vaisseaux principaux, leur classe, et votre expérience SAGE..."></textarea>
+        <textarea id="cand-vaisseaux" placeholder="Listez vos vaisseaux principaux, leur classe, et votre expérience SAGE..."></textarea>
       </div>
       <div class="form-group">
         <label>Pourquoi rejoindre Éclypse ?</label>
-        <textarea placeholder="Qu'est-ce qui vous attire dans notre flotte ? Vos objectifs sur SAGE C4 ?" style="min-height:100px"></textarea>
+        <textarea id="cand-motivation" placeholder="Qu'est-ce qui vous attire dans notre flotte ? Vos objectifs sur SAGE C4 ?" style="min-height:100px"></textarea>
       </div>
       <div style="text-align:center;margin-top:2.5rem">
-        <button class="btn-submit" onclick="handleSubmit()">Envoyer ma candidature</button>
+        <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">Envoyer ma candidature ✦</button>
       </div>
     </div>
   </div>
@@ -1078,16 +1027,137 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 revealEls.forEach(el => observer.observe(el));
 
-/* ── FORM ── */
-function handleSubmit() {
-  const btn = document.querySelector('.btn-submit');
-  btn.textContent = '✦ Candidature envoyée !';
-  btn.style.background = '#3ecf8e'; btn.style.color = '#030208'; btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = 'Envoyer ma candidature';
-    btn.style.background = ''; btn.style.color = ''; btn.disabled = false;
-  }, 4000);
+/* ── FORM CANDIDATURE ── */
+const REPO_OWNER = 'osvalt16';
+const REPO_NAME  = 'Eclype_sa';
+const EVENTS_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
+const CANDID_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/candidatures.json`;
+
+async function handleSubmit() {
+  const pseudo     = document.getElementById('cand-pseudo')?.value.trim();
+  const discord    = document.getElementById('cand-discord')?.value.trim();
+  const role       = document.getElementById('cand-role')?.value;
+  const faction    = document.getElementById('cand-faction')?.value;
+  const vaisseaux  = document.getElementById('cand-vaisseaux')?.value.trim();
+  const motivation = document.getElementById('cand-motivation')?.value.trim();
+
+  if (!pseudo || !discord || !role || !faction) {
+    alert('❌ Remplis tous les champs obligatoires !');
+    return;
+  }
+
+  const btn = document.getElementById('btn-submit');
+  btn.textContent = '⏳ Envoi en cours...';
+  btn.disabled = true;
+
+  const newCandidature = {
+    id: 'cand_' + Date.now(),
+    pseudo, discord, role, faction,
+    vaisseaux: vaisseaux || '',
+    motivation: motivation || '',
+    date: new Date().toISOString(),
+    statut: 'en_attente'
+  };
+
+  try {
+    const token = localStorage.getItem('eclypse_admin_token') || '';
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
+
+    let sha = null;
+    let existing = [];
+    try {
+      const getRes = await fetch(apiUrl, token ? { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } } : {});
+      if (getRes.ok) {
+        const getJson = await getRes.json();
+        sha = getJson.sha;
+        existing = JSON.parse(atob(getJson.content.replace(/
+/g,''))).candidatures || [];
+      }
+    } catch(e) {}
+
+    existing.push(newCandidature);
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify({ candidatures: existing }, null, 2))));
+
+    if (token) {
+      await fetch(apiUrl, {
+        method: 'PUT',
+        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ message: `Candidature de ${pseudo}`, content, ...(sha ? { sha } : {}) })
+      });
+    }
+
+    btn.textContent = '✦ Candidature envoyée !';
+    btn.style.background = '#3ecf8e';
+    btn.style.color = '#030208';
+
+    // Reset form
+    ['cand-pseudo','cand-discord','cand-vaisseaux','cand-motivation'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    ['cand-role','cand-faction'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.selectedIndex = 0;
+    });
+
+    setTimeout(() => {
+      btn.textContent = 'Envoyer ma candidature ✦';
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.disabled = false;
+    }, 4000);
+
+  } catch(e) {
+    btn.textContent = '❌ Erreur — Réessaie';
+    btn.style.background = 'rgba(232,90,90,0.3)';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = 'Envoyer ma candidature ✦';
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.disabled = false;
+    }, 3000);
+  }
 }
+
+/* ── LOAD EVENTS DEPUIS GITHUB ── */
+async function loadPublicEvents() {
+  const list = document.getElementById('events-list');
+  const typeLabels  = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
+  const typeClasses = { fleetop:'type-raid', pvp:'type-pvp', mining:'type-farm', event:'type-event' };
+  try {
+    const res  = await fetch(EVENTS_URL + '?t=' + Date.now());
+    const data = await res.json();
+    const events = data.events || [];
+    if (!events.length) {
+      list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--texte-pale);font-style:italic;border:1px dashed var(--border-violet);">Aucune opération planifiée pour le moment</div>';
+      return;
+    }
+    const sorted = [...events].sort((a,b) => new Date(a.date)-new Date(b.date));
+    const now = new Date();
+    list.innerHTML = sorted.map(ev => {
+      const d = new Date(ev.date + 'T' + (ev.heure || '20:00'));
+      const passe = d < now;
+      const day   = d.getDate();
+      const month = d.toLocaleDateString('fr-FR', { month: 'short' });
+      const typeClass = typeClasses[ev.type] || 'type-event';
+      const typeLabel = typeLabels[ev.type] || ev.type;
+      return `<div class="event-card${passe?' passe':''}" data-type="${ev.type==='fleetop'?'raid':ev.type==='mining'?'farm':ev.type}">
+        <div class="event-date"><div class="event-day">${day}</div><div class="event-month">${month}</div></div>
+        <div class="event-info">
+          <span class="event-type ${typeClass}">${typeLabel}</span>
+          <div class="event-name">${ev.nom}</div>
+          <div class="event-meta">${ev.description||''} · Lead : ${ev.createdBy}</div>
+        </div>
+        <div class="event-heure">${ev.heure||'21:00'}<small>heure FR</small></div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--texte-pale);font-style:italic;">Impossible de charger les opérations</div>';
+  }
+}
+
+loadPublicEvents();
 
 /* ── CALENDRIER ── */
 const eventDates = { 28:['raid'], 30:['pvp'], 1:['event'], 4:['farm'], 7:['raid'], 10:['pvp'] };

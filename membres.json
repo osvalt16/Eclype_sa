@@ -10,6 +10,7 @@
       "xp": "865085",
       "code": "ECL-FVCK-2025",
       "dashboard": true,
+      "admin": true,
       "actif": true
     },
     {
@@ -22,6 +23,7 @@
       "xp": "873802",
       "code": "ECL-ODI-2025",
       "dashboard": true,
+      "admin": false,
       "actif": true
     },
     {
@@ -34,6 +36,7 @@
       "xp": "565137",
       "code": "ECL-VIK-2025",
       "dashboard": false,
+      "admin": false,
       "actif": true
     }
   ]
