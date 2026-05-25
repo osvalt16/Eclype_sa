@@ -895,7 +895,7 @@
 
       <div id="no-access" class="access-denied" style="display:none">
         <h3>🔒 Accès Restreint</h3>
-        <p>Tu n'as pas les droits pour créer des événements. Contacte le Fleet Commander.</p>
+        <p>Tu n\'as pas les droits pour créer des événements. Contacte le Fleet Commander.</p>
       </div>
     </div>
 
@@ -1227,7 +1227,7 @@ async function toggleDashboard(id, val) {
 }
 
 async function revokeMember(id) {
-  if (!confirm('Révoquer l'accès de ce membre ?')) return;
+  if (!confirm('Révoquer l\'accès de ce membre ?')) return;
   await updateMember(id, { actif: false });
   showToast('🔒 Accès révoqué');
   setTimeout(() => loadMembresAdmin(), 2000);
