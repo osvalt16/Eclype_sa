@@ -1,0 +1,40 @@
+{
+  "membres": [
+    {
+      "id": "fvck",
+      "pseudo": "FVCK",
+      "rang": "Fleet Commander",
+      "role": "Fighter",
+      "faction": "MUD",
+      "wallet": "5BEC...hYeu",
+      "xp": "865085",
+      "code": "ECL-FVCK-2025",
+      "dashboard": true,
+      "actif": true
+    },
+    {
+      "id": "odicerous",
+      "pseudo": "Odicerous",
+      "rang": "Officier",
+      "role": "Fleet Commander",
+      "faction": "MUD",
+      "wallet": "GW28...BMEe",
+      "xp": "873802",
+      "code": "ECL-ODI-2025",
+      "dashboard": true,
+      "actif": true
+    },
+    {
+      "id": "viktor",
+      "pseudo": "Viktor",
+      "rang": "Vétéran",
+      "role": "Miner",
+      "faction": "MUD",
+      "wallet": "4yMp...zdYZ",
+      "xp": "565137",
+      "code": "ECL-VIK-2025",
+      "dashboard": false,
+      "actif": true
+    }
+  ]
+}

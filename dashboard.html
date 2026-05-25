@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÉCLYPSE — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #030208;
+    --violet: #1a0f2e;
+    --violet-mid: #2d1a50;
+    --violet-glow: #8b5cf6;
+    --or: #c9a227;
+    --or-clair: #e8c547;
+    --texte: #d4c9e8;
+    --texte-pale: #8a7fa0;
+    --border-or: rgba(201,162,39,0.3);
+    --border-violet: rgba(107,53,200,0.4);
+    --cyan: #00d4ff;
+    --rouge: #e85a5a;
+    --vert: #5ecfa0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--noir);
+    color: var(--texte);
+    font-family: 'Crimson Pro', serif;
+    font-size: 17px;
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #1a0f2e 0%, #030208 70%);
+  }
+  .login-box {
+    border: 1px solid var(--border-or);
+    padding: 3rem;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    background: rgba(26,15,46,0.6);
+  }
+  .login-box img { height: 80px; margin-bottom: 1.5rem; }
+  .login-box h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.3em;
+    color: var(--or);
+    margin-bottom: 0.5rem;
+  }
+  .login-box p {
+    font-size: 0.9rem;
+    color: var(--texte-pale);
+    margin-bottom: 2rem;
+  }
+  .login-box input {
+    width: 100%;
+    background: rgba(7,6,13,0.8);
+    border: 1px solid var(--border-violet);
+    color: var(--texte);
+    padding: 0.9rem 1.2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-align: center;
+    outline: none;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s;
+  }
+  .login-box input:focus { border-color: var(--or); }
+  .login-box button {
+    width: 100%;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--noir);
+    background: var(--or);
+    border: none;
+    padding: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .login-box button:hover { background: var(--or-clair); }
+  .login-error {
+    color: var(--rouge);
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    display: none;
+  }
+
+  /* ── DASHBOARD ── */
+  #dashboard { display: none; }
+
+  .topbar {
+    background: rgba(7,6,13,0.95);
+    border-bottom: 1px solid var(--border-or);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .topbar-left img { height: 36px; }
+  .topbar-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+  .topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .user-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--texte-pale);
+  }
+  .user-badge span { color: var(--or-clair); }
+  .btn-logout {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    background: none;
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-logout:hover { background: rgba(232,90,90,0.1); }
+  .btn-home {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+    background: none;
+    border: 1px solid var(--border-violet);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .btn-home:hover { border-color: var(--or); color: var(--or); }
+
+  .dash-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  /* ── PROFIL ── */
+  .profil-card {
+    border: 1px solid var(--border-or);
+    padding: 2rem;
+    background: rgba(26,15,46,0.4);
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .profil-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--or);
+    background: rgba(26,15,46,0.9);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 2rem; color: var(--or);
+    flex-shrink: 0;
+  }
+  .profil-info {}
+  .profil-rang {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 0.3rem;
+  }
+  .profil-pseudo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+  .profil-role {
+    font-size: 0.9rem;
+    color: var(--texte-pale);
+    font-style: italic;
+    margin-bottom: 0.6rem;
+  }
+  .profil-wallet {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--cyan);
+  }
+
+  /* ── SECTION TITRE ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .section-header h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+
+  /* ── FORMULAIRE EVENT ── */
+  #form-event {
+    border: 1px solid var(--border-violet);
+    padding: 2rem;
+    background: rgba(10,8,20,0.7);
+    margin-bottom: 2.5rem;
+    display: none;
+  }
+  #form-event.visible { display: block; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+  .form-group label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 0.5rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(7,6,13,0.8);
+    border: 1px solid var(--border-violet);
+    color: var(--texte);
+    padding: 0.7rem 1rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--or); }
+  .form-group select option { background: #1a0f2e; }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+  .btn-save {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--noir);
+    background: var(--or);
+    border: none;
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-save:hover { background: var(--or-clair); }
+  .btn-cancel {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+    background: none;
+    border: 1px solid var(--border-violet);
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-cancel:hover { border-color: var(--rouge); color: var(--rouge); }
+
+  /* ── BOUTON AJOUTER ── */
+  .btn-add {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    background: none;
+    border: 1px solid var(--border-or);
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-add:hover { background: rgba(201,162,39,0.1); }
+
+  /* ── LISTE EVENTS ── */
+  .events-list { display: flex; flex-direction: column; gap: 1rem; }
+  .event-item {
+    border: 1px solid var(--border-violet);
+    padding: 1.2rem 1.5rem;
+    background: rgba(7,6,13,0.7);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.2rem;
+    align-items: center;
+    transition: border-color 0.3s;
+  }
+  .event-item:hover { border-color: var(--border-or); }
+  .event-date-badge {
+    text-align: center;
+    min-width: 55px;
+  }
+  .event-date-badge .day {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: var(--or);
+    line-height: 1;
+  }
+  .event-date-badge .month {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+  }
+  .event-info {}
+  .event-type-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .type-fleetop { color: #e85a5a; border: 1px solid rgba(232,90,90,0.3); }
+  .type-pvp { color: var(--violet-glow); border: 1px solid rgba(139,92,246,0.3); }
+  .type-event { color: var(--or); border: 1px solid var(--border-or); }
+  .type-mining { color: var(--vert); border: 1px solid rgba(94,207,160,0.3); }
+  .event-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.88rem;
+    color: #fff;
+    margin-bottom: 0.2rem;
+  }
+  .event-meta { font-size: 0.82rem; color: var(--texte-pale); }
+  .event-actions { display: flex; gap: 0.5rem; }
+  .btn-delete {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    background: none;
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 0.4rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-delete:hover { background: rgba(232,90,90,0.1); }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--texte-pale);
+    border: 1px dashed var(--border-violet);
+    font-style: italic;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: rgba(26,15,46,0.95);
+    border: 1px solid var(--or);
+    padding: 1rem 1.5rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--or);
+    z-index: 999;
+    display: none;
+    animation: fadeInUp 0.3s ease;
+  }
+  @keyframes fadeInUp {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── ACCESS DENIED ── */
+  .access-denied {
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 2rem;
+    text-align: center;
+    background: rgba(232,90,90,0.05);
+  }
+  .access-denied h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--rouge);
+    margin-bottom: 0.8rem;
+  }
+  .access-denied p { font-size: 0.9rem; color: var(--texte-pale); }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .profil-card { flex-direction: column; text-align: center; }
+    .topbar { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
+    <h1>Dashboard Éclypse</h1>
+    <p>Entre ton code d'accès pour rejoindre le panneau de contrôle</p>
+    <input type="text" id="code-input" placeholder="ECL-XXXX-2025" maxlength="20"
+           onkeydown="if(event.key==='Enter') login()">
+    <button onclick="login()">Accéder au Dashboard</button>
+    <p class="login-error" id="login-error">❌ Code invalide ou accès révoqué</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
+      <span class="topbar-title">Dashboard · SAGE C4</span>
+    </div>
+    <div class="topbar-user">
+      <div class="user-badge">Connecté : <span id="display-pseudo">—</span></div>
+      <a href="index.html" class="btn-home">← Site</a>
+      <button class="btn-logout" onclick="logout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="dash-content">
+
+    <!-- PROFIL -->
+    <div class="profil-card">
+      <div class="profil-avatar" id="profil-avatar">?</div>
+      <div class="profil-info">
+        <div class="profil-rang" id="profil-rang">—</div>
+        <div class="profil-pseudo" id="profil-pseudo">—</div>
+        <div class="profil-role" id="profil-role">—</div>
+        <div class="profil-wallet" id="profil-wallet">—</div>
+      </div>
+    </div>
+
+    <!-- PLANNING -->
+    <div id="planning-section">
+      <div class="section-header">
+        <h2>📅 Opérations & Planning</h2>
+        <button class="btn-add" id="btn-add" onclick="toggleForm()">+ Nouvelle Op</button>
+      </div>
+
+      <!-- FORMULAIRE -->
+      <div id="form-event">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nom de l'opération *</label>
+            <input type="text" id="f-nom" placeholder="Ex: Mining Run Sector Alpha">
+          </div>
+          <div class="form-group">
+            <label>Type *</label>
+            <select id="f-type">
+              <option value="fleetop">Fleet Op</option>
+              <option value="pvp">PvP / Guild War</option>
+              <option value="mining">Mining Run</option>
+              <option value="event">Événement SAGE</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date *</label>
+            <input type="date" id="f-date">
+          </div>
+          <div class="form-group">
+            <label>Heure (FR) *</label>
+            <input type="time" id="f-heure" value="21:00">
+          </div>
+          <div class="form-group full">
+            <label>Description</label>
+            <textarea id="f-desc" placeholder="Vaisseaux requis, zone, objectif..."></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" onclick="toggleForm()">Annuler</button>
+          <button class="btn-save" onclick="saveEvent()">✦ Publier l'opération</button>
+        </div>
+      </div>
+
+      <!-- LISTE -->
+      <div class="events-list" id="events-list">
+        <div class="empty-state">Aucune opération planifiée — crée la première !</div>
+      </div>
+
+      <!-- ACCÈS REFUSÉ -->
+      <div id="no-access" class="access-denied" style="display:none">
+        <h3>🔒 Accès Restreint</h3>
+        <p>Tu n'as pas les droits pour créer des événements. Contacte le Fleet Commander pour obtenir l'accès.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const REPO_OWNER = 'osvalt16';
+const REPO_NAME = 'Eclype_sa';
+const MEMBRES_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/membres.json`;
+const EVENTS_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
+
+// Token stocké via GitHub Actions secret — NE JAMAIS mettre ici en clair
+// Le dashboard utilise un proxy GitHub Actions pour écrire
+// Pour l'instant lecture seule depuis raw.githubusercontent.com
+
+let currentMembre = null;
+let allEvents = [];
+
+async function login() {
+  const code = document.getElementById('code-input').value.trim().toUpperCase();
+  if (!code) return;
+
+  try {
+    const res = await fetch(MEMBRES_URL + '?t=' + Date.now());
+    const data = await res.json();
+    const membre = data.membres.find(m =>
+      m.code.toUpperCase() === code && m.actif === true
+    );
+
+    if (!membre) {
+      document.getElementById('login-error').style.display = 'block';
+      return;
+    }
+
+    currentMembre = membre;
+    sessionStorage.setItem('eclypse_membre', JSON.stringify(membre));
+    showDashboard(membre);
+
+  } catch(e) {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-error').textContent = '❌ Erreur de connexion. Réessaie.';
+  }
+}
+
+function showDashboard(membre) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+
+  document.getElementById('display-pseudo').textContent = membre.pseudo;
+  document.getElementById('profil-avatar').textContent = membre.pseudo[0].toUpperCase();
+  document.getElementById('profil-rang').textContent = '★ ' + membre.rang;
+  document.getElementById('profil-pseudo').textContent = membre.pseudo;
+  document.getElementById('profil-role').textContent = membre.role + ' · Faction ' + membre.faction;
+  document.getElementById('profil-wallet').textContent = '🔵 Wallet: ' + membre.wallet;
+
+  if (!membre.dashboard) {
+    document.getElementById('btn-add').style.display = 'none';
+    document.getElementById('no-access').style.display = 'block';
+  }
+
+  loadEvents();
+}
+
+function logout() {
+  sessionStorage.removeItem('eclypse_membre');
+  currentMembre = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('code-input').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+async function loadEvents() {
+  try {
+    const res = await fetch(EVENTS_URL + '?t=' + Date.now());
+    const data = await res.json();
+    allEvents = data.events || [];
+    renderEvents();
+  } catch(e) {
+    allEvents = [];
+    renderEvents();
+  }
+}
+
+function renderEvents() {
+  const list = document.getElementById('events-list');
+  if (allEvents.length === 0) {
+    list.innerHTML = '<div class="empty-state">Aucune opération planifiée — crée la première !</div>';
+    return;
+  }
+
+  const sorted = [...allEvents].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const typeLabels = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
+  const typeClasses = { fleetop:'type-fleetop', pvp:'type-pvp', mining:'type-mining', event:'type-event' };
+
+  list.innerHTML = sorted.map(ev => {
+    const d = new Date(ev.date);
+    const day = d.getDate();
+    const month = d.toLocaleDateString('fr-FR', { month: 'short' });
+    const canDelete = currentMembre && (currentMembre.dashboard || ev.createdBy === currentMembre.id);
+
+    return `
+    <div class="event-item" id="ev-${ev.id}">
+      <div class="event-date-badge">
+        <div class="day">${day}</div>
+        <div class="month">${month}</div>
+      </div>
+      <div class="event-info">
+        <span class="event-type-badge ${typeClasses[ev.type] || 'type-event'}">${typeLabels[ev.type] || ev.type}</span>
+        <div class="event-name">${ev.nom}</div>
+        <div class="event-meta">${ev.heure}h FR · ${ev.description || ''} · Créé par ${ev.createdBy}</div>
+      </div>
+      <div class="event-actions">
+        ${canDelete ? `<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleForm() {
+  if (!currentMembre?.dashboard) return;
+  const form = document.getElementById('form-event');
+  form.classList.toggle('visible');
+  if (form.classList.contains('visible')) {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('f-date').value = today;
+  }
+}
+
+async function saveEvent() {
+  if (!currentMembre?.dashboard) return;
+
+  const nom = document.getElementById('f-nom').value.trim();
+  const type = document.getElementById('f-type').value;
+  const date = document.getElementById('f-date').value;
+  const heure = document.getElementById('f-heure').value;
+  const desc = document.getElementById('f-desc').value.trim();
+
+  if (!nom || !date) { showToast('❌ Remplis au moins le nom et la date !'); return; }
+
+  const newEvent = {
+    id: 'ev_' + Date.now(),
+    nom, type, date, heure,
+    description: desc,
+    createdBy: currentMembre.pseudo,
+    createdAt: new Date().toISOString()
+  };
+
+  allEvents.push(newEvent);
+  await pushEventsToGitHub();
+
+  document.getElementById('form-event').classList.remove('visible');
+  document.getElementById('f-nom').value = '';
+  document.getElementById('f-desc').value = '';
+  renderEvents();
+  showToast('✦ Opération publiée !');
+}
+
+async function deleteEvent(id) {
+  if (!confirm('Supprimer cette opération ?')) return;
+  allEvents = allEvents.filter(e => e.id !== id);
+  await pushEventsToGitHub();
+  renderEvents();
+  showToast('Opération supprimée');
+}
+
+async function pushEventsToGitHub() {
+  // Récupérer le SHA actuel du fichier
+  try {
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
+
+    // Récupérer SHA
+    const getRes = await fetch(apiUrl, {
+      headers: { 'Authorization': `token ${getToken()}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const getJson = await getRes.json();
+    const sha = getJson.sha;
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify({ events: allEvents }, null, 2))));
+
+    await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${getToken()}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github.v3+json'
+      },
+      body: JSON.stringify({
+        message: `Update events by ${currentMembre.pseudo}`,
+        content: content,
+        sha: sha
+      })
+    });
+  } catch(e) {
+    showToast('⚠️ Erreur de sauvegarde');
+    console.error(e);
+  }
+}
+
+function getToken() {
+  // Token stocké localement par l'admin — voir README
+  return localStorage.getItem('eclypse_admin_token') || '';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+// Vérifier session existante
+const saved = sessionStorage.getItem('eclypse_membre');
+if (saved) {
+  currentMembre = JSON.parse(saved);
+  showDashboard(currentMembre);
+}
+</script>
+</body>
+</html>
