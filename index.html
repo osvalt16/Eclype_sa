@@ -512,8 +512,9 @@
     from { opacity:0; transform:translateY(30px); }
     to { opacity:1; transform:translateY(0); }
   }
-  .reveal { opacity:0; transform:translateY(40px); transition:opacity 0.8s ease, transform 0.8s ease; }
-  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal { opacity:1; transform:translateY(0); }
+  .reveal.anim { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.anim.visible { opacity:1; transform:translateY(0); }
 
   /* ── RESPONSIVE ── */
   @media (max-width:900px) {
@@ -1019,13 +1020,35 @@ window.addEventListener('scroll', () => {
 });
 
 /* ── REVEAL ── */
-const revealEls = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
-  });
-}, { threshold: 0.1 });
-revealEls.forEach(el => observer.observe(el));
+function initReveal() {
+  const revealEls = document.querySelectorAll('.reveal');
+  if (!revealEls.length) return;
+
+  // Forcer visible les éléments déjà dans le viewport au chargement
+  const showVisible = () => {
+    revealEls.forEach((el, i) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 100) {
+        setTimeout(() => el.classList.add('visible'), i * 60);
+      }
+    });
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+  showVisible(); // Afficher immédiatement ce qui est déjà visible
+}
+
+document.addEventListener('DOMContentLoaded', initReveal);
+window.addEventListener('load', initReveal);
 
 /* ── FORM CANDIDATURE ── */
 const REPO_OWNER = 'osvalt16';
