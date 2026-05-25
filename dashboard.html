@@ -980,17 +980,30 @@ let allEvents = [];
 let phantomWallet = null;
 
 /* ── PHANTOM ── */
+function getPhantomProvider() {
+  // Nouvelle API Phantom (window.phantom.solana)
+  if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
+  // Ancienne API (window.solana)
+  if (window.solana?.isPhantom) return window.solana;
+  return null;
+}
+
 async function connectPhantom() {
   const btn = document.getElementById('btn-phantom');
-  if (!window.solana || !window.solana.isPhantom) {
-    showToast('⚠️ Phantom non détecté — installe l\'extension !');
-    window.open('https://phantom.app/', '_blank');
+  const warning = document.getElementById('phantom-warning');
+  const provider = getPhantomProvider();
+
+  if (!provider) {
+    warning.style.display = 'block';
     return;
   }
+
+  warning.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = '⏳ Connexion...';
+
   try {
-    btn.disabled = true;
-    btn.textContent = 'Connexion...';
-    const resp = await window.solana.connect();
+    const resp = await provider.connect();
     phantomWallet = resp.publicKey.toString();
     const short = phantomWallet.slice(0,4) + '...' + phantomWallet.slice(-4);
     document.getElementById('wallet-addr').textContent = '🔵 ' + short;
@@ -999,10 +1012,30 @@ async function connectPhantom() {
     showToast('✅ Wallet connecté !');
   } catch(e) {
     btn.disabled = false;
-    btn.innerHTML = `<svg class="phantom-icon" viewBox="0 0 128 128" fill="none"><rect width="128" height="128" rx="24" fill="#AB9FF2"/><path d="M93.46 48.8H83.3c-.8 0-1.56.32-2.12.88L70.1 60.76 60.02 49.68a3.02 3.02 0 0 0-2.12-.88H47.74c-1.68 0-2.52 2.04-1.32 3.24l17.52 17.52-17.52 17.52c-1.2 1.2-.36 3.24 1.32 3.24H57.9c.8 0 1.56-.32 2.12-.88l10.08-11.08 11.08 11.08c.56.56 1.32.88 2.12.88H93.46c1.68 0 2.52-2.04 1.32-3.24L77.26 70.36l17.52-17.52c1.2-1.2.36-3.24-1.32-3.24z" fill="#fff"/></svg> Connecter Phantom`;
-    showToast('❌ Connexion annulée');
+    btn.textContent = '👻 Connecter Phantom';
+    if (e.code === 4001) {
+      showToast('❌ Connexion refusée — accepte dans Phantom');
+    } else {
+      showToast('❌ Erreur Phantom : ' + (e.message || 'inconnue'));
+    }
   }
 }
+
+// Auto-reconnexion au chargement si déjà approuvé
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(async () => {
+    const provider = getPhantomProvider();
+    if (!provider) return;
+    try {
+      const resp = await provider.connect({ onlyIfTrusted: true });
+      phantomWallet = resp.publicKey.toString();
+      const short = phantomWallet.slice(0,4) + '...' + phantomWallet.slice(-4);
+      document.getElementById('wallet-addr').textContent = '🔵 ' + short;
+      document.getElementById('wallet-connected').style.display = 'flex';
+      document.getElementById('btn-phantom').style.display = 'none';
+    } catch(e) { /* pas encore approuvé */ }
+  }, 600);
+});
 
 /* ── LOGIN MEMBRE ── */
 async function login() {
