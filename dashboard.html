@@ -473,10 +473,12 @@
   }
 
   .admin-tabs {
-    display: flex;
+    display: flex !important;
     gap: 0;
     margin-bottom: 2rem;
     border-bottom: 1px solid var(--border-violet);
+    background: rgba(107,53,200,0.1);
+    padding: 0.5rem 0;
   }
 
   .admin-tab {
@@ -508,6 +510,7 @@
 
   .admin-panel { display: none; }
   .admin-panel.active { display: block; }
+  #admin-tabs-section { display: block !important; visibility: visible !important; opacity: 1 !important; }
 
   /* Générateur de clés */
   .keygen-box {
