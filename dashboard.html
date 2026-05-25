@@ -1172,8 +1172,7 @@ async function saveNewMember() {
     const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
     const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
     const getJson = await getRes.json();
-    const data = JSON.parse(atob(getJson.content.replace(/
-/g,'')));
+    const data = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
 
     data.membres.push(lastGeneratedMember);
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
@@ -1241,8 +1240,7 @@ async function updateMember(id, changes) {
     const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
     const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
     const getJson = await getRes.json();
-    const data = JSON.parse(atob(getJson.content.replace(/
-/g,'')));
+    const data = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
     data.membres = data.membres.map(m => m.id === id ? { ...m, ...changes } : m);
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     await fetch(apiUrl, {
@@ -1311,8 +1309,7 @@ async function acceptCandidature(id, pseudo, role) {
     const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
     const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
     const getJson = await getRes.json();
-    const data = JSON.parse(atob(getJson.content.replace(/
-/g,'')));
+    const data = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
     data.membres.push(newMember);
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     await fetch(apiUrl, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ message: `Accept ${pseudo}`, content, sha: getJson.sha }) });
@@ -1338,8 +1335,7 @@ async function updateCandidature(id, statut, token) {
   const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
   const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
   const getJson = await getRes.json();
-  const data = JSON.parse(atob(getJson.content.replace(/
-/g,'')));
+  const data = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
   data.candidatures = data.candidatures.map(c => c.id === id ? { ...c, statut } : c);
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
   await fetch(apiUrl, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ message: `Update candidature ${id}`, content, sha: getJson.sha }) });
