@@ -436,6 +436,286 @@
   .toast { position: fixed; bottom: 2rem; right: 2rem; background: rgba(26,15,46,0.95); border: 1px solid var(--or); padding: 1rem 1.5rem; font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--or); z-index: 999; display: none; animation: fadeInUp 0.3s ease; }
   @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
+
+  /* ── ADMIN PANEL ── */
+  .admin-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    border: 1px solid rgba(232,90,90,0.4);
+    padding: 0.15rem 0.6rem;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+
+  .admin-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-violet);
+  }
+
+  .admin-tab {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+    background: none;
+    border: none;
+    padding: 0.8rem 1.4rem;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s;
+  }
+
+  .admin-tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 0; height: 2px;
+    background: var(--rouge);
+    transition: width 0.3s;
+  }
+
+  .admin-tab:hover { color: var(--texte); }
+  .admin-tab.active { color: var(--rouge); }
+  .admin-tab.active::after { width: 100%; }
+
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; }
+
+  /* Générateur de clés */
+  .keygen-box {
+    border: 1px solid var(--border-violet);
+    padding: 2rem;
+    background: rgba(10,8,20,0.7);
+    margin-bottom: 2rem;
+  }
+
+  .keygen-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: end;
+  }
+
+  .keygen-form .form-group { margin: 0; }
+
+  .btn-generate {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--noir);
+    background: var(--or);
+    border: none;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    height: fit-content;
+  }
+  .btn-generate:hover { background: var(--or-clair); }
+
+  .generated-key {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(26,15,46,0.8);
+    border: 1px solid var(--border-or);
+    padding: 1rem 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .key-display {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--or-clair);
+    flex: 1;
+  }
+
+  .btn-copy {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--or);
+    background: none;
+    border: 1px solid var(--border-or);
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-copy:hover { background: rgba(201,162,39,0.1); }
+
+  /* Liste membres admin */
+  .membres-admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .membre-admin-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    gap: 1rem;
+    align-items: center;
+    border: 1px solid var(--border-violet);
+    padding: 1rem 1.5rem;
+    background: rgba(7,6,13,0.7);
+    transition: border-color 0.3s;
+  }
+
+  .membre-admin-item:hover { border-color: var(--border-or); }
+
+  .membre-admin-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border-or);
+    background: rgba(26,15,46,0.9);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem; color: var(--or);
+  }
+
+  .membre-admin-info {}
+  .membre-admin-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.82rem;
+    color: #fff;
+    margin-bottom: 0.2rem;
+  }
+  .membre-admin-meta {
+    font-size: 0.75rem;
+    color: var(--texte-pale);
+  }
+  .membre-admin-code {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--cyan);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgba(0,212,255,0.2);
+    background: rgba(0,212,255,0.05);
+  }
+
+  .toggle-dashboard {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+  }
+  .toggle-dashboard.on  { color: var(--vert); background: rgba(94,207,160,0.1); border: 1px solid rgba(94,207,160,0.3); }
+  .toggle-dashboard.off { color: var(--texte-pale); background: transparent; border: 1px solid var(--border-violet); }
+
+  .btn-revoke {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    background: none;
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-revoke:hover { background: rgba(232,90,90,0.1); }
+
+  /* Candidatures */
+  .candidature-item {
+    border: 1px solid var(--border-violet);
+    padding: 1.5rem;
+    background: rgba(7,6,13,0.7);
+    margin-bottom: 1rem;
+    transition: border-color 0.3s;
+  }
+  .candidature-item:hover { border-color: var(--border-or); }
+  .cand-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+  }
+  .cand-pseudo {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    color: #fff;
+  }
+  .cand-date {
+    font-size: 0.75rem;
+    color: var(--texte-pale);
+  }
+  .cand-infos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--texte-pale);
+  }
+  .cand-infos span { color: var(--texte); }
+  .cand-desc {
+    font-size: 0.85rem;
+    color: var(--texte-pale);
+    font-style: italic;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    border-left: 2px solid var(--border-violet);
+  }
+  .cand-actions { display: flex; gap: 0.8rem; }
+  .btn-accept {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--vert);
+    background: rgba(94,207,160,0.1);
+    border: 1px solid rgba(94,207,160,0.3);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-accept:hover { background: rgba(94,207,160,0.2); }
+  .btn-reject {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    background: none;
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-reject:hover { background: rgba(232,90,90,0.1); }
+
+  .statut-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+  }
+  .statut-attente { color: var(--or); border: 1px solid var(--border-or); }
+  .statut-accepte { color: var(--vert); border: 1px solid rgba(94,207,160,0.3); }
+  .statut-refuse  { color: var(--rouge); border: 1px solid rgba(232,90,90,0.3); }
+
+  @media (max-width: 600px) {
+    .keygen-form { grid-template-columns: 1fr; }
+    .membre-admin-item { grid-template-columns: auto 1fr; gap: 0.5rem; }
+  }
   @media (max-width: 600px) {
     .form-grid { grid-template-columns: 1fr; }
     .profil-card { flex-direction: column; text-align: center; }
@@ -522,17 +802,30 @@
   </div>
 
   <div class="dash-content">
+
+    <!-- PROFIL -->
     <div class="profil-card">
       <div class="profil-avatar" id="profil-avatar">?</div>
       <div class="profil-info">
         <div class="profil-rang" id="profil-rang">—</div>
-        <div class="profil-pseudo" id="profil-pseudo">—</div>
+        <div class="profil-pseudo" id="profil-pseudo">— <span class="admin-badge" id="admin-badge" style="display:none">Admin</span></div>
         <div class="profil-role" id="profil-role">—</div>
         <div class="profil-wallet" id="profil-wallet">—</div>
       </div>
     </div>
 
-    <div id="planning-section">
+    <!-- ONGLETS ADMIN -->
+    <div id="admin-tabs-section" style="display:none">
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchTab('planning', this)">📅 Planning</button>
+        <button class="admin-tab" onclick="switchTab('membres', this)">👥 Membres</button>
+        <button class="admin-tab" onclick="switchTab('candidatures', this)">📋 Candidatures</button>
+        <button class="admin-tab" onclick="switchTab('keygen', this)">🔑 Clés d'accès</button>
+      </div>
+    </div>
+
+    <!-- PANEL PLANNING -->
+    <div class="admin-panel active" id="panel-planning">
       <div class="section-header">
         <h2>📅 Opérations & Planning</h2>
         <button class="btn-add" id="btn-add" onclick="toggleForm()">+ Nouvelle Op</button>
@@ -581,6 +874,72 @@
         <p>Tu n'as pas les droits pour créer des événements. Contacte le Fleet Commander.</p>
       </div>
     </div>
+
+    <!-- PANEL MEMBRES -->
+    <div class="admin-panel" id="panel-membres">
+      <div class="section-header">
+        <h2>👥 Gestion des Membres</h2>
+      </div>
+      <div class="membres-admin-list" id="membres-admin-list">
+        <div class="empty-state">Chargement...</div>
+      </div>
+    </div>
+
+    <!-- PANEL CANDIDATURES -->
+    <div class="admin-panel" id="panel-candidatures">
+      <div class="section-header">
+        <h2>📋 Candidatures</h2>
+      </div>
+      <div id="candidatures-list">
+        <div class="empty-state">Chargement...</div>
+      </div>
+    </div>
+
+    <!-- PANEL GÉNÉRATEUR DE CLÉS -->
+    <div class="admin-panel" id="panel-keygen">
+      <div class="section-header">
+        <h2>🔑 Générateur de Clés d'Accès</h2>
+      </div>
+      <div class="keygen-box">
+        <div class="keygen-form">
+          <div class="form-group">
+            <label>Pseudo du membre</label>
+            <input type="text" id="kg-pseudo" placeholder="Ex: Viktor">
+          </div>
+          <div class="form-group">
+            <label>Rang</label>
+            <select id="kg-rang">
+              <option>Fleet Commander</option>
+              <option>Officier</option>
+              <option>Vétéran</option>
+              <option>Capitaine</option>
+              <option>Membre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Accès Planning</label>
+            <select id="kg-dashboard">
+              <option value="true">✅ Oui</option>
+              <option value="false">❌ Non</option>
+            </select>
+          </div>
+          <button class="btn-generate" onclick="generateKey()">⚡ Générer</button>
+        </div>
+        <div class="generated-key" id="generated-key">
+          <div>
+            <div style="font-family:Cinzel,serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--texte-pale);margin-bottom:0.3rem;">CLÉ GÉNÉRÉE</div>
+            <div class="key-display" id="key-display">—</div>
+          </div>
+          <button class="btn-copy" onclick="copyKey()">📋 Copier</button>
+          <button class="btn-save" onclick="saveNewMember()" style="font-size:0.62rem;padding:0.5rem 1rem;">✦ Ajouter au roster</button>
+        </div>
+      </div>
+      <div style="font-size:0.85rem;color:var(--texte-pale);font-style:italic;padding:1rem;border:1px dashed var(--border-violet);">
+        💡 Génère une clé unique pour chaque nouveau membre. Donne-lui cette clé — c'est son seul accès au dashboard.
+        Pour révoquer l'accès, va dans l'onglet <strong style="color:var(--or)">Membres</strong> et clique sur Révoquer.
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -672,7 +1031,7 @@ function showDashboard(membre) {
   document.getElementById('dashboard').style.display   = 'block';
 
   const isAdmin = membre.admin === true;
-  document.getElementById('topbar-title').textContent = isAdmin ? 'Dashboard Admin · SAGE C4' : 'Dashboard · SAGE C4';
+  document.getElementById('topbar-title').textContent   = isAdmin ? 'Dashboard Admin · SAGE C4' : 'Dashboard · SAGE C4';
   document.getElementById('display-pseudo').textContent = membre.pseudo;
   document.getElementById('profil-avatar').textContent  = membre.pseudo[0].toUpperCase();
   document.getElementById('profil-rang').textContent    = (isAdmin ? '⭐ ' : '★ ') + membre.rang;
@@ -680,11 +1039,248 @@ function showDashboard(membre) {
   document.getElementById('profil-role').textContent    = membre.role + ' · Faction ' + membre.faction;
   document.getElementById('profil-wallet').textContent  = '🔵 Wallet: ' + (membre.walletFull ? membre.walletFull.slice(0,4)+'...'+membre.walletFull.slice(-4) : membre.wallet);
 
-  if (!membre.dashboard) {
-    document.getElementById('btn-add').style.display  = 'none';
+  if (isAdmin) {
+    document.getElementById('admin-badge').style.display = 'inline-block';
+    document.getElementById('admin-tabs-section').style.display = 'block';
+  }
+
+  if (!membre.dashboard && !isAdmin) {
+    document.getElementById('btn-add').style.display   = 'none';
     document.getElementById('no-access').style.display = 'block';
   }
+
   loadEvents();
+  if (isAdmin) {
+    loadMembresAdmin();
+    loadCandidatures();
+  }
+}
+
+/* ── SWITCH TABS ── */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+/* ── GÉNÉRATEUR DE CLÉS ── */
+let lastGeneratedKey = null;
+let lastGeneratedMember = null;
+
+function generateKey() {
+  const pseudo = document.getElementById('kg-pseudo').value.trim();
+  if (!pseudo) { showToast('❌ Entre un pseudo !'); return; }
+
+  const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZ23456789';
+  const rand = n => Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+  const key = `ECL-${rand(4)}-${rand(4)}`;
+
+  lastGeneratedKey = key;
+  lastGeneratedMember = {
+    id: pseudo.toLowerCase().replace(/[^a-z0-9]/g,''),
+    pseudo: pseudo,
+    rang: document.getElementById('kg-rang').value,
+    role: 'Membre',
+    faction: 'MUD',
+    wallet: '????...????',
+    xp: '0',
+    code: key,
+    dashboard: document.getElementById('kg-dashboard').value === 'true',
+    admin: false,
+    actif: true
+  };
+
+  document.getElementById('key-display').textContent = key;
+  document.getElementById('generated-key').style.display = 'flex';
+  showToast('✦ Clé générée !');
+}
+
+function copyKey() {
+  const key = document.getElementById('key-display').textContent;
+  navigator.clipboard.writeText(key).then(() => showToast('📋 Clé copiée !'));
+}
+
+async function saveNewMember() {
+  if (!lastGeneratedMember) return;
+  const token = localStorage.getItem('eclypse_admin_token') || '';
+  if (!token) { showToast('⚠️ Token manquant !'); return; }
+
+  try {
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
+    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
+    const getJson = await getRes.json();
+    const data = JSON.parse(atob(getJson.content.replace(/
+/g,'')));
+
+    data.membres.push(lastGeneratedMember);
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
+    await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+      body: JSON.stringify({ message: `Add member ${lastGeneratedMember.pseudo}`, content, sha: getJson.sha })
+    });
+
+    showToast('✅ Membre ajouté au roster !');
+    document.getElementById('generated-key').style.display = 'none';
+    document.getElementById('kg-pseudo').value = '';
+    lastGeneratedKey = null;
+    lastGeneratedMember = null;
+    setTimeout(() => loadMembresAdmin(), 2000);
+  } catch(e) {
+    showToast('⚠️ Erreur : ' + e.message);
+  }
+}
+
+/* ── GESTION MEMBRES ADMIN ── */
+async function loadMembresAdmin() {
+  const list = document.getElementById('membres-admin-list');
+  const token = localStorage.getItem('eclypse_admin_token') || '';
+  try {
+    const res = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/membres.json?t=` + Date.now());
+    const data = await res.json();
+    if (!data.membres.length) { list.innerHTML = '<div class="empty-state">Aucun membre</div>'; return; }
+    list.innerHTML = data.membres.map(m => `
+      <div class="membre-admin-item">
+        <div class="membre-admin-avatar">${m.pseudo[0].toUpperCase()}</div>
+        <div class="membre-admin-info">
+          <div class="membre-admin-name">${m.pseudo} ${m.admin ? '<span style="color:var(--rouge);font-size:0.6rem">⭐ Admin</span>' : ''}</div>
+          <div class="membre-admin-meta">${m.rang} · ${m.role} · ${m.faction}</div>
+        </div>
+        <div class="membre-admin-code">${m.code}</div>
+        <button class="toggle-dashboard ${m.dashboard ? 'on' : 'off'}" onclick="toggleDashboard('${m.id}', ${!m.dashboard})">
+          ${m.dashboard ? '✅ Planning' : '❌ Planning'}
+        </button>
+        <button class="btn-revoke" onclick="revokeMember('${m.id}')" ${m.admin ? 'disabled style="opacity:0.3"' : ''}>Révoquer</button>
+      </div>`).join('');
+  } catch(e) {
+    list.innerHTML = '<div class="empty-state">Erreur de chargement</div>';
+  }
+}
+
+async function toggleDashboard(id, val) {
+  await updateMember(id, { dashboard: val });
+  showToast(val ? '✅ Accès planning activé' : '❌ Accès planning retiré');
+  setTimeout(() => loadMembresAdmin(), 2000);
+}
+
+async function revokeMember(id) {
+  if (!confirm('Révoquer l'accès de ce membre ?')) return;
+  await updateMember(id, { actif: false });
+  showToast('🔒 Accès révoqué');
+  setTimeout(() => loadMembresAdmin(), 2000);
+}
+
+async function updateMember(id, changes) {
+  const token = localStorage.getItem('eclypse_admin_token') || '';
+  if (!token) { showToast('⚠️ Token manquant !'); return; }
+  try {
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
+    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
+    const getJson = await getRes.json();
+    const data = JSON.parse(atob(getJson.content.replace(/
+/g,'')));
+    data.membres = data.membres.map(m => m.id === id ? { ...m, ...changes } : m);
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+      body: JSON.stringify({ message: `Update member ${id}`, content, sha: getJson.sha })
+    });
+  } catch(e) { showToast('⚠️ Erreur : ' + e.message); }
+}
+
+/* ── CANDIDATURES ── */
+async function loadCandidatures() {
+  const list = document.getElementById('candidatures-list');
+  try {
+    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/candidatures.json?t=` + Date.now());
+    const data = await res.json();
+    const cands = (data.candidatures || []).filter(c => c.statut === 'en_attente');
+    if (!cands.length) {
+      list.innerHTML = '<div class="empty-state">Aucune candidature en attente ✨</div>';
+      return;
+    }
+    list.innerHTML = cands.map(c => `
+      <div class="candidature-item" id="cand-${c.id}">
+        <div class="cand-header">
+          <div class="cand-pseudo">${c.pseudo}</div>
+          <div style="display:flex;gap:0.8rem;align-items:center;">
+            <span class="statut-badge statut-attente">En attente</span>
+            <span class="cand-date">${new Date(c.date).toLocaleDateString('fr-FR')}</span>
+          </div>
+        </div>
+        <div class="cand-infos">
+          <div>Discord : <span>${c.discord}</span></div>
+          <div>Rôle : <span>${c.role}</span></div>
+          <div>Faction : <span>${c.faction}</span></div>
+          <div>Vaisseaux : <span>${c.vaisseaux||'—'}</span></div>
+        </div>
+        ${c.motivation ? `<div class="cand-desc">"${c.motivation}"</div>` : ''}
+        <div class="cand-actions">
+          <button class="btn-accept" onclick="acceptCandidature('${c.id}', '${c.pseudo}', '${c.role}')">✅ Accepter & Générer clé</button>
+          <button class="btn-reject" onclick="rejectCandidature('${c.id}')">❌ Refuser</button>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    list.innerHTML = '<div class="empty-state">Aucune candidature</div>';
+  }
+}
+
+async function acceptCandidature(id, pseudo, role) {
+  // Générer une clé automatiquement
+  const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZ23456789';
+  const rand = n => Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+  const key = `ECL-${rand(4)}-${rand(4)}`;
+
+  const newMember = {
+    id: pseudo.toLowerCase().replace(/[^a-z0-9]/g,'') + '_' + Date.now(),
+    pseudo, rang: 'Membre', role, faction: 'MUD',
+    wallet: '????...????', xp: '0',
+    code: key, dashboard: false, admin: false, actif: true
+  };
+
+  const token = localStorage.getItem('eclypse_admin_token') || '';
+  if (!token) { showToast('⚠️ Token manquant !'); return; }
+
+  try {
+    // Ajouter dans membres.json
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
+    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
+    const getJson = await getRes.json();
+    const data = JSON.parse(atob(getJson.content.replace(/
+/g,'')));
+    data.membres.push(newMember);
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    await fetch(apiUrl, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ message: `Accept ${pseudo}`, content, sha: getJson.sha }) });
+
+    // Mettre à jour statut candidature
+    await updateCandidature(id, 'accepte', token);
+
+    showToast(`✅ ${pseudo} accepté ! Clé : ${key}`);
+    navigator.clipboard.writeText(key);
+    setTimeout(() => loadCandidatures(), 2000);
+  } catch(e) { showToast('⚠️ Erreur : ' + e.message); }
+}
+
+async function rejectCandidature(id) {
+  if (!confirm('Refuser cette candidature ?')) return;
+  const token = localStorage.getItem('eclypse_admin_token') || '';
+  await updateCandidature(id, 'refuse', token);
+  showToast('❌ Candidature refusée');
+  setTimeout(() => loadCandidatures(), 2000);
+}
+
+async function updateCandidature(id, statut, token) {
+  const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
+  const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
+  const getJson = await getRes.json();
+  const data = JSON.parse(atob(getJson.content.replace(/
+/g,'')));
+  data.candidatures = data.candidatures.map(c => c.id === id ? { ...c, statut } : c);
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  await fetch(apiUrl, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ message: `Update candidature ${id}`, content, sha: getJson.sha }) });
 }
 
 function logout() {
