@@ -458,13 +458,13 @@
     <div class="step-label">Étape 1 — Wallet Phantom</div>
 
     <button class="btn-phantom" id="btn-phantom" onclick="connectPhantom()">
-      <svg class="phantom-icon" viewBox="0 0 128 128" fill="none">
-        <rect width="128" height="128" rx="24" fill="#AB9FF2"/>
-        <path d="M110.584 64.924c0 28.4-23.04 51.44-51.44 51.44S7.704 93.324 7.704 64.924 30.744 13.484 59.144 13.484s51.44 23.04 51.44 51.44z" fill="#fff" fill-opacity=".15"/>
-        <path d="M93.46 48.8H83.3c-.8 0-1.56.32-2.12.88L70.1 60.76 60.02 49.68a3.02 3.02 0 0 0-2.12-.88H47.74c-1.68 0-2.52 2.04-1.32 3.24l17.52 17.52-17.52 17.52c-1.2 1.2-.36 3.24 1.32 3.24H57.9c.8 0 1.56-.32 2.12-.88l10.08-11.08 11.08 11.08c.56.56 1.32.88 2.12.88H93.46c1.68 0 2.52-2.04 1.32-3.24L77.26 70.36l17.52-17.52c1.2-1.2.36-3.24-1.32-3.24z" fill="#fff"/>
-      </svg>
-      Connecter Phantom
+      👻 Connecter Phantom
     </button>
+    <div id="phantom-warning" style="display:none;font-size:0.75rem;color:var(--or);margin-bottom:0.8rem;padding:0.6rem;border:1px solid var(--border-or);background:rgba(201,162,39,0.05);">
+      ⚠️ Extension Phantom non détectée —
+      <a href="https://phantom.app/" target="_blank" style="color:var(--or-clair);">Installe-la ici</a>
+      puis recharge la page
+    </div>
 
     <div class="wallet-connected" id="wallet-connected">
       ✅ <span id="wallet-addr">—</span>
@@ -696,6 +696,8 @@ function logout() {
   document.getElementById('wallet-connected').style.display = 'none';
   document.getElementById('btn-phantom').style.display = 'flex';
   document.getElementById('btn-phantom').disabled = false;
+  document.getElementById('btn-phantom').textContent = '👻 Connecter Phantom';
+  document.getElementById('phantom-warning').style.display = 'none';
   document.getElementById('login-error').style.display = 'none';
 }
 
