@@ -801,6 +801,20 @@
   </div>
 </div>
 
+<!-- ── MODAL CONFIG TOKEN ── -->
+<div class="modal-overlay" id="modal-config">
+  <div class="modal-box" style="border-color:var(--border-or);">
+    <h3 style="color:var(--or);">⚙️ Configuration</h3>
+    <p>Entre ton token GitHub pour activer la synchronisation</p>
+    <input type="password" id="token-input" placeholder="ghp_..."
+           style="border-color:var(--border-or);"
+           onkeydown="if(event.key==='Enter') saveToken()">
+    <div id="token-status" style="font-size:0.75rem;margin-bottom:0.8rem;display:none;padding:0.5rem;border-radius:2px;"></div>
+    <button class="btn-admin-login" onclick="saveToken()" style="background:rgba(201,162,39,0.2);border-color:var(--border-or);color:var(--or);">💾 Sauvegarder</button>
+    <button class="btn-modal-close" onclick="closeConfig()">Fermer</button>
+  </div>
+</div>
+
 <!-- ── MODAL ADMIN ── -->
 <div class="modal-overlay" id="modal-admin">
   <div class="modal-box">
@@ -823,7 +837,7 @@
     </div>
     <div class="topbar-user">
       <div class="user-badge">Connecté : <span id="display-pseudo">—</span></div>
-      <a href="index.html" class="btn-home">← Site</a>
+      <button class="btn-home" id="btn-config" onclick="openConfig()" style="display:none">⚙️ Config</button><a href="index.html" class="btn-home">← Site</a>
       <button class="btn-logout" onclick="logout()">Déconnexion</button>
     </div>
   </div>
@@ -1059,8 +1073,10 @@ async function login() {
     const remember = document.getElementById('remember-me')?.checked;
     if (remember) {
       localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
+      sessionStorage.removeItem('eclypse_membre');
     } else {
       sessionStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
+      localStorage.removeItem('eclypse_membre');
     }
     showDashboard(currentMembre);
   } catch(e) {
@@ -1108,6 +1124,7 @@ function showDashboard(membre) {
   if (isAdmin) {
     document.getElementById('admin-badge').style.display = 'inline-block';
     document.getElementById('admin-tabs-section').style.display = 'block';
+    document.getElementById('btn-config').style.display = 'inline-flex';
   }
 
   if (!membre.dashboard && !isAdmin) {
@@ -1439,13 +1456,64 @@ async function pushEventsToGitHub() {
   } catch(e) { showToast('⚠️ Erreur de sauvegarde'); }
 }
 
+/* ── CONFIG TOKEN ── */
+function openConfig() {
+  const existing = localStorage.getItem('eclypse_admin_token') || '';
+  document.getElementById('token-input').value = existing ? '••••••••••••' : '';
+  document.getElementById('token-status').style.display = existing ? 'block' : 'none';
+  if (existing) {
+    document.getElementById('token-status').textContent = '✅ Token configuré';
+    document.getElementById('token-status').style.background = 'rgba(94,207,160,0.1)';
+    document.getElementById('token-status').style.color = 'var(--vert)';
+  }
+  document.getElementById('modal-config').classList.add('visible');
+}
+
+function closeConfig() {
+  document.getElementById('modal-config').classList.remove('visible');
+  document.getElementById('token-input').value = '';
+  document.getElementById('token-status').style.display = 'none';
+}
+
+function saveToken() {
+  const token = document.getElementById('token-input').value.trim();
+  if (!token || token === '••••••••••••') {
+    showStatus('token-status', '❌ Entre un token valide', 'rgba(232,90,90,0.1)', 'var(--rouge)');
+    return;
+  }
+  if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+    showStatus('token-status', '⚠️ Le token doit commencer par ghp_', 'rgba(201,162,39,0.1)', 'var(--or)');
+    return;
+  }
+  localStorage.setItem('eclypse_admin_token', token);
+  showStatus('token-status', '✅ Token sauvegardé !', 'rgba(94,207,160,0.1)', 'var(--vert)');
+  document.getElementById('token-input').value = '••••••••••••';
+  setTimeout(() => closeConfig(), 1500);
+}
+
+function showStatus(id, msg, bg, color) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.background = bg;
+  el.style.color = color;
+  el.style.display = 'block';
+}
+
 /* ── UTILS ── */
 function showError(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; }
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(()=>t.style.display='none', 3000); }
 
 // Session existante
-const saved = sessionStorage.getItem('eclypse_membre') || localStorage.getItem('eclypse_membre');
-if (saved) { currentMembre = JSON.parse(saved); showDashboard(currentMembre); }
+const saved = localStorage.getItem('eclypse_membre') || sessionStorage.getItem('eclypse_membre');
+if (saved) {
+  try {
+    currentMembre = JSON.parse(saved);
+    showDashboard(currentMembre);
+  } catch(e) {
+    localStorage.removeItem('eclypse_membre');
+    sessionStorage.removeItem('eclypse_membre');
+  }
+}
 </script>
 </body>
 </html>
