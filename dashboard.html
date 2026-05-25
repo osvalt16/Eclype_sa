@@ -835,6 +835,11 @@
         <div class="profil-pseudo" id="profil-pseudo">— <span class="admin-badge" id="admin-badge" style="display:none">Admin</span></div>
         <div class="profil-role" id="profil-role">—</div>
         <div class="profil-wallet" id="profil-wallet">—</div>
+        <div id="admin-quick-actions" style="display:none;margin-top:1rem;display:none;gap:0.8rem;flex-wrap:wrap;">
+          <button class="btn-add" onclick="switchTab('keygen', document.querySelector('[onclick*=keygen]'))" style="color:var(--or);border-color:var(--border-or);">🔑 Générer une clé</button>
+          <button class="btn-add" onclick="switchTab('membres', document.querySelector('[onclick*=membres]'))" style="color:var(--texte-pale);">👥 Membres</button>
+          <button class="btn-add" onclick="switchTab('candidatures', document.querySelector('[onclick*=candidatures]'))" style="color:var(--texte-pale);">📋 Candidatures</button>
+        </div>
       </div>
     </div>
 
@@ -1104,6 +1109,8 @@ function showDashboard(membre) {
   if (isAdmin) {
     document.getElementById('admin-badge').style.display = 'inline-block';
     document.getElementById('admin-tabs-section').style.display = 'block';
+    const qa = document.getElementById('admin-quick-actions');
+    if (qa) { qa.style.display = 'flex'; }
   }
 
   if (!membre.dashboard && !isAdmin) {
@@ -1122,8 +1129,12 @@ function showDashboard(membre) {
 function switchTab(tab, btn) {
   document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('panel-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+  const panel = document.getElementById('panel-' + tab);
+  if (panel) panel.classList.add('active');
+  // Scroll vers les onglets
+  const tabsSection = document.getElementById('admin-tabs-section');
+  if (tabsSection) tabsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* ── GÉNÉRATEUR DE CLÉS ── */
