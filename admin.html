@@ -365,7 +365,7 @@
     <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
     <h1>Accès Administration</h1>
     <p class="login-sub">Zone restreinte — Flotte Éclypse</p>
-    <input type="password" id="admin-code-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')adminLogin()">
+    <input type="password" id="admin-code-input" placeholder="ECL-XXXX-XXXX ou ADM-..." onkeydown="if(event.key==='Enter')adminLogin()">
     <button onclick="adminLogin()">Accéder au panneau admin</button>
     <p class="login-error" id="login-error">❌ Code administrateur invalide</p>
   </div>
@@ -721,19 +721,38 @@ function switchTab(tab) {
 }
 
 /* ══ LOGIN ══ */
-function adminLogin() {
+async function adminLogin() {
   const saisie = document.getElementById('admin-code-input').value.trim().toUpperCase();
   if (!saisie) return;
-  const compte = ADMIN_ACCOUNTS.find(a => a.code.toUpperCase() === saisie);
-  if (!compte) {
-    document.getElementById('login-error').style.display = 'block';
-    logConnexion('???', 'ECHEC — code admin invalide', 'fail');
+
+  // 1. Vérifier d'abord les comptes admin hardcodés (ADM-...)
+  const compteAdmin = ADMIN_ACCOUNTS.find(a => a.code.toUpperCase() === saisie);
+  if (compteAdmin) {
+    currentAdmin = compteAdmin;
+    localStorage.setItem('eclypse_admin', JSON.stringify(compteAdmin));
+    logConnexion(compteAdmin.nom, `Connexion admin (${compteAdmin.level})`, 'admin');
+    afficherPanel(compteAdmin);
     return;
   }
-  currentAdmin = compte;
-  localStorage.setItem('eclypse_admin', JSON.stringify(compte));
-  logConnexion(compte.nom, `Connexion admin (${compte.level})`, 'admin');
-  afficherPanel(compte);
+
+  // 2. Vérifier les membres avec admin:true dans membres.json
+  try {
+    const res  = await fetch(MEMBRES_URL + '?t=' + Date.now());
+    const data = await res.json();
+    const m = data.membres.find(x => x.code.toUpperCase() === saisie && x.actif && x.admin === true);
+    if (m) {
+      currentAdmin = { code: m.code, nom: m.pseudo, level: 'admin' };
+      localStorage.setItem('eclypse_admin', JSON.stringify(currentAdmin));
+      localStorage.setItem('eclypse_membre', JSON.stringify(m));
+      logConnexion(m.pseudo, `Connexion admin via code membre (${m.rang})`, 'admin');
+      afficherPanel(currentAdmin);
+      return;
+    }
+  } catch(e) { console.error(e); }
+
+  // 3. Échec
+  document.getElementById('login-error').style.display = 'block';
+  logConnexion('???', 'ECHEC — code invalide', 'fail');
 }
 
 function afficherPanel(compte) {
