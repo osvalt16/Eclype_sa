@@ -189,6 +189,12 @@
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeInUp 0.3s ease;}
   @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
+  /* PROFIL X */
+  .profil-pseudo-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.3rem;}
+  .profil-x-btn{display:inline-flex;align-items:center;transition:transform 0.2s,opacity 0.2s;opacity:0.8;}
+  .profil-x-btn:hover{transform:scale(1.1);opacity:1;}
+  .profil-x-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;}
+
   /* NAV PROFIL BTN */
   .nav-profil-btn{display:flex;align-items:center;gap:0.6rem;background:none;border:none;cursor:pointer;padding:0.3rem 0.6rem;border-radius:3px;transition:background 0.2s;}
   .nav-profil-btn:hover{background:rgba(201,162,39,0.08);}
@@ -336,6 +342,16 @@
         <div class="hint">Visible sur la page membres publique. Modifiable tous les 90 jours.</div>
       </div>
 
+      <!-- Lien X -->
+      <div class="modal-field">
+        <label>Profil X (Twitter)</label>
+        <div style="display:flex;align-items:center;gap:0.8rem;">
+          <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;">
+          <input type="url" id="profil-x-input" placeholder="https://x.com/tonpseudo" style="flex:1">
+        </div>
+        <div class="hint">Lien vers ton profil X. Visible sur ta carte publique.</div>
+      </div>
+
       <hr class="modal-divider">
 
       <!-- Code actuel -->
@@ -419,6 +435,8 @@ function showDashboard(m) {
   document.getElementById('profil-rang').textContent   = '★ ' + m.rang;
   document.getElementById('profil-pseudo').textContent = m.pseudo;
   document.getElementById('profil-role').textContent   = m.role + ' · Faction ' + m.faction;
+  const xLinkEl = document.getElementById('profil-x-link');
+  if (xLinkEl) { if (m.xLink) { xLinkEl.href=m.xLink; xLinkEl.style.display='inline-flex'; } else { xLinkEl.style.display='none'; } }
   document.getElementById('profil-wallet').textContent = '🔵 Wallet: ' + m.wallet;
 
   // Avatar : photo depuis localStorage ou membres.json
@@ -751,9 +769,13 @@ async function sauvegarderProfil() {
     if (diff < 90) { showModalMsg(`❌ Pseudo modifiable dans ${90-diff} jour(s)`, 'err'); return; }
   }
 
+  const xVal    = document.getElementById('profil-x-input') ? document.getElementById('profil-x-input').value.trim() : '';
+  const xChange = xVal !== (currentMembre.xLink || '');
+
   const updates = {};
   if (codeNew)      updates.code   = codeNew;
   if (pseudoChange) { updates.pseudo = pseudoVal; updates.lastProfileEdit = new Date().toISOString(); }
+  if (xChange)      updates.xLink  = xVal;
 
   if (!Object.keys(updates).length) { showModalMsg('Aucune modification détectée.', 'ok'); return; }
 
@@ -779,6 +801,8 @@ async function sauvegarderProfil() {
   document.getElementById('profil-pseudo').textContent  = currentMembre.pseudo;
   const navAvR = document.getElementById('nav-avatar');
   if (navAvR && currentMembre.photo) navAvR.innerHTML = `<img src="${currentMembre.photo}" alt="${currentMembre.pseudo}">`;
+  const xLR = document.getElementById('profil-x-link');
+  if (xLR) { if (currentMembre.xLink) { xLR.href=currentMembre.xLink; xLR.style.display='inline-flex'; } else { xLR.style.display='none'; } }
 
   showModalMsg('✦ Profil mis à jour !', 'ok');
   showToast('✦ Profil sauvegardé !');
