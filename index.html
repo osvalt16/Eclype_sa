@@ -82,17 +82,6 @@
     border:1px solid var(--border-or); padding:0.5rem 1.3rem;
     transition:all 0.3s;
   }
-  .nav-connexion {
-    font-family:'Cinzel',serif; font-size:0.7rem;
-    letter-spacing:0.2em; text-transform:uppercase;
-    color:var(--texte-pale); text-decoration:none;
-    border:1px solid var(--border-violet); padding:0.5rem 1.3rem;
-    transition:all 0.3s; margin-right:0.5rem;
-  }
-  .nav-connexion:hover {
-    border-color:var(--violet-glow); color:var(--violet-glow);
-    box-shadow:0 0 15px rgba(139,92,246,0.2);
-  }
   .nav-cta:hover {
     background:rgba(201,162,39,0.1); border-color:var(--or);
     box-shadow:0 0 20px rgba(201,162,39,0.2);
@@ -512,15 +501,104 @@
     from { opacity:0; transform:translateY(30px); }
     to { opacity:1; transform:translateY(0); }
   }
-  .reveal { opacity:1; transform:translateY(0); }
-  .reveal.anim { opacity:0; transform:translateY(30px); transition:opacity 0.7s ease, transform 0.7s ease; }
-  .reveal.anim.visible { opacity:1; transform:translateY(0); }
+  .reveal { opacity:0; transform:translateY(40px); transition:opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── PLANNING LOCKED ── */
+  .planning-locked {
+    position: relative;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 4rem 3rem;
+    border: 1px solid var(--border-or);
+    background: rgba(26,15,46,0.35);
+    overflow: hidden;
+  }
+  .lock-glow {
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .lock-icon {
+    width: 56px; height: 56px;
+    border: 1px solid var(--border-or);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--or);
+    background: rgba(201,162,39,0.06);
+  }
+  .lock-icon svg { width: 26px; height: 26px; }
+  .lock-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 0.8rem;
+  }
+  .lock-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+  }
+  .lock-desc {
+    font-size: 1rem;
+    color: var(--texte-pale);
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+  }
+  .lock-tags {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+  .lock-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.7rem;
+  }
+  .lock-tag-red    { color: #e85a5a; border: 1px solid rgba(232,90,90,0.3); }
+  .lock-tag-violet { color: var(--violet-glow); border: 1px solid rgba(139,92,246,0.3); }
+  .lock-tag-or     { color: var(--or); border: 1px solid var(--border-or); }
+  .lock-tag-green  { color: #5ecfa0; border: 1px solid rgba(94,207,160,0.3); }
+  .lock-btn {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--noir-deep);
+    background: var(--or);
+    text-decoration: none;
+    padding: 0.9rem 2.2rem;
+    transition: all 0.3s;
+    margin-bottom: 1.2rem;
+  }
+  .lock-btn:hover { background: var(--or-clair); box-shadow: 0 0 25px rgba(201,162,39,0.35); }
+  .lock-sub {
+    font-size: 0.85rem;
+    color: var(--texte-pale);
+  }
+  .lock-sub a {
+    color: var(--or);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .lock-sub a:hover { color: var(--or-clair); }
 
   /* ── RESPONSIVE ── */
-  @media (max-width:900px) {
-    .cal-layout { grid-template-columns:1fr; }
-    .mini-cal { position:static; }
-  }
   @media (max-width:768px) {
     nav { padding:1rem 1.5rem; }
     .nav-links { display:none; }
@@ -528,10 +606,7 @@
     .conditions-block { grid-template-columns:1fr; }
     .form-row { grid-template-columns:1fr; }
     .form-wrapper { padding:2rem 1.5rem; }
-  }
-  @media (max-width:600px) {
-    .event-card { grid-template-columns:55px 1fr; }
-    .event-heure { display:none; }
+    .planning-locked { padding: 2.5rem 1.5rem; }
   }
 </style>
 </head>
@@ -546,11 +621,11 @@
     <li><a href="#apropos">La Flotte</a></li>
     <li><a href="#membres">Équipage</a></li>
     <li><a href="#recrutement">Recrutement</a></li>
-    <li><a href="#calendrier">Ops</a></li>
+    <li><a href="dashboard.html">Ops</a></li>
     <li><a href="#discord">Discord</a></li>
     <li><a href="dashboard.html">Dashboard</a></li>
   </ul>
-  <a href="dashboard.html" class="nav-connexion">Connexion</a><a href="#candidature" class="nav-cta">Rejoindre la flotte</a>
+  <a href="#candidature" class="nav-cta">Rejoindre la flotte</a>
 </nav>
 
 <!-- HERO -->
@@ -775,48 +850,37 @@
   </div>
 </section>
 
-<!-- CALENDRIER -->
+<!-- PLANNING LOCKED -->
 <section id="calendrier">
   <div class="container">
-    <p class="section-label reveal">Planning</p>
-    <h2 class="section-title reveal">Opérations <span>&amp; Ops</span></h2>
+    <p class="section-label reveal" style="text-align:center">Planning</p>
+    <h2 class="section-title reveal" style="text-align:center">Opérations <span>&amp; Planning</span></h2>
     <div class="ornament reveal">
       <div class="ornament-line"></div>
       <div class="ornament-diamond"></div>
       <div class="ornament-line right"></div>
     </div>
-    <div class="cal-layout reveal">
-      <div>
-        <div class="cal-tabs">
-          <button class="cal-tab active" onclick="filterEvents('tous', this)">Tous</button>
-          <button class="cal-tab" onclick="filterEvents('raid', this)">Fleet Op</button>
-          <button class="cal-tab" onclick="filterEvents('pvp', this)">PvP</button>
-          <button class="cal-tab" onclick="filterEvents('event', this)">Événements</button>
-          <button class="cal-tab" onclick="filterEvents('farm', this)">Mining</button>
-        </div>
-        <div class="events-list" id="events-list">
-          <div class="event-card-loading" style="text-align:center;padding:2rem;color:var(--texte-pale);font-style:italic;border:1px dashed var(--border-violet);">Chargement des opérations...</div>
-        </div>
+    <div class="planning-locked reveal">
+      <div class="lock-glow"></div>
+      <div class="lock-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="11" width="14" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
+          <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+          <line x1="12" y1="17.5" x2="12" y2="19.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
       </div>
-      <div>
-        <div class="mini-cal">
-          <div class="mini-cal-header">
-            <button class="mini-cal-nav" onclick="calNav(-1)">&#8592;</button>
-            <div class="mini-cal-title" id="cal-month-label">Juin 2025</div>
-            <button class="mini-cal-nav" onclick="calNav(1)">&#8594;</button>
-          </div>
-          <div class="mini-cal-grid" id="mini-cal-grid"></div>
-          <div class="cal-legend">
-            <div class="cal-legend-title">Légende</div>
-            <div class="legend-items">
-              <div class="legend-item"><div class="legend-dot" style="background:#e85a5a"></div>Fleet Op</div>
-              <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>PvP / Guild War</div>
-              <div class="legend-item"><div class="legend-dot" style="background:#c9a227"></div>Événement SAGE</div>
-              <div class="legend-item"><div class="legend-dot" style="background:#5ecfa0"></div>Mining Run</div>
-            </div>
-          </div>
-        </div>
+      <div class="lock-eyebrow">Accès membres uniquement</div>
+      <h3 class="lock-title">Planning des Opérations</h3>
+      <p class="lock-desc">Les Fleet Ops, Guild Wars, Mining Runs et événements SAGE C4 sont réservés aux membres de la flotte. Connecte-toi avec ton code d'accès pour consulter le planning complet.</p>
+      <div class="lock-tags">
+        <span class="lock-tag lock-tag-red">Fleet Op</span>
+        <span class="lock-tag lock-tag-violet">PvP / War</span>
+        <span class="lock-tag lock-tag-or">Événements</span>
+        <span class="lock-tag lock-tag-green">Mining Run</span>
       </div>
+      <a href="dashboard.html" class="lock-btn">Accéder au Dashboard →</a>
+      <p class="lock-sub">Pas encore membre ? <a href="#candidature">Postuler ici</a></p>
     </div>
   </div>
 </section>
@@ -835,17 +899,17 @@
       <div class="form-row">
         <div class="form-group">
           <label>Pseudo Star Atlas *</label>
-          <input type="text" id="cand-pseudo" placeholder="VotrePseudo">
+          <input type="text" placeholder="VotrePseudo">
         </div>
         <div class="form-group">
           <label>Discord *</label>
-          <input type="text" id="cand-discord" placeholder="pseudo#0000">
+          <input type="text" placeholder="pseudo#0000">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Rôle souhaité *</label>
-          <select id="cand-role">
+          <select>
             <option value="" disabled selected>Choisir un rôle</option>
             <option>Fleet Commander</option>
             <option>Fighter</option>
@@ -857,7 +921,7 @@
         </div>
         <div class="form-group">
           <label>Faction actuelle *</label>
-          <select id="cand-faction">
+          <select>
             <option value="" disabled selected>Votre faction</option>
             <option>MUD Territory</option>
             <option>ONI Region</option>
@@ -867,14 +931,14 @@
       </div>
       <div class="form-group">
         <label>Vaisseaux &amp; flotte</label>
-        <textarea id="cand-vaisseaux" placeholder="Listez vos vaisseaux principaux, leur classe, et votre expérience SAGE..."></textarea>
+        <textarea placeholder="Listez vos vaisseaux principaux, leur classe, et votre expérience SAGE..."></textarea>
       </div>
       <div class="form-group">
         <label>Pourquoi rejoindre Éclypse ?</label>
-        <textarea id="cand-motivation" placeholder="Qu'est-ce qui vous attire dans notre flotte ? Vos objectifs sur SAGE C4 ?" style="min-height:100px"></textarea>
+        <textarea placeholder="Qu'est-ce qui vous attire dans notre flotte ? Vos objectifs sur SAGE C4 ?" style="min-height:100px"></textarea>
       </div>
       <div style="text-align:center;margin-top:2.5rem">
-        <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">Envoyer ma candidature ✦</button>
+        <button class="btn-submit" onclick="handleSubmit()">Envoyer ma candidature</button>
       </div>
     </div>
   </div>
@@ -1020,210 +1084,26 @@ window.addEventListener('scroll', () => {
 });
 
 /* ── REVEAL ── */
-function initReveal() {
-  const revealEls = document.querySelectorAll('.reveal');
-  if (!revealEls.length) return;
-
-  // Forcer visible les éléments déjà dans le viewport au chargement
-  const showVisible = () => {
-    revealEls.forEach((el, i) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight + 100) {
-        setTimeout(() => el.classList.add('visible'), i * 60);
-      }
-    });
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
-
-  revealEls.forEach(el => observer.observe(el));
-  showVisible(); // Afficher immédiatement ce qui est déjà visible
-}
-
-document.addEventListener('DOMContentLoaded', initReveal);
-window.addEventListener('load', initReveal);
-
-/* ── FORM CANDIDATURE ── */
-const REPO_OWNER = 'osvalt16';
-const REPO_NAME  = 'Eclype_sa';
-const EVENTS_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
-const CANDID_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/candidatures.json`;
-
-async function handleSubmit() {
-  const pseudo     = document.getElementById('cand-pseudo')?.value.trim();
-  const discord    = document.getElementById('cand-discord')?.value.trim();
-  const role       = document.getElementById('cand-role')?.value;
-  const faction    = document.getElementById('cand-faction')?.value;
-  const vaisseaux  = document.getElementById('cand-vaisseaux')?.value.trim();
-  const motivation = document.getElementById('cand-motivation')?.value.trim();
-
-  if (!pseudo || !discord || !role || !faction) {
-    alert('❌ Remplis tous les champs obligatoires !');
-    return;
-  }
-
-  const btn = document.getElementById('btn-submit');
-  btn.textContent = '⏳ Envoi en cours...';
-  btn.disabled = true;
-
-  const newCandidature = {
-    id: 'cand_' + Date.now(),
-    pseudo, discord, role, faction,
-    vaisseaux: vaisseaux || '',
-    motivation: motivation || '',
-    date: new Date().toISOString(),
-    statut: 'en_attente'
-  };
-
-  try {
-    const token = localStorage.getItem('eclypse_admin_token') || '';
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
-
-    let sha = null;
-    let existing = [];
-    try {
-      const getRes = await fetch(apiUrl, token ? { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } } : {});
-      if (getRes.ok) {
-        const getJson = await getRes.json();
-        sha = getJson.sha;
-        existing = JSON.parse(atob(getJson.content.replace(/
-/g,''))).candidatures || [];
-      }
-    } catch(e) {}
-
-    existing.push(newCandidature);
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify({ candidatures: existing }, null, 2))));
-
-    if (token) {
-      await fetch(apiUrl, {
-        method: 'PUT',
-        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
-        body: JSON.stringify({ message: `Candidature de ${pseudo}`, content, ...(sha ? { sha } : {}) })
-      });
-    }
-
-    btn.textContent = '✦ Candidature envoyée !';
-    btn.style.background = '#3ecf8e';
-    btn.style.color = '#030208';
-
-    // Reset form
-    ['cand-pseudo','cand-discord','cand-vaisseaux','cand-motivation'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.value = '';
-    });
-    ['cand-role','cand-faction'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.selectedIndex = 0;
-    });
-
-    setTimeout(() => {
-      btn.textContent = 'Envoyer ma candidature ✦';
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.disabled = false;
-    }, 4000);
-
-  } catch(e) {
-    btn.textContent = '❌ Erreur — Réessaie';
-    btn.style.background = 'rgba(232,90,90,0.3)';
-    btn.style.color = '#fff';
-    setTimeout(() => {
-      btn.textContent = 'Envoyer ma candidature ✦';
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.disabled = false;
-    }, 3000);
-  }
-}
-
-/* ── LOAD EVENTS DEPUIS GITHUB ── */
-async function loadPublicEvents() {
-  const list = document.getElementById('events-list');
-  const typeLabels  = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
-  const typeClasses = { fleetop:'type-raid', pvp:'type-pvp', mining:'type-farm', event:'type-event' };
-  try {
-    const res  = await fetch(EVENTS_URL + '?t=' + Date.now());
-    const data = await res.json();
-    const events = data.events || [];
-    if (!events.length) {
-      list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--texte-pale);font-style:italic;border:1px dashed var(--border-violet);">Aucune opération planifiée pour le moment</div>';
-      return;
-    }
-    const sorted = [...events].sort((a,b) => new Date(a.date)-new Date(b.date));
-    const now = new Date();
-    list.innerHTML = sorted.map(ev => {
-      const d = new Date(ev.date + 'T' + (ev.heure || '20:00'));
-      const passe = d < now;
-      const day   = d.getDate();
-      const month = d.toLocaleDateString('fr-FR', { month: 'short' });
-      const typeClass = typeClasses[ev.type] || 'type-event';
-      const typeLabel = typeLabels[ev.type] || ev.type;
-      return `<div class="event-card${passe?' passe':''}" data-type="${ev.type==='fleetop'?'raid':ev.type==='mining'?'farm':ev.type}">
-        <div class="event-date"><div class="event-day">${day}</div><div class="event-month">${month}</div></div>
-        <div class="event-info">
-          <span class="event-type ${typeClass}">${typeLabel}</span>
-          <div class="event-name">${ev.nom}</div>
-          <div class="event-meta">${ev.description||''} · Lead : ${ev.createdBy}</div>
-        </div>
-        <div class="event-heure">${ev.heure||'21:00'}<small>heure FR</small></div>
-      </div>`;
-    }).join('');
-  } catch(e) {
-    list.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--texte-pale);font-style:italic;">Impossible de charger les opérations</div>';
-  }
-}
-
-loadPublicEvents();
-
-/* ── CALENDRIER ── */
-const eventDates = { 28:['raid'], 30:['pvp'], 1:['event'], 4:['farm'], 7:['raid'], 10:['pvp'] };
-const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-const dayLabels = ['L','M','M','J','V','S','D'];
-let calYear = 2025, calMonth = 5;
-
-function renderMiniCal() {
-  const grid = document.getElementById('mini-cal-grid');
-  const label = document.getElementById('cal-month-label');
-  const today = new Date();
-  label.textContent = monthNames[calMonth] + ' ' + calYear;
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const offset = (firstDay === 0) ? 6 : firstDay - 1;
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-  let html = dayLabels.map(d => `<div class="day-label">${d}</div>`).join('');
-  for (let i = 0; i < offset; i++) html += `<div class="day empty"></div>`;
-  for (let d = 1; d <= daysInMonth; d++) {
-    const isToday = (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear());
-    const hasEv = eventDates[d] ? 'has-event' : '';
-    const todayCls = isToday ? 'today' : '';
-    html += `<div class="day ${hasEv} ${todayCls}">${d}</div>`;
-  }
-  grid.innerHTML = html;
-}
-
-function calNav(dir) {
-  calMonth += dir;
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  if (calMonth < 0) { calMonth = 11; calYear--; }
-  renderMiniCal();
-}
-
-/* ── FILTRE EVENTS ── */
-function filterEvents(type, btn) {
-  document.querySelectorAll('.cal-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.event-card').forEach(card => {
-    card.style.display = (type === 'tous' || card.dataset.type === type) ? '' : 'none';
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
   });
+}, { threshold: 0.1 });
+revealEls.forEach(el => observer.observe(el));
+
+/* ── FORM ── */
+function handleSubmit() {
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = '✦ Candidature envoyée !';
+  btn.style.background = '#3ecf8e'; btn.style.color = '#030208'; btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Envoyer ma candidature';
+    btn.style.background = ''; btn.style.color = ''; btn.disabled = false;
+  }, 4000);
 }
 
-renderMiniCal();
+/* Calendrier déplacé dans dashboard.html */
 </script>
 </body>
 </html>

@@ -37,127 +37,29 @@
     align-items: center;
     justify-content: center;
     background: radial-gradient(ellipse at center, #1a0f2e 0%, #030208 70%);
-    position: relative;
   }
-
   .login-box {
     border: 1px solid var(--border-or);
     padding: 3rem;
     text-align: center;
-    max-width: 440px;
+    max-width: 420px;
     width: 90%;
     background: rgba(26,15,46,0.6);
-    position: relative;
   }
-
-  .login-logo {
-    height: 90px;
-    margin-bottom: 1.5rem;
-  }
-
-  .login-title {
+  .login-box img { height: 80px; margin-bottom: 1.5rem; }
+  .login-box h1 {
     font-family: 'Cinzel', serif;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     letter-spacing: 0.3em;
     color: var(--or);
-    margin-bottom: 0.4rem;
-    text-transform: uppercase;
+    margin-bottom: 0.5rem;
   }
-
-  .login-sub {
-    font-size: 0.85rem;
+  .login-box p {
+    font-size: 0.9rem;
     color: var(--texte-pale);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
   }
-
-  /* ── ÉTAPE 1 : PHANTOM ── */
-  .step-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--texte-pale);
-    margin-bottom: 0.8rem;
-  }
-
-  .btn-phantom {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.8rem;
-    background: linear-gradient(135deg, #512da8, #7c3aed);
-    border: 1px solid rgba(139,92,246,0.5);
-    color: #fff;
-    font-family: 'Cinzel', serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 1rem 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    margin-bottom: 0.8rem;
-  }
-
-  .btn-phantom:hover {
-    background: linear-gradient(135deg, #6d28d9, #8b5cf6);
-    box-shadow: 0 0 25px rgba(139,92,246,0.4);
-    transform: translateY(-1px);
-  }
-
-  .btn-phantom:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .phantom-icon {
-    width: 22px;
-    height: 22px;
-  }
-
-  .wallet-connected {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    background: rgba(94,207,160,0.1);
-    border: 1px solid rgba(94,207,160,0.3);
-    padding: 0.8rem;
-    margin-bottom: 0.8rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    color: var(--vert);
-  }
-
-  /* ── SÉPARATEUR ── */
-  .separator {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin: 1.5rem 0;
-  }
-  .separator-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border-violet);
-  }
-  .separator-text {
-    font-family: 'Cinzel', serif;
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
-    color: var(--texte-pale);
-    text-transform: uppercase;
-  }
-
-  /* ── ÉTAPE 2 : CODE ── */
-  .code-input-wrap {
-    position: relative;
-    margin-bottom: 1rem;
-  }
-
-  .code-input-wrap input {
+  .login-box input {
     width: 100%;
     background: rgba(7,6,13,0.8);
     border: 1px solid var(--border-violet);
@@ -165,24 +67,14 @@
     padding: 0.9rem 1.2rem;
     font-family: 'Cinzel', serif;
     font-size: 1rem;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.2em;
     text-align: center;
-    text-transform: uppercase;
     outline: none;
+    margin-bottom: 1rem;
     transition: border-color 0.3s;
   }
-
-  .code-input-wrap input:focus {
-    border-color: var(--or);
-  }
-
-  .code-input-wrap input::placeholder {
-    color: var(--texte-pale);
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
-  }
-
-  .btn-login {
+  .login-box input:focus { border-color: var(--or); }
+  .login-box button {
     width: 100%;
     font-family: 'Cinzel', serif;
     font-size: 0.75rem;
@@ -191,157 +83,17 @@
     color: var(--noir);
     background: var(--or);
     border: none;
-    padding: 0.95rem;
+    padding: 0.9rem;
     cursor: pointer;
     transition: all 0.3s;
-    margin-bottom: 0.5rem;
   }
-
-  .btn-login:hover { background: var(--or-clair); }
-
-  .remember-label {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--texte-pale);
-    cursor: pointer;
-    margin-bottom: 0.8rem;
-    justify-content: center;
-  }
-  .remember-label input[type="checkbox"] {
-    accent-color: var(--or);
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
-  }
-  .remember-label:hover { color: var(--texte); }
-
+  .login-box button:hover { background: var(--or-clair); }
   .login-error {
     color: var(--rouge);
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    margin-top: 0.8rem;
-    display: none;
-    padding: 0.6rem;
-    border: 1px solid rgba(232,90,90,0.2);
-    background: rgba(232,90,90,0.05);
-  }
-
-  /* ── ADMIN LINK ── */
-  .admin-link {
-    position: absolute;
-    bottom: 1.2rem;
-    right: 1.5rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.52rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(138,127,160,0.35);
-    text-decoration: none;
-    transition: color 0.3s;
-    cursor: pointer;
-    background: none;
-    border: none;
-  }
-  .admin-link:hover { color: var(--texte-pale); }
-
-  /* ── BACK LINK ── */
-  .back-link {
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--texte-pale);
-    text-decoration: none;
-    transition: color 0.3s;
-  }
-  .back-link:hover { color: var(--or); }
-
-  /* ── MODAL ADMIN ── */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(3,2,8,0.85);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    backdrop-filter: blur(4px);
-  }
-  .modal-overlay.visible { display: flex; }
-  .modal-box {
-    border: 1px solid rgba(232,90,90,0.3);
-    padding: 2.5rem;
-    background: rgba(26,15,46,0.95);
-    max-width: 380px;
-    width: 90%;
-    text-align: center;
-  }
-  .modal-box h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--rouge);
-    margin-bottom: 0.5rem;
-  }
-  .modal-box p {
     font-size: 0.85rem;
-    color: var(--texte-pale);
-    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+    display: none;
   }
-  .modal-box input {
-    width: 100%;
-    background: rgba(7,6,13,0.8);
-    border: 1px solid rgba(232,90,90,0.3);
-    color: var(--texte);
-    padding: 0.8rem 1rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.9rem;
-    letter-spacing: 0.2em;
-    text-align: center;
-    outline: none;
-    margin-bottom: 1rem;
-    transition: border-color 0.3s;
-    type: password;
-  }
-  .modal-box input:focus { border-color: var(--rouge); }
-  .btn-admin-login {
-    width: 100%;
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #fff;
-    background: rgba(232,90,90,0.2);
-    border: 1px solid rgba(232,90,90,0.4);
-    padding: 0.8rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    margin-bottom: 0.5rem;
-  }
-  .btn-admin-login:hover { background: rgba(232,90,90,0.3); }
-  .btn-modal-close {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--texte-pale);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.4rem;
-    transition: color 0.3s;
-  }
-  .btn-modal-close:hover { color: var(--texte); }
 
   /* ── DASHBOARD ── */
   #dashboard { display: none; }
@@ -357,7 +109,11 @@
     top: 0;
     z-index: 100;
   }
-  .topbar-left { display: flex; align-items: center; gap: 1rem; }
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
   .topbar-left img { height: 36px; }
   .topbar-title {
     font-family: 'Cinzel', serif;
@@ -366,26 +122,53 @@
     text-transform: uppercase;
     color: var(--or);
   }
-  .topbar-user { display: flex; align-items: center; gap: 1rem; }
-  .user-badge { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--texte-pale); }
+  .topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .user-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--texte-pale);
+  }
   .user-badge span { color: var(--or-clair); }
   .btn-logout {
-    font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--rouge); background: none;
-    border: 1px solid rgba(232,90,90,0.3); padding: 0.4rem 0.9rem;
-    cursor: pointer; transition: all 0.3s;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    background: none;
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
   }
   .btn-logout:hover { background: rgba(232,90,90,0.1); }
   .btn-home {
-    font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--texte-pale); background: none;
-    border: 1px solid var(--border-violet); padding: 0.4rem 0.9rem;
-    cursor: pointer; text-decoration: none; transition: all 0.3s;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+    background: none;
+    border: 1px solid var(--border-violet);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
   }
   .btn-home:hover { border-color: var(--or); color: var(--or); }
 
-  .dash-content { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; }
+  .dash-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
 
+  /* ── PROFIL ── */
   .profil-card {
     border: 1px solid var(--border-or);
     padding: 2rem;
@@ -396,350 +179,343 @@
     gap: 2rem;
   }
   .profil-avatar {
-    width: 80px; height: 80px; border-radius: 50%;
-    border: 2px solid var(--or); background: rgba(26,15,46,0.9);
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--or);
+    background: rgba(26,15,46,0.9);
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Cinzel', serif; font-size: 2rem; color: var(--or); flex-shrink: 0;
-  }
-  .profil-rang { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--or); margin-bottom: 0.3rem; }
-  .profil-pseudo { font-family: 'Cinzel', serif; font-size: 1.5rem; color: #fff; margin-bottom: 0.3rem; }
-  .profil-role { font-size: 0.9rem; color: var(--texte-pale); font-style: italic; margin-bottom: 0.4rem; }
-  .profil-wallet { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--cyan); }
-
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-  .section-header h2 { font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--or); }
-
-  #form-event { border: 1px solid var(--border-violet); padding: 2rem; background: rgba(10,8,20,0.7); margin-bottom: 2.5rem; display: none; }
-  #form-event.visible { display: block; }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
-  .form-group label { display: block; font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--or); margin-bottom: 0.5rem; }
-  .form-group input, .form-group select, .form-group textarea {
-    width: 100%; background: rgba(7,6,13,0.8); border: 1px solid var(--border-violet);
-    color: var(--texte); padding: 0.7rem 1rem; font-family: 'Crimson Pro', serif;
-    font-size: 0.95rem; outline: none; transition: border-color 0.3s;
-  }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--or); }
-  .form-group select option { background: #1a0f2e; }
-  .form-group textarea { resize: vertical; min-height: 80px; }
-  .form-group.full { grid-column: 1 / -1; }
-  .form-actions { display: flex; gap: 1rem; justify-content: flex-end; }
-  .btn-save { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--noir); background: var(--or); border: none; padding: 0.7rem 2rem; cursor: pointer; transition: all 0.3s; }
-  .btn-save:hover { background: var(--or-clair); }
-  .btn-cancel { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--texte-pale); background: none; border: 1px solid var(--border-violet); padding: 0.7rem 2rem; cursor: pointer; transition: all 0.3s; }
-  .btn-cancel:hover { border-color: var(--rouge); color: var(--rouge); }
-
-  .btn-add { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--or); background: none; border: 1px solid var(--border-or); padding: 0.5rem 1.2rem; cursor: pointer; transition: all 0.3s; }
-  .btn-add:hover { background: rgba(201,162,39,0.1); }
-
-  .events-list { display: flex; flex-direction: column; gap: 1rem; }
-  .event-item { border: 1px solid var(--border-violet); padding: 1.2rem 1.5rem; background: rgba(7,6,13,0.7); display: grid; grid-template-columns: auto 1fr auto; gap: 1.2rem; align-items: center; transition: border-color 0.3s; }
-  .event-item:hover { border-color: var(--border-or); }
-  .event-date-badge { text-align: center; min-width: 55px; }
-  .event-date-badge .day { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--or); line-height: 1; }
-  .event-date-badge .month { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--texte-pale); }
-  .event-type-badge { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.15rem 0.6rem; margin-bottom: 0.4rem; }
-  .type-fleetop { color: #e85a5a; border: 1px solid rgba(232,90,90,0.3); }
-  .type-pvp { color: var(--violet-glow); border: 1px solid rgba(139,92,246,0.3); }
-  .type-event { color: var(--or); border: 1px solid var(--border-or); }
-  .type-mining { color: var(--vert); border: 1px solid rgba(94,207,160,0.3); }
-  .event-name { font-family: 'Cinzel', serif; font-size: 0.88rem; color: #fff; margin-bottom: 0.2rem; }
-  .event-meta { font-size: 0.82rem; color: var(--texte-pale); }
-  .event-actions { display: flex; gap: 0.5rem; }
-  .btn-delete { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rouge); background: none; border: 1px solid rgba(232,90,90,0.3); padding: 0.4rem 0.7rem; cursor: pointer; transition: all 0.3s; }
-  .btn-delete:hover { background: rgba(232,90,90,0.1); }
-
-  .empty-state { text-align: center; padding: 3rem; color: var(--texte-pale); border: 1px dashed var(--border-violet); font-style: italic; }
-
-  .access-denied { border: 1px solid rgba(232,90,90,0.3); padding: 2rem; text-align: center; background: rgba(232,90,90,0.05); }
-  .access-denied h3 { font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.2em; color: var(--rouge); margin-bottom: 0.8rem; }
-  .access-denied p { font-size: 0.9rem; color: var(--texte-pale); }
-
-  .toast { position: fixed; bottom: 2rem; right: 2rem; background: rgba(26,15,46,0.95); border: 1px solid var(--or); padding: 1rem 1.5rem; font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--or); z-index: 999; display: none; animation: fadeInUp 0.3s ease; }
-  @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-
-
-  /* ── ADMIN PANEL ── */
-  .admin-badge {
-    display: inline-block;
     font-family: 'Cinzel', serif;
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
+    font-size: 2rem; color: var(--or);
+    flex-shrink: 0;
+  }
+  .profil-info {}
+  .profil-rang {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--rouge);
-    border: 1px solid rgba(232,90,90,0.4);
-    padding: 0.15rem 0.6rem;
-    margin-left: 0.5rem;
-    vertical-align: middle;
+    color: var(--or);
+    margin-bottom: 0.3rem;
   }
-
-  .admin-tabs {
-    display: flex !important;
-    gap: 0;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid var(--border-violet);
-    background: rgba(107,53,200,0.1);
-    padding: 0.5rem 0;
+  .profil-pseudo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
   }
-
-  .admin-tab {
+  .profil-role {
+    font-size: 0.9rem;
+    color: var(--texte-pale);
+    font-style: italic;
+    margin-bottom: 0.6rem;
+  }
+  .profil-wallet {
     font-family: 'Cinzel', serif;
     font-size: 0.65rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
+    color: var(--cyan);
+  }
+
+  /* ── SECTION TITRE ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  .section-header h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    color: var(--texte-pale);
-    background: none;
-    border: none;
-    padding: 0.8rem 1.4rem;
-    cursor: pointer;
-    position: relative;
-    transition: color 0.3s;
+    color: var(--or);
   }
 
-  .admin-tab::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0;
-    width: 0; height: 2px;
-    background: var(--rouge);
-    transition: width 0.3s;
-  }
-
-  .admin-tab:hover { color: var(--texte); }
-  .admin-tab.active { color: var(--rouge); }
-  .admin-tab.active::after { width: 100%; }
-
-  .admin-panel { display: none; }
-  .admin-panel.active { display: block; }
-  #admin-tabs-section { display: block !important; visibility: visible !important; opacity: 1 !important; }
-
-  /* Générateur de clés */
-  .keygen-box {
+  /* ── FORMULAIRE EVENT ── */
+  #form-event {
     border: 1px solid var(--border-violet);
     padding: 2rem;
     background: rgba(10,8,20,0.7);
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    display: none;
   }
-
-  .keygen-form {
+  #form-event.visible { display: block; }
+  .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    align-items: end;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
   }
-
-  .keygen-form .form-group { margin: 0; }
-
-  .btn-generate {
+  .form-group label {
+    display: block;
     font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 0.5rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(7,6,13,0.8);
+    border: 1px solid var(--border-violet);
+    color: var(--texte);
+    padding: 0.7rem 1rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--or); }
+  .form-group select option { background: #1a0f2e; }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+  .btn-save {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--noir);
     background: var(--or);
     border: none;
-    padding: 0.7rem 1.2rem;
+    padding: 0.7rem 2rem;
     cursor: pointer;
     transition: all 0.3s;
-    white-space: nowrap;
-    height: fit-content;
   }
-  .btn-generate:hover { background: var(--or-clair); }
-
-  .generated-key {
-    display: none;
-    align-items: center;
-    gap: 1rem;
-    background: rgba(26,15,46,0.8);
-    border: 1px solid var(--border-or);
-    padding: 1rem 1.5rem;
-    margin-top: 1rem;
-  }
-
-  .key-display {
+  .btn-save:hover { background: var(--or-clair); }
+  .btn-cancel {
     font-family: 'Cinzel', serif;
-    font-size: 1.1rem;
+    font-size: 0.7rem;
     letter-spacing: 0.2em;
-    color: var(--or-clair);
-    flex: 1;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+    background: none;
+    border: 1px solid var(--border-violet);
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
   }
+  .btn-cancel:hover { border-color: var(--rouge); color: var(--rouge); }
 
-  .btn-copy {
+  /* ── BOUTON AJOUTER ── */
+  .btn-add {
     font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--or);
     background: none;
     border: 1px solid var(--border-or);
-    padding: 0.4rem 0.8rem;
+    padding: 0.5rem 1.2rem;
     cursor: pointer;
     transition: all 0.3s;
   }
-  .btn-copy:hover { background: rgba(201,162,39,0.1); }
+  .btn-add:hover { background: rgba(201,162,39,0.1); }
 
-  /* Liste membres admin */
-  .membres-admin-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .membre-admin-item {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
-    gap: 1rem;
-    align-items: center;
+  /* ── LISTE EVENTS ── */
+  .events-list { display: flex; flex-direction: column; gap: 1rem; }
+  .event-item {
     border: 1px solid var(--border-violet);
-    padding: 1rem 1.5rem;
+    padding: 1.2rem 1.5rem;
     background: rgba(7,6,13,0.7);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.2rem;
+    align-items: center;
     transition: border-color 0.3s;
   }
-
-  .membre-admin-item:hover { border-color: var(--border-or); }
-
-  .membre-admin-avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 1px solid var(--border-or);
-    background: rgba(26,15,46,0.9);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cinzel', serif;
-    font-size: 1rem; color: var(--or);
+  .event-item:hover { border-color: var(--border-or); }
+  .event-date-badge {
+    text-align: center;
+    min-width: 55px;
   }
-
-  .membre-admin-info {}
-  .membre-admin-name {
+  .event-date-badge .day {
     font-family: 'Cinzel', serif;
-    font-size: 0.82rem;
+    font-size: 1.8rem;
+    color: var(--or);
+    line-height: 1;
+  }
+  .event-date-badge .month {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+  }
+  .event-info {}
+  .event-type-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .type-fleetop { color: #e85a5a; border: 1px solid rgba(232,90,90,0.3); }
+  .type-pvp { color: var(--violet-glow); border: 1px solid rgba(139,92,246,0.3); }
+  .type-event { color: var(--or); border: 1px solid var(--border-or); }
+  .type-mining { color: var(--vert); border: 1px solid rgba(94,207,160,0.3); }
+  .event-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.88rem;
     color: #fff;
     margin-bottom: 0.2rem;
   }
-  .membre-admin-meta {
-    font-size: 0.75rem;
-    color: var(--texte-pale);
-  }
-  .membre-admin-code {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    color: var(--cyan);
-    padding: 0.3rem 0.7rem;
-    border: 1px solid rgba(0,212,255,0.2);
-    background: rgba(0,212,255,0.05);
-  }
-
-  .toggle-dashboard {
-    font-family: 'Cinzel', serif;
-    font-size: 0.58rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.7rem;
-    cursor: pointer;
-    border: none;
-    transition: all 0.3s;
-  }
-  .toggle-dashboard.on  { color: var(--vert); background: rgba(94,207,160,0.1); border: 1px solid rgba(94,207,160,0.3); }
-  .toggle-dashboard.off { color: var(--texte-pale); background: transparent; border: 1px solid var(--border-violet); }
-
-  .btn-revoke {
+  .event-meta { font-size: 0.82rem; color: var(--texte-pale); }
+  .event-actions { display: flex; gap: 0.5rem; }
+  .btn-delete {
     font-family: 'Cinzel', serif;
     font-size: 0.55rem;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--rouge);
     background: none;
     border: 1px solid rgba(232,90,90,0.3);
-    padding: 0.3rem 0.7rem;
+    padding: 0.4rem 0.7rem;
     cursor: pointer;
     transition: all 0.3s;
   }
-  .btn-revoke:hover { background: rgba(232,90,90,0.1); }
+  .btn-delete:hover { background: rgba(232,90,90,0.1); }
 
-  /* Candidatures */
-  .candidature-item {
-    border: 1px solid var(--border-violet);
-    padding: 1.5rem;
-    background: rgba(7,6,13,0.7);
-    margin-bottom: 1rem;
-    transition: border-color 0.3s;
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--texte-pale);
+    border: 1px dashed var(--border-violet);
+    font-style: italic;
   }
-  .candidature-item:hover { border-color: var(--border-or); }
-  .cand-header {
+
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: rgba(26,15,46,0.95);
+    border: 1px solid var(--or);
+    padding: 1rem 1.5rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--or);
+    z-index: 999;
+    display: none;
+    animation: fadeInUp 0.3s ease;
+  }
+  @keyframes fadeInUp {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+
+  /* ── FILTRES ── */
+  .filter-tabs {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-violet);
+  }
+  .filter-tab {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+    background: none;
+    border: none;
+    padding: 0.65rem 1.1rem;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .filter-tab::after {
+    content: ''; position: absolute; bottom: -1px; left: 0;
+    width: 0; height: 2px; background: var(--or); transition: width 0.3s;
+  }
+  .filter-tab:hover { color: var(--texte); }
+  .filter-tab.active { color: var(--or); }
+  .filter-tab.active::after { width: 100%; }
+
+  /* ── MINI CAL ── */
+  .mini-cal-wrapper {
+    border: 1px solid var(--border-or);
+    background: rgba(10,8,20,0.85);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .mini-cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.2rem;
+  }
+  .mini-cal-title {
+    font-family: 'Cinzel', serif; font-size: 0.75rem;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--or);
+  }
+  .mini-cal-nav {
+    background: none; border: 1px solid var(--border-violet);
+    color: var(--texte-pale); width: 26px; height: 26px;
+    cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mini-cal-nav:hover { border-color: var(--or); color: var(--or); }
+  .mini-cal-grid {
+    display: grid; grid-template-columns: repeat(7,1fr);
+    gap: 3px; text-align: center;
+  }
+  .mini-cal-grid .day-label {
+    font-family: 'Cinzel', serif; font-size: 0.5rem;
+    letter-spacing: 0.08em; color: var(--texte-pale);
+    padding-bottom: 0.4rem; text-transform: uppercase;
+  }
+  .mini-cal-grid .mcday {
+    font-size: 0.75rem; color: var(--texte-pale);
+    padding: 0.3rem 0; border-radius: 2px; position: relative;
+    transition: all 0.2s;
+  }
+  .mini-cal-grid .mcday.has-event { color: var(--or-clair); font-family: 'Cinzel', serif; }
+  .mini-cal-grid .mcday.has-event::after {
+    content: '•'; position: absolute; bottom: 0px; left: 50%;
+    transform: translateX(-50%); font-size: 0.45rem; color: var(--or);
+  }
+  .mini-cal-grid .mcday.today {
+    background: rgba(107,53,200,0.3); border: 1px solid var(--border-violet); color: #fff;
+  }
+  .mini-cal-grid .mcday.empty { color: transparent; pointer-events: none; }
+  .cal-legend-dash { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border-violet); }
+  .cal-legend-dash .legend-title {
+    font-family: 'Cinzel', serif; font-size: 0.55rem;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--texte-pale); margin-bottom: 0.8rem;
+  }
+  .legend-items-dash { display: flex; flex-direction: column; gap: 0.5rem; }
+  .legend-item-dash { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; color: var(--texte-pale); }
+  .legend-dot-dash { width: 7px; height: 7px; border-radius: 1px; flex-shrink: 0; }
+
+  .planning-layout { display: grid; grid-template-columns: 1fr 260px; gap: 2rem; align-items: start; }
+  @media (max-width: 700px) { .planning-layout { grid-template-columns: 1fr; } }
+  /* ── ACCESS DENIED ── */
+  .access-denied {
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 2rem;
+    text-align: center;
+    background: rgba(232,90,90,0.05);
+  }
+  .access-denied h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: var(--rouge);
     margin-bottom: 0.8rem;
   }
-  .cand-pseudo {
-    font-family: 'Cinzel', serif;
-    font-size: 0.9rem;
-    color: #fff;
-  }
-  .cand-date {
-    font-size: 0.75rem;
-    color: var(--texte-pale);
-  }
-  .cand-infos {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 0.85rem;
-    color: var(--texte-pale);
-  }
-  .cand-infos span { color: var(--texte); }
-  .cand-desc {
-    font-size: 0.85rem;
-    color: var(--texte-pale);
-    font-style: italic;
-    margin-bottom: 1rem;
-    padding: 0.8rem;
-    border-left: 2px solid var(--border-violet);
-  }
-  .cand-actions { display: flex; gap: 0.8rem; }
-  .btn-accept {
-    font-family: 'Cinzel', serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--vert);
-    background: rgba(94,207,160,0.1);
-    border: 1px solid rgba(94,207,160,0.3);
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-accept:hover { background: rgba(94,207,160,0.2); }
-  .btn-reject {
-    font-family: 'Cinzel', serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--rouge);
-    background: none;
-    border: 1px solid rgba(232,90,90,0.3);
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-reject:hover { background: rgba(232,90,90,0.1); }
+  .access-denied p { font-size: 0.9rem; color: var(--texte-pale); }
 
-  .statut-badge {
-    font-family: 'Cinzel', serif;
-    font-size: 0.55rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.6rem;
-  }
-  .statut-attente { color: var(--or); border: 1px solid var(--border-or); }
-  .statut-accepte { color: var(--vert); border: 1px solid rgba(94,207,160,0.3); }
-  .statut-refuse  { color: var(--rouge); border: 1px solid rgba(232,90,90,0.3); }
-
-  @media (max-width: 600px) {
-    .keygen-form { grid-template-columns: 1fr; }
-    .membre-admin-item { grid-template-columns: auto 1fr; gap: 0.5rem; }
-  }
   @media (max-width: 600px) {
     .form-grid { grid-template-columns: 1fr; }
     .profil-card { flex-direction: column; text-align: center; }
@@ -749,95 +525,29 @@
 </head>
 <body>
 
-<!-- ── LOGIN ── -->
+<!-- LOGIN -->
 <div id="login-screen">
-  <a href="index.html" class="back-link">← Retour au site</a>
-
   <div class="login-box">
-    <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" class="login-logo" alt="Éclypse">
-    <div class="login-title">Accès Membre</div>
-    <p class="login-sub">Connecte ton wallet et entre ton code d'accès</p>
-
-    <!-- ÉTAPE 1 : PHANTOM -->
-    <div class="step-label">Étape 1 — Wallet Phantom</div>
-
-    <button class="btn-phantom" id="btn-phantom" onclick="connectPhantom()">
-      👻 Connecter Phantom
-    </button>
-    <div id="phantom-warning" style="display:none;font-size:0.75rem;color:var(--or);margin-bottom:0.8rem;padding:0.6rem;border:1px solid var(--border-or);background:rgba(201,162,39,0.05);">
-      ⚠️ Extension Phantom non détectée —
-      <a href="https://phantom.app/" target="_blank" style="color:var(--or-clair);">Installe-la ici</a>
-      puis recharge la page
-    </div>
-
-    <div class="wallet-connected" id="wallet-connected">
-      ✅ <span id="wallet-addr">—</span>
-    </div>
-
-    <!-- SÉPARATEUR -->
-    <div class="separator">
-      <div class="separator-line"></div>
-      <div class="separator-text">Puis</div>
-      <div class="separator-line"></div>
-    </div>
-
-    <!-- ÉTAPE 2 : CODE -->
-    <div class="step-label">Étape 2 — Code d'accès unique</div>
-
-    <div class="code-input-wrap">
-      <input type="text" id="code-input" placeholder="ECL-XXXX-2025" maxlength="20"
-             onkeydown="if(event.key==='Enter') login()" autocomplete="off">
-    </div>
-
-    <label class="remember-label">
-      <input type="checkbox" id="remember-me"> Rester connecté
-    </label>
-    <button class="btn-login" onclick="login()">✦ Connexion</button>
-
-    <div class="login-error" id="login-error">❌ Code invalide ou accès révoqué</div>
-
-    <!-- ADMIN -->
-    <button class="admin-link" onclick="openAdmin()">accès admin</button>
+    <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
+    <h1>Dashboard Éclypse</h1>
+    <p>Entre ton code d'accès pour rejoindre le panneau de contrôle</p>
+    <input type="text" id="code-input" placeholder="ECL-XXXX-2025" maxlength="20"
+           onkeydown="if(event.key==='Enter') login()">
+    <button onclick="login()">Accéder au Dashboard</button>
+    <p class="login-error" id="login-error">❌ Code invalide ou accès révoqué</p>
   </div>
 </div>
 
-<!-- ── MODAL CONFIG TOKEN ── -->
-<div class="modal-overlay" id="modal-config">
-  <div class="modal-box" style="border-color:var(--border-or);">
-    <h3 style="color:var(--or);">⚙️ Configuration</h3>
-    <p>Entre ton token GitHub pour activer la synchronisation</p>
-    <input type="password" id="token-input" placeholder="ghp_..."
-           style="border-color:var(--border-or);"
-           onkeydown="if(event.key==='Enter') saveToken()">
-    <div id="token-status" style="font-size:0.75rem;margin-bottom:0.8rem;display:none;padding:0.5rem;border-radius:2px;"></div>
-    <button class="btn-admin-login" onclick="saveToken()" style="background:rgba(201,162,39,0.2);border-color:var(--border-or);color:var(--or);">💾 Sauvegarder</button>
-    <button class="btn-modal-close" onclick="closeConfig()">Fermer</button>
-  </div>
-</div>
-
-<!-- ── MODAL ADMIN ── -->
-<div class="modal-overlay" id="modal-admin">
-  <div class="modal-box">
-    <h3>🔐 Accès Administrateur</h3>
-    <p>Zone réservée au Fleet Commander</p>
-    <input type="password" id="admin-input" placeholder="••••••••••••"
-           onkeydown="if(event.key==='Enter') adminLogin()">
-    <button class="btn-admin-login" onclick="adminLogin()">Connexion Admin</button>
-    <button class="btn-modal-close" onclick="closeAdmin()">Annuler</button>
-    <div class="login-error" id="admin-error" style="margin-top:0.5rem">❌ Code admin incorrect</div>
-  </div>
-</div>
-
-<!-- ── DASHBOARD ── -->
+<!-- DASHBOARD -->
 <div id="dashboard">
   <div class="topbar">
     <div class="topbar-left">
       <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
-      <span class="topbar-title" id="topbar-title">Dashboard · SAGE C4</span>
+      <span class="topbar-title">Dashboard · SAGE C4</span>
     </div>
     <div class="topbar-user">
       <div class="user-badge">Connecté : <span id="display-pseudo">—</span></div>
-      <button class="btn-home" id="btn-config" onclick="openConfig()" style="display:none">⚙️ Config</button><a href="index.html" class="btn-home">← Site</a>
+      <a href="index.html" class="btn-home">← Site</a>
       <button class="btn-logout" onclick="logout()">Déconnexion</button>
     </div>
   </div>
@@ -849,30 +559,20 @@
       <div class="profil-avatar" id="profil-avatar">?</div>
       <div class="profil-info">
         <div class="profil-rang" id="profil-rang">—</div>
-        <div class="profil-pseudo" id="profil-pseudo">— <span class="admin-badge" id="admin-badge" style="display:none">Admin</span></div>
+        <div class="profil-pseudo" id="profil-pseudo">—</div>
         <div class="profil-role" id="profil-role">—</div>
         <div class="profil-wallet" id="profil-wallet">—</div>
-
       </div>
     </div>
 
-    <!-- ONGLETS ADMIN -->
-    <div id="admin-tabs-section">
-      <div class="admin-tabs">
-        <button class="admin-tab active" id="tab-planning" onclick="switchTab('planning', this)">📅 Planning</button>
-        <button class="admin-tab" id="tab-membres" onclick="switchTab('membres', this)">👥 Membres</button>
-        <button class="admin-tab" id="tab-candidatures" onclick="switchTab('candidatures', this)">📋 Candidatures</button>
-        <button class="admin-tab" id="tab-keygen" onclick="switchTab('keygen', this)">🔑 Clés d'accès</button>
-      </div>
-    </div>
-
-    <!-- PANEL PLANNING -->
-    <div class="admin-panel active" id="panel-planning">
+    <!-- PLANNING -->
+    <div id="planning-section">
       <div class="section-header">
         <h2>📅 Opérations & Planning</h2>
         <button class="btn-add" id="btn-add" onclick="toggleForm()">+ Nouvelle Op</button>
       </div>
 
+      <!-- FORMULAIRE -->
       <div id="form-event">
         <div class="form-grid">
           <div class="form-group">
@@ -907,78 +607,48 @@
         </div>
       </div>
 
-      <div class="events-list" id="events-list">
-        <div class="empty-state">Aucune opération planifiée — crée la première !</div>
+      <!-- LAYOUT LISTE + MINI-CAL -->
+      <div class="planning-layout">
+        <div>
+          <!-- FILTRES -->
+          <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterEvents('tous', this)">Tous</button>
+            <button class="filter-tab" onclick="filterEvents('fleetop', this)">Fleet Op</button>
+            <button class="filter-tab" onclick="filterEvents('pvp', this)">PvP</button>
+            <button class="filter-tab" onclick="filterEvents('event', this)">Événements</button>
+            <button class="filter-tab" onclick="filterEvents('mining', this)">Mining</button>
+          </div>
+          <!-- LISTE -->
+          <div class="events-list" id="events-list">
+            <div class="empty-state">Aucune opération planifiée — crée la première !</div>
+          </div>
+        </div>
+        <!-- MINI CALENDRIER -->
+        <div>
+          <div class="mini-cal-wrapper">
+            <div class="mini-cal-header">
+              <button class="mini-cal-nav" onclick="calNav(-1)">&#8592;</button>
+              <div class="mini-cal-title" id="cal-month-label"></div>
+              <button class="mini-cal-nav" onclick="calNav(1)">&#8594;</button>
+            </div>
+            <div class="mini-cal-grid" id="mini-cal-grid"></div>
+            <div class="cal-legend-dash">
+              <div class="legend-title">Légende</div>
+              <div class="legend-items-dash">
+                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#e85a5a"></div>Fleet Op</div>
+                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#8b5cf6"></div>PvP / Guild War</div>
+                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#c9a227"></div>Événement SAGE</div>
+                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#5ecfa0"></div>Mining Run</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
+      <!-- ACCÈS REFUSÉ -->
       <div id="no-access" class="access-denied" style="display:none">
         <h3>🔒 Accès Restreint</h3>
-        <p>Tu n\'as pas les droits pour créer des événements. Contacte le Fleet Commander.</p>
-      </div>
-    </div>
-
-    <!-- PANEL MEMBRES -->
-    <div class="admin-panel" id="panel-membres">
-      <div class="section-header">
-        <h2>👥 Gestion des Membres</h2>
-      </div>
-      <div class="membres-admin-list" id="membres-admin-list">
-        <div class="empty-state">Chargement...</div>
-      </div>
-    </div>
-
-    <!-- PANEL CANDIDATURES -->
-    <div class="admin-panel" id="panel-candidatures">
-      <div class="section-header">
-        <h2>📋 Candidatures</h2>
-      </div>
-      <div id="candidatures-list">
-        <div class="empty-state">Chargement...</div>
-      </div>
-    </div>
-
-    <!-- PANEL GÉNÉRATEUR DE CLÉS -->
-    <div class="admin-panel" id="panel-keygen">
-      <div class="section-header">
-        <h2>🔑 Générateur de Clés d'Accès</h2>
-      </div>
-      <div class="keygen-box">
-        <div class="keygen-form">
-          <div class="form-group">
-            <label>Pseudo du membre</label>
-            <input type="text" id="kg-pseudo" placeholder="Ex: Viktor">
-          </div>
-          <div class="form-group">
-            <label>Rang</label>
-            <select id="kg-rang">
-              <option>Fleet Commander</option>
-              <option>Officier</option>
-              <option>Vétéran</option>
-              <option>Capitaine</option>
-              <option>Membre</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Accès Planning</label>
-            <select id="kg-dashboard">
-              <option value="true">✅ Oui</option>
-              <option value="false">❌ Non</option>
-            </select>
-          </div>
-          <button class="btn-generate" onclick="generateKey()">⚡ Générer</button>
-        </div>
-        <div class="generated-key" id="generated-key">
-          <div>
-            <div style="font-family:Cinzel,serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--texte-pale);margin-bottom:0.3rem;">CLÉ GÉNÉRÉE</div>
-            <div class="key-display" id="key-display">—</div>
-          </div>
-          <button class="btn-copy" onclick="copyKey()">📋 Copier</button>
-          <button class="btn-save" onclick="saveNewMember()" style="font-size:0.62rem;padding:0.5rem 1rem;">✦ Ajouter au roster</button>
-        </div>
-      </div>
-      <div style="font-size:0.85rem;color:var(--texte-pale);font-style:italic;padding:1rem;border:1px dashed var(--border-violet);">
-        💡 Génère une clé unique pour chaque nouveau membre. Donne-lui cette clé — c'est son seul accès au dashboard.
-        Pour révoquer l'accès, va dans l'onglet <strong style="color:var(--or)">Membres</strong> et clique sur Révoquer.
+        <p>Tu n'as pas les droits pour créer des événements. Contacte le Fleet Commander pour obtenir l'accès.</p>
       </div>
     </div>
 
@@ -989,446 +659,217 @@
 
 <script>
 const REPO_OWNER = 'osvalt16';
-const REPO_NAME  = 'Eclype_sa';
+const REPO_NAME = 'Eclype_sa';
 const MEMBRES_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/membres.json`;
-const EVENTS_URL  = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
+const EVENTS_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
+
+// Token stocké via GitHub Actions secret — NE JAMAIS mettre ici en clair
+// Le dashboard utilise un proxy GitHub Actions pour écrire
+// Pour l'instant lecture seule depuis raw.githubusercontent.com
 
 let currentMembre = null;
 let allEvents = [];
-let phantomWallet = null;
 
-/* ── PHANTOM ── */
-function getPhantomProvider() {
-  // Nouvelle API Phantom (window.phantom.solana)
-  if (window.phantom?.solana?.isPhantom) return window.phantom.solana;
-  // Ancienne API (window.solana)
-  if (window.solana?.isPhantom) return window.solana;
-  return null;
-}
-
-async function connectPhantom() {
-  const btn = document.getElementById('btn-phantom');
-  const warning = document.getElementById('phantom-warning');
-  const provider = getPhantomProvider();
-
-  if (!provider) {
-    warning.style.display = 'block';
-    return;
-  }
-
-  warning.style.display = 'none';
-  btn.disabled = true;
-  btn.textContent = '⏳ Connexion...';
-
-  try {
-    const resp = await provider.connect();
-    phantomWallet = resp.publicKey.toString();
-    const short = phantomWallet.slice(0,4) + '...' + phantomWallet.slice(-4);
-    document.getElementById('wallet-addr').textContent = '🔵 ' + short;
-    document.getElementById('wallet-connected').style.display = 'flex';
-    btn.style.display = 'none';
-    showToast('✅ Wallet connecté !');
-  } catch(e) {
-    btn.disabled = false;
-    btn.textContent = '👻 Connecter Phantom';
-    if (e.code === 4001) {
-      showToast('❌ Connexion refusée — accepte dans Phantom');
-    } else {
-      showToast('❌ Erreur Phantom : ' + (e.message || 'inconnue'));
-    }
-  }
-}
-
-// Auto-reconnexion au chargement si déjà approuvé
-window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(async () => {
-    const provider = getPhantomProvider();
-    if (!provider) return;
-    try {
-      const resp = await provider.connect({ onlyIfTrusted: true });
-      phantomWallet = resp.publicKey.toString();
-      const short = phantomWallet.slice(0,4) + '...' + phantomWallet.slice(-4);
-      document.getElementById('wallet-addr').textContent = '🔵 ' + short;
-      document.getElementById('wallet-connected').style.display = 'flex';
-      document.getElementById('btn-phantom').style.display = 'none';
-    } catch(e) { /* pas encore approuvé */ }
-  }, 600);
-});
-
-/* ── LOGIN MEMBRE ── */
 async function login() {
   const code = document.getElementById('code-input').value.trim().toUpperCase();
-  if (!code) { showError('login-error', '❌ Entre ton code d\'accès'); return; }
-  if (!phantomWallet) { showError('login-error', '❌ Connecte d\'abord ton wallet Phantom'); return; }
+  if (!code) return;
 
   try {
-    const res  = await fetch(MEMBRES_URL + '?t=' + Date.now());
+    const res = await fetch(MEMBRES_URL + '?t=' + Date.now());
     const data = await res.json();
     const membre = data.membres.find(m =>
       m.code.toUpperCase() === code && m.actif === true
     );
-    if (!membre) { showError('login-error', '❌ Code invalide ou accès révoqué'); return; }
 
-    currentMembre = { ...membre, walletFull: phantomWallet };
-    const remember = document.getElementById('remember-me')?.checked;
-    if (remember) {
-      localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
-      sessionStorage.removeItem('eclypse_membre');
-    } else {
-      sessionStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
-      localStorage.removeItem('eclypse_membre');
+    if (!membre) {
+      document.getElementById('login-error').style.display = 'block';
+      return;
     }
-    showDashboard(currentMembre);
+
+    currentMembre = membre;
+    sessionStorage.setItem('eclypse_membre', JSON.stringify(membre));
+    showDashboard(membre);
+
   } catch(e) {
-    showError('login-error', '❌ Erreur de connexion. Réessaie.');
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-error').textContent = '❌ Erreur de connexion. Réessaie.';
   }
 }
 
-/* ── ADMIN ── */
-function openAdmin()  { document.getElementById('modal-admin').classList.add('visible'); }
-function closeAdmin() { document.getElementById('modal-admin').classList.remove('visible'); document.getElementById('admin-input').value = ''; document.getElementById('admin-error').style.display = 'none'; }
-
-async function adminLogin() {
-  const code = document.getElementById('admin-input').value.trim().toUpperCase();
-  if (!code) return;
-  try {
-    const res  = await fetch(MEMBRES_URL + '?t=' + Date.now());
-    const data = await res.json();
-    const admin = data.membres.find(m =>
-      m.code.toUpperCase() === code && m.actif === true && m.admin === true
-    );
-    if (!admin) { showError('admin-error', '❌ Code admin incorrect'); return; }
-    currentMembre = admin;
-    sessionStorage.setItem('eclypse_membre', JSON.stringify(admin));
-    closeAdmin();
-    showDashboard(admin);
-  } catch(e) {
-    showError('admin-error', '❌ Erreur de connexion');
-  }
-}
-
-/* ── SHOW DASHBOARD ── */
 function showDashboard(membre) {
   document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('dashboard').style.display   = 'block';
+  document.getElementById('dashboard').style.display = 'block';
 
-  const isAdmin = membre.admin === true;
-  document.getElementById('topbar-title').textContent   = isAdmin ? 'Dashboard Admin · SAGE C4' : 'Dashboard · SAGE C4';
   document.getElementById('display-pseudo').textContent = membre.pseudo;
-  document.getElementById('profil-avatar').textContent  = membre.pseudo[0].toUpperCase();
-  document.getElementById('profil-rang').textContent    = (isAdmin ? '⭐ ' : '★ ') + membre.rang;
-  document.getElementById('profil-pseudo').textContent  = membre.pseudo;
-  document.getElementById('profil-role').textContent    = membre.role + ' · Faction ' + membre.faction;
-  document.getElementById('profil-wallet').textContent  = '🔵 Wallet: ' + (membre.walletFull ? membre.walletFull.slice(0,4)+'...'+membre.walletFull.slice(-4) : membre.wallet);
+  document.getElementById('profil-avatar').textContent = membre.pseudo[0].toUpperCase();
+  document.getElementById('profil-rang').textContent = '★ ' + membre.rang;
+  document.getElementById('profil-pseudo').textContent = membre.pseudo;
+  document.getElementById('profil-role').textContent = membre.role + ' · Faction ' + membre.faction;
+  document.getElementById('profil-wallet').textContent = '🔵 Wallet: ' + membre.wallet;
 
-  if (isAdmin) {
-    document.getElementById('admin-badge').style.display = 'inline-block';
-    document.getElementById('admin-tabs-section').style.display = 'block';
-    document.getElementById('btn-config').style.display = 'inline-flex';
-  }
-
-  if (!membre.dashboard && !isAdmin) {
-    document.getElementById('btn-add').style.display   = 'none';
+  if (!membre.dashboard) {
+    document.getElementById('btn-add').style.display = 'none';
     document.getElementById('no-access').style.display = 'block';
   }
 
   loadEvents();
-  if (isAdmin) {
-    loadMembresAdmin();
-    loadCandidatures();
-  }
-}
-
-/* ── SWITCH TABS ── */
-function switchTab(tab, btn) {
-  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
-  // Activer l'onglet
-  const activeTab = btn || document.getElementById('tab-' + tab);
-  if (activeTab) activeTab.classList.add('active');
-  // Activer le panel
-  const panel = document.getElementById('panel-' + tab);
-  if (panel) panel.classList.add('active');
-}
-
-/* ── GÉNÉRATEUR DE CLÉS ── */
-let lastGeneratedKey = null;
-let lastGeneratedMember = null;
-
-function generateKey() {
-  const pseudo = document.getElementById('kg-pseudo').value.trim();
-  if (!pseudo) { showToast('❌ Entre un pseudo !'); return; }
-
-  const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZ23456789';
-  const rand = n => Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
-  const key = `ECL-${rand(4)}-${rand(4)}`;
-
-  lastGeneratedKey = key;
-  lastGeneratedMember = {
-    id: pseudo.toLowerCase().replace(/[^a-z0-9]/g,''),
-    pseudo: pseudo,
-    rang: document.getElementById('kg-rang').value,
-    role: 'Membre',
-    faction: 'MUD',
-    wallet: '????...????',
-    xp: '0',
-    code: key,
-    dashboard: document.getElementById('kg-dashboard').value === 'true',
-    admin: false,
-    actif: true
-  };
-
-  document.getElementById('key-display').textContent = key;
-  document.getElementById('generated-key').style.display = 'flex';
-  showToast('✦ Clé générée !');
-}
-
-function copyKey() {
-  const key = document.getElementById('key-display').textContent;
-  navigator.clipboard.writeText(key).then(() => showToast('📋 Clé copiée !'));
-}
-
-async function saveNewMember() {
-  if (!lastGeneratedMember) return;
-  const token = localStorage.getItem('eclypse_admin_token') || '';
-  if (!token) { showToast('⚠️ Token manquant !'); return; }
-
-  try {
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
-    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
-    const getJson = await getRes.json();
-    const data = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
-
-    data.membres.push(lastGeneratedMember);
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-
-    await fetch(apiUrl, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
-      body: JSON.stringify({ message: `Add member ${lastGeneratedMember.pseudo}`, content, sha: getJson.sha })
-    });
-
-    showToast('✅ Membre ajouté au roster !');
-    document.getElementById('generated-key').style.display = 'none';
-    document.getElementById('kg-pseudo').value = '';
-    lastGeneratedKey = null;
-    lastGeneratedMember = null;
-    setTimeout(() => loadMembresAdmin(), 2000);
-  } catch(e) {
-    showToast('⚠️ Erreur : ' + e.message);
-  }
-}
-
-/* ── GESTION MEMBRES ADMIN ── */
-async function loadMembresAdmin() {
-  const list = document.getElementById('membres-admin-list');
-  const token = localStorage.getItem('eclypse_admin_token') || '';
-  try {
-    const res = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/membres.json?t=` + Date.now());
-    const data = await res.json();
-    if (!data.membres.length) { list.innerHTML = '<div class="empty-state">Aucun membre</div>'; return; }
-    list.innerHTML = data.membres.map(m => `
-      <div class="membre-admin-item">
-        <div class="membre-admin-avatar">${m.pseudo[0].toUpperCase()}</div>
-        <div class="membre-admin-info">
-          <div class="membre-admin-name">${m.pseudo} ${m.admin ? '<span style="color:var(--rouge);font-size:0.6rem">⭐ Admin</span>' : ''}</div>
-          <div class="membre-admin-meta">${m.rang} · ${m.role} · ${m.faction}</div>
-        </div>
-        <div class="membre-admin-code">${m.code}</div>
-        <button class="toggle-dashboard ${m.dashboard ? 'on' : 'off'}" onclick="toggleDashboard('${m.id}', ${!m.dashboard})">
-          ${m.dashboard ? '✅ Planning' : '❌ Planning'}
-        </button>
-        <button class="btn-revoke" onclick="revokeMember('${m.id}')" ${m.admin ? 'disabled style="opacity:0.3"' : ''}>Révoquer</button>
-      </div>`).join('');
-  } catch(e) {
-    list.innerHTML = '<div class="empty-state">Erreur de chargement</div>';
-  }
-}
-
-async function toggleDashboard(id, val) {
-  await updateMember(id, { dashboard: val });
-  showToast(val ? '✅ Accès planning activé' : '❌ Accès planning retiré');
-  setTimeout(() => loadMembresAdmin(), 2000);
-}
-
-async function revokeMember(id) {
-  if (!confirm('Révoquer l\'accès de ce membre ?')) return;
-  await updateMember(id, { actif: false });
-  showToast('🔒 Accès révoqué');
-  setTimeout(() => loadMembresAdmin(), 2000);
-}
-
-async function updateMember(id, changes) {
-  const token = localStorage.getItem('eclypse_admin_token') || '';
-  if (!token) { showToast('⚠️ Token manquant !'); return; }
-  try {
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
-    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
-    const getJson = await getRes.json();
-    const data = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
-    data.membres = data.membres.map(m => m.id === id ? { ...m, ...changes } : m);
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    await fetch(apiUrl, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
-      body: JSON.stringify({ message: `Update member ${id}`, content, sha: getJson.sha })
-    });
-  } catch(e) { showToast('⚠️ Erreur : ' + e.message); }
-}
-
-/* ── CANDIDATURES ── */
-async function loadCandidatures() {
-  const list = document.getElementById('candidatures-list');
-  try {
-    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/candidatures.json?t=` + Date.now());
-    const data = await res.json();
-    const cands = (data.candidatures || []).filter(c => c.statut === 'en_attente');
-    if (!cands.length) {
-      list.innerHTML = '<div class="empty-state">Aucune candidature en attente ✨</div>';
-      return;
-    }
-    list.innerHTML = cands.map(c => `
-      <div class="candidature-item" id="cand-${c.id}">
-        <div class="cand-header">
-          <div class="cand-pseudo">${c.pseudo}</div>
-          <div style="display:flex;gap:0.8rem;align-items:center;">
-            <span class="statut-badge statut-attente">En attente</span>
-            <span class="cand-date">${new Date(c.date).toLocaleDateString('fr-FR')}</span>
-          </div>
-        </div>
-        <div class="cand-infos">
-          <div>Discord : <span>${c.discord}</span></div>
-          <div>Rôle : <span>${c.role}</span></div>
-          <div>Faction : <span>${c.faction}</span></div>
-          <div>Vaisseaux : <span>${c.vaisseaux||'—'}</span></div>
-        </div>
-        ${c.motivation ? `<div class="cand-desc">"${c.motivation}"</div>` : ''}
-        <div class="cand-actions">
-          <button class="btn-accept" onclick="acceptCandidature('${c.id}', '${c.pseudo}', '${c.role}')">✅ Accepter & Générer clé</button>
-          <button class="btn-reject" onclick="rejectCandidature('${c.id}')">❌ Refuser</button>
-        </div>
-      </div>`).join('');
-  } catch(e) {
-    list.innerHTML = '<div class="empty-state">Aucune candidature</div>';
-  }
-}
-
-async function acceptCandidature(id, pseudo, role) {
-  // Générer une clé automatiquement
-  const chars = 'ABCDEFGHIJKLMNPQRSTUVWXYZ23456789';
-  const rand = n => Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
-  const key = `ECL-${rand(4)}-${rand(4)}`;
-
-  const newMember = {
-    id: pseudo.toLowerCase().replace(/[^a-z0-9]/g,'') + '_' + Date.now(),
-    pseudo, rang: 'Membre', role, faction: 'MUD',
-    wallet: '????...????', xp: '0',
-    code: key, dashboard: false, admin: false, actif: true
-  };
-
-  const token = localStorage.getItem('eclypse_admin_token') || '';
-  if (!token) { showToast('⚠️ Token manquant !'); return; }
-
-  try {
-    // Ajouter dans membres.json
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
-    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
-    const getJson = await getRes.json();
-    const data = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
-    data.membres.push(newMember);
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    await fetch(apiUrl, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ message: `Accept ${pseudo}`, content, sha: getJson.sha }) });
-
-    // Mettre à jour statut candidature
-    await updateCandidature(id, 'accepte', token);
-
-    showToast(`✅ ${pseudo} accepté ! Clé : ${key}`);
-    navigator.clipboard.writeText(key);
-    setTimeout(() => loadCandidatures(), 2000);
-  } catch(e) { showToast('⚠️ Erreur : ' + e.message); }
-}
-
-async function rejectCandidature(id) {
-  if (!confirm('Refuser cette candidature ?')) return;
-  const token = localStorage.getItem('eclypse_admin_token') || '';
-  await updateCandidature(id, 'refuse', token);
-  showToast('❌ Candidature refusée');
-  setTimeout(() => loadCandidatures(), 2000);
-}
-
-async function updateCandidature(id, statut, token) {
-  const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
-  const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
-  const getJson = await getRes.json();
-  const data = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
-  data.candidatures = data.candidatures.map(c => c.id === id ? { ...c, statut } : c);
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' }, body: JSON.stringify({ message: `Update candidature ${id}`, content, sha: getJson.sha }) });
 }
 
 function logout() {
   sessionStorage.removeItem('eclypse_membre');
-  localStorage.removeItem('eclypse_membre');
-  currentMembre = null; phantomWallet = null;
+  currentMembre = null;
   document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('dashboard').style.display    = 'none';
+  document.getElementById('dashboard').style.display = 'none';
   document.getElementById('code-input').value = '';
-  document.getElementById('wallet-connected').style.display = 'none';
-  document.getElementById('btn-phantom').style.display = 'flex';
-  document.getElementById('btn-phantom').disabled = false;
-  document.getElementById('btn-phantom').textContent = '👻 Connecter Phantom';
-  document.getElementById('phantom-warning').style.display = 'none';
   document.getElementById('login-error').style.display = 'none';
 }
 
-/* ── EVENTS ── */
 async function loadEvents() {
   try {
-    const res  = await fetch(EVENTS_URL + '?t=' + Date.now());
+    const res = await fetch(EVENTS_URL + '?t=' + Date.now());
     const data = await res.json();
     allEvents = data.events || [];
-    renderEvents();
-  } catch(e) { allEvents = []; renderEvents(); }
+  } catch(e) {
+    allEvents = [];
+  }
+  renderEvents(); // renderEvents appelle renderMiniCal en interne
 }
+
+let activeFilter = 'tous';
 
 function renderEvents() {
   const list = document.getElementById('events-list');
-  if (!allEvents.length) { list.innerHTML = '<div class="empty-state">Aucune opération planifiée — crée la première !</div>'; return; }
-  const sorted = [...allEvents].sort((a,b) => new Date(a.date)-new Date(b.date));
-  const typeLabels  = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
+  const typeLabels = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
   const typeClasses = { fleetop:'type-fleetop', pvp:'type-pvp', mining:'type-mining', event:'type-event' };
+
+  const filtered = activeFilter === 'tous'
+    ? allEvents
+    : allEvents.filter(ev => ev.type === activeFilter);
+
+  if (filtered.length === 0) {
+    list.innerHTML = allEvents.length === 0
+      ? '<div class="empty-state">Aucune opération planifiée — crée la première !</div>'
+      : '<div class="empty-state">Aucune opération de ce type.</div>';
+    renderMiniCal();
+    return;
+  }
+
+  const now = new Date();
+  now.setHours(0,0,0,0);
+  const sorted = [...filtered].sort((a, b) => new Date(a.date) - new Date(b.date));
+
   list.innerHTML = sorted.map(ev => {
-    const d = new Date(ev.date);
-    const canDelete = currentMembre && (currentMembre.admin || currentMembre.dashboard || ev.createdBy === currentMembre.pseudo);
-    return `<div class="event-item" id="ev-${ev.id}">
-      <div class="event-date-badge"><div class="day">${d.getDate()}</div><div class="month">${d.toLocaleDateString('fr-FR',{month:'short'})}</div></div>
-      <div class="event-info">
-        <span class="event-type-badge ${typeClasses[ev.type]||'type-event'}">${typeLabels[ev.type]||ev.type}</span>
-        <div class="event-name">${ev.nom}</div>
-        <div class="event-meta">${ev.heure}h FR · ${ev.description||''} · Par ${ev.createdBy}</div>
+    const d = new Date(ev.date + 'T00:00:00');
+    const day = d.getDate();
+    const month = d.toLocaleDateString('fr-FR', { month: 'short' });
+    const isPast = d < now;
+    const canDelete = currentMembre && (currentMembre.dashboard || ev.createdBy === currentMembre.pseudo);
+    const pastClass = isPast ? 'style="opacity:0.5;filter:grayscale(0.4)"' : '';
+
+    return `
+    <div class="event-item" id="ev-${ev.id}" ${pastClass}>
+      <div class="event-date-badge">
+        <div class="day">${day}</div>
+        <div class="month">${month}</div>
       </div>
-      <div class="event-actions">${canDelete?`<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>`:''}</div>
+      <div class="event-info">
+        <span class="event-type-badge ${typeClasses[ev.type] || 'type-event'}">${typeLabels[ev.type] || ev.type}</span>
+        <div class="event-name">${ev.nom}${isPast ? ' ✓' : ''}</div>
+        <div class="event-meta">${ev.heure}h FR · ${ev.description || ''} · Créé par ${ev.createdBy}</div>
+      </div>
+      <div class="event-actions">
+        ${canDelete ? `<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>` : ''}
+      </div>
     </div>`;
   }).join('');
+
+  renderMiniCal();
+}
+
+function filterEvents(type, btn) {
+  activeFilter = type;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderEvents();
+}
+
+/* ── MINI CALENDRIER ── */
+const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const dayLabels = ['L','M','M','J','V','S','D'];
+const today = new Date();
+let calYear = today.getFullYear();
+let calMonth = today.getMonth();
+
+function renderMiniCal() {
+  const grid = document.getElementById('mini-cal-grid');
+  const label = document.getElementById('cal-month-label');
+  if (!grid || !label) return;
+  label.textContent = monthNames[calMonth] + ' ' + calYear;
+
+  // Construire map date → types pour ce mois
+  const evMap = {};
+  allEvents.forEach(ev => {
+    const d = new Date(ev.date + 'T00:00:00');
+    if (d.getFullYear() === calYear && d.getMonth() === calMonth) {
+      const day = d.getDate();
+      if (!evMap[day]) evMap[day] = [];
+      evMap[day].push(ev.type);
+    }
+  });
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const offset = firstDay === 0 ? 6 : firstDay - 1;
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  let html = dayLabels.map(d => `<div class="day-label">${d}</div>`).join('');
+  for (let i = 0; i < offset; i++) html += `<div class="mcday empty"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear());
+    const hasEv = evMap[d] ? 'has-event' : '';
+    html += `<div class="mcday ${hasEv} ${isToday ? 'today' : ''}">${d}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderMiniCal();
 }
 
 function toggleForm() {
-  if (!currentMembre?.dashboard && !currentMembre?.admin) return;
+  if (!currentMembre?.dashboard) return;
   const form = document.getElementById('form-event');
   form.classList.toggle('visible');
-  if (form.classList.contains('visible')) document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  if (form.classList.contains('visible')) {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('f-date').value = today;
+  }
 }
 
 async function saveEvent() {
-  if (!currentMembre?.dashboard && !currentMembre?.admin) return;
-  const nom  = document.getElementById('f-nom').value.trim();
+  if (!currentMembre?.dashboard) return;
+
+  const nom = document.getElementById('f-nom').value.trim();
   const type = document.getElementById('f-type').value;
   const date = document.getElementById('f-date').value;
-  const heure= document.getElementById('f-heure').value;
+  const heure = document.getElementById('f-heure').value;
   const desc = document.getElementById('f-desc').value.trim();
-  if (!nom||!date) { showToast('❌ Remplis le nom et la date !'); return; }
-  allEvents.push({ id:'ev_'+Date.now(), nom, type, date, heure, description:desc, createdBy:currentMembre.pseudo, createdAt:new Date().toISOString() });
+
+  if (!nom || !date) { showToast('❌ Remplis au moins le nom et la date !'); return; }
+
+  const newEvent = {
+    id: 'ev_' + Date.now(),
+    nom, type, date, heure,
+    description: desc,
+    createdBy: currentMembre.pseudo,
+    createdAt: new Date().toISOString()
+  };
+
+  allEvents.push(newEvent);
   await pushEventsToGitHub();
+
   document.getElementById('form-event').classList.remove('visible');
   document.getElementById('f-nom').value = '';
   document.getElementById('f-desc').value = '';
@@ -1445,74 +886,55 @@ async function deleteEvent(id) {
 }
 
 async function pushEventsToGitHub() {
-  const token = localStorage.getItem('eclypse_admin_token') || '';
-  if (!token) { showToast('⚠️ Token manquant — contacte l\'admin'); return; }
+  // Récupérer le SHA actuel du fichier
   try {
     const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
-    const getRes = await fetch(apiUrl, { headers:{ 'Authorization':`token ${token}`, 'Accept':'application/vnd.github.v3+json' } });
+
+    // Récupérer SHA
+    const getRes = await fetch(apiUrl, {
+      headers: { 'Authorization': `token ${getToken()}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
     const getJson = await getRes.json();
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify({events:allEvents},null,2))));
-    await fetch(apiUrl, { method:'PUT', headers:{ 'Authorization':`token ${token}`, 'Content-Type':'application/json', 'Accept':'application/vnd.github.v3+json' }, body:JSON.stringify({ message:`Update events by ${currentMembre.pseudo}`, content, sha:getJson.sha }) });
-  } catch(e) { showToast('⚠️ Erreur de sauvegarde'); }
-}
+    const sha = getJson.sha;
 
-/* ── CONFIG TOKEN ── */
-function openConfig() {
-  const existing = localStorage.getItem('eclypse_admin_token') || '';
-  document.getElementById('token-input').value = existing ? '••••••••••••' : '';
-  document.getElementById('token-status').style.display = existing ? 'block' : 'none';
-  if (existing) {
-    document.getElementById('token-status').textContent = '✅ Token configuré';
-    document.getElementById('token-status').style.background = 'rgba(94,207,160,0.1)';
-    document.getElementById('token-status').style.color = 'var(--vert)';
-  }
-  document.getElementById('modal-config').classList.add('visible');
-}
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify({ events: allEvents }, null, 2))));
 
-function closeConfig() {
-  document.getElementById('modal-config').classList.remove('visible');
-  document.getElementById('token-input').value = '';
-  document.getElementById('token-status').style.display = 'none';
-}
-
-function saveToken() {
-  const token = document.getElementById('token-input').value.trim();
-  if (!token || token === '••••••••••••') {
-    showStatus('token-status', '❌ Entre un token valide', 'rgba(232,90,90,0.1)', 'var(--rouge)');
-    return;
-  }
-  if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
-    showStatus('token-status', '⚠️ Le token doit commencer par ghp_', 'rgba(201,162,39,0.1)', 'var(--or)');
-    return;
-  }
-  localStorage.setItem('eclypse_admin_token', token);
-  showStatus('token-status', '✅ Token sauvegardé !', 'rgba(94,207,160,0.1)', 'var(--vert)');
-  document.getElementById('token-input').value = '••••••••••••';
-  setTimeout(() => closeConfig(), 1500);
-}
-
-function showStatus(id, msg, bg, color) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.style.background = bg;
-  el.style.color = color;
-  el.style.display = 'block';
-}
-
-/* ── UTILS ── */
-function showError(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; }
-function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(()=>t.style.display='none', 3000); }
-
-// Session existante
-const saved = localStorage.getItem('eclypse_membre') || sessionStorage.getItem('eclypse_membre');
-if (saved) {
-  try {
-    currentMembre = JSON.parse(saved);
-    showDashboard(currentMembre);
+    await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${getToken()}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github.v3+json'
+      },
+      body: JSON.stringify({
+        message: `Update events by ${currentMembre.pseudo}`,
+        content: content,
+        sha: sha
+      })
+    });
   } catch(e) {
-    localStorage.removeItem('eclypse_membre');
-    sessionStorage.removeItem('eclypse_membre');
+    showToast('⚠️ Erreur de sauvegarde');
+    console.error(e);
   }
+}
+
+function getToken() {
+  // Token stocké localement par l'admin — voir README
+  return localStorage.getItem('eclypse_admin_token') || '';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+// Vérifier session existante
+const saved = sessionStorage.getItem('eclypse_membre');
+if (saved) {
+  currentMembre = JSON.parse(saved);
+  showDashboard(currentMembre);
 }
 </script>
 </body>
