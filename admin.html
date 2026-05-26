@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÉCLYPSE — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #030208;
+    --violet: #1a0f2e;
+    --violet-mid: #2d1a50;
+    --violet-glow: #8b5cf6;
+    --or: #c9a227;
+    --or-clair: #e8c547;
+    --texte: #d4c9e8;
+    --texte-pale: #8a7fa0;
+    --border-or: rgba(201,162,39,0.3);
+    --border-violet: rgba(107,53,200,0.4);
+    --cyan: #00d4ff;
+    --rouge: #e85a5a;
+    --vert: #5ecfa0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--noir);
+    color: var(--texte);
+    font-family: 'Crimson Pro', serif;
+    font-size: 17px;
+    min-height: 100vh;
+  }
+
+  /* ══════════════════════════════
+     LOGIN ADMIN
+  ══════════════════════════════ */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #1a0010 0%, #030208 70%);
+  }
+  .login-box {
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 3rem;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    background: rgba(30,5,10,0.7);
+    position: relative;
+  }
+  .login-box::before {
+    content: '';
+    position: absolute; top: -1px; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(to right, transparent, var(--rouge), transparent);
+  }
+  .login-box img { height: 72px; margin-bottom: 1.5rem; opacity: 0.85; }
+  .login-box h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    margin-bottom: 0.4rem;
+  }
+  .login-box .login-sub {
+    font-size: 0.82rem;
+    color: var(--texte-pale);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+  .login-box input {
+    width: 100%;
+    background: rgba(7,6,13,0.9);
+    border: 1px solid rgba(232,90,90,0.25);
+    color: var(--texte);
+    padding: 0.9rem 1.2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    letter-spacing: 0.25em;
+    text-align: center;
+    outline: none;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s;
+  }
+  .login-box input:focus { border-color: var(--rouge); }
+  .login-box button {
+    width: 100%;
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(232,90,90,0.2);
+    border: 1px solid rgba(232,90,90,0.5);
+    padding: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .login-box button:hover { background: rgba(232,90,90,0.35); border-color: var(--rouge); }
+  .login-error {
+    color: var(--rouge); font-size: 0.82rem;
+    margin-top: 1rem; display: none;
+    font-family: 'Cinzel', serif; letter-spacing: 0.1em;
+  }
+
+  /* ══════════════════════════════
+     DASHBOARD ADMIN
+  ══════════════════════════════ */
+  #admin-panel { display: none; }
+
+  .topbar {
+    background: rgba(7,6,13,0.97);
+    border-bottom: 1px solid rgba(232,90,90,0.25);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 1rem; }
+  .topbar-left img { height: 32px; opacity: 0.85; }
+  .topbar-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--rouge);
+  }
+  .topbar-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(232,90,90,0.25);
+    border: 1px solid rgba(232,90,90,0.4);
+    padding: 0.2rem 0.6rem;
+  }
+  .topbar-right { display: flex; align-items: center; gap: 0.8rem; }
+  .topbar-user {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: var(--texte-pale);
+  }
+  .topbar-user span { color: var(--rouge); }
+  .btn-logout {
+    font-family: 'Cinzel', serif; font-size: 0.58rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--texte-pale); background: none;
+    border: 1px solid var(--border-violet);
+    padding: 0.35rem 0.8rem; cursor: pointer; transition: all 0.3s;
+    text-decoration: none;
+  }
+  .btn-logout:hover { border-color: var(--rouge); color: var(--rouge); }
+
+  /* ── CONTENU ── */
+  .admin-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+  }
+
+  /* ── STATS GRID ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .stat-card {
+    border: 1px solid var(--border-violet);
+    padding: 1.5rem 1.2rem;
+    background: rgba(10,8,20,0.8);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .stat-card:hover { border-color: var(--border-or); }
+  .stat-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 2px;
+  }
+  .stat-card.rouge::after { background: linear-gradient(to right, transparent, var(--rouge), transparent); }
+  .stat-card.or::after    { background: linear-gradient(to right, transparent, var(--or), transparent); }
+  .stat-card.vert::after  { background: linear-gradient(to right, transparent, var(--vert), transparent); }
+  .stat-card.cyan::after  { background: linear-gradient(to right, transparent, var(--cyan), transparent); }
+  .stat-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+    margin-bottom: 0.8rem;
+  }
+  .stat-value {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-value.rouge { color: var(--rouge); }
+  .stat-value.or    { color: var(--or); }
+  .stat-value.vert  { color: var(--vert); }
+  .stat-value.cyan  { color: var(--cyan); }
+  .stat-detail {
+    font-size: 0.8rem;
+    color: var(--texte-pale);
+  }
+
+  /* ── SECTION TITRE ── */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border-violet);
+  }
+  .section-header h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+
+  /* ── GRID 2 COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+  .one-col { margin-bottom: 2.5rem; }
+
+  /* ── GÉNÉRATEUR DE CODE ── */
+  .gen-box {
+    border: 1px solid var(--border-violet);
+    padding: 1.8rem;
+    background: rgba(10,8,20,0.8);
+  }
+  .gen-form { display: flex; flex-direction: column; gap: 1rem; }
+  .gen-form label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .gen-form input, .gen-form select {
+    width: 100%;
+    background: rgba(7,6,13,0.9);
+    border: 1px solid var(--border-violet);
+    color: var(--texte);
+    padding: 0.7rem 1rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .gen-form input:focus, .gen-form select:focus { border-color: var(--or); }
+  .gen-form select option { background: #1a0f2e; }
+  .gen-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .code-result {
+    display: none;
+    margin-top: 1rem;
+    border: 1px solid var(--border-or);
+    padding: 1.2rem;
+    background: rgba(201,162,39,0.05);
+    text-align: center;
+  }
+  .code-result.visible { display: block; }
+  .code-generated {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.3em;
+    color: var(--or-clair);
+    margin-bottom: 0.5rem;
+  }
+  .code-type-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--texte-pale);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .btn-copy {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    background: none;
+    border: 1px solid var(--border-or);
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-copy:hover { background: rgba(201,162,39,0.1); }
+
+  /* ── BOUTONS ── */
+  .btn-primary {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--noir);
+    background: var(--or);
+    border: none;
+    padding: 0.75rem 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+  }
+  .btn-primary:hover { background: var(--or-clair); }
+  .btn-danger {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    background: none;
+    border: 1px solid rgba(232,90,90,0.4);
+    padding: 0.75rem 1.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+  }
+  .btn-danger:hover { background: rgba(232,90,90,0.1); }
+  .btn-sm {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+  }
+  .btn-sm.or { color: var(--noir); background: var(--or); }
+  .btn-sm.or:hover { background: var(--or-clair); }
+  .btn-sm.red { color: var(--rouge); background: none; border: 1px solid rgba(232,90,90,0.35); }
+  .btn-sm.red:hover { background: rgba(232,90,90,0.1); }
+  .btn-sm.green { color: var(--vert); background: none; border: 1px solid rgba(94,207,160,0.35); }
+  .btn-sm.green:hover { background: rgba(94,207,160,0.1); }
+
+  /* ── TABLE MEMBRES ── */
+  .table-wrapper {
+    border: 1px solid var(--border-violet);
+    background: rgba(10,8,20,0.8);
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr {
+    border-bottom: 1px solid var(--border-or);
+    background: rgba(26,15,46,0.6);
+  }
+  thead th {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    padding: 0.9rem 1rem;
+    text-align: left;
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid rgba(107,53,200,0.15);
+    transition: background 0.2s;
+  }
+  tbody tr:hover { background: rgba(26,15,46,0.4); }
+  tbody td {
+    padding: 0.8rem 1rem;
+    font-size: 0.88rem;
+    color: var(--texte);
+    vertical-align: middle;
+  }
+  .badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.52rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    display: inline-block;
+  }
+  .badge-actif  { color: var(--vert); border: 1px solid rgba(94,207,160,0.3); }
+  .badge-inactif{ color: var(--rouge); border: 1px solid rgba(232,90,90,0.3); }
+  .badge-admin  { color: var(--rouge); border: 1px solid rgba(232,90,90,0.3); }
+  .badge-dashboard { color: var(--cyan); border: 1px solid rgba(0,212,255,0.3); }
+  .badge-membre { color: var(--texte-pale); border: 1px solid var(--border-violet); }
+  .badge-or     { color: var(--or); border: 1px solid var(--border-or); }
+
+  /* ── LOG CONNEXIONS ── */
+  .log-list {
+    border: 1px solid var(--border-violet);
+    background: rgba(10,8,20,0.8);
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .log-list::-webkit-scrollbar { width: 4px; }
+  .log-list::-webkit-scrollbar-track { background: transparent; }
+  .log-list::-webkit-scrollbar-thumb { background: var(--border-violet); }
+  .log-item {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(107,53,200,0.1);
+    font-size: 0.82rem;
+  }
+  .log-item:last-child { border-bottom: none; }
+  .log-time {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--texte-pale);
+  }
+  .log-pseudo { color: var(--texte); }
+  .log-pseudo strong { color: var(--or-clair); font-style: normal; font-weight: 400; }
+  .log-status { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.15em; }
+  .log-status.ok  { color: var(--vert); }
+  .log-status.fail{ color: var(--rouge); }
+  .log-status.admin{ color: var(--rouge); }
+  .log-empty {
+    padding: 2.5rem;
+    text-align: center;
+    color: var(--texte-pale);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  /* ── CODES GÉNÉRÉS (historique) ── */
+  .codes-list {
+    border: 1px solid var(--border-violet);
+    background: rgba(10,8,20,0.8);
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .code-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(107,53,200,0.1);
+    font-size: 0.82rem;
+  }
+  .code-item:last-child { border-bottom: none; }
+  .code-item .code-val {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--or-clair);
+  }
+  .code-item .code-meta { font-size: 0.75rem; color: var(--texte-pale); }
+  .code-item .code-used {
+    font-family: 'Cinzel', serif;
+    font-size: 0.52rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .code-item .code-used.used { color: var(--vert); }
+  .code-item .code-used.unused { color: var(--texte-pale); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: rgba(26,15,46,0.97);
+    border: 1px solid var(--or);
+    padding: 0.9rem 1.5rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: var(--or);
+    z-index: 999;
+    display: none;
+    animation: fadeUp 0.3s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(8px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .stats-row { grid-template-columns: repeat(2,1fr); }
+    .two-col { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .admin-content { padding: 1.5rem 1rem; }
+    .topbar { flex-wrap: wrap; gap: 0.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ADMIN ══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
+    <h1>Accès Administration</h1>
+    <p class="login-sub">Zone restreinte — Flotte Éclypse</p>
+    <input type="password" id="admin-code-input" placeholder="••••••••••••"
+           onkeydown="if(event.key==='Enter') adminLogin()">
+    <button onclick="adminLogin()">Accéder au panneau admin</button>
+    <p class="login-error" id="login-error">❌ Code administrateur invalide</p>
+  </div>
+</div>
+
+<!-- ══ PANNEAU ADMIN ══ -->
+<div id="admin-panel">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
+      <span class="topbar-title">Centre de Contrôle</span>
+      <span class="topbar-badge">ADMIN</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-user">Connecté : <span id="admin-name">—</span></span>
+      <a href="index.html" class="btn-logout">← Site</a>
+      <button class="btn-logout" onclick="adminLogout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- ── STATS ── -->
+    <div class="stats-row">
+      <div class="stat-card rouge">
+        <div class="stat-label">Membres actifs</div>
+        <div class="stat-value rouge" id="stat-actifs">—</div>
+        <div class="stat-detail">dans membres.json</div>
+      </div>
+      <div class="stat-card or">
+        <div class="stat-label">Connexions aujourd'hui</div>
+        <div class="stat-value or" id="stat-today">—</div>
+        <div class="stat-detail">toutes sessions</div>
+      </div>
+      <div class="stat-card vert">
+        <div class="stat-label">Codes générés</div>
+        <div class="stat-value vert" id="stat-codes">—</div>
+        <div class="stat-detail">membres + admins</div>
+      </div>
+      <div class="stat-card cyan">
+        <div class="stat-label">Codes utilisés</div>
+        <div class="stat-value cyan" id="stat-used">—</div>
+        <div class="stat-detail">activations</div>
+      </div>
+    </div>
+
+    <!-- ── GÉNÉRATEURS ── -->
+    <div class="two-col">
+
+      <!-- GÉNÉRER CODE MEMBRE -->
+      <div>
+        <div class="section-header">
+          <h2>🔑 Générer un code Membre</h2>
+        </div>
+        <div class="gen-box">
+          <div class="gen-form">
+            <div>
+              <label>Pseudo du membre *</label>
+              <input type="text" id="g-pseudo" placeholder="Ex: Vaelthor">
+            </div>
+            <div class="gen-row">
+              <div>
+                <label>Rang</label>
+                <select id="g-rang">
+                  <option>Capitaine</option>
+                  <option>Vétéran</option>
+                  <option>Officier</option>
+                  <option>Fleet Commander</option>
+                </select>
+              </div>
+              <div>
+                <label>Rôle</label>
+                <select id="g-role">
+                  <option>Fighter</option>
+                  <option>Miner</option>
+                  <option>Scout</option>
+                  <option>Support</option>
+                  <option>Fleet Commander</option>
+                  <option>Trader</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label>Accès dashboard (créer des ops)</label>
+              <select id="g-dashboard">
+                <option value="false">Non — membre standard</option>
+                <option value="true">Oui — officier+</option>
+              </select>
+            </div>
+            <button class="btn-primary" onclick="genererCodeMembre()">✦ Générer le code membre</button>
+          </div>
+          <div class="code-result" id="result-membre">
+            <div class="code-generated" id="code-membre-val">—</div>
+            <span class="code-type-label">Code d'accès Membre</span>
+            <button class="btn-copy" onclick="copierCode('code-membre-val')">Copier le code</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- GÉNÉRER CODE ADMIN -->
+      <div>
+        <div class="section-header">
+          <h2>🔒 Générer un code Admin</h2>
+        </div>
+        <div class="gen-box">
+          <div class="gen-form">
+            <div>
+              <label>Nom de l'administrateur *</label>
+              <input type="text" id="g-admin-nom" placeholder="Ex: FVCK">
+            </div>
+            <div>
+              <label>Niveau d'accès</label>
+              <select id="g-admin-level">
+                <option value="moderateur">Modérateur — lecture + gestion events</option>
+                <option value="admin">Admin — accès complet</option>
+                <option value="superadmin">Super Admin — génération de codes</option>
+              </select>
+            </div>
+            <div>
+              <label>Note (optionnel)</label>
+              <input type="text" id="g-admin-note" placeholder="Ex: accès temporaire">
+            </div>
+            <button class="btn-danger" onclick="genererCodeAdmin()">⚠ Générer le code admin</button>
+          </div>
+          <div class="code-result" id="result-admin">
+            <div class="code-generated" id="code-admin-val">—</div>
+            <span class="code-type-label">Code d'accès Administrateur</span>
+            <button class="btn-copy" onclick="copierCode('code-admin-val')">Copier le code</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── HISTORIQUE CODES ── -->
+    <div class="one-col">
+      <div class="section-header">
+        <h2>📋 Codes générés — Historique</h2>
+        <button class="btn-sm red" onclick="effacerHistoCodes()">Vider l'historique</button>
+      </div>
+      <div class="codes-list" id="codes-list">
+        <div class="log-empty">Aucun code généré pour l'instant.</div>
+      </div>
+    </div>
+
+    <!-- ── JOURNAL DE CONNEXIONS ── -->
+    <div class="one-col">
+      <div class="section-header">
+        <h2>📡 Journal des connexions</h2>
+        <button class="btn-sm red" onclick="effacerLogs()">Vider les logs</button>
+      </div>
+      <div class="log-list" id="log-list">
+        <div class="log-empty">Aucune connexion enregistrée.</div>
+      </div>
+    </div>
+
+    <!-- ── LISTE MEMBRES ── -->
+    <div class="one-col">
+      <div class="section-header">
+        <h2>👥 Membres enregistrés</h2>
+        <span style="font-family:'Cinzel',serif;font-size:0.6rem;color:var(--texte-pale);letter-spacing:0.15em;">Lecture depuis membres.json</span>
+      </div>
+      <div class="table-wrapper">
+        <table id="membres-table">
+          <thead>
+            <tr>
+              <th>Pseudo</th>
+              <th>Rang</th>
+              <th>Rôle</th>
+              <th>Faction</th>
+              <th>Code accès</th>
+              <th>Dashboard</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="membres-tbody">
+            <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--texte-pale);font-style:italic;">Chargement…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /admin-content -->
+</div><!-- /admin-panel -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIGURATION
+══════════════════════════════════════════════ */
+const REPO_OWNER  = 'osvalt16';
+const REPO_NAME   = 'Eclype_sa';
+const MEMBRES_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/membres.json`;
+
+// Comptes admin — stockés localement (ne jamais mettre dans un repo public)
+// Format : { code, nom, level }
+const ADMIN_ACCOUNTS = [
+  { code: 'ADM-ECLYPSE-X9K2', nom: 'FVCK', level: 'superadmin' }
+];
+
+let currentAdmin = null;
+
+/* ══════════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════════ */
+function adminLogin() {
+  const saisie = document.getElementById('admin-code-input').value.trim().toUpperCase();
+  if (!saisie) return;
+
+  const compte = ADMIN_ACCOUNTS.find(a => a.code.toUpperCase() === saisie);
+  if (!compte) {
+    document.getElementById('login-error').style.display = 'block';
+    logConnexion('???', 'ECHEC — code admin invalide', 'fail');
+    return;
+  }
+
+  currentAdmin = compte;
+  sessionStorage.setItem('eclypse_admin', JSON.stringify(compte));
+  logConnexion(compte.nom, `Connexion admin (${compte.level})`, 'admin');
+  afficherPanel(compte);
+}
+
+function afficherPanel(compte) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+  document.getElementById('admin-name').textContent = compte.nom + ' · ' + compte.level;
+  chargerStats();
+  renderLogs();
+  renderHistoCodes();
+  chargerMembres();
+}
+
+function adminLogout() {
+  sessionStorage.removeItem('eclypse_admin');
+  currentAdmin = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-code-input').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════
+   STATS
+══════════════════════════════════════════════ */
+async function chargerStats() {
+  // Membres actifs depuis GitHub
+  try {
+    const res = await fetch(MEMBRES_URL + '?t=' + Date.now());
+    const data = await res.json();
+    const actifs = data.membres.filter(m => m.actif).length;
+    document.getElementById('stat-actifs').textContent = actifs;
+  } catch(e) {
+    document.getElementById('stat-actifs').textContent = '—';
+  }
+
+  // Stats depuis localStorage
+  const logs  = getLogs();
+  const codes = getHistoCodes();
+  const today = new Date().toDateString();
+  const todayCount = logs.filter(l => new Date(l.ts).toDateString() === today).length;
+
+  document.getElementById('stat-today').textContent = todayCount;
+  document.getElementById('stat-codes').textContent = codes.length;
+  document.getElementById('stat-used').textContent  = codes.filter(c => c.used).length;
+}
+
+/* ══════════════════════════════════════════════
+   GÉNÉRATEUR DE CODES
+══════════════════════════════════════════════ */
+function randSegment(len) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length: len}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+function genererCodeMembre() {
+  const pseudo = document.getElementById('g-pseudo').value.trim();
+  if (!pseudo) { showToast('❌ Entre un pseudo'); return; }
+
+  const rang      = document.getElementById('g-rang').value;
+  const role      = document.getElementById('g-role').value;
+  const dashboard = document.getElementById('g-dashboard').value === 'true';
+
+  // Format : ECL-PSEUDO(4)-XXXX
+  const slug = pseudo.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4).padEnd(3,'X');
+  const code = `ECL-${slug}-${randSegment(4)}`;
+
+  document.getElementById('code-membre-val').textContent = code;
+  document.getElementById('result-membre').classList.add('visible');
+
+  sauvegarderCode({
+    code, type: 'membre', pour: pseudo,
+    rang, role, dashboard,
+    ts: new Date().toISOString(), used: false
+  });
+
+  chargerStats();
+  renderHistoCodes();
+  showToast('✦ Code membre généré !');
+}
+
+function genererCodeAdmin() {
+  const nom   = document.getElementById('g-admin-nom').value.trim();
+  const level = document.getElementById('g-admin-level').value;
+  const note  = document.getElementById('g-admin-note').value.trim();
+  if (!nom) { showToast('❌ Entre un nom'); return; }
+
+  // Format : ADM-NOM(3)-XXXX-XX
+  const slug = nom.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,3).padEnd(3,'X');
+  const code = `ADM-${slug}-${randSegment(4)}-${randSegment(2)}`;
+
+  document.getElementById('code-admin-val').textContent = code;
+  document.getElementById('result-admin').classList.add('visible');
+
+  sauvegarderCode({
+    code, type: 'admin', pour: nom,
+    level, note,
+    ts: new Date().toISOString(), used: false
+  });
+
+  chargerStats();
+  renderHistoCodes();
+  showToast('⚠ Code admin généré — à transmettre en privé !');
+}
+
+function copierCode(id) {
+  const val = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(val).then(() => showToast('Code copié !'));
+}
+
+/* ══════════════════════════════════════════════
+   HISTORIQUE CODES (localStorage)
+══════════════════════════════════════════════ */
+function getHistoCodes() {
+  try { return JSON.parse(localStorage.getItem('eclypse_codes') || '[]'); } catch { return []; }
+}
+function sauvegarderCode(entry) {
+  const list = getHistoCodes();
+  list.unshift(entry);
+  localStorage.setItem('eclypse_codes', JSON.stringify(list.slice(0, 200)));
+}
+function effacerHistoCodes() {
+  if (!confirm('Vider l\'historique des codes générés ?')) return;
+  localStorage.removeItem('eclypse_codes');
+  renderHistoCodes();
+  chargerStats();
+  showToast('Historique vidé');
+}
+function renderHistoCodes() {
+  const list = getHistoCodes();
+  const el = document.getElementById('codes-list');
+  if (!list.length) {
+    el.innerHTML = '<div class="log-empty">Aucun code généré.</div>';
+    return;
+  }
+  el.innerHTML = list.map(c => {
+    const d = new Date(c.ts);
+    const date = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+    const typeColor = c.type === 'admin' ? 'badge-admin' : 'badge-dashboard';
+    const typeLabel = c.type === 'admin' ? 'ADMIN' : 'MEMBRE';
+    return `<div class="code-item">
+      <div>
+        <div class="code-val">${c.code}</div>
+        <div class="code-meta">${c.pour} · ${c.rang || c.level || ''} · ${date}</div>
+      </div>
+      <span class="badge ${typeColor}">${typeLabel}</span>
+      <span class="code-used ${c.used ? 'used' : 'unused'}">${c.used ? '✓ Utilisé' : '— En attente'}</span>
+      <button class="btn-sm red" onclick="supprimerCode('${c.code}')">✕</button>
+    </div>`;
+  }).join('');
+}
+function supprimerCode(code) {
+  const list = getHistoCodes().filter(c => c.code !== code);
+  localStorage.setItem('eclypse_codes', JSON.stringify(list));
+  renderHistoCodes();
+  chargerStats();
+}
+
+/* ══════════════════════════════════════════════
+   LOGS DE CONNEXION (localStorage)
+══════════════════════════════════════════════ */
+function getLogs() {
+  try { return JSON.parse(localStorage.getItem('eclypse_logs') || '[]'); } catch { return []; }
+}
+function logConnexion(pseudo, detail, status) {
+  const logs = getLogs();
+  logs.unshift({ pseudo, detail, status, ts: new Date().toISOString() });
+  localStorage.setItem('eclypse_logs', JSON.stringify(logs.slice(0, 500)));
+}
+function effacerLogs() {
+  if (!confirm('Vider tous les logs de connexion ?')) return;
+  localStorage.removeItem('eclypse_logs');
+  renderLogs();
+  chargerStats();
+  showToast('Logs vidés');
+}
+function renderLogs() {
+  const logs = getLogs();
+  const el = document.getElementById('log-list');
+  if (!logs.length) {
+    el.innerHTML = '<div class="log-empty">Aucune connexion enregistrée.</div>';
+    return;
+  }
+  el.innerHTML = logs.map(l => {
+    const d = new Date(l.ts);
+    const ts = d.toLocaleDateString('fr-FR') + ' · ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    return `<div class="log-item">
+      <div class="log-time">${ts}</div>
+      <div class="log-pseudo"><strong>${l.pseudo}</strong> — ${l.detail}</div>
+      <div class="log-status ${l.status}">${l.status.toUpperCase()}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════
+   LISTE MEMBRES (depuis GitHub)
+══════════════════════════════════════════════ */
+async function chargerMembres() {
+  const tbody = document.getElementById('membres-tbody');
+  try {
+    const res = await fetch(MEMBRES_URL + '?t=' + Date.now());
+    const data = await res.json();
+    if (!data.membres.length) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--texte-pale);font-style:italic;">Aucun membre</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.membres.map(m => `
+      <tr>
+        <td style="font-family:'Cinzel',serif;color:#fff;">${m.pseudo}</td>
+        <td>${m.rang}</td>
+        <td>${m.role}</td>
+        <td>${m.faction}</td>
+        <td style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.12em;color:var(--or-clair);">${m.code}</td>
+        <td><span class="badge ${m.dashboard ? 'badge-dashboard' : 'badge-membre'}">${m.dashboard ? 'Oui' : 'Non'}</span></td>
+        <td><span class="badge ${m.actif ? 'badge-actif' : 'badge-inactif'}">${m.actif ? 'Actif' : 'Inactif'}</span></td>
+      </tr>`).join('');
+  } catch(e) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--rouge);">Erreur de chargement</td></tr>';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.display = 'none', 3000);
+}
+
+/* ══════════════════════════════════════════════
+   SESSION PERSISTANTE
+══════════════════════════════════════════════ */
+const saved = sessionStorage.getItem('eclypse_admin');
+if (saved) {
+  currentAdmin = JSON.parse(saved);
+  afficherPanel(currentAdmin);
+}
+
+// Intercepter les connexions membres depuis dashboard.html
+// (dashboard.html doit appeler window.eclypseLogLogin(pseudo, ok))
+window.eclypseLogLogin = function(pseudo, success) {
+  logConnexion(pseudo, success ? 'Connexion dashboard membre' : 'Tentative échouée', success ? 'ok' : 'fail');
+};
+</script>
+</body>
+</html>

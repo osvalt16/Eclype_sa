@@ -682,12 +682,24 @@ async function login() {
     );
 
     if (!membre) {
+      // Log tentative échouée
+      try {
+        const logs = JSON.parse(localStorage.getItem('eclypse_logs') || '[]');
+        logs.unshift({ pseudo: code, detail: 'Tentative de connexion échouée', status: 'fail', ts: new Date().toISOString() });
+        localStorage.setItem('eclypse_logs', JSON.stringify(logs.slice(0,500)));
+      } catch(e){}
       document.getElementById('login-error').style.display = 'block';
       return;
     }
 
     currentMembre = membre;
     sessionStorage.setItem('eclypse_membre', JSON.stringify(membre));
+    // Log connexion pour le panneau admin
+    try {
+      const logs = JSON.parse(localStorage.getItem('eclypse_logs') || '[]');
+      logs.unshift({ pseudo: membre.pseudo, detail: `Connexion dashboard (${membre.rang})`, status: 'ok', ts: new Date().toISOString() });
+      localStorage.setItem('eclypse_logs', JSON.stringify(logs.slice(0,500)));
+    } catch(e){}
     showDashboard(membre);
 
   } catch(e) {
