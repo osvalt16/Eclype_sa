@@ -637,6 +637,125 @@
     .form-wrapper { padding:2rem 1.5rem; }
     .planning-locked { padding: 2.5rem 1.5rem; }
   }
+
+  /* ── PLANNING UNLOCKED ── */
+  .planning-unlocked { display: none; }
+  .planning-unlocked.visible { display: block; }
+
+  /* Bandeau membre connecté dans la nav */
+  .nav-member-bar {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .nav-member-bar.visible { display: flex; }
+  .nav-member-info {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    color: var(--texte-pale);
+  }
+  .nav-member-info span { color: var(--or-clair); }
+  .nav-btn-disconnect {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rouge);
+    background: none;
+    border: 1px solid rgba(232,90,90,0.3);
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .nav-btn-disconnect:hover { background: rgba(232,90,90,0.1); border-color: var(--rouge); }
+
+  /* Calendrier déverrouillé — layout */
+  .cal-unlocked-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+    align-items: start;
+  }
+  .cal-tabs {
+    display: flex; gap: 0; margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-violet);
+  }
+  .cal-tab {
+    font-family: 'Cinzel', serif; font-size: 0.62rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--texte-pale); background: none; border: none;
+    padding: 0.75rem 1.2rem; cursor: pointer; position: relative; transition: color 0.3s;
+  }
+  .cal-tab::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 2px; background: var(--or); transition: width 0.3s; }
+  .cal-tab:hover { color: var(--texte); }
+  .cal-tab.active { color: var(--or); }
+  .cal-tab.active::after { width: 100%; }
+  .cal-events-list { display: flex; flex-direction: column; gap: 1rem; }
+  .cal-event-card {
+    display: grid; grid-template-columns: 60px 1fr auto;
+    gap: 1.2rem; align-items: center;
+    border: 1px solid var(--border-violet);
+    padding: 1.2rem 1.5rem;
+    background: rgba(7,6,13,0.7);
+    transition: all 0.3s;
+  }
+  .cal-event-card:hover { border-color: var(--border-or); transform: translateX(3px); }
+  .cal-event-card.past { opacity: 0.45; filter: grayscale(0.4); }
+  .ev-date-col { text-align: center; border-right: 1px solid var(--border-violet); padding-right: 1.2rem; }
+  .ev-day { font-family: 'Cinzel Decorative', serif; font-size: 1.9rem; color: var(--or); line-height: 1; }
+  .ev-month { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--texte-pale); margin-top: 0.2rem; }
+  .ev-type-tag { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.15rem 0.6rem; display: inline-block; margin-bottom: 0.4rem; }
+  .tag-fleetop { color: #e85a5a; border: 1px solid rgba(232,90,90,0.3); background: rgba(232,90,90,0.06); }
+  .tag-pvp     { color: var(--violet-glow); border: 1px solid rgba(139,92,246,0.3); background: rgba(139,92,246,0.06); }
+  .tag-event   { color: var(--or); border: 1px solid var(--border-or); background: rgba(201,162,39,0.06); }
+  .tag-mining  { color: var(--vert); border: 1px solid rgba(94,207,160,0.3); background: rgba(94,207,160,0.06); }
+  .ev-name-txt { font-family: 'Cinzel', serif; font-size: 0.88rem; color: #fff; margin-bottom: 0.2rem; }
+  .ev-meta-txt { font-size: 0.82rem; color: var(--texte-pale); }
+  .ev-heure-col { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--or-clair); text-align: right; white-space: nowrap; }
+  .ev-heure-col small { display: block; font-size: 0.55rem; letter-spacing: 0.12em; color: var(--texte-pale); margin-top: 0.2rem; text-transform: uppercase; }
+  .cal-empty-state { text-align: center; padding: 3rem; color: var(--texte-pale); border: 1px dashed var(--border-violet); font-style: italic; }
+
+  /* Mini cal dans la section */
+  .mini-cal-section {
+    border: 1px solid var(--border-or);
+    background: rgba(10,8,20,0.85);
+    padding: 1.6rem;
+    position: sticky; top: 90px;
+  }
+  .mcs-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; }
+  .mcs-title { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--or); }
+  .mcs-nav { background: none; border: 1px solid var(--border-violet); color: var(--texte-pale); width: 26px; height: 26px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+  .mcs-nav:hover { border-color: var(--or); color: var(--or); }
+  .mcs-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; text-align: center; }
+  .mcs-grid .mcs-dl { font-family: 'Cinzel', serif; font-size: 0.48rem; color: var(--texte-pale); padding-bottom: 0.4rem; text-transform: uppercase; }
+  .mcs-grid .mcs-dd { font-size: 0.75rem; color: var(--texte-pale); padding: 0.3rem 0; border-radius: 2px; position: relative; }
+  .mcs-grid .mcs-dd.has-ev { color: var(--or-clair); font-family: 'Cinzel', serif; }
+  .mcs-grid .mcs-dd.has-ev::after { content: '•'; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); font-size: 0.4rem; color: var(--or); }
+  .mcs-grid .mcs-dd.today { background: rgba(107,53,200,0.3); border: 1px solid var(--border-violet); color: #fff; }
+  .mcs-grid .mcs-dd.empty { color: transparent; }
+  .mcs-legend { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border-violet); }
+  .mcs-legend-title { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--texte-pale); margin-bottom: 0.8rem; }
+  .mcs-legend-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.78rem; color: var(--texte-pale); margin-bottom: 0.4rem; }
+  .mcs-legend-dot { width: 7px; height: 7px; border-radius: 1px; flex-shrink: 0; }
+
+  /* Déconnexion planning */
+  .planning-member-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border-violet);
+    background: rgba(26,15,46,0.4);
+  }
+  .pmb-info { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--texte-pale); }
+  .pmb-info span { color: var(--or-clair); }
+  .pmb-actions { display: flex; gap: 0.6rem; align-items: center; }
+  .pmb-link { font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--texte-pale); text-decoration: none; border: 1px solid var(--border-violet); padding: 0.3rem 0.7rem; transition: all 0.3s; }
+  .pmb-link:hover { border-color: var(--or); color: var(--or); }
+  .pmb-logout { font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rouge); background: none; border: 1px solid rgba(232,90,90,0.3); padding: 0.3rem 0.7rem; cursor: pointer; transition: all 0.3s; }
+  .pmb-logout:hover { background: rgba(232,90,90,0.1); }
+
+  @media (max-width:900px) { .cal-unlocked-layout { grid-template-columns: 1fr; } .mini-cal-section { position: static; } }
 </style>
 </head>
 <body>
@@ -893,7 +1012,7 @@
   </div>
 </section>
 
-<!-- PLANNING LOCKED -->
+<!-- PLANNING -->
 <section id="calendrier">
   <div class="container">
     <p class="section-label reveal" style="text-align:center">Planning</p>
@@ -903,7 +1022,9 @@
       <div class="ornament-diamond"></div>
       <div class="ornament-line right"></div>
     </div>
-    <div class="planning-locked reveal">
+
+    <!-- BLOC CADENAS — visiteur non connecté -->
+    <div class="planning-locked reveal" id="planning-locked">
       <div class="lock-glow"></div>
       <div class="lock-icon">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -925,6 +1046,54 @@
       <a href="dashboard.html" class="lock-btn">Accéder au Dashboard →</a>
       <p class="lock-sub">Pas encore membre ? <a href="#candidature">Postuler ici</a></p>
     </div>
+
+    <!-- PLANNING DÉVERROUILLÉ — membre/admin connecté -->
+    <div class="planning-unlocked" id="planning-unlocked">
+
+      <!-- Bandeau membre -->
+      <div class="planning-member-bar">
+        <div class="pmb-info">Connecté en tant que : <span id="pmb-pseudo">—</span> · <span id="pmb-rang">—</span></div>
+        <div class="pmb-actions">
+          <a href="dashboard.html" class="pmb-link">Dashboard →</a>
+          <button class="pmb-logout" onclick="deconnecterMembre()">Déconnexion</button>
+        </div>
+      </div>
+
+      <!-- Filtres -->
+      <div class="cal-tabs">
+        <button class="cal-tab active" onclick="filtrerCal('tous',this)">Tous</button>
+        <button class="cal-tab" onclick="filtrerCal('fleetop',this)">Fleet Op</button>
+        <button class="cal-tab" onclick="filtrerCal('pvp',this)">PvP</button>
+        <button class="cal-tab" onclick="filtrerCal('event',this)">Événements</button>
+        <button class="cal-tab" onclick="filtrerCal('mining',this)">Mining</button>
+      </div>
+
+      <div class="cal-unlocked-layout">
+        <!-- Liste events -->
+        <div class="cal-events-list" id="cal-events-list">
+          <div class="cal-empty-state">Chargement des opérations…</div>
+        </div>
+        <!-- Mini calendrier -->
+        <div>
+          <div class="mini-cal-section">
+            <div class="mcs-header">
+              <button class="mcs-nav" onclick="mcsNav(-1)">&#8592;</button>
+              <div class="mcs-title" id="mcs-month-label"></div>
+              <button class="mcs-nav" onclick="mcsNav(1)">&#8594;</button>
+            </div>
+            <div class="mcs-grid" id="mcs-grid"></div>
+            <div class="mcs-legend">
+              <div class="mcs-legend-title">Légende</div>
+              <div class="mcs-legend-item"><div class="mcs-legend-dot" style="background:#e85a5a"></div>Fleet Op</div>
+              <div class="mcs-legend-item"><div class="mcs-legend-dot" style="background:#8b5cf6"></div>PvP / Guild War</div>
+              <div class="mcs-legend-item"><div class="mcs-legend-dot" style="background:#c9a227"></div>Événement SAGE</div>
+              <div class="mcs-legend-item"><div class="mcs-legend-dot" style="background:#5ecfa0"></div>Mining Run</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1146,7 +1315,158 @@ function handleSubmit() {
   }, 4000);
 }
 
-/* Calendrier déplacé dans dashboard.html */
+/* ── PLANNING — GESTION SESSION ── */
+const EVENTS_URL_IDX = 'https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/events.json';
+const monthNamesIdx  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const dayLabelsIdx   = ['L','M','M','J','V','S','D'];
+const todayIdx = new Date();
+let mcsYear  = todayIdx.getFullYear();
+let mcsMonth = todayIdx.getMonth();
+let calEvents = [];
+let calFilter = 'tous';
+let sessionMembre = null;
+
+function verifierSession() {
+  // Vérifie membre connecté (depuis dashboard) ou admin (depuis admin)
+  const membre = sessionStorage.getItem('eclypse_membre');
+  const admin  = sessionStorage.getItem('eclypse_admin');
+  if (membre) {
+    try { sessionMembre = JSON.parse(membre); } catch(e) {}
+  } else if (admin) {
+    try {
+      const a = JSON.parse(admin);
+      sessionMembre = { pseudo: a.nom, rang: a.level, _isAdmin: true };
+    } catch(e) {}
+  }
+
+  if (sessionMembre) {
+    // Afficher le planning déverrouillé
+    document.getElementById('planning-locked').style.display = 'none';
+    document.getElementById('planning-unlocked').classList.add('visible');
+    document.getElementById('pmb-pseudo').textContent = sessionMembre.pseudo;
+    document.getElementById('pmb-rang').textContent   = sessionMembre._isAdmin ? '★ Admin' : (sessionMembre.rang || 'Membre');
+    // Mettre à jour la nav
+    mettreAJourNav();
+    // Charger les events
+    chargerEventsIndex();
+  }
+}
+
+function mettreAJourNav() {
+  // Cacher les boutons connexion, afficher info membre
+  document.querySelectorAll('.nav-btn-membre, .nav-btn-admin').forEach(b => b.style.display = 'none');
+  // Ajouter bandeau membre dans la nav si pas déjà là
+  let bar = document.getElementById('nav-member-bar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'nav-member-bar';
+    bar.className = 'nav-member-bar visible';
+    bar.innerHTML = `
+      <span class="nav-member-info">✦ <span>${sessionMembre.pseudo}</span></span>
+      <button class="nav-btn-disconnect" onclick="deconnecterMembre()">Déco</button>
+    `;
+    const navRight = document.querySelector('.nav-right');
+    if (navRight) navRight.insertBefore(bar, navRight.firstChild);
+  }
+}
+
+function deconnecterMembre() {
+  sessionStorage.removeItem('eclypse_membre');
+  sessionStorage.removeItem('eclypse_admin');
+  sessionMembre = null;
+  // Réafficher cadenas
+  document.getElementById('planning-locked').style.display = '';
+  document.getElementById('planning-unlocked').classList.remove('visible');
+  // Réafficher boutons connexion
+  document.querySelectorAll('.nav-btn-membre, .nav-btn-admin').forEach(b => b.style.display = '');
+  const bar = document.getElementById('nav-member-bar');
+  if (bar) bar.remove();
+}
+
+async function chargerEventsIndex() {
+  try {
+    const res  = await fetch(EVENTS_URL_IDX + '?t=' + Date.now());
+    const data = await res.json();
+    calEvents = data.events || [];
+  } catch(e) { calEvents = []; }
+  renderCalEvents();
+  renderMcsGrid();
+}
+
+function filtrerCal(type, btn) {
+  calFilter = type;
+  document.querySelectorAll('.cal-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderCalEvents();
+}
+
+function renderCalEvents() {
+  const list = document.getElementById('cal-events-list');
+  const typeLabels  = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
+  const typeClasses = { fleetop:'tag-fleetop', pvp:'tag-pvp', mining:'tag-mining', event:'tag-event' };
+  const now = new Date(); now.setHours(0,0,0,0);
+
+  let filtered = calFilter === 'tous' ? calEvents : calEvents.filter(e => e.type === calFilter);
+  filtered = [...filtered].sort((a,b) => new Date(a.date) - new Date(b.date));
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="cal-empty-state">Aucune opération planifiée pour le moment.</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(ev => {
+    const d    = new Date(ev.date + 'T00:00:00');
+    const past = d < now;
+    const day  = d.getDate();
+    const mon  = monthNamesIdx[d.getMonth()].slice(0,3);
+    return `<div class="cal-event-card ${past?'past':''}">
+      <div class="ev-date-col">
+        <div class="ev-day">${day}</div>
+        <div class="ev-month">${mon}</div>
+      </div>
+      <div>
+        <span class="ev-type-tag ${typeClasses[ev.type]||'tag-event'}">${typeLabels[ev.type]||ev.type}</span>
+        <div class="ev-name-txt">${ev.nom}${past?' ✓':''}</div>
+        <div class="ev-meta-txt">${ev.heure}h FR · ${ev.description||''} · ${ev.createdBy||''}</div>
+      </div>
+      <div class="ev-heure-col">${ev.heure}<small>heure FR</small></div>
+    </div>`;
+  }).join('');
+}
+
+function renderMcsGrid() {
+  const grid  = document.getElementById('mcs-grid');
+  const label = document.getElementById('mcs-month-label');
+  if (!grid || !label) return;
+  label.textContent = monthNamesIdx[mcsMonth] + ' ' + mcsYear;
+
+  const evMap = {};
+  calEvents.forEach(ev => {
+    const d = new Date(ev.date + 'T00:00:00');
+    if (d.getFullYear() === mcsYear && d.getMonth() === mcsMonth) evMap[d.getDate()] = true;
+  });
+
+  const firstDay = new Date(mcsYear, mcsMonth, 1).getDay();
+  const offset   = firstDay === 0 ? 6 : firstDay - 1;
+  const total    = new Date(mcsYear, mcsMonth + 1, 0).getDate();
+  let html = dayLabelsIdx.map(d => `<div class="mcs-dl">${d}</div>`).join('');
+  for (let i = 0; i < offset; i++) html += '<div class="mcs-dd empty"></div>';
+  for (let d = 1; d <= total; d++) {
+    const isT = d === todayIdx.getDate() && mcsMonth === todayIdx.getMonth() && mcsYear === todayIdx.getFullYear();
+    html += `<div class="mcs-dd ${evMap[d]?'has-ev':''} ${isT?'today':''}">${d}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function mcsNav(dir) {
+  mcsMonth += dir;
+  if (mcsMonth > 11) { mcsMonth = 0; mcsYear++; }
+  if (mcsMonth < 0)  { mcsMonth = 11; mcsYear--; }
+  renderMcsGrid();
+}
+
+// Lancer la vérification de session au chargement
+verifierSession();
 </script>
 </body>
 </html>
