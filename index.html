@@ -314,24 +314,29 @@
     background:linear-gradient(to bottom,var(--noir-deep),rgba(26,15,46,0.5),var(--noir-deep));
   }
   .membres-grid {
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+    gap:1rem;
   }
   .membre-card {
-    text-align:center; padding:2.5rem 1.5rem 2rem;
+    text-align:center;
+    padding:1.5rem 0.8rem 1.2rem;
     border:1px solid var(--border-violet); background:rgba(7,6,13,0.8);
     transition:all 0.3s; position:relative;
+    aspect-ratio:2/3;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
   }
   .membre-card.chef {
     border-color:var(--border-or); background:rgba(26,15,46,0.7);
   }
   .membre-card:hover {
-    transform:translateY(-5px); box-shadow:0 20px 50px rgba(107,53,200,0.2);
+    transform:translateY(-4px); box-shadow:0 15px 40px rgba(107,53,200,0.25);
   }
-  .membre-card.chef:hover { box-shadow:0 20px 50px rgba(201,162,39,0.2); }
+  .membre-card.chef:hover { box-shadow:0 15px 40px rgba(201,162,39,0.25); }
   .membre-avatar {
-    width:70px; height:70px; border-radius:50%;
-    margin:0 auto 1.2rem; display:flex; align-items:center; justify-content:center;
-    font-family:'Cinzel Decorative',serif; font-size:1.4rem; font-weight:700;
+    width:56px; height:56px; border-radius:50%;
+    margin:0 auto 0.9rem; display:flex; align-items:center; justify-content:center;
+    font-family:'Cinzel Decorative',serif; font-size:1.1rem; font-weight:700;
     border:2px solid var(--border-violet);
     background:var(--violet-sombre); color:var(--violet-glow);
   }
@@ -339,29 +344,29 @@
     border-color:var(--or); background:rgba(26,15,46,0.9); color:var(--or);
   }
   .membre-rank {
-    font-family:'Cinzel',serif; font-size:0.58rem;
-    letter-spacing:0.3em; text-transform:uppercase;
-    color:var(--texte-pale); margin-bottom:0.4rem;
+    font-family:'Cinzel',serif; font-size:0.5rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--texte-pale); margin-bottom:0.3rem;
   }
   .chef .membre-rank { color:var(--or); }
   .membre-name {
-    font-family:'Cinzel',serif; font-size:0.95rem; color:#fff; margin-bottom:0.3rem;
+    font-family:'Cinzel',serif; font-size:0.78rem; color:#fff; margin-bottom:0.2rem;
   }
   .membre-classe {
-    font-size:0.8rem; color:var(--texte-pale);
-    font-style:italic; margin-bottom:1.2rem;
+    font-size:0.68rem; color:var(--texte-pale);
+    font-style:italic; margin-bottom:0.8rem;
   }
   .membre-xp {
-    font-family:'Cinzel',serif; font-size:0.6rem;
-    letter-spacing:0.15em; color:var(--cyan);
-    margin-bottom:0.8rem;
+    font-family:'Cinzel',serif; font-size:0.52rem;
+    letter-spacing:0.1em; color:var(--cyan);
+    margin-bottom:0.6rem;
   }
   .membre-zink {
-    display:inline-flex; align-items:center; gap:0.45rem;
-    font-family:'Cinzel',serif; font-size:0.55rem;
-    letter-spacing:0.2em; text-transform:uppercase;
+    display:inline-flex; align-items:center; gap:0.3rem;
+    font-family:'Cinzel',serif; font-size:0.45rem;
+    letter-spacing:0.12em; text-transform:uppercase;
     color:var(--texte-pale); text-decoration:none;
-    border:1px solid rgba(138,127,160,0.3); padding:0.4rem 0.9rem;
+    border:1px solid rgba(138,127,160,0.3); padding:0.3rem 0.6rem;
     transition:all 0.3s;
   }
   .membre-zink:hover {
