@@ -551,7 +551,14 @@
                   <option value="true">Oui — officier+</option>
                 </select>
               </div>
-              <button class="btn-primary" onclick="genererCodeMembre()">✦ Générer le code membre</button>
+              <div>
+                <label>Accès Admin (panel admin + membre)</label>
+                <select id="g-admin-access">
+                  <option value="false">Non</option>
+                  <option value="true">Oui — accès admin complet</option>
+                </select>
+              </div>
+            <button class="btn-primary" onclick="genererCodeMembre()">✦ Générer le code membre</button>
             </div>
             <div class="code-result" id="result-membre">
               <div class="code-generated" id="code-membre-val">—</div>
@@ -913,16 +920,19 @@ function randSegment(len) {
 function genererCodeMembre() {
   const pseudo = document.getElementById('g-pseudo').value.trim();
   if (!pseudo) { showToast('❌ Entre un pseudo'); return; }
-  const rang      = document.getElementById('g-rang').value;
-  const role      = document.getElementById('g-role').value;
-  const dashboard = document.getElementById('g-dashboard').value === 'true';
+  const rang        = document.getElementById('g-rang').value;
+  const role        = document.getElementById('g-role').value;
+  const dashboard   = document.getElementById('g-dashboard').value === 'true';
+  const adminAccess = document.getElementById('g-admin-access').value === 'true';
   const slug = pseudo.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4).padEnd(3,'X');
   const code = `ECL-${slug}-${randSegment(4)}`;
   document.getElementById('code-membre-val').textContent = code;
   document.getElementById('result-membre').classList.add('visible');
-  sauvegarderCode({ code, type:'membre', pour:pseudo, rang, role, dashboard, ts:new Date().toISOString(), used:false });
+  // Label indiquant si c'est admin+membre
+  const typeLabel = adminAccess ? 'MEMBRE+ADMIN' : 'MEMBRE';
+  sauvegarderCode({ code, type:'membre', typeLabel, pour:pseudo, rang, role, dashboard, admin: adminAccess, ts:new Date().toISOString(), used:false });
   chargerStats(); renderHistoCodes();
-  showToast('✦ Code membre généré !');
+  showToast(adminAccess ? '✦ Code membre+admin généré !' : '✦ Code membre généré !');
 }
 
 function genererCodeAdmin() {
@@ -1002,17 +1012,23 @@ async function chargerMembres() {
 function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',3000); }
 
 /* ══ SESSION ══ */
-const saved = localStorage.getItem('eclypse_admin');
-if (saved) {
-  currentAdmin = JSON.parse(saved);
-  // Appliquer les modifs de profil sauvegardées
+// Session admin ou membre-admin
+const savedAdmin  = localStorage.getItem('eclypse_admin');
+const savedMembre = localStorage.getItem('eclypse_membre');
+
+if (savedAdmin) {
+  currentAdmin = JSON.parse(savedAdmin);
   const profil = localStorage.getItem('eclypse_admin_profile');
-  if (profil) {
-    const p = JSON.parse(profil);
-    currentAdmin.nom  = p.nom  || currentAdmin.nom;
-    currentAdmin.code = p.code || currentAdmin.code;
-  }
+  if (profil) { const p=JSON.parse(profil); currentAdmin.nom=p.nom||currentAdmin.nom; currentAdmin.code=p.code||currentAdmin.code; }
   afficherPanel(currentAdmin);
+} else if (savedMembre) {
+  // Membre avec admin:true → connexion auto
+  const m = JSON.parse(savedMembre);
+  if (m.admin === true) {
+    currentAdmin = { code: m.code, nom: m.nom || m.pseudo, level: 'admin' };
+    localStorage.setItem('eclypse_admin', JSON.stringify(currentAdmin));
+    afficherPanel(currentAdmin);
+  }
 }
 
 /* ══ PROFIL ADMIN ══ */
