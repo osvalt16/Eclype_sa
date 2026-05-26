@@ -2,7 +2,7 @@
   "membres": [
     {
       "id": "fvck",
-      "pseudo": "FVCK",
+      "pseudo": "oswalt",
       "rang": "Fleet Commander",
       "role": "Fighter",
       "faction": "MUD",
@@ -13,36 +13,6 @@
       "admin": true,
       "actif": true,
       "photo": "https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/fvck_avatar.jpg",
-      "lastProfileEdit": null
-    },
-    {
-      "id": "odicerous",
-      "pseudo": "Odicerous",
-      "rang": "Officier",
-      "role": "Fleet Commander",
-      "faction": "MUD",
-      "wallet": "GW28...BMEe",
-      "xp": "873802",
-      "code": "ECL-ODI-2025",
-      "dashboard": true,
-      "admin": false,
-      "actif": true,
-      "photo": "",
-      "lastProfileEdit": null
-    },
-    {
-      "id": "viktor",
-      "pseudo": "Viktor",
-      "rang": "Vétéran",
-      "role": "Miner",
-      "faction": "MUD",
-      "wallet": "4yMp...zdYZ",
-      "xp": "565137",
-      "code": "ECL-VIK-2025",
-      "dashboard": false,
-      "admin": false,
-      "actif": true,
-      "photo": "",
       "lastProfileEdit": null
     }
   ]
