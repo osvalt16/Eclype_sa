@@ -1,17 +1,19 @@
 {
   "membres": [
     {
-      "id": "admin",
+      "id": "fvck",
       "pseudo": "FVCK",
       "rang": "Fleet Commander",
       "role": "Fighter",
       "faction": "MUD",
       "wallet": "5BEC...hYeu",
       "xp": "865085",
-      "code": "ECL-ADM-XFBLBIL5",
+      "code": "ECL-FVCK-2025",
       "dashboard": true,
       "admin": true,
-      "actif": true
+      "actif": true,
+      "photo": "",
+      "lastProfileEdit": null
     },
     {
       "id": "odicerous",
@@ -24,7 +26,9 @@
       "code": "ECL-ODI-2025",
       "dashboard": true,
       "admin": false,
-      "actif": true
+      "actif": true,
+      "photo": "",
+      "lastProfileEdit": null
     },
     {
       "id": "viktor",
@@ -37,7 +41,9 @@
       "code": "ECL-VIK-2025",
       "dashboard": false,
       "admin": false,
-      "actif": true
+      "actif": true,
+      "photo": "",
+      "lastProfileEdit": null
     }
   ]
 }
