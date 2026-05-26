@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": "oswalt",
+      "pseudo": "oswalt",
+      "email": "admin@eclypse.gg",
+      "password": "",
+      "rang": "Fleet Commander",
+      "role": "Fighter",
+      "faction": "MUD",
+      "photo": "https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/fvck_avatar.jpg",
+      "xLink": "",
+      "dashboard": true,
+      "admin": true,
+      "actif": true,
+      "createdAt": "2026-05-26T00:00:00.000Z"
+    }
+  ]
+}
