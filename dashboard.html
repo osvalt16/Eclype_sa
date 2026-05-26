@@ -58,7 +58,6 @@
   .profil-rang{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);margin-bottom:0.3rem;}
   .profil-pseudo{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;margin-bottom:0.3rem;}
   .profil-role{font-size:0.9rem;color:var(--texte-pale);font-style:italic;margin-bottom:0.6rem;}
-  .profil-wallet{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.1em;color:var(--cyan);}
   .btn-edit-profil{position:absolute;top:1rem;right:1rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.8rem;cursor:pointer;transition:all 0.3s;}
   .btn-edit-profil:hover{background:rgba(201,162,39,0.1);}
 
@@ -248,7 +247,6 @@
         <div class="profil-rang" id="profil-rang">—</div>
         <div class="profil-pseudo" id="profil-pseudo">—</div>
         <div class="profil-role" id="profil-role">—</div>
-        <div class="profil-wallet" id="profil-wallet">—</div>
       </div>
       <button class="btn-edit-profil" onclick="ouvrirProfil()">✦ Modifier le profil</button>
     </div>
@@ -437,7 +435,6 @@ function showDashboard(m) {
   document.getElementById('profil-role').textContent   = m.role + ' · Faction ' + m.faction;
   const xLinkEl = document.getElementById('profil-x-link');
   if (xLinkEl) { if (m.xLink) { xLinkEl.href=m.xLink; xLinkEl.style.display='inline-flex'; } else { xLinkEl.style.display='none'; } }
-  document.getElementById('profil-wallet').textContent = '🔵 Wallet: ' + m.wallet;
 
   // Avatar : photo depuis localStorage ou membres.json
   const av = document.getElementById('profil-avatar');
