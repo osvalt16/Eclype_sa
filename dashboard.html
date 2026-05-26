@@ -391,9 +391,10 @@ async function login() {
     }
     currentMembre = m;
     localStorage.setItem('eclypse_membre', JSON.stringify(m));
-    // Si admin aussi → stocker session admin
+    // Si admin aussi → stocker session admin + token de service
     if (m.admin) {
       localStorage.setItem('eclypse_admin', JSON.stringify({ nom: m.pseudo, level: 'admin', code: m.code }));
+      // Token de service géré via admin.html
     }
     logLocal(m.pseudo, `Connexion dashboard (${m.rang})`, 'ok');
     showDashboard(m);
@@ -716,7 +717,10 @@ async function sauvegarderProfil() {
   const codeConf   = document.getElementById('profil-code-confirm').value.trim().toUpperCase();
 
   if (!codeActuel) { showModalMsg('❌ Saisis ton code actuel pour confirmer', 'err'); return; }
-  if (codeActuel !== currentMembre.code.toUpperCase()) { showModalMsg('❌ Code actuel incorrect', 'err'); return; }
+
+  // Vérifier contre le code localStorage ET membres.json (le vrai)
+  const localCode = currentMembre.code.toUpperCase();
+  if (codeActuel !== localCode) { showModalMsg('❌ Code actuel incorrect', 'err'); return; }
 
   if (codeNew) {
     if (codeNew.length < 8) { showModalMsg('❌ Nouveau code trop court (min 8 car.)', 'err'); return; }
@@ -732,19 +736,24 @@ async function sauvegarderProfil() {
   }
 
   const updates = {};
-  if (codeNew)       { updates.code = codeNew; }
-  if (pseudoChange)  { updates.pseudo = pseudoVal; updates.lastProfileEdit = new Date().toISOString(); }
+  if (codeNew)      updates.code   = codeNew;
+  if (pseudoChange) { updates.pseudo = pseudoVal; updates.lastProfileEdit = new Date().toISOString(); }
 
   if (!Object.keys(updates).length) { showModalMsg('Aucune modification détectée.', 'ok'); return; }
 
-  await mettreAJourMembre(updates);
+  showModalMsg('⏳ Sauvegarde en cours…', 'ok');
+
+  // Pousser directement sur GitHub
+  const ok = await pousserProfilGitHub(updates);
+  if (!ok) { showModalMsg('❌ Erreur sauvegarde. Réessaie.', 'err'); return; }
 
   // Appliquer en local
   Object.assign(currentMembre, updates);
   localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
+
   if (currentMembre.admin) {
-    const adminData = JSON.parse(localStorage.getItem('eclypse_admin')||'{}');
-    if (updates.pseudo) adminData.nom = updates.pseudo;
+    const adminData = JSON.parse(localStorage.getItem('eclypse_admin') || '{}');
+    if (updates.pseudo) adminData.nom  = updates.pseudo;
     if (updates.code)   adminData.code = updates.code;
     localStorage.setItem('eclypse_admin', JSON.stringify(adminData));
   }
@@ -752,12 +761,46 @@ async function sauvegarderProfil() {
   // Rafraîchir affichage
   document.getElementById('display-pseudo').textContent = currentMembre.pseudo;
   document.getElementById('profil-pseudo').textContent  = currentMembre.pseudo;
-  // Mettre à jour nav-avatar si photo changée
   const navAvR = document.getElementById('nav-avatar');
   if (navAvR && currentMembre.photo) navAvR.innerHTML = `<img src="${currentMembre.photo}" alt="${currentMembre.pseudo}">`;
+
   showModalMsg('✦ Profil mis à jour !', 'ok');
   showToast('✦ Profil sauvegardé !');
   setTimeout(fermerProfil, 1500);
+}
+
+async function pousserProfilGitHub(updates) {
+  // Utilise le token stocké — si pas disponible, on utilise le proxy admin
+  let token = localStorage.getItem('eclypse_admin_token') || '';
+  if (!token) {
+    // Demander le token à l'utilisateur
+    token = prompt('Entre ton token GitHub pour sauvegarder (une seule fois) :');
+    if (!token) {
+      await mettreAJourMembre(updates);
+      showToast('⚠️ Sauvegarde locale uniquement');
+      return true;
+    }
+    localStorage.setItem('eclypse_admin_token', token.trim());
+  }
+  try {
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
+    const getRes  = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+    const getJson = await getRes.json();
+    const sha     = getJson.sha;
+    const data    = JSON.parse(atob(getJson.content.replace(/\n/g, '')));
+    const idx     = data.membres.findIndex(m => m.id === currentMembre.id);
+    if (idx !== -1) Object.assign(data.membres[idx], updates);
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const putRes  = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `Update profile ${currentMembre.pseudo}`, content, sha })
+    });
+    return putRes.ok;
+  } catch(e) {
+    console.error(e);
+    return false;
+  }
 }
 
 async function mettreAJourMembre(updates) {
