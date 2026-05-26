@@ -628,6 +628,11 @@ function showDashboard(m) {
     document.getElementById('btn-add').style.display = 'none';
     document.getElementById('no-access').style.display = 'block';
   }
+  // Afficher onglet Gestion si admin
+  if (m.admin) {
+    const tabs = document.getElementById('dash-tabs');
+    if (tabs) tabs.style.display = 'flex';
+  }
   loadEvents();
 }
 
