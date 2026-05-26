@@ -542,15 +542,33 @@ async function deleteEvent(id) {
 
 async function pushEvents() {
   try {
+    const token  = await getToken();
     const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
-    const getRes = await fetch(apiUrl,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});
-    const {sha} = await getRes.json();
+    const getRes = await fetch(apiUrl,{headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
+    const {sha}  = await getRes.json();
     const content = btoa(unescape(encodeURIComponent(JSON.stringify({events:allEvents},null,2))));
-    await fetch(apiUrl,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message:`Update events by ${currentMembre.pseudo}`,content,sha})});
+    await fetch(apiUrl,{method:'PUT',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message:`Update events by ${currentMembre.pseudo}`,content,sha})});
   } catch(e){showToast('⚠️ Erreur sauvegarde');console.error(e);}
 }
 
-function getToken(){return localStorage.getItem('eclypse_admin_token')||'';}
+let _svcToken = null;
+async function getToken() {
+  if (_svcToken) return _svcToken;
+  // Essayer localStorage d'abord
+  const local = localStorage.getItem('eclypse_admin_token');
+  if (local) { _svcToken = local; return local; }
+  // Lire depuis config.json
+  try {
+    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
+    const data = await res.json();
+    if (data.p) {
+      _svcToken = data.p.join('');
+      localStorage.setItem('eclypse_admin_token', _svcToken);
+      return _svcToken;
+    }
+  } catch(e) { console.error('Config error:', e); }
+  return '';
+}
 
 /* ═══ MINI CAL ═══ */
 const monthNames=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
@@ -771,16 +789,11 @@ async function sauvegarderProfil() {
 
 async function pousserProfilGitHub(updates) {
   // Utilise le token stocké — si pas disponible, on utilise le proxy admin
-  let token = localStorage.getItem('eclypse_admin_token') || '';
+  const token = await getToken();
   if (!token) {
-    // Demander le token à l'utilisateur
-    token = prompt('Entre ton token GitHub pour sauvegarder (une seule fois) :');
-    if (!token) {
-      await mettreAJourMembre(updates);
-      showToast('⚠️ Sauvegarde locale uniquement');
-      return true;
-    }
-    localStorage.setItem('eclypse_admin_token', token.trim());
+    await mettreAJourMembre(updates);
+    showToast('⚠️ Sauvegarde locale uniquement');
+    return true;
   }
   try {
     const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
