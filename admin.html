@@ -244,6 +244,115 @@
   .toast { position:fixed; bottom:2rem; right:2rem; background:rgba(26,15,46,0.97); border:1px solid var(--or); padding:0.9rem 1.5rem; font-family:'Cinzel',serif; font-size:0.68rem; letter-spacing:0.15em; color:var(--or); z-index:999; display:none; animation:fadeUp 0.3s ease; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
+
+  /* ═══ MODAL PROFIL ═══ */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(3,2,8,0.85);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: rgba(12,8,24,0.97);
+    border: 1px solid rgba(232,90,90,0.35);
+    width: 90%; max-width: 480px;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.25s;
+  }
+  .modal-overlay.open .modal-box { transform: translateY(0); }
+  .modal-box::before {
+    content: '';
+    position: absolute; top: -1px; left: 15%; right: 15%; height: 2px;
+    background: linear-gradient(to right, transparent, var(--rouge), transparent);
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 1.8rem;
+    border-bottom: 1px solid rgba(232,90,90,0.2);
+  }
+  .modal-header h3 {
+    font-family: 'Cinzel', serif; font-size: 0.8rem;
+    letter-spacing: 0.28em; text-transform: uppercase; color: var(--rouge);
+  }
+  .modal-close {
+    background: none; border: none; color: var(--texte-pale);
+    font-size: 1.2rem; cursor: pointer; line-height: 1;
+    transition: color 0.2s; padding: 0.2rem 0.4rem;
+  }
+  .modal-close:hover { color: var(--rouge); }
+  .modal-body { padding: 2rem 1.8rem; }
+  .modal-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    border: 2px solid rgba(232,90,90,0.5);
+    background: rgba(232,90,90,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif; font-size: 1.6rem; color: var(--rouge);
+    margin: 0 auto 1.5rem;
+  }
+  .modal-field { margin-bottom: 1.4rem; }
+  .modal-field label {
+    display: block; font-family: 'Cinzel', serif;
+    font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--or); margin-bottom: 0.5rem;
+  }
+  .modal-field input {
+    width: 100%; background: rgba(7,6,13,0.9);
+    border: 1px solid var(--border-violet); color: var(--texte);
+    padding: 0.75rem 1rem; font-family: 'Crimson Pro', serif;
+    font-size: 1rem; outline: none; transition: border-color 0.3s;
+  }
+  .modal-field input:focus { border-color: var(--rouge); }
+  .modal-field .field-hint {
+    font-size: 0.75rem; color: var(--texte-pale);
+    margin-top: 0.4rem; font-style: italic;
+  }
+  .modal-divider {
+    border: none; border-top: 1px solid var(--border-violet);
+    margin: 1.6rem 0;
+  }
+  .modal-footer {
+    padding: 1.2rem 1.8rem;
+    border-top: 1px solid rgba(232,90,90,0.15);
+    display: flex; gap: 0.8rem; justify-content: flex-end;
+  }
+  .btn-modal-cancel {
+    font-family: 'Cinzel', serif; font-size: 0.65rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--texte-pale); background: none;
+    border: 1px solid var(--border-violet);
+    padding: 0.6rem 1.4rem; cursor: pointer; transition: all 0.3s;
+  }
+  .btn-modal-cancel:hover { border-color: var(--rouge); color: var(--rouge); }
+  .btn-modal-save {
+    font-family: 'Cinzel', serif; font-size: 0.65rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #fff; background: rgba(232,90,90,0.2);
+    border: 1px solid rgba(232,90,90,0.5);
+    padding: 0.6rem 1.4rem; cursor: pointer; transition: all 0.3s;
+  }
+  .btn-modal-save:hover { background: rgba(232,90,90,0.35); border-color: var(--rouge); }
+  .modal-success {
+    display: none; text-align: center; padding: 0.8rem;
+    color: var(--vert); font-family: 'Cinzel', serif;
+    font-size: 0.65rem; letter-spacing: 0.15em;
+  }
+  .modal-success.show { display: block; }
+
+  /* Bouton profil topbar */
+  .btn-profil {
+    font-family: 'Cinzel', serif; font-size: 0.58rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--or); background: none;
+    border: 1px solid var(--border-or);
+    padding: 0.35rem 0.8rem; cursor: pointer; transition: all 0.3s;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+  }
+  .btn-profil svg { width: 11px; height: 11px; flex-shrink: 0; }
+  .btn-profil:hover { background: rgba(201,162,39,0.1); border-color: var(--or); }
   @media(max-width:900px) { .stats-row{grid-template-columns:repeat(2,1fr)} .two-col{grid-template-columns:1fr} .cal-admin-layout{grid-template-columns:1fr} }
   @media(max-width:600px) { .stats-row{grid-template-columns:1fr 1fr} .admin-content{padding:1.5rem 1rem} .topbar{flex-wrap:wrap;gap:0.6rem} .tab-btn{padding:0.8rem 1rem;font-size:0.6rem} .form-grid-cal{grid-template-columns:1fr} }
 </style>
@@ -274,6 +383,13 @@
     </div>
     <div class="topbar-right">
       <span class="topbar-user">Connecté : <span id="admin-name">—</span></span>
+      <button class="btn-profil" onclick="ouvrirProfil()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke-linecap="round"/>
+        </svg>
+        Profil
+      </button>
       <a href="index.html" class="btn-nav">← Site</a>
       <button class="btn-nav" onclick="adminLogout()">Déconnexion</button>
     </div>
@@ -522,6 +638,53 @@
     </div>
   </div><!-- /tab-gestion -->
 
+
+  <!-- ═══ MODAL PROFIL ═══ -->
+  <div class="modal-overlay" id="modal-profil" onclick="fermerProfilClick(event)">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>⚙ Mon Profil Admin</h3>
+        <button class="modal-close" onclick="fermerProfil()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-avatar" id="modal-avatar-letter">F</div>
+
+        <!-- Nom -->
+        <div class="modal-field">
+          <label>Nom affiché</label>
+          <input type="text" id="profil-nom" placeholder="Ex: FVCK">
+          <div class="field-hint">Visible dans la topbar et les logs de connexion.</div>
+        </div>
+
+        <hr class="modal-divider">
+
+        <!-- Code actuel (vérification) -->
+        <div class="modal-field">
+          <label>Code actuel (confirmation) *</label>
+          <input type="password" id="profil-code-actuel" placeholder="Ton code actuel">
+        </div>
+
+        <!-- Nouveau code -->
+        <div class="modal-field">
+          <label>Nouveau code d'accès</label>
+          <input type="text" id="profil-code-new" placeholder="Laisser vide pour ne pas changer" style="letter-spacing:0.15em">
+          <div class="field-hint">Format recommandé : ADM-XXX-XXXX-XX · Minimum 8 caractères.</div>
+        </div>
+
+        <!-- Confirmation nouveau code -->
+        <div class="modal-field" id="profil-confirm-wrap" style="display:none">
+          <label>Confirmer le nouveau code *</label>
+          <input type="text" id="profil-code-confirm" placeholder="Répète le nouveau code" style="letter-spacing:0.15em">
+        </div>
+
+        <div class="modal-success" id="modal-success">✦ Profil mis à jour avec succès</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="fermerProfil()">Annuler</button>
+        <button class="btn-modal-save" onclick="sauvegarderProfil()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
 </div><!-- /admin-panel -->
 
 <div class="toast" id="toast"></div>
@@ -840,7 +1003,112 @@ function showToast(msg) { const t=document.getElementById('toast'); t.textConten
 
 /* ══ SESSION ══ */
 const saved = localStorage.getItem('eclypse_admin');
-if (saved) { currentAdmin = JSON.parse(saved); afficherPanel(currentAdmin); }
+if (saved) {
+  currentAdmin = JSON.parse(saved);
+  // Appliquer les modifs de profil sauvegardées
+  const profil = localStorage.getItem('eclypse_admin_profile');
+  if (profil) {
+    const p = JSON.parse(profil);
+    currentAdmin.nom  = p.nom  || currentAdmin.nom;
+    currentAdmin.code = p.code || currentAdmin.code;
+  }
+  afficherPanel(currentAdmin);
+}
+
+/* ══ PROFIL ADMIN ══ */
+function ouvrirProfil() {
+  if (!currentAdmin) return;
+  // Pré-remplir avec les valeurs actuelles (depuis localStorage si modifiées)
+  const saved = localStorage.getItem('eclypse_admin_profile');
+  const profil = saved ? JSON.parse(saved) : { nom: currentAdmin.nom };
+  const nom = profil.nom || currentAdmin.nom;
+
+  document.getElementById('profil-nom').value = nom;
+  document.getElementById('profil-code-actuel').value = '';
+  document.getElementById('profil-code-new').value = '';
+  document.getElementById('profil-code-confirm').value = '';
+  document.getElementById('profil-confirm-wrap').style.display = 'none';
+  document.getElementById('modal-success').classList.remove('show');
+  document.getElementById('modal-avatar-letter').textContent = nom.charAt(0).toUpperCase();
+
+  // Afficher le code actuel masqué dans l'input confirmation (placeholder)
+  document.getElementById('profil-code-actuel').placeholder = currentAdmin.code.slice(0,4) + '••••••••';
+
+  document.getElementById('modal-profil').classList.add('open');
+}
+
+function fermerProfil() {
+  document.getElementById('modal-profil').classList.remove('open');
+}
+
+function fermerProfilClick(e) {
+  if (e.target === document.getElementById('modal-profil')) fermerProfil();
+}
+
+// Afficher champ confirmation quand on tape un nouveau code
+document.addEventListener('DOMContentLoaded', () => {
+  const inp = document.getElementById('profil-code-new');
+  if (inp) inp.addEventListener('input', () => {
+    document.getElementById('profil-confirm-wrap').style.display = inp.value.trim() ? 'block' : 'none';
+  });
+});
+
+function sauvegarderProfil() {
+  const nomVal       = document.getElementById('profil-nom').value.trim();
+  const codeActuel   = document.getElementById('profil-code-actuel').value.trim().toUpperCase();
+  const codeNew      = document.getElementById('profil-code-new').value.trim().toUpperCase();
+  const codeConfirm  = document.getElementById('profil-code-confirm').value.trim().toUpperCase();
+
+  // Validation code actuel obligatoire
+  if (!codeActuel) { showToast('❌ Saisis ton code actuel pour confirmer'); return; }
+
+  // Récupérer le vrai code actuel (depuis localStorage ou ADMIN_ACCOUNTS)
+  const storedProfile = localStorage.getItem('eclypse_admin_profile');
+  const vraiCode = storedProfile
+    ? (JSON.parse(storedProfile).code || currentAdmin.code)
+    : currentAdmin.code;
+
+  if (codeActuel !== vraiCode.toUpperCase()) {
+    showToast('❌ Code actuel incorrect');
+    document.getElementById('profil-code-actuel').style.borderColor = 'var(--rouge)';
+    setTimeout(() => document.getElementById('profil-code-actuel').style.borderColor = '', 2000);
+    return;
+  }
+
+  // Validation nouveau code
+  if (codeNew) {
+    if (codeNew.length < 8) { showToast('❌ Le nouveau code doit faire au moins 8 caractères'); return; }
+    if (codeNew !== codeConfirm) {
+      showToast('❌ Les deux codes ne correspondent pas');
+      document.getElementById('profil-code-confirm').style.borderColor = 'var(--rouge)';
+      setTimeout(() => document.getElementById('profil-code-confirm').style.borderColor = '', 2000);
+      return;
+    }
+  }
+
+  // Sauvegarder dans localStorage
+  const nouveauProfil = {
+    nom:   nomVal || currentAdmin.nom,
+    code:  codeNew || vraiCode,
+    level: currentAdmin.level
+  };
+  localStorage.setItem('eclypse_admin_profile', JSON.stringify(nouveauProfil));
+
+  // Mettre à jour currentAdmin en mémoire
+  currentAdmin.nom  = nouveauProfil.nom;
+  currentAdmin.code = nouveauProfil.code;
+  localStorage.setItem('eclypse_admin', JSON.stringify(currentAdmin));
+
+  // Mettre à jour l'affichage topbar
+  document.getElementById('admin-name').textContent = currentAdmin.nom + ' · ' + currentAdmin.level;
+  document.getElementById('modal-avatar-letter').textContent = currentAdmin.nom.charAt(0).toUpperCase();
+
+  // Succès
+  document.getElementById('modal-success').classList.add('show');
+  showToast('✦ Profil mis à jour !');
+  setTimeout(fermerProfil, 1500);
+}
+
 </script>
 </body>
 </html>
