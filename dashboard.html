@@ -182,6 +182,69 @@
   .progress-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
   .progress-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;color:var(--texte-pale);margin-top:0.4rem;text-align:center;}
 
+  /* ONGLETS NAV */
+  .dash-tabs{display:flex;gap:0;border-bottom:1px solid var(--border-or);margin-bottom:2.5rem;}
+  .dash-tab{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;border-bottom:2px solid transparent;padding:0.9rem 2rem;cursor:pointer;transition:all 0.25s;position:relative;}
+  .dash-tab:hover{color:var(--texte);}
+  .dash-tab.active{color:var(--or);border-bottom-color:var(--or);}
+  .dash-tab.active::after{content:'';position:absolute;bottom:-2px;left:20%;right:20%;height:2px;background:linear-gradient(to right,transparent,rgba(201,162,39,0.6),transparent);filter:blur(2px);}
+  .tab-pane{display:none;}.tab-pane.active{display:block;}
+
+  /* GESTION */
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem;}
+  .gstat-card{border:1px solid var(--border-violet);padding:1.4rem 1.2rem;background:rgba(10,8,20,0.8);position:relative;overflow:hidden;transition:border-color 0.3s;}
+  .gstat-card:hover{border-color:var(--border-or);}
+  .gstat-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;}
+  .gstat-card.or::after{background:linear-gradient(to right,transparent,var(--or),transparent);}
+  .gstat-card.vert::after{background:linear-gradient(to right,transparent,var(--vert),transparent);}
+  .gstat-card.cyan::after{background:linear-gradient(to right,transparent,var(--cyan),transparent);}
+  .gstat-label{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.7rem;}
+  .gstat-value{font-family:'Cinzel',serif;font-size:1.8rem;line-height:1;margin-bottom:0.2rem;}
+  .gstat-value.or{color:var(--or);}
+  .gstat-value.vert{color:var(--vert);}
+  .gstat-value.cyan{color:var(--cyan);}
+  .gstat-detail{font-size:0.78rem;color:var(--texte-pale);}
+
+  .gen-section{border:1px solid var(--border-violet);padding:1.8rem;background:rgba(10,8,20,0.8);margin-bottom:2rem;}
+  .gen-section h3{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);margin-bottom:1.5rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border-violet);}
+  .gen-form{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
+  .gen-form label{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:0.4rem;}
+  .gen-form input,.gen-form select{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.65rem 0.9rem;font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;transition:border-color 0.3s;}
+  .gen-form input:focus,.gen-form select:focus{border-color:var(--or);}
+  .gen-form select option{background:#1a0f2e;}
+  .gen-form .full{grid-column:1/-1;}
+  .code-result{display:none;margin-top:1rem;border:1px solid var(--border-or);padding:1.2rem;background:rgba(201,162,39,0.05);text-align:center;}
+  .code-result.show{display:block;}
+  .code-val{font-family:'Cinzel',serif;font-size:1.1rem;letter-spacing:0.28em;color:var(--or-clair);margin-bottom:0.5rem;}
+  .code-hint{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.8rem;}
+  .btn-copy{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.45rem 1.1rem;cursor:pointer;transition:all 0.3s;}
+  .btn-copy:hover{background:rgba(201,162,39,0.1);}
+
+  .log-box{border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);max-height:300px;overflow-y:auto;}
+  .log-box::-webkit-scrollbar{width:3px;}
+  .log-box::-webkit-scrollbar-thumb{background:var(--border-violet);}
+  .log-item{display:grid;grid-template-columns:150px 1fr 80px;gap:0.8rem;align-items:center;padding:0.65rem 1rem;border-bottom:1px solid rgba(107,53,200,0.1);font-size:0.82rem;}
+  .log-item:last-child{border-bottom:none;}
+  .log-time{font-family:'Cinzel',serif;font-size:0.58rem;color:var(--texte-pale);}
+  .log-pseudo strong{color:var(--or-clair);font-weight:400;}
+  .log-status{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-align:right;}
+  .log-status.ok{color:var(--vert);}
+  .log-status.fail{color:var(--rouge);}
+  .log-empty{padding:2rem;text-align:center;color:var(--texte-pale);font-style:italic;}
+
+  .tokens-list{border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);max-height:260px;overflow-y:auto;}
+  .token-item{display:grid;grid-template-columns:1fr auto auto auto;gap:0.8rem;align-items:center;padding:0.65rem 1rem;border-bottom:1px solid rgba(107,53,200,0.1);font-size:0.82rem;}
+  .token-item:last-child{border-bottom:none;}
+  .token-val{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.15em;color:var(--or-clair);}
+  .token-meta{font-size:0.72rem;color:var(--texte-pale);}
+  .token-status{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;}
+  .token-status.used{color:var(--vert);}
+  .token-status.unused{color:var(--texte-pale);}
+  .btn-xs{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.25rem 0.55rem;cursor:pointer;transition:all 0.3s;}
+  .btn-xs:hover{background:rgba(232,90,90,0.1);}
+  .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.7rem;border-bottom:1px solid var(--border-violet);}
+  .section-hdr h3{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--or);}
+
   /* TOAST */
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeInUp 0.3s ease;}
   @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -235,6 +298,12 @@
 
   <div class="dash-content">
 
+    <!-- ONGLETS (admin only) -->
+    <div class="dash-tabs" id="dash-tabs" style="display:none">
+      <button class="dash-tab active" id="tab-btn-ops" onclick="switchDashTab('ops')">📅 Opérations</button>
+      <button class="dash-tab" id="tab-btn-gestion" onclick="switchDashTab('gestion')">⚙ Gestion</button>
+    </div>
+
     <!-- PROFIL CARD -->
     <div class="profil-card">
       <div class="profil-avatar-wrap">
@@ -247,6 +316,9 @@
       </div>
       <button class="btn-edit-profil" onclick="ouvrirProfil()">✦ Modifier le profil</button>
     </div>
+
+    <!-- TAB OPS -->
+    <div class="tab-pane active" id="tab-ops">
 
     <!-- PLANNING -->
     <div id="planning-section">
@@ -305,6 +377,107 @@
     </div>
   </div>
 </div>
+    </div><!-- /tab-ops -->
+
+    <!-- TAB GESTION -->
+    <div class="tab-pane" id="tab-gestion">
+
+      <!-- STATS -->
+      <div class="stats-row">
+        <div class="gstat-card or">
+          <div class="gstat-label">Connexions aujourd'hui</div>
+          <div class="gstat-value or" id="gs-today">—</div>
+          <div class="gstat-detail">sessions membres</div>
+        </div>
+        <div class="gstat-card vert">
+          <div class="gstat-label">Tokens générés</div>
+          <div class="gstat-value vert" id="gs-tokens">—</div>
+          <div class="gstat-detail">codes d'accès créés</div>
+        </div>
+        <div class="gstat-card cyan">
+          <div class="gstat-label">Tokens utilisés</div>
+          <div class="gstat-value cyan" id="gs-used">—</div>
+          <div class="gstat-detail">activations</div>
+        </div>
+      </div>
+
+      <!-- GÉNÉRATEUR TOKEN ──────────────────── -->
+      <div class="gen-section">
+        <h3>🔑 Générer un token membre</h3>
+        <div class="gen-form">
+          <div>
+            <label>Pseudo du membre *</label>
+            <input type="text" id="g-pseudo" placeholder="Ex: Vaelthor">
+          </div>
+          <div>
+            <label>Rang</label>
+            <select id="g-rang">
+              <option>Capitaine</option>
+              <option>Vétéran</option>
+              <option>Officier</option>
+              <option>Fleet Commander</option>
+            </select>
+          </div>
+          <div>
+            <label>Rôle</label>
+            <select id="g-role">
+              <option>Fighter</option>
+              <option>Miner</option>
+              <option>Scout</option>
+              <option>Support</option>
+              <option>Fleet Commander</option>
+              <option>Trader</option>
+            </select>
+          </div>
+          <div>
+            <label>Faction</label>
+            <select id="g-faction">
+              <option>MUD</option>
+              <option>ONI</option>
+              <option>USTUR</option>
+            </select>
+          </div>
+          <div class="full">
+            <label>Droits sur les ops (créer/supprimer des événements)</label>
+            <select id="g-ops">
+              <option value="false">Non — membre standard</option>
+              <option value="true">Oui — officier+</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="genererToken()" style="font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.75rem 2rem;cursor:pointer;transition:all 0.3s;width:100%;">✦ Générer le token</button>
+        <div class="code-result" id="code-result">
+          <div class="code-val" id="code-val">—</div>
+          <div class="code-hint">Token d'accès membre — à transmettre en privé</div>
+          <button class="btn-copy" onclick="copierToken()">Copier</button>
+        </div>
+      </div>
+
+      <!-- TOKENS GÉNÉRÉS -->
+      <div style="margin-bottom:2rem;">
+        <div class="section-hdr">
+          <h3>📋 Tokens générés</h3>
+          <button class="btn-xs" onclick="viderTokens()">Vider</button>
+        </div>
+        <div class="tokens-list" id="tokens-list">
+          <div class="log-empty">Aucun token généré.</div>
+        </div>
+      </div>
+
+      <!-- JOURNAL CONNEXIONS -->
+      <div>
+        <div class="section-hdr">
+          <h3>📡 Journal des connexions</h3>
+          <button class="btn-xs" onclick="viderLogs()">Vider</button>
+        </div>
+        <div class="log-box" id="log-box">
+          <div class="log-empty">Aucune connexion enregistrée.</div>
+        </div>
+      </div>
+
+    </div><!-- /tab-gestion -->
+
+</div><!-- /dash-content -->
 
 <!-- MODAL PROFIL -->
 <div class="modal-overlay" id="modal-profil" onclick="if(event.target===this)fermerProfil()">
@@ -850,6 +1023,105 @@ function showModalMsg(msg, type) {
 
 /* ═══ TOAST ═══ */
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);}
+
+/* ═══ ONGLETS DASHBOARD ═══ */
+function switchDashTab(tab) {
+  document.querySelectorAll('.dash-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-btn-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'gestion') chargerGestion();
+}
+
+/* ═══ GESTION ═══ */
+function chargerGestion() {
+  const logs   = getLogs();
+  const tokens = getTokens();
+  const today  = new Date().toDateString();
+  document.getElementById('gs-today').textContent  = logs.filter(l => new Date(l.ts).toDateString() === today).length;
+  document.getElementById('gs-tokens').textContent = tokens.length;
+  document.getElementById('gs-used').textContent   = tokens.filter(t => t.used).length;
+  renderLogs();
+  renderTokens();
+}
+
+function randSeg(n) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+
+function genererToken() {
+  const pseudo = document.getElementById('g-pseudo').value.trim();
+  if (!pseudo) { showToast('❌ Entre un pseudo'); return; }
+  const rang  = document.getElementById('g-rang').value;
+  const role  = document.getElementById('g-role').value;
+  const faction = document.getElementById('g-faction').value;
+  const ops   = document.getElementById('g-ops').value === 'true';
+  const slug  = pseudo.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4).padEnd(3,'X');
+  const code  = `ECL-${slug}-${randSeg(4)}-${randSeg(4)}`;
+
+  document.getElementById('code-val').textContent = code;
+  document.getElementById('code-result').classList.add('show');
+
+  const tokens = getTokens();
+  tokens.unshift({ code, pseudo, rang, role, faction, ops, ts: new Date().toISOString(), used: false });
+  localStorage.setItem('eclypse_tokens', JSON.stringify(tokens.slice(0,200)));
+  chargerGestion();
+  showToast('✦ Token généré !');
+}
+
+function copierToken() {
+  const val = document.getElementById('code-val').textContent;
+  navigator.clipboard.writeText(val).then(() => showToast('✦ Copié !'));
+}
+
+function getTokens() { try { return JSON.parse(localStorage.getItem('eclypse_tokens')||'[]'); } catch { return []; } }
+function viderTokens() { if(!confirm('Vider les tokens ?')) return; localStorage.removeItem('eclypse_tokens'); chargerGestion(); }
+
+function renderTokens() {
+  const list = getTokens();
+  const el   = document.getElementById('tokens-list');
+  if (!el) return;
+  if (!list.length) { el.innerHTML = '<div class="log-empty">Aucun token généré.</div>'; return; }
+  el.innerHTML = list.map(t => {
+    const d = new Date(t.ts);
+    const date = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="token-item">
+      <div>
+        <div class="token-val">${t.code}</div>
+        <div class="token-meta">${t.pseudo} · ${t.rang} · ${t.role} · Ops: ${t.ops?'Oui':'Non'} · ${date}</div>
+      </div>
+      <span class="token-status ${t.used?'used':'unused'}">${t.used?'✓ Utilisé':'En attente'}</span>
+      <button class="btn-xs" onclick="supprimerToken('${t.code}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function supprimerToken(code) {
+  const list = getTokens().filter(t => t.code !== code);
+  localStorage.setItem('eclypse_tokens', JSON.stringify(list));
+  renderTokens();
+  chargerGestion();
+}
+
+/* ═══ LOGS ═══ */
+function getLogs() { try { return JSON.parse(localStorage.getItem('eclypse_logs')||'[]'); } catch { return []; } }
+function viderLogs() { if(!confirm('Vider les logs ?')) return; localStorage.removeItem('eclypse_logs'); chargerGestion(); }
+function renderLogs() {
+  const logs = getLogs();
+  const el   = document.getElementById('log-box');
+  if (!el) return;
+  if (!logs.length) { el.innerHTML = '<div class="log-empty">Aucune connexion.</div>'; return; }
+  el.innerHTML = logs.map(l => {
+    const d  = new Date(l.ts);
+    const ts = d.toLocaleDateString('fr-FR') + ' · ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    return `<div class="log-item">
+      <div class="log-time">${ts}</div>
+      <div class="log-pseudo"><strong>${l.pseudo}</strong> — ${l.detail}</div>
+      <div class="log-status ${l.status}">${l.status.toUpperCase()}</div>
+    </div>`;
+  }).join('');
+}
 
 /* ═══ SESSION ═══ */
 const saved = localStorage.getItem('eclypse_membre');
