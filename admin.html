@@ -561,7 +561,7 @@ function adminLogin() {
     return;
   }
   currentAdmin = compte;
-  sessionStorage.setItem('eclypse_admin', JSON.stringify(compte));
+  localStorage.setItem('eclypse_admin', JSON.stringify(compte));
   logConnexion(compte.nom, `Connexion admin (${compte.level})`, 'admin');
   afficherPanel(compte);
 }
@@ -578,7 +578,7 @@ function afficherPanel(compte) {
 }
 
 function adminLogout() {
-  sessionStorage.removeItem('eclypse_admin');
+  localStorage.removeItem('eclypse_admin');
   currentAdmin = null;
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('admin-panel').style.display = 'none';
@@ -839,7 +839,7 @@ async function chargerMembres() {
 function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',3000); }
 
 /* ══ SESSION ══ */
-const saved = sessionStorage.getItem('eclypse_admin');
+const saved = localStorage.getItem('eclypse_admin');
 if (saved) { currentAdmin = JSON.parse(saved); afficherPanel(currentAdmin); }
 </script>
 </body>

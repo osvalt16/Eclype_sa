@@ -693,7 +693,7 @@ async function login() {
     }
 
     currentMembre = membre;
-    sessionStorage.setItem('eclypse_membre', JSON.stringify(membre));
+    localStorage.setItem('eclypse_membre', JSON.stringify(membre));
     // Log connexion pour le panneau admin
     try {
       const logs = JSON.parse(localStorage.getItem('eclypse_logs') || '[]');
@@ -728,7 +728,7 @@ function showDashboard(membre) {
 }
 
 function logout() {
-  sessionStorage.removeItem('eclypse_membre');
+  localStorage.removeItem('eclypse_membre');
   currentMembre = null;
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('dashboard').style.display = 'none';
@@ -943,7 +943,7 @@ function showToast(msg) {
 }
 
 // Vérifier session existante
-const saved = sessionStorage.getItem('eclypse_membre');
+const saved = localStorage.getItem('eclypse_membre');
 if (saved) {
   currentMembre = JSON.parse(saved);
   showDashboard(currentMembre);

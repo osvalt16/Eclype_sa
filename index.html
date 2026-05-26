@@ -1328,8 +1328,8 @@ let sessionMembre = null;
 
 function verifierSession() {
   // Vérifie membre connecté (depuis dashboard) ou admin (depuis admin)
-  const membre = sessionStorage.getItem('eclypse_membre');
-  const admin  = sessionStorage.getItem('eclypse_admin');
+  const membre = localStorage.getItem('eclypse_membre');
+  const admin  = localStorage.getItem('eclypse_admin');
   if (membre) {
     try { sessionMembre = JSON.parse(membre); } catch(e) {}
   } else if (admin) {
@@ -1341,7 +1341,9 @@ function verifierSession() {
 
   if (sessionMembre) {
     // Afficher le planning déverrouillé
-    document.getElementById('planning-locked').style.display = 'none';
+    const pLocked = document.getElementById('planning-locked');
+    pLocked.style.display = 'none';
+    pLocked.style.opacity = '0';  // empêche l'observer de le réafficher
     document.getElementById('planning-unlocked').classList.add('visible');
     document.getElementById('pmb-pseudo').textContent = sessionMembre.pseudo;
     document.getElementById('pmb-rang').textContent   = sessionMembre._isAdmin ? '★ Admin' : (sessionMembre.rang || 'Membre');
@@ -1371,11 +1373,13 @@ function mettreAJourNav() {
 }
 
 function deconnecterMembre() {
-  sessionStorage.removeItem('eclypse_membre');
-  sessionStorage.removeItem('eclypse_admin');
+  localStorage.removeItem('eclypse_membre');
+  localStorage.removeItem('eclypse_admin');
   sessionMembre = null;
   // Réafficher cadenas
-  document.getElementById('planning-locked').style.display = '';
+  const pL = document.getElementById('planning-locked');
+  pL.style.display = '';
+  pL.style.opacity = '';
   document.getElementById('planning-unlocked').classList.remove('visible');
   // Réafficher boutons connexion
   document.querySelectorAll('.nav-btn-membre, .nav-btn-admin').forEach(b => b.style.display = '');
@@ -1465,8 +1469,23 @@ function mcsNav(dir) {
   renderMcsGrid();
 }
 
-// Lancer la vérification de session au chargement
-verifierSession();
+// Lancer la vérification de session — on attend que tout soit prêt
+function initSession() {
+  const locked   = document.getElementById('planning-locked');
+  const unlocked = document.getElementById('planning-unlocked');
+  if (!locked || !unlocked) {
+    // DOM pas encore prêt, retry
+    setTimeout(initSession, 50);
+    return;
+  }
+  verifierSession();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSession);
+} else {
+  initSession();
+}
 </script>
 </body>
 </html>
