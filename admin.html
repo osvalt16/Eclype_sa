@@ -621,6 +621,17 @@
         </div>
       </div>
 
+      <!-- SYNC PHOTOS -->
+      <div class="one-col" id="sync-section" style="display:none">
+        <div class="section-header">
+          <h2>🔄 Synchronisation photos/profils</h2>
+          <button class="btn-sm or" onclick="syncPhotos()">⬆ Sync vers GitHub</button>
+        </div>
+        <div style="border:1px solid var(--border-violet);padding:1.2rem;background:rgba(10,8,20,0.8);font-size:0.85rem;color:var(--texte-pale);">
+          <div id="sync-info">Chargement des modifications en attente…</div>
+        </div>
+      </div>
+
       <!-- MEMBRES -->
       <div class="one-col">
         <div class="section-header">
@@ -716,7 +727,7 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById('tab-btn-' + tab).classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
-  if (tab === 'gestion') { chargerStats(); renderLogs(); renderHistoCodes(); chargerMembres(); }
+  if (tab === 'gestion') { chargerStats(); renderLogs(); renderHistoCodes(); chargerMembres(); chargerSyncInfo(); }
   if (tab === 'cal') { chargerEvents(); }
 }
 
@@ -1029,6 +1040,93 @@ async function chargerMembres() {
 
 /* ══ TOAST ══ */
 function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',3000); }
+
+/* ══ SYNC PHOTOS ══ */
+function chargerSyncInfo() {
+  // Lire les photos en attente depuis localStorage du membre
+  // (dans le même navigateur si admin = membre)
+  const pending = JSON.parse(localStorage.getItem('eclypse_pending_updates') || '[]');
+  const photos  = JSON.parse(localStorage.getItem('eclypse_photos') || '{}');
+  const section = document.getElementById('sync-section');
+  const info    = document.getElementById('sync-info');
+
+  if (!section || !info) return;
+
+  if (!pending.length && !Object.keys(photos).length) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  let html = '<div style="margin-bottom:0.8rem;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.15em;color:var(--or)">Modifications en attente :</div>';
+
+  Object.entries(photos).forEach(([id, data]) => {
+    html += `<div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.6rem;">
+      <img src="${data.url}" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border-or);object-fit:cover;">
+      <div>
+        <div style="font-size:0.82rem;color:#fff">${data.pseudo}</div>
+        <div style="font-size:0.72rem;color:var(--texte-pale)">${data.url}</div>
+      </div>
+    </div>`;
+  });
+
+  info.innerHTML = html;
+}
+
+async function syncPhotos() {
+  const photos  = JSON.parse(localStorage.getItem('eclypse_photos') || '{}');
+  const pending = JSON.parse(localStorage.getItem('eclypse_pending_updates') || '[]');
+
+  if (!Object.keys(photos).length && !pending.length) {
+    showToast('Rien à synchroniser');
+    return;
+  }
+
+  showToast('Synchronisation en cours…');
+
+  try {
+    const token = localStorage.getItem('eclypse_admin_token') || '';
+    if (!token) { showToast('⚠️ Token GitHub requis dans eclypse_admin_token'); return; }
+
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
+    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+    const getJson = await getRes.json();
+    const sha = getJson.sha;
+    const data = JSON.parse(atob(getJson.content.replace(/\n/g, '')));
+
+    // Appliquer les photos
+    Object.entries(photos).forEach(([id, photoData]) => {
+      const idx = data.membres.findIndex(m => m.id === id);
+      if (idx !== -1) {
+        data.membres[idx].photo = photoData.url;
+        data.membres[idx].lastProfileEdit = photoData.ts;
+      }
+    });
+
+    // Appliquer les autres modifications en attente
+    pending.forEach(update => {
+      const idx = data.membres.findIndex(m => m.id === update.id);
+      if (idx !== -1) Object.assign(data.membres[idx], update.updates);
+    });
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Sync profiles and photos', content, sha })
+    });
+
+    // Vider les pending
+    localStorage.removeItem('eclypse_pending_updates');
+    localStorage.removeItem('eclypse_photos');
+    document.getElementById('sync-section').style.display = 'none';
+    showToast('✦ Synchronisation réussie !');
+
+  } catch(e) {
+    showToast('❌ Erreur sync : ' + e.message);
+    console.error(e);
+  }
+}
 
 /* ══ SESSION ══ */
 // Session admin ou membre-admin
