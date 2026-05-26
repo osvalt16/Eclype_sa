@@ -7,8 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --noir:#030208; --violet:#1a0f2e; --violet-mid:#2d1a50;
-    --violet-glow:#8b5cf6; --or:#c9a227; --or-clair:#e8c547;
+    --noir:#030208; --violet:#1a0f2e; --violet-glow:#8b5cf6;
+    --or:#c9a227; --or-clair:#e8c547;
     --texte:#d4c9e8; --texte-pale:#8a7fa0;
     --border-or:rgba(201,162,39,0.3); --border-violet:rgba(107,53,200,0.4);
     --cyan:#00d4ff; --rouge:#e85a5a; --vert:#5ecfa0;
@@ -16,54 +16,74 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--noir);color:var(--texte);font-family:'Crimson Pro',serif;font-size:17px;min-height:100vh;}
 
-  /* LOGIN */
-  #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a0f2e 0%,#030208 70%);}
-  .login-box{border:1px solid var(--border-or);padding:3rem;text-align:center;max-width:420px;width:90%;background:rgba(26,15,46,0.6);}
-  .login-box img{height:80px;margin-bottom:1.5rem;}
-  .login-box h1{font-family:'Cinzel',serif;font-size:1.2rem;letter-spacing:0.3em;color:var(--or);margin-bottom:0.5rem;}
-  .login-box p{font-size:0.9rem;color:var(--texte-pale);margin-bottom:2rem;}
-  .login-box input{width:100%;background:rgba(7,6,13,0.8);border:1px solid var(--border-violet);color:var(--texte);padding:0.9rem 1.2rem;font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.2em;text-align:center;outline:none;margin-bottom:1rem;transition:border-color 0.3s;}
-  .login-box input:focus{border-color:var(--or);}
-  .login-box button{width:100%;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.9rem;cursor:pointer;transition:all 0.3s;}
-  .login-box button:hover{background:var(--or-clair);}
-  .login-error{color:var(--rouge);font-size:0.85rem;margin-top:1rem;display:none;}
+  /* ── AUTH SCREEN ── */
+  #auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a0f2e 0%,#030208 70%);}
+  .auth-box{border:1px solid var(--border-or);max-width:440px;width:90%;background:rgba(26,15,46,0.5);position:relative;}
+  .auth-box::before{content:'';position:absolute;top:-1px;left:15%;right:15%;height:2px;background:linear-gradient(to right,transparent,var(--or),transparent);}
+  .auth-header{padding:2rem 2rem 0;text-align:center;}
+  .auth-header img{height:64px;margin-bottom:1.2rem;}
+  .auth-tabs{display:flex;border-bottom:1px solid var(--border-violet);margin-top:1.5rem;}
+  .auth-tab{flex:1;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;padding:0.85rem;cursor:pointer;transition:all 0.25s;border-bottom:2px solid transparent;}
+  .auth-tab.active{color:var(--or);border-bottom-color:var(--or);}
+  .auth-body{padding:2rem;}
+  .auth-form{display:none;flex-direction:column;gap:1rem;}
+  .auth-form.active{display:flex;}
+  .auth-field label{display:block;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.45rem;}
+  .auth-field input{width:100%;background:rgba(7,6,13,0.85);border:1px solid var(--border-violet);color:var(--texte);padding:0.8rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
+  .auth-field input:focus{border-color:var(--or);}
+  .auth-check{display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;color:var(--texte-pale);}
+  .auth-check input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:var(--or);}
+  .auth-btn{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.9rem;cursor:pointer;transition:all 0.3s;width:100%;margin-top:0.5rem;}
+  .auth-btn:hover{background:var(--or-clair);}
+  .auth-msg{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.12em;text-align:center;padding:0.6rem;display:none;}
+  .auth-msg.err{color:var(--rouge);display:block;}
+  .auth-msg.ok{color:var(--vert);display:block;}
+  .auth-footer{padding:1rem 2rem 1.5rem;text-align:center;font-size:0.82rem;color:var(--texte-pale);}
+  .auth-footer a{color:var(--or);cursor:pointer;text-decoration:none;}
+  .auth-footer a:hover{color:var(--or-clair);}
 
-  /* DASHBOARD */
+  /* ── DASHBOARD ── */
   #dashboard{display:none;}
   .topbar{background:rgba(7,6,13,0.95);border-bottom:1px solid var(--border-or);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
   .topbar-left{display:flex;align-items:center;gap:1rem;}
-  .topbar-left img{height:36px;}
-  .topbar-title{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
-  .topbar-user{display:flex;align-items:center;gap:0.8rem;}
-  .user-badge{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--texte-pale);}
-  .user-badge span{color:var(--or-clair);}
-  .btn-topbar{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;background:none;border:1px solid var(--border-violet);padding:0.4rem 0.9rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;}
-  .btn-topbar.gold{color:var(--or);border-color:var(--border-or);}
-  .btn-topbar.gold:hover{background:rgba(201,162,39,0.1);}
+  .topbar-left img{height:34px;}
+  .topbar-title{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
+  .topbar-right{display:flex;align-items:center;gap:0.8rem;}
+  .nav-profil-btn{display:flex;align-items:center;gap:0.6rem;background:none;border:none;cursor:pointer;padding:0.3rem 0.6rem;transition:background 0.2s;}
+  .nav-profil-btn:hover{background:rgba(201,162,39,0.08);}
+  .nav-profil-btn span{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--or-clair);}
+  .nav-avatar{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:0.85rem;color:var(--or);overflow:hidden;flex-shrink:0;}
+  .nav-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .btn-topbar{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;background:none;border:1px solid var(--border-violet);padding:0.4rem 0.9rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;color:var(--texte-pale);}
+  .btn-topbar:hover{border-color:var(--or);color:var(--or);}
   .btn-topbar.red{color:var(--rouge);border-color:rgba(232,90,90,0.3);}
   .btn-topbar.red:hover{background:rgba(232,90,90,0.1);}
-  .btn-topbar.violet{color:var(--texte-pale);border-color:var(--border-violet);}
-  .btn-topbar.violet:hover{border-color:var(--or);color:var(--or);}
 
   .dash-content{max-width:900px;margin:0 auto;padding:3rem 2rem;}
 
+  /* ONGLETS */
+  .dash-tabs{display:none;gap:0;border-bottom:1px solid var(--border-or);margin-bottom:2.5rem;}
+  .dash-tab{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;border-bottom:2px solid transparent;padding:0.9rem 2rem;cursor:pointer;transition:all 0.25s;}
+  .dash-tab.active{color:var(--or);border-bottom-color:var(--or);}
+  .tab-pane{display:none;}.tab-pane.active{display:block;}
+
   /* PROFIL CARD */
   .profil-card{border:1px solid var(--border-or);padding:2rem;background:rgba(26,15,46,0.4);margin-bottom:2.5rem;display:flex;align-items:center;gap:2rem;position:relative;}
-  .profil-avatar-wrap{position:relative;flex-shrink:0;}
-  .profil-avatar{width:80px;height:80px;border-radius:50%;border:2px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);overflow:hidden;}
+  .profil-avatar{width:80px;height:80px;border-radius:50%;border:2px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);overflow:hidden;flex-shrink:0;}
   .profil-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-  .profil-info{}
   .profil-rang{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);margin-bottom:0.3rem;}
-  .profil-pseudo{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;margin-bottom:0.3rem;}
-  .profil-role{font-size:0.9rem;color:var(--texte-pale);font-style:italic;margin-bottom:0.6rem;}
+  .profil-pseudo-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.3rem;}
+  .profil-pseudo{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;}
+  .profil-x-btn{display:inline-flex;align-items:center;opacity:0.8;transition:all 0.2s;}
+  .profil-x-btn:hover{transform:scale(1.1);opacity:1;}
+  .profil-x-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;}
+  .profil-role{font-size:0.9rem;color:var(--texte-pale);font-style:italic;}
   .btn-edit-profil{position:absolute;top:1rem;right:1rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.8rem;cursor:pointer;transition:all 0.3s;}
   .btn-edit-profil:hover{background:rgba(201,162,39,0.1);}
 
-  /* SECTION */
+  /* PLANNING */
   .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
   .section-header h2{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
-
-  /* FORM EVENT */
   #form-event{border:1px solid var(--border-violet);padding:2rem;background:rgba(10,8,20,0.7);margin-bottom:2.5rem;display:none;}
   #form-event.visible{display:block;}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem;}
@@ -76,222 +96,221 @@
   .form-actions{display:flex;gap:1rem;justify-content:flex-end;}
   .btn-save{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.7rem 2rem;cursor:pointer;transition:all 0.3s;}
   .btn-save:hover{background:var(--or-clair);}
-  .btn-cancel{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.7rem 2rem;cursor:pointer;transition:all 0.3s;}
-  .btn-cancel:hover{border-color:var(--rouge);color:var(--rouge);}
+  .btn-cancel-form{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.7rem 2rem;cursor:pointer;transition:all 0.3s;}
+  .btn-cancel-form:hover{border-color:var(--rouge);color:var(--rouge);}
   .btn-add{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.5rem 1.2rem;cursor:pointer;transition:all 0.3s;}
   .btn-add:hover{background:rgba(201,162,39,0.1);}
-
-  /* EVENTS */
+  .filter-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border-violet);}
+  .filter-tab{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;padding:0.65rem 1.1rem;cursor:pointer;position:relative;transition:color 0.3s;}
+  .filter-tab::after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:2px;background:var(--or);transition:width 0.3s;}
+  .filter-tab.active{color:var(--or);}
+  .filter-tab.active::after{width:100%;}
   .events-list{display:flex;flex-direction:column;gap:1rem;}
   .event-item{border:1px solid var(--border-violet);padding:1.2rem 1.5rem;background:rgba(7,6,13,0.7);display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:center;transition:border-color 0.3s;}
   .event-item:hover{border-color:var(--border-or);}
-  .event-date-badge{text-align:center;min-width:55px;}
+  .event-date-badge{text-align:center;min-width:50px;}
   .event-date-badge .day{font-family:'Cinzel',serif;font-size:1.8rem;color:var(--or);line-height:1;}
-  .event-date-badge .month{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--texte-pale);}
-  .event-type-badge{display:inline-block;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.15rem 0.6rem;margin-bottom:0.4rem;}
+  .event-date-badge .month{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--texte-pale);}
+  .event-type-badge{display:inline-block;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.12rem 0.55rem;margin-bottom:0.3rem;}
   .type-fleetop{color:#e85a5a;border:1px solid rgba(232,90,90,0.3);}
   .type-pvp{color:var(--violet-glow);border:1px solid rgba(139,92,246,0.3);}
   .type-event{color:var(--or);border:1px solid var(--border-or);}
   .type-mining{color:var(--vert);border:1px solid rgba(94,207,160,0.3);}
-  .event-name{font-family:'Cinzel',serif;font-size:0.88rem;color:#fff;margin-bottom:0.2rem;}
-  .event-meta{font-size:0.82rem;color:var(--texte-pale);}
-  .event-actions{display:flex;gap:0.5rem;}
-  .btn-delete{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.4rem 0.7rem;cursor:pointer;transition:all 0.3s;}
+  .event-name{font-family:'Cinzel',serif;font-size:0.85rem;color:#fff;margin-bottom:0.2rem;}
+  .event-meta{font-size:0.8rem;color:var(--texte-pale);}
+  .btn-delete{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.65rem;cursor:pointer;transition:all 0.3s;}
   .btn-delete:hover{background:rgba(232,90,90,0.1);}
   .empty-state{text-align:center;padding:3rem;color:var(--texte-pale);border:1px dashed var(--border-violet);font-style:italic;}
-
-  /* FILTRES */
-  .filter-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border-violet);}
-  .filter-tab{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;padding:0.65rem 1.1rem;cursor:pointer;position:relative;transition:color 0.3s;}
-  .filter-tab::after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:2px;background:var(--or);transition:width 0.3s;}
-  .filter-tab:hover{color:var(--texte);}
-  .filter-tab.active{color:var(--or);}
-  .filter-tab.active::after{width:100%;}
-
-  /* MINI CAL */
-  .mini-cal-wrapper{border:1px solid var(--border-or);background:rgba(10,8,20,0.85);padding:1.5rem;margin-bottom:2rem;}
+  .access-denied{border:1px solid rgba(232,90,90,0.3);padding:2rem;text-align:center;background:rgba(232,90,90,0.05);}
+  .access-denied h3{font-family:'Cinzel',serif;font-size:0.82rem;letter-spacing:0.2em;color:var(--rouge);margin-bottom:0.8rem;}
+  .planning-layout{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:start;}
+  .mini-cal-wrapper{border:1px solid var(--border-or);background:rgba(10,8,20,0.85);padding:1.5rem;}
   .mini-cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
-  .mini-cal-title{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);}
+  .mini-cal-title{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);}
   .mini-cal-nav{background:none;border:1px solid var(--border-violet);color:var(--texte-pale);width:26px;height:26px;cursor:pointer;font-size:0.8rem;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
   .mini-cal-nav:hover{border-color:var(--or);color:var(--or);}
   .mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
-  .mini-cal-grid .day-label{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--texte-pale);padding-bottom:0.4rem;text-transform:uppercase;}
-  .mini-cal-grid .mcday{font-size:0.75rem;color:var(--texte-pale);padding:0.3rem 0;border-radius:2px;position:relative;transition:all 0.2s;}
-  .mini-cal-grid .mcday.has-event{color:var(--or-clair);font-family:'Cinzel',serif;}
-  .mini-cal-grid .mcday.has-event::after{content:'•';position:absolute;bottom:0px;left:50%;transform:translateX(-50%);font-size:0.45rem;color:var(--or);}
+  .mini-cal-grid .day-label{font-family:'Cinzel',serif;font-size:0.48rem;color:var(--texte-pale);padding-bottom:0.4rem;text-transform:uppercase;}
+  .mini-cal-grid .mcday{font-size:0.75rem;color:var(--texte-pale);padding:0.3rem 0;border-radius:2px;position:relative;}
+  .mini-cal-grid .mcday.has-event{color:var(--or-clair);}
+  .mini-cal-grid .mcday.has-event::after{content:'•';position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:0.4rem;color:var(--or);}
   .mini-cal-grid .mcday.today{background:rgba(107,53,200,0.3);border:1px solid var(--border-violet);color:#fff;}
-  .mini-cal-grid .mcday.empty{color:transparent;pointer-events:none;}
+  .mini-cal-grid .mcday.empty{color:transparent;}
   .cal-legend-dash{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border-violet);}
-  .cal-legend-dash .legend-title{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.8rem;}
-  .legend-items-dash{display:flex;flex-direction:column;gap:0.5rem;}
-  .legend-item-dash{display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--texte-pale);}
+  .legend-title{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.7rem;}
+  .legend-items-dash{display:flex;flex-direction:column;gap:0.4rem;}
+  .legend-item-dash{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--texte-pale);}
   .legend-dot-dash{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
-  .planning-layout{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:start;}
 
-  /* ACCESS DENIED */
-  .access-denied{border:1px solid rgba(232,90,90,0.3);padding:2rem;text-align:center;background:rgba(232,90,90,0.05);}
-  .access-denied h3{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.2em;color:var(--rouge);margin-bottom:0.8rem;}
-  .access-denied p{font-size:0.9rem;color:var(--texte-pale);}
+  /* GESTION */
+  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;}
+  .gstat{border:1px solid var(--border-violet);padding:1.4rem 1.2rem;background:rgba(10,8,20,0.8);position:relative;overflow:hidden;}
+  .gstat::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;}
+  .gstat.or::after{background:linear-gradient(to right,transparent,var(--or),transparent);}
+  .gstat.vert::after{background:linear-gradient(to right,transparent,var(--vert),transparent);}
+  .gstat.cyan::after{background:linear-gradient(to right,transparent,var(--cyan),transparent);}
+  .gstat-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.6rem;}
+  .gstat-value{font-family:'Cinzel',serif;font-size:1.8rem;line-height:1;}
+  .gstat-value.or{color:var(--or);}
+  .gstat-value.vert{color:var(--vert);}
+  .gstat-value.cyan{color:var(--cyan);}
+  .gen-box{border:1px solid var(--border-violet);padding:1.8rem;background:rgba(10,8,20,0.8);margin-bottom:2rem;}
+  .gen-box h3{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--or);margin-bottom:1.2rem;padding-bottom:0.7rem;border-bottom:1px solid var(--border-violet);}
+  .gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+  .gen-grid label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:0.4rem;}
+  .gen-grid input,.gen-grid select{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.6rem 0.9rem;font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;transition:border-color 0.3s;}
+  .gen-grid input:focus,.gen-grid select:focus{border-color:var(--or);}
+  .gen-grid select option{background:#1a0f2e;}
+  .gen-grid .full{grid-column:1/-1;}
+  .users-table{border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);overflow-x:auto;margin-bottom:2rem;}
+  .users-table table{width:100%;border-collapse:collapse;}
+  .users-table thead tr{border-bottom:1px solid var(--border-or);background:rgba(26,15,46,0.6);}
+  .users-table th{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);padding:0.8rem 1rem;text-align:left;}
+  .users-table tbody tr{border-bottom:1px solid rgba(107,53,200,0.12);transition:background 0.2s;}
+  .users-table tbody tr:hover{background:rgba(26,15,46,0.4);}
+  .users-table td{padding:0.7rem 1rem;font-size:0.85rem;color:var(--texte);vertical-align:middle;}
+  .ubadge{font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.12rem 0.45rem;display:inline-block;}
+  .ubadge.actif{color:var(--vert);border:1px solid rgba(94,207,160,0.3);}
+  .ubadge.ops{color:var(--cyan);border:1px solid rgba(0,212,255,0.3);}
+  .ubadge.admin{color:var(--rouge);border:1px solid rgba(232,90,90,0.3);}
+  .ubadge.non{color:var(--texte-pale);border:1px solid var(--border-violet);}
+  .log-box{border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);max-height:280px;overflow-y:auto;margin-bottom:2rem;}
+  .log-item{display:grid;grid-template-columns:150px 1fr 70px;gap:0.8rem;align-items:center;padding:0.6rem 1rem;border-bottom:1px solid rgba(107,53,200,0.1);font-size:0.82rem;}
+  .log-time{font-family:'Cinzel',serif;font-size:0.55rem;color:var(--texte-pale);}
+  .log-pseudo strong{color:var(--or-clair);font-weight:400;}
+  .log-status{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;text-align:right;}
+  .log-status.ok{color:var(--vert);}
+  .log-status.fail{color:var(--rouge);}
+  .log-empty{padding:2rem;text-align:center;color:var(--texte-pale);font-style:italic;}
+  .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:1px solid var(--border-violet);}
+  .section-hdr h3{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--or);}
+  .btn-xs{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.25rem 0.55rem;cursor:pointer;transition:all 0.3s;}
+  .btn-xs:hover{background:rgba(232,90,90,0.1);}
 
-  /* ═══ MODAL PROFIL ═══ */
+  /* MODAL PROFIL */
   .modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(3,2,8,0.88);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
   .modal-overlay.open{opacity:1;pointer-events:all;}
-  .modal-box{background:rgba(12,8,24,0.98);border:1px solid var(--border-or);width:90%;max-width:520px;position:relative;transform:translateY(20px);transition:transform 0.25s;max-height:90vh;overflow-y:auto;}
+  .modal-box{background:rgba(12,8,24,0.98);border:1px solid var(--border-or);width:90%;max-width:500px;position:relative;transform:translateY(20px);transition:transform 0.25s;max-height:90vh;overflow-y:auto;}
   .modal-overlay.open .modal-box{transform:translateY(0);}
-  .modal-box::-webkit-scrollbar{width:4px;}
-  .modal-box::-webkit-scrollbar-thumb{background:var(--border-violet);}
   .modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.8rem;border-bottom:1px solid var(--border-or);position:sticky;top:0;background:rgba(12,8,24,0.98);z-index:1;}
-  .modal-header h3{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--or);}
-  .modal-close{background:none;border:none;color:var(--texte-pale);font-size:1.2rem;cursor:pointer;line-height:1;transition:color 0.2s;padding:0.2rem 0.4rem;}
+  .modal-header h3{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--or);}
+  .modal-close{background:none;border:none;color:var(--texte-pale);font-size:1.2rem;cursor:pointer;transition:color 0.2s;}
   .modal-close:hover{color:var(--rouge);}
   .modal-body{padding:2rem 1.8rem;}
-
-  /* Photo upload */
-  .photo-upload-area{text-align:center;margin-bottom:2rem;}
-  .photo-preview{width:100px;height:100px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2.2rem;color:var(--or);margin:0 auto 1rem;overflow:hidden;cursor:pointer;position:relative;transition:all 0.3s;}
+  .photo-upload-area{text-align:center;margin-bottom:1.8rem;}
+  .photo-preview{width:90px;height:90px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);margin:0 auto 0.8rem;overflow:hidden;cursor:pointer;position:relative;transition:all 0.3s;}
   .photo-preview:hover{border-color:var(--or);}
   .photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-  .photo-preview .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;}
+  .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;}
   .photo-preview:hover .photo-overlay{opacity:1;}
-  .photo-overlay span{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:#fff;}
-  #photo-file-input{display:none;}
-  .photo-upload-btn{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.4rem 1rem;cursor:pointer;transition:all 0.3s;}
+  .photo-overlay span{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:#fff;}
+  .photo-upload-btn{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.9rem;cursor:pointer;transition:all 0.3s;}
   .photo-upload-btn:hover{background:rgba(201,162,39,0.1);}
-  .photo-cooldown{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.12em;color:var(--texte-pale);margin-top:0.5rem;}
+  .photo-cooldown{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.1em;color:var(--texte-pale);margin-top:0.5rem;}
   .photo-cooldown.locked{color:var(--rouge);}
-
-  .modal-field{margin-bottom:1.4rem;}
-  .modal-field label{display:block;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--or);margin-bottom:0.5rem;}
-  .modal-field input{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.75rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
+  .modal-field{margin-bottom:1.2rem;}
+  .modal-field label{display:block;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.45rem;}
+  .modal-field input{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.72rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
   .modal-field input:focus{border-color:var(--or);}
-  .modal-field .hint{font-size:0.75rem;color:var(--texte-pale);margin-top:0.4rem;font-style:italic;}
-  .modal-divider{border:none;border-top:1px solid var(--border-violet);margin:1.5rem 0;}
+  .modal-field .hint{font-size:0.75rem;color:var(--texte-pale);margin-top:0.35rem;font-style:italic;}
+  .modal-divider{border:none;border-top:1px solid var(--border-violet);margin:1.4rem 0;}
   .modal-footer{padding:1.2rem 1.8rem;border-top:1px solid var(--border-or);display:flex;gap:0.8rem;justify-content:flex-end;position:sticky;bottom:0;background:rgba(12,8,24,0.98);}
   .btn-modal-save{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.6rem 1.6rem;cursor:pointer;transition:all 0.3s;}
   .btn-modal-save:hover{background:var(--or-clair);}
   .btn-modal-cancel{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.6rem 1.4rem;cursor:pointer;transition:all 0.3s;}
   .btn-modal-cancel:hover{border-color:var(--rouge);color:var(--rouge);}
-  .modal-msg{text-align:center;padding:0.6rem;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.12em;display:none;}
+  .modal-msg{text-align:center;padding:0.5rem;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.1em;display:none;}
   .modal-msg.ok{color:var(--vert);display:block;}
   .modal-msg.err{color:var(--rouge);display:block;}
-
-  /* UPLOAD PROGRESS */
-  .upload-progress{display:none;margin-top:0.8rem;}
+  .upload-progress{display:none;margin-top:0.7rem;}
   .upload-progress.show{display:block;}
   .progress-bar{height:3px;background:var(--border-violet);border-radius:2px;overflow:hidden;}
   .progress-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
-  .progress-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;color:var(--texte-pale);margin-top:0.4rem;text-align:center;}
-
-  /* ONGLETS NAV */
-  .dash-tabs{display:flex;gap:0;border-bottom:1px solid var(--border-or);margin-bottom:2.5rem;}
-  .dash-tab{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;border-bottom:2px solid transparent;padding:0.9rem 2rem;cursor:pointer;transition:all 0.25s;position:relative;}
-  .dash-tab:hover{color:var(--texte);}
-  .dash-tab.active{color:var(--or);border-bottom-color:var(--or);}
-  .dash-tab.active::after{content:'';position:absolute;bottom:-2px;left:20%;right:20%;height:2px;background:linear-gradient(to right,transparent,rgba(201,162,39,0.6),transparent);filter:blur(2px);}
-  .tab-pane{display:none;}.tab-pane.active{display:block;}
-
-  /* GESTION */
-  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem;}
-  .gstat-card{border:1px solid var(--border-violet);padding:1.4rem 1.2rem;background:rgba(10,8,20,0.8);position:relative;overflow:hidden;transition:border-color 0.3s;}
-  .gstat-card:hover{border-color:var(--border-or);}
-  .gstat-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;}
-  .gstat-card.or::after{background:linear-gradient(to right,transparent,var(--or),transparent);}
-  .gstat-card.vert::after{background:linear-gradient(to right,transparent,var(--vert),transparent);}
-  .gstat-card.cyan::after{background:linear-gradient(to right,transparent,var(--cyan),transparent);}
-  .gstat-label{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.7rem;}
-  .gstat-value{font-family:'Cinzel',serif;font-size:1.8rem;line-height:1;margin-bottom:0.2rem;}
-  .gstat-value.or{color:var(--or);}
-  .gstat-value.vert{color:var(--vert);}
-  .gstat-value.cyan{color:var(--cyan);}
-  .gstat-detail{font-size:0.78rem;color:var(--texte-pale);}
-
-  .gen-section{border:1px solid var(--border-violet);padding:1.8rem;background:rgba(10,8,20,0.8);margin-bottom:2rem;}
-  .gen-section h3{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);margin-bottom:1.5rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border-violet);}
-  .gen-form{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;}
-  .gen-form label{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:0.4rem;}
-  .gen-form input,.gen-form select{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.65rem 0.9rem;font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;transition:border-color 0.3s;}
-  .gen-form input:focus,.gen-form select:focus{border-color:var(--or);}
-  .gen-form select option{background:#1a0f2e;}
-  .gen-form .full{grid-column:1/-1;}
-  .code-result{display:none;margin-top:1rem;border:1px solid var(--border-or);padding:1.2rem;background:rgba(201,162,39,0.05);text-align:center;}
-  .code-result.show{display:block;}
-  .code-val{font-family:'Cinzel',serif;font-size:1.1rem;letter-spacing:0.28em;color:var(--or-clair);margin-bottom:0.5rem;}
-  .code-hint{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.8rem;}
-  .btn-copy{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.45rem 1.1rem;cursor:pointer;transition:all 0.3s;}
-  .btn-copy:hover{background:rgba(201,162,39,0.1);}
-
-  .log-box{border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);max-height:300px;overflow-y:auto;}
-  .log-box::-webkit-scrollbar{width:3px;}
-  .log-box::-webkit-scrollbar-thumb{background:var(--border-violet);}
-  .log-item{display:grid;grid-template-columns:150px 1fr 80px;gap:0.8rem;align-items:center;padding:0.65rem 1rem;border-bottom:1px solid rgba(107,53,200,0.1);font-size:0.82rem;}
-  .log-item:last-child{border-bottom:none;}
-  .log-time{font-family:'Cinzel',serif;font-size:0.58rem;color:var(--texte-pale);}
-  .log-pseudo strong{color:var(--or-clair);font-weight:400;}
-  .log-status{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-align:right;}
-  .log-status.ok{color:var(--vert);}
-  .log-status.fail{color:var(--rouge);}
-  .log-empty{padding:2rem;text-align:center;color:var(--texte-pale);font-style:italic;}
-
-  .tokens-list{border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);max-height:260px;overflow-y:auto;}
-  .token-item{display:grid;grid-template-columns:1fr auto auto auto;gap:0.8rem;align-items:center;padding:0.65rem 1rem;border-bottom:1px solid rgba(107,53,200,0.1);font-size:0.82rem;}
-  .token-item:last-child{border-bottom:none;}
-  .token-val{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.15em;color:var(--or-clair);}
-  .token-meta{font-size:0.72rem;color:var(--texte-pale);}
-  .token-status{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;}
-  .token-status.used{color:var(--vert);}
-  .token-status.unused{color:var(--texte-pale);}
-  .btn-xs{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.25rem 0.55rem;cursor:pointer;transition:all 0.3s;}
-  .btn-xs:hover{background:rgba(232,90,90,0.1);}
-  .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:0.7rem;border-bottom:1px solid var(--border-violet);}
-  .section-hdr h3{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--or);}
+  .progress-label{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--texte-pale);margin-top:0.35rem;text-align:center;}
 
   /* TOAST */
-  .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeInUp 0.3s ease;}
-  @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-  /* PROFIL X */
-  .profil-pseudo-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.3rem;}
-  .profil-x-btn{display:inline-flex;align-items:center;transition:transform 0.2s,opacity 0.2s;opacity:0.8;}
-  .profil-x-btn:hover{transform:scale(1.1);opacity:1;}
-  .profil-x-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;}
-
-  /* NAV PROFIL BTN */
-  .nav-profil-btn{display:flex;align-items:center;gap:0.6rem;background:none;border:none;cursor:pointer;padding:0.3rem 0.6rem;border-radius:3px;transition:background 0.2s;}
-  .nav-profil-btn:hover{background:rgba(201,162,39,0.08);}
-  .nav-profil-btn span{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--or-clair);}
-  .nav-avatar{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:0.85rem;color:var(--or);overflow:hidden;flex-shrink:0;}
-  .nav-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-
-  @media(max-width:700px){.planning-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profil-card{flex-direction:column;text-align:center}.topbar{flex-direction:column;gap:1rem}}
+  .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:700px){.planning-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profil-card{flex-direction:column;text-align:center}.topbar{flex-wrap:wrap;gap:0.8rem}.stats-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-box">
-    <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
-    <h1>Dashboard Éclypse</h1>
-    <p>Entre ton code d'accès pour rejoindre le panneau de contrôle</p>
-    <input type="text" id="code-input" placeholder="ECL-XXXX-XXXX" maxlength="25" onkeydown="if(event.key==='Enter')login()">
-    <button onclick="login()">Accéder au Dashboard</button>
-    <p class="login-error" id="login-error">❌ Code invalide ou accès révoqué</p>
+<!-- ══ AUTH ══ -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-header">
+      <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuth('login')">Connexion</button>
+      <button class="auth-tab" onclick="switchAuth('register')">Inscription</button>
+    </div>
+    <div class="auth-body">
+
+      <!-- CONNEXION -->
+      <form class="auth-form active" id="form-login" onsubmit="doLogin(event)">
+        <div class="auth-field">
+          <label>Adresse email</label>
+          <input type="email" id="l-email" placeholder="ton@email.com" required>
+        </div>
+        <div class="auth-field">
+          <label>Mot de passe</label>
+          <input type="password" id="l-password" placeholder="••••••••" required>
+        </div>
+        <label class="auth-check">
+          <input type="checkbox" id="l-remember">
+          Rester connecté
+        </label>
+        <button type="submit" class="auth-btn">Se connecter</button>
+        <div class="auth-msg" id="login-msg"></div>
+      </form>
+
+      <!-- INSCRIPTION -->
+      <form class="auth-form" id="form-register" onsubmit="doRegister(event)">
+        <div class="auth-field">
+          <label>Pseudo in-game *</label>
+          <input type="text" id="r-pseudo" placeholder="Ton pseudo Star Atlas" required>
+        </div>
+        <div class="auth-field">
+          <label>Adresse email *</label>
+          <input type="email" id="r-email" placeholder="ton@email.com" required>
+        </div>
+        <div class="auth-field">
+          <label>Mot de passe *</label>
+          <input type="password" id="r-password" placeholder="Minimum 8 caractères" required minlength="8">
+        </div>
+        <div class="auth-field">
+          <label>Confirmer le mot de passe *</label>
+          <input type="password" id="r-confirm" placeholder="Répète ton mot de passe" required>
+        </div>
+        <button type="submit" class="auth-btn">Créer mon compte</button>
+        <div class="auth-msg" id="register-msg"></div>
+      </form>
+
+    </div>
+    <div class="auth-footer" id="auth-footer-login">
+      Pas encore membre ? <a onclick="switchAuth('register')">Créer un compte</a>
+    </div>
+    <div class="auth-footer" id="auth-footer-register" style="display:none">
+      Déjà un compte ? <a onclick="switchAuth('login')">Se connecter</a>
+    </div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ══ DASHBOARD ══ -->
 <div id="dashboard">
   <div class="topbar">
     <div class="topbar-left">
       <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
       <span class="topbar-title">Dashboard · SAGE C4</span>
     </div>
-    <div class="topbar-user">
-      <button class="nav-profil-btn" id="nav-profil-btn" onclick="ouvrirProfil()" title="Mon profil">
+    <div class="topbar-right">
+      <button class="nav-profil-btn" onclick="ouvrirProfil()">
         <div class="nav-avatar" id="nav-avatar">?</div>
         <span id="display-pseudo">—</span>
       </button>
-      <a href="index.html" class="btn-topbar violet">← Site</a>
+      <a href="index.html" class="btn-topbar">← Site</a>
       <button class="btn-topbar red" onclick="logout()">Déconnexion</button>
     </div>
   </div>
@@ -299,44 +318,44 @@
   <div class="dash-content">
 
     <!-- ONGLETS (admin only) -->
-    <div class="dash-tabs" id="dash-tabs" style="display:none">
-      <button class="dash-tab active" id="tab-btn-ops" onclick="switchDashTab('ops')">📅 Opérations</button>
-      <button class="dash-tab" id="tab-btn-gestion" onclick="switchDashTab('gestion')">⚙ Gestion</button>
+    <div class="dash-tabs" id="dash-tabs">
+      <button class="dash-tab active" id="tab-btn-ops" onclick="switchTab('ops')">📅 Opérations</button>
+      <button class="dash-tab" id="tab-btn-gestion" onclick="switchTab('gestion')">⚙ Gestion</button>
     </div>
 
-    <!-- PROFIL CARD -->
+    <!-- PROFIL -->
     <div class="profil-card">
-      <div class="profil-avatar-wrap">
-        <div class="profil-avatar" id="profil-avatar">?</div>
-      </div>
-      <div class="profil-info">
+      <div class="profil-avatar" id="profil-avatar">?</div>
+      <div>
         <div class="profil-rang" id="profil-rang">—</div>
-        <div class="profil-pseudo" id="profil-pseudo">—</div>
+        <div class="profil-pseudo-row">
+          <div class="profil-pseudo" id="profil-pseudo">—</div>
+          <a id="profil-x-link" href="#" target="_blank" class="profil-x-btn" style="display:none">
+            <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" class="profil-x-logo" alt="X">
+          </a>
+        </div>
         <div class="profil-role" id="profil-role">—</div>
       </div>
       <button class="btn-edit-profil" onclick="ouvrirProfil()">✦ Modifier le profil</button>
     </div>
 
-    <!-- TAB OPS -->
+    <!-- ═══ TAB OPS ═══ -->
     <div class="tab-pane active" id="tab-ops">
-
-    <!-- PLANNING -->
-    <div id="planning-section">
       <div class="section-header">
-        <h2>📅 Opérations & Planning</h2>
-        <button class="btn-add" id="btn-add" onclick="toggleForm()">+ Nouvelle Op</button>
+        <h2>📅 Opérations &amp; Planning</h2>
+        <button class="btn-add" id="btn-add" onclick="toggleForm()" style="display:none">+ Nouvelle Op</button>
       </div>
       <div id="form-event">
         <div class="form-grid">
-          <div class="form-group"><label>Nom de l'opération *</label><input type="text" id="f-nom" placeholder="Ex: Mining Run Sector Alpha"></div>
+          <div class="form-group"><label>Nom *</label><input type="text" id="f-nom" placeholder="Ex: Fleet Op Secteur Alpha"></div>
           <div class="form-group"><label>Type *</label><select id="f-type"><option value="fleetop">Fleet Op</option><option value="pvp">PvP / Guild War</option><option value="mining">Mining Run</option><option value="event">Événement SAGE</option></select></div>
           <div class="form-group"><label>Date *</label><input type="date" id="f-date"></div>
-          <div class="form-group"><label>Heure (FR) *</label><input type="time" id="f-heure" value="21:00"></div>
+          <div class="form-group"><label>Heure (FR)</label><input type="time" id="f-heure" value="21:00"></div>
           <div class="form-group full"><label>Description</label><textarea id="f-desc" placeholder="Vaisseaux requis, zone, objectif..."></textarea></div>
         </div>
         <div class="form-actions">
-          <button class="btn-cancel" onclick="toggleForm()">Annuler</button>
-          <button class="btn-save" onclick="saveEvent()">✦ Publier l'opération</button>
+          <button class="btn-cancel-form" onclick="toggleForm()">Annuler</button>
+          <button class="btn-save" onclick="saveEvent()">✦ Publier</button>
         </div>
       </div>
       <div class="planning-layout">
@@ -348,7 +367,11 @@
             <button class="filter-tab" onclick="filterEvents('event',this)">Événements</button>
             <button class="filter-tab" onclick="filterEvents('mining',this)">Mining</button>
           </div>
-          <div class="events-list" id="events-list"><div class="empty-state">Aucune opération planifiée — crée la première !</div></div>
+          <div class="events-list" id="events-list"><div class="empty-state">Aucune opération planifiée.</div></div>
+          <div id="no-access" class="access-denied" style="display:none;margin-top:1rem;">
+            <h3>🔒 Accès restreint</h3>
+            <p style="font-size:0.9rem;color:var(--texte-pale)">Tu n'as pas les droits pour créer des ops.</p>
+          </div>
         </div>
         <div>
           <div class="mini-cal-wrapper">
@@ -362,122 +385,56 @@
               <div class="legend-title">Légende</div>
               <div class="legend-items-dash">
                 <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#e85a5a"></div>Fleet Op</div>
-                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#8b5cf6"></div>PvP / Guild War</div>
-                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#c9a227"></div>Événement SAGE</div>
-                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#5ecfa0"></div>Mining Run</div>
+                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#8b5cf6"></div>PvP</div>
+                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#c9a227"></div>Événement</div>
+                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#5ecfa0"></div>Mining</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div id="no-access" class="access-denied" style="display:none">
-        <h3>🔒 Accès Restreint</h3>
-        <p>Tu n'as pas les droits pour créer des événements. Contacte le Fleet Commander.</p>
-      </div>
     </div>
-  </div>
-</div>
-    </div><!-- /tab-ops -->
 
-    <!-- TAB GESTION -->
+    <!-- ═══ TAB GESTION ═══ -->
     <div class="tab-pane" id="tab-gestion">
 
-      <!-- STATS -->
       <div class="stats-row">
-        <div class="gstat-card or">
+        <div class="gstat or">
+          <div class="gstat-label">Membres inscrits</div>
+          <div class="gstat-value or" id="gs-membres">—</div>
+        </div>
+        <div class="gstat vert">
           <div class="gstat-label">Connexions aujourd'hui</div>
-          <div class="gstat-value or" id="gs-today">—</div>
-          <div class="gstat-detail">sessions membres</div>
+          <div class="gstat-value vert" id="gs-today">—</div>
         </div>
-        <div class="gstat-card vert">
-          <div class="gstat-label">Tokens générés</div>
-          <div class="gstat-value vert" id="gs-tokens">—</div>
-          <div class="gstat-detail">codes d'accès créés</div>
-        </div>
-        <div class="gstat-card cyan">
-          <div class="gstat-label">Tokens utilisés</div>
-          <div class="gstat-value cyan" id="gs-used">—</div>
-          <div class="gstat-detail">activations</div>
+        <div class="gstat cyan">
+          <div class="gstat-label">Connexions totales</div>
+          <div class="gstat-value cyan" id="gs-total">—</div>
         </div>
       </div>
 
-      <!-- GÉNÉRATEUR TOKEN ──────────────────── -->
-      <div class="gen-section">
-        <h3>🔑 Générer un token membre</h3>
-        <div class="gen-form">
-          <div>
-            <label>Pseudo du membre *</label>
-            <input type="text" id="g-pseudo" placeholder="Ex: Vaelthor">
-          </div>
-          <div>
-            <label>Rang</label>
-            <select id="g-rang">
-              <option>Capitaine</option>
-              <option>Vétéran</option>
-              <option>Officier</option>
-              <option>Fleet Commander</option>
-            </select>
-          </div>
-          <div>
-            <label>Rôle</label>
-            <select id="g-role">
-              <option>Fighter</option>
-              <option>Miner</option>
-              <option>Scout</option>
-              <option>Support</option>
-              <option>Fleet Commander</option>
-              <option>Trader</option>
-            </select>
-          </div>
-          <div>
-            <label>Faction</label>
-            <select id="g-faction">
-              <option>MUD</option>
-              <option>ONI</option>
-              <option>USTUR</option>
-            </select>
-          </div>
-          <div class="full">
-            <label>Droits sur les ops (créer/supprimer des événements)</label>
-            <select id="g-ops">
-              <option value="false">Non — membre standard</option>
-              <option value="true">Oui — officier+</option>
-            </select>
-          </div>
-        </div>
-        <button onclick="genererToken()" style="font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.75rem 2rem;cursor:pointer;transition:all 0.3s;width:100%;">✦ Générer le token</button>
-        <div class="code-result" id="code-result">
-          <div class="code-val" id="code-val">—</div>
-          <div class="code-hint">Token d'accès membre — à transmettre en privé</div>
-          <button class="btn-copy" onclick="copierToken()">Copier</button>
-        </div>
+      <!-- MEMBRES -->
+      <div class="section-hdr">
+        <h3>👥 Membres inscrits</h3>
+        <button class="btn-xs" onclick="chargerGestion()">↻ Actualiser</button>
+      </div>
+      <div class="users-table" id="users-table">
+        <div class="log-empty">Chargement…</div>
       </div>
 
-      <!-- TOKENS GÉNÉRÉS -->
-      <div style="margin-bottom:2rem;">
-        <div class="section-hdr">
-          <h3>📋 Tokens générés</h3>
-          <button class="btn-xs" onclick="viderTokens()">Vider</button>
-        </div>
-        <div class="tokens-list" id="tokens-list">
-          <div class="log-empty">Aucun token généré.</div>
-        </div>
+      <!-- LOGS -->
+      <div class="section-hdr">
+        <h3>📡 Journal des connexions</h3>
+        <button class="btn-xs" onclick="viderLogs()">Vider</button>
+      </div>
+      <div class="log-box" id="log-box">
+        <div class="log-empty">Aucune connexion enregistrée.</div>
       </div>
 
-      <!-- JOURNAL CONNEXIONS -->
-      <div>
-        <div class="section-hdr">
-          <h3>📡 Journal des connexions</h3>
-          <button class="btn-xs" onclick="viderLogs()">Vider</button>
-        </div>
-        <div class="log-box" id="log-box">
-          <div class="log-empty">Aucune connexion enregistrée.</div>
-        </div>
-      </div>
+    </div>
 
-    </div><!-- /tab-gestion -->
-
-</div><!-- /dash-content -->
+  </div>
+</div>
 
 <!-- MODAL PROFIL -->
 <div class="modal-overlay" id="modal-profil" onclick="if(event.target===this)fermerProfil()">
@@ -487,57 +444,41 @@
       <button class="modal-close" onclick="fermerProfil()">✕</button>
     </div>
     <div class="modal-body">
-
-      <!-- Photo -->
       <div class="photo-upload-area">
-        <div class="photo-preview" id="photo-preview-btn" onclick="document.getElementById('photo-file-input').click()">
+        <div class="photo-preview" id="photo-preview-btn" onclick="document.getElementById('photo-input').click()">
           <span id="photo-initiale">?</span>
           <div class="photo-overlay"><span>Changer</span></div>
         </div>
-        <input type="file" id="photo-file-input" accept="image/*" onchange="previewPhoto(event)">
-        <button class="photo-upload-btn" id="photo-upload-btn" onclick="uploadPhoto()">⬆ Uploader la photo</button>
+        <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(event)">
+        <button class="photo-upload-btn" id="photo-upload-btn" onclick="uploadPhoto()" style="display:none">⬆ Uploader</button>
         <div class="upload-progress" id="upload-progress">
           <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-          <div class="progress-label" id="progress-label">Upload en cours…</div>
+          <div class="progress-label" id="progress-label"></div>
         </div>
         <div class="photo-cooldown" id="photo-cooldown"></div>
       </div>
-
-      <!-- Pseudo -->
       <div class="modal-field">
-        <label>Pseudo affiché</label>
-        <input type="text" id="profil-pseudo-input" placeholder="Ton pseudo">
-        <div class="hint">Visible sur la page membres publique. Modifiable tous les 90 jours.</div>
+        <label>Pseudo in-game</label>
+        <input type="text" id="p-pseudo" placeholder="Ton pseudo">
+        <div class="hint">Modifiable tous les 90 jours.</div>
       </div>
-
-      <!-- Lien X -->
       <div class="modal-field">
         <label>Profil X (Twitter)</label>
         <div style="display:flex;align-items:center;gap:0.8rem;">
-          <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;">
-          <input type="url" id="profil-x-input" placeholder="https://x.com/tonpseudo" style="flex:1">
+          <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" style="width:22px;height:22px;border-radius:50%;flex-shrink:0;">
+          <input type="url" id="p-xlink" placeholder="https://x.com/tonpseudo" style="flex:1">
         </div>
-        <div class="hint">Lien vers ton profil X. Visible sur ta carte publique.</div>
       </div>
-
       <hr class="modal-divider">
-
-      <!-- Code actuel -->
       <div class="modal-field">
-        <label>Code actuel (confirmation) *</label>
-        <input type="password" id="profil-code-actuel" placeholder="Ton code actuel pour confirmer">
-      </div>
-      <!-- Nouveau code -->
-      <div class="modal-field">
-        <label>Nouveau code d'accès</label>
-        <input type="text" id="profil-code-new" placeholder="Laisser vide pour ne pas changer" style="letter-spacing:0.12em" oninput="toggleConfirm()">
+        <label>Nouveau mot de passe</label>
+        <input type="password" id="p-newpwd" placeholder="Laisser vide pour ne pas changer" oninput="togglePwdConfirm()">
         <div class="hint">Minimum 8 caractères.</div>
       </div>
-      <div class="modal-field" id="confirm-wrap" style="display:none">
-        <label>Confirmer le nouveau code *</label>
-        <input type="text" id="profil-code-confirm" placeholder="Répète le nouveau code" style="letter-spacing:0.12em">
+      <div class="modal-field" id="p-confirm-wrap" style="display:none">
+        <label>Confirmer le nouveau mot de passe</label>
+        <input type="password" id="p-confirmpwd" placeholder="Répète le nouveau mot de passe">
       </div>
-
       <div class="modal-msg" id="modal-msg"></div>
     </div>
     <div class="modal-footer">
@@ -552,107 +493,191 @@
 <script>
 const REPO_OWNER  = 'osvalt16';
 const REPO_NAME   = 'Eclype_sa';
-const MEMBRES_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/membres.json`;
+const USERS_URL   = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/users.json`;
 const EVENTS_URL  = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
-const IMGUR_CLIENT_ID = '546c25a59c58ad7'; // Client ID public Imgur
+const IMGUR_ID    = '546c25a59c58ad7';
 
-let currentMembre = null;
-let allEvents     = [];
-let photoFileData = null; // { file, dataUrl }
+let currentUser = null;
+let allEvents   = [];
+let photoFile   = null;
 
-/* ═══ LOGIN ═══ */
-async function login() {
-  const code = document.getElementById('code-input').value.trim().toUpperCase();
-  if (!code) return;
+/* ══ SHA-256 ══ */
+async function sha256(msg) {
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ══ AUTH ══ */
+function switchAuth(mode) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  document.getElementById('auth-footer-login').style.display   = mode === 'login'    ? '' : 'none';
+  document.getElementById('auth-footer-register').style.display = mode === 'register' ? '' : 'none';
+  if (mode === 'login') {
+    document.querySelector('.auth-tab:first-child').classList.add('active');
+    document.getElementById('form-login').classList.add('active');
+  } else {
+    document.querySelector('.auth-tab:last-child').classList.add('active');
+    document.getElementById('form-register').classList.add('active');
+  }
+}
+
+async function doLogin(e) {
+  e.preventDefault();
+  const email    = document.getElementById('l-email').value.trim().toLowerCase();
+  const password = document.getElementById('l-password').value;
+  const remember = document.getElementById('l-remember').checked;
+  const msg      = document.getElementById('login-msg');
+
   try {
-    const res  = await fetch(MEMBRES_URL + '?t=' + Date.now());
+    const res  = await fetch(USERS_URL + '?t=' + Date.now());
     const data = await res.json();
-    const m = data.membres.find(x => x.code.toUpperCase() === code && x.actif === true);
-    if (!m) {
-      logLocal(code, 'Tentative échouée', 'fail');
-      document.getElementById('login-error').style.display = 'block';
+    const hash = await sha256(password);
+    const user = data.users.find(u => u.email.toLowerCase() === email && u.password === hash && u.actif);
+
+    if (!user) {
+      logConn(email, 'Tentative échouée', 'fail');
+      msg.className = 'auth-msg err';
+      msg.textContent = '❌ Email ou mot de passe incorrect';
       return;
     }
-    currentMembre = m;
-    localStorage.setItem('eclypse_membre', JSON.stringify(m));
-    // Si admin aussi → stocker session admin + token de service
-    if (m.admin) {
-      localStorage.setItem('eclypse_admin', JSON.stringify({ nom: m.pseudo, level: 'admin', code: m.code }));
-      // Token de service géré via admin.html
-    }
-    logLocal(m.pseudo, `Connexion dashboard (${m.rang})`, 'ok');
-    showDashboard(m);
-  } catch(e) {
-    document.getElementById('login-error').style.display = 'block';
-    document.getElementById('login-error').textContent = '❌ Erreur de connexion. Réessaie.';
+
+    logConn(user.pseudo, `Connexion (${user.rang || 'Membre'})`, 'ok');
+    const storage = remember ? localStorage : sessionStorage;
+    storage.setItem('eclypse_user', JSON.stringify(user));
+    localStorage.setItem('eclypse_user', JSON.stringify(user));
+    currentUser = user;
+    afficherDashboard(user);
+
+  } catch(err) {
+    msg.className = 'auth-msg err';
+    msg.textContent = '❌ Erreur de connexion. Réessaie.';
   }
 }
 
-function logLocal(pseudo, detail, status) {
+async function doRegister(e) {
+  e.preventDefault();
+  const pseudo   = document.getElementById('r-pseudo').value.trim();
+  const email    = document.getElementById('r-email').value.trim().toLowerCase();
+  const password = document.getElementById('r-password').value;
+  const confirm  = document.getElementById('r-confirm').value;
+  const msg      = document.getElementById('register-msg');
+
+  if (password !== confirm) {
+    msg.className = 'auth-msg err';
+    msg.textContent = '❌ Les mots de passe ne correspondent pas';
+    return;
+  }
+
   try {
-    const logs = JSON.parse(localStorage.getItem('eclypse_logs') || '[]');
-    logs.unshift({ pseudo, detail, status, ts: new Date().toISOString() });
-    localStorage.setItem('eclypse_logs', JSON.stringify(logs.slice(0,500)));
-  } catch(e){}
+    const token  = await getToken();
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
+    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+    const getJson = await getRes.json();
+    const sha    = getJson.sha;
+    const data   = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
+
+    // Vérifier email unique
+    if (data.users.find(u => u.email.toLowerCase() === email)) {
+      msg.className = 'auth-msg err';
+      msg.textContent = '❌ Cet email est déjà utilisé';
+      return;
+    }
+
+    const hash = await sha256(password);
+    const newUser = {
+      id: pseudo.toLowerCase().replace(/[^a-z0-9]/g,'') + '_' + Date.now(),
+      pseudo, email, password: hash,
+      rang: 'Recrue', role: '', faction: 'MUD',
+      photo: '', xLink: '',
+      dashboard: false, admin: false, actif: true,
+      createdAt: new Date().toISOString()
+    };
+
+    data.users.push(newUser);
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `New user: ${pseudo}`, content, sha })
+    });
+
+    msg.className = 'auth-msg ok';
+    msg.textContent = '✦ Compte créé ! Tu peux te connecter.';
+    setTimeout(() => switchAuth('login'), 2000);
+
+  } catch(err) {
+    msg.className = 'auth-msg err';
+    msg.textContent = '❌ Erreur lors de la création. Réessaie.';
+    console.error(err);
+  }
 }
 
-function showDashboard(m) {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('display-pseudo').textContent = m.pseudo;
-  document.getElementById('profil-rang').textContent   = '★ ' + m.rang;
-  document.getElementById('profil-pseudo').textContent = m.pseudo;
-  document.getElementById('profil-role').textContent   = m.role + ' · Faction ' + m.faction;
-  const xLinkEl = document.getElementById('profil-x-link');
-  if (xLinkEl) { if (m.xLink) { xLinkEl.href=m.xLink; xLinkEl.style.display='inline-flex'; } else { xLinkEl.style.display='none'; } }
+/* ══ DASHBOARD ══ */
+function afficherDashboard(u) {
+  document.getElementById('auth-screen').style.display  = 'none';
+  document.getElementById('dashboard').style.display    = 'block';
+  document.getElementById('display-pseudo').textContent = u.pseudo;
+  document.getElementById('profil-rang').textContent    = '★ ' + (u.rang || 'Recrue');
+  document.getElementById('profil-pseudo').textContent  = u.pseudo;
+  document.getElementById('profil-role').textContent    = [u.role, u.faction ? 'Faction '+u.faction : ''].filter(Boolean).join(' · ');
 
-  // Avatar : photo depuis localStorage ou membres.json
+  // Avatar
   const av = document.getElementById('profil-avatar');
   const navAv = document.getElementById('nav-avatar');
-  // Priorité : localStorage (mise à jour locale) > membres.json
-  const localPhotos = JSON.parse(localStorage.getItem('eclypse_photos') || '{}');
-  const photoUrl = localPhotos[m.id]?.url || m.photo || '';
-  if (photoUrl) {
-    av.innerHTML = `<img src="${photoUrl}" alt="${m.pseudo}">`;
-    if (navAv) navAv.innerHTML = `<img src="${photoUrl}" alt="${m.pseudo}">`;
-    // Mettre à jour currentMembre avec la photo locale
-    currentMembre.photo = photoUrl;
+  const localPhotos = JSON.parse(localStorage.getItem('eclypse_photos')||'{}');
+  const photo = localPhotos[u.id]?.url || u.photo || '';
+  if (photo) {
+    av.innerHTML  = `<img src="${photo}" alt="${u.pseudo}">`;
+    navAv.innerHTML = `<img src="${photo}" alt="${u.pseudo}">`;
   } else {
-    av.textContent = m.pseudo[0].toUpperCase();
-    if (navAv) navAv.textContent = m.pseudo[0].toUpperCase();
+    av.textContent  = u.pseudo[0].toUpperCase();
+    navAv.textContent = u.pseudo[0].toUpperCase();
   }
 
-  // Bouton Admin si applicable
+  // Lien X
+  const xEl = document.getElementById('profil-x-link');
+  if (xEl && u.xLink) { xEl.href = u.xLink; xEl.style.display = 'inline-flex'; }
 
-  if (!m.dashboard) {
-    document.getElementById('btn-add').style.display = 'none';
-    document.getElementById('no-access').style.display = 'block';
-  }
-  // Afficher onglet Gestion si admin
-  if (m.admin) {
+  // Droits
+  if (u.dashboard || u.admin) document.getElementById('btn-add').style.display = '';
+  else document.getElementById('no-access').style.display = 'block';
+
+  // Onglets admin
+  if (u.admin) {
     const tabs = document.getElementById('dash-tabs');
-    if (tabs) tabs.style.display = 'flex';
+    tabs.style.display = 'flex';
   }
+
   loadEvents();
 }
 
-
 function logout() {
-  localStorage.removeItem('eclypse_membre');
-  if (currentMembre && currentMembre.admin) localStorage.removeItem('eclypse_admin');
-  currentMembre = null;
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('code-input').value = '';
-  document.getElementById('login-error').style.display = 'none';
+  localStorage.removeItem('eclypse_user');
+  sessionStorage.removeItem('eclypse_user');
+  currentUser = null;
+  document.getElementById('auth-screen').style.display  = 'flex';
+  document.getElementById('dashboard').style.display    = 'none';
+  document.getElementById('l-email').value    = '';
+  document.getElementById('l-password').value = '';
+  document.getElementById('login-msg').className = 'auth-msg';
 }
 
-/* ═══ EVENTS ═══ */
+/* ══ ONGLETS ══ */
+function switchTab(tab) {
+  document.querySelectorAll('.dash-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-btn-'+tab).classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if (tab === 'gestion') chargerGestion();
+}
+
+/* ══ EVENTS ══ */
 async function loadEvents() {
   try {
     const res = await fetch(EVENTS_URL + '?t=' + Date.now());
-    const data = await res.json();
-    allEvents = data.events || [];
+    const d   = await res.json();
+    allEvents = d.events || [];
   } catch(e) { allEvents = []; }
   renderEvents();
 }
@@ -660,27 +685,26 @@ async function loadEvents() {
 let activeFilter = 'tous';
 function renderEvents() {
   const list = document.getElementById('events-list');
-  const typeLabels  = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
-  const typeClasses = { fleetop:'type-fleetop', pvp:'type-pvp', mining:'type-mining', event:'type-event' };
-  const filtered = activeFilter === 'tous' ? allEvents : allEvents.filter(e => e.type === activeFilter);
-  if (!filtered.length) {
-    list.innerHTML = '<div class="empty-state">Aucune opération planifiée.</div>';
-    renderMiniCal(); return;
-  }
-  const now = new Date(); now.setHours(0,0,0,0);
-  const sorted = [...filtered].sort((a,b) => new Date(a.date)-new Date(b.date));
-  list.innerHTML = sorted.map(ev => {
-    const d = new Date(ev.date+'T00:00:00');
+  const types = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
+  const cls   = { fleetop:'type-fleetop', pvp:'type-pvp', mining:'type-mining', event:'type-event' };
+  const now   = new Date(); now.setHours(0,0,0,0);
+  const filtered = (activeFilter === 'tous' ? allEvents : allEvents.filter(e => e.type === activeFilter))
+    .sort((a,b) => new Date(a.date) - new Date(b.date));
+
+  if (!filtered.length) { list.innerHTML = '<div class="empty-state">Aucune opération planifiée.</div>'; renderMiniCal(); return; }
+
+  list.innerHTML = filtered.map(ev => {
+    const d    = new Date(ev.date + 'T00:00:00');
     const past = d < now;
-    const canDel = currentMembre && (currentMembre.dashboard || ev.createdBy === currentMembre.pseudo);
+    const canDel = currentUser && (currentUser.dashboard || currentUser.admin);
     return `<div class="event-item" ${past?'style="opacity:0.5"':''}>
       <div class="event-date-badge"><div class="day">${d.getDate()}</div><div class="month">${d.toLocaleDateString('fr-FR',{month:'short'})}</div></div>
-      <div class="event-info">
-        <span class="event-type-badge ${typeClasses[ev.type]||'type-event'}">${typeLabels[ev.type]||ev.type}</span>
+      <div>
+        <span class="event-type-badge ${cls[ev.type]||'type-event'}">${types[ev.type]||ev.type}</span>
         <div class="event-name">${ev.nom}${past?' ✓':''}</div>
-        <div class="event-meta">${ev.heure}h FR · ${ev.description||''} · ${ev.createdBy||''}</div>
+        <div class="event-meta">${ev.heure}h FR · ${ev.description||''}</div>
       </div>
-      <div class="event-actions">${canDel?`<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>`:''}</div>
+      <div>${canDel ? `<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>` : ''}</div>
     </div>`;
   }).join('');
   renderMiniCal();
@@ -688,25 +712,23 @@ function renderEvents() {
 
 function filterEvents(type, btn) {
   activeFilter = type;
-  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   renderEvents();
 }
 
 function toggleForm() {
-  if (!currentMembre?.dashboard) return;
-  const form = document.getElementById('form-event');
-  form.classList.toggle('visible');
-  if (form.classList.contains('visible')) document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  const f = document.getElementById('form-event');
+  f.classList.toggle('visible');
+  if (f.classList.contains('visible')) document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 }
 
 async function saveEvent() {
-  if (!currentMembre?.dashboard) return;
   const nom = document.getElementById('f-nom').value.trim();
   const date = document.getElementById('f-date').value;
-  if (!nom||!date) { showToast('❌ Remplis le nom et la date !'); return; }
-  const newEv = { id:'ev_'+Date.now(), nom, type:document.getElementById('f-type').value, date, heure:document.getElementById('f-heure').value, description:document.getElementById('f-desc').value.trim(), createdBy:currentMembre.pseudo, createdAt:new Date().toISOString() };
-  allEvents.push(newEv);
+  if (!nom||!date) { showToast('❌ Remplis le nom et la date'); return; }
+  const ev = { id:'ev_'+Date.now(), nom, type:document.getElementById('f-type').value, date, heure:document.getElementById('f-heure').value, description:document.getElementById('f-desc').value.trim(), createdBy:currentUser.pseudo, createdAt:new Date().toISOString() };
+  allEvents.push(ev);
   await pushEvents();
   document.getElementById('form-event').classList.remove('visible');
   document.getElementById('f-nom').value = '';
@@ -717,133 +739,156 @@ async function saveEvent() {
 
 async function deleteEvent(id) {
   if (!confirm('Supprimer cette opération ?')) return;
-  allEvents = allEvents.filter(e=>e.id!==id);
+  allEvents = allEvents.filter(e => e.id !== id);
   await pushEvents();
   renderEvents();
-  showToast('Opération supprimée');
 }
 
 async function pushEvents() {
+  const token  = await getToken();
+  const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
+  const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+  const { sha } = await getRes.json();
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify({ events: allEvents }, null, 2))));
+  await fetch(apiUrl, { method:'PUT', headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'}, body:JSON.stringify({ message:`Update events`, content, sha }) });
+}
+
+/* ══ MINI CAL ══ */
+const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const dayL   = ['L','M','M','J','V','S','D'];
+const todayD = new Date();
+let calY = todayD.getFullYear(), calM = todayD.getMonth();
+function renderMiniCal() {
+  const grid = document.getElementById('mini-cal-grid');
+  const lbl  = document.getElementById('cal-month-label');
+  if (!grid||!lbl) return;
+  lbl.textContent = months[calM]+' '+calY;
+  const evMap = {};
+  allEvents.forEach(ev => { const d=new Date(ev.date+'T00:00:00'); if(d.getFullYear()===calY&&d.getMonth()===calM) evMap[d.getDate()]=true; });
+  const fd  = new Date(calY,calM,1).getDay();
+  const off = fd===0?6:fd-1;
+  const tot = new Date(calY,calM+1,0).getDate();
+  let html  = dayL.map(d=>`<div class="day-label">${d}</div>`).join('');
+  for(let i=0;i<off;i++) html+='<div class="mcday empty"></div>';
+  for(let d=1;d<=tot;d++){const iT=d===todayD.getDate()&&calM===todayD.getMonth()&&calY===todayD.getFullYear();html+=`<div class="mcday ${evMap[d]?'has-event':''} ${iT?'today':''}">${d}</div>`;}
+  grid.innerHTML = html;
+}
+function calNav(dir){calM+=dir;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}renderMiniCal();}
+
+/* ══ GESTION ══ */
+async function chargerGestion() {
   try {
     const token  = await getToken();
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
-    const getRes = await fetch(apiUrl,{headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
-    const {sha}  = await getRes.json();
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify({events:allEvents},null,2))));
-    await fetch(apiUrl,{method:'PUT',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message:`Update events by ${currentMembre.pseudo}`,content,sha})});
-  } catch(e){showToast('⚠️ Erreur sauvegarde');console.error(e);}
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
+    const res    = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+    const json   = await res.json();
+    const data   = JSON.parse(atob(json.content.replace(/\n/g,'')));
+    const users  = data.users;
+
+    document.getElementById('gs-membres').textContent = users.filter(u=>u.actif).length;
+
+    // Stats logs
+    const logs  = getLogs();
+    const today = new Date().toDateString();
+    document.getElementById('gs-today').textContent = logs.filter(l=>new Date(l.ts).toDateString()===today).length;
+    document.getElementById('gs-total').textContent = logs.length;
+
+    // Table membres
+    const tbl = document.getElementById('users-table');
+    if (!users.length) { tbl.innerHTML='<div class="log-empty">Aucun membre.</div>'; return; }
+    tbl.innerHTML = `<table>
+      <thead><tr><th>Pseudo</th><th>Email</th><th>Rang</th><th>Ops</th><th>Admin</th><th>Inscrit</th><th></th></tr></thead>
+      <tbody>
+        ${users.map(u=>`<tr>
+          <td style="font-family:'Cinzel',serif;color:#fff">${u.pseudo}</td>
+          <td style="font-size:0.8rem">${u.email}</td>
+          <td>${u.rang||'Recrue'}</td>
+          <td><span class="ubadge ${u.dashboard?'ops':'non'}">${u.dashboard?'Oui':'Non'}</span></td>
+          <td><span class="ubadge ${u.admin?'admin':'non'}">${u.admin?'Oui':'Non'}</span></td>
+          <td style="font-size:0.75rem;color:var(--texte-pale)">${new Date(u.createdAt).toLocaleDateString('fr-FR')}</td>
+          <td>
+            <button class="btn-xs" onclick="toggleOps('${u.id}','${!u.dashboard}')" title="${u.dashboard?'Retirer':'Donner'} accès ops">${u.dashboard?'- Ops':'+ Ops'}</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+
+    renderLogs();
+  } catch(e) { console.error(e); }
 }
 
-let _svcToken = null;
-async function getToken() {
-  if (_svcToken) return _svcToken;
-  // Essayer localStorage d'abord
-  const local = localStorage.getItem('eclypse_admin_token');
-  if (local) { _svcToken = local; return local; }
-  // Lire depuis config.json
+async function toggleOps(userId, give) {
   try {
-    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
-    const data = await res.json();
-    if (data.p) {
-      _svcToken = data.p.join('');
-      localStorage.setItem('eclypse_admin_token', _svcToken);
-      return _svcToken;
-    }
-  } catch(e) { console.error('Config error:', e); }
-  return '';
+    const token  = await getToken();
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
+    const res    = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+    const json   = await res.json();
+    const sha    = json.sha;
+    const data   = JSON.parse(atob(json.content.replace(/\n/g,'')));
+    const idx    = data.users.findIndex(u => u.id === userId);
+    if (idx !== -1) data.users[idx].dashboard = give === 'true';
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    await fetch(apiUrl, { method:'PUT', headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'}, body:JSON.stringify({ message:`Update ops rights`, content, sha }) });
+    showToast('✦ Droits mis à jour !');
+    chargerGestion();
+  } catch(e) { showToast('❌ Erreur'); }
 }
 
-/* ═══ MINI CAL ═══ */
-const monthNames=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-const dayLabels=['L','M','M','J','V','S','D'];
-const todayD=new Date();
-let calYear=todayD.getFullYear(),calMonth=todayD.getMonth();
-function renderMiniCal(){
-  const grid=document.getElementById('mini-cal-grid');
-  const label=document.getElementById('cal-month-label');
-  if(!grid||!label)return;
-  label.textContent=monthNames[calMonth]+' '+calYear;
-  const evMap={};
-  allEvents.forEach(ev=>{const d=new Date(ev.date+'T00:00:00');if(d.getFullYear()===calYear&&d.getMonth()===calMonth)evMap[d.getDate()]=true;});
-  const fd=new Date(calYear,calMonth,1).getDay();
-  const off=fd===0?6:fd-1;
-  const tot=new Date(calYear,calMonth+1,0).getDate();
-  let html=dayLabels.map(d=>`<div class="day-label">${d}</div>`).join('');
-  for(let i=0;i<off;i++)html+='<div class="mcday empty"></div>';
-  for(let d=1;d<=tot;d++){
-    const iT=d===todayD.getDate()&&calMonth===todayD.getMonth()&&calYear===todayD.getFullYear();
-    html+=`<div class="mcday ${evMap[d]?'has-event':''} ${iT?'today':''}">${d}</div>`;
-  }
-  grid.innerHTML=html;
+/* ══ LOGS ══ */
+function getLogs(){ try{return JSON.parse(localStorage.getItem('eclypse_logs')||'[]');}catch{return[];} }
+function logConn(pseudo,detail,status){ const l=getLogs(); l.unshift({pseudo,detail,status,ts:new Date().toISOString()}); localStorage.setItem('eclypse_logs',JSON.stringify(l.slice(0,500))); }
+function viderLogs(){ if(!confirm('Vider les logs ?')) return; localStorage.removeItem('eclypse_logs'); chargerGestion(); }
+function renderLogs() {
+  const logs = getLogs();
+  const el   = document.getElementById('log-box');
+  if (!el) return;
+  if (!logs.length) { el.innerHTML='<div class="log-empty">Aucune connexion.</div>'; return; }
+  el.innerHTML = logs.map(l=>{
+    const d=new Date(l.ts);
+    const ts=d.toLocaleDateString('fr-FR')+' · '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="log-item"><div class="log-time">${ts}</div><div class="log-pseudo"><strong>${l.pseudo}</strong> — ${l.detail}</div><div class="log-status ${l.status}">${l.status.toUpperCase()}</div></div>`;
+  }).join('');
 }
-function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderMiniCal();}
 
-/* ═══ MODAL PROFIL ═══ */
+/* ══ PROFIL MODAL ══ */
 function ouvrirProfil() {
-  if (!currentMembre) return;
-  // Remplir les champs
-  document.getElementById('profil-pseudo-input').value = currentMembre.pseudo;
-  document.getElementById('profil-code-actuel').value  = '';
-  document.getElementById('profil-code-new').value     = '';
-  document.getElementById('profil-code-confirm').value = '';
-  document.getElementById('confirm-wrap').style.display = 'none';
+  if (!currentUser) return;
+  document.getElementById('p-pseudo').value  = currentUser.pseudo;
+  document.getElementById('p-xlink').value   = currentUser.xLink || '';
+  document.getElementById('p-newpwd').value  = '';
+  document.getElementById('p-confirmpwd').value = '';
+  document.getElementById('p-confirm-wrap').style.display = 'none';
   document.getElementById('modal-msg').className = 'modal-msg';
-  document.getElementById('modal-msg').textContent = '';
-  photoFileData = null;
-
-  // Photo preview
-  const prev = document.getElementById('photo-preview-btn');
-  if (currentMembre.photo) {
-    prev.innerHTML = `<img src="${currentMembre.photo}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
-  } else {
-    prev.innerHTML = `<span id="photo-initiale">${currentMembre.pseudo[0].toUpperCase()}</span><div class="photo-overlay"><span>Changer</span></div>`;
-  }
+  photoFile = null;
   document.getElementById('photo-upload-btn').style.display = 'none';
   document.getElementById('upload-progress').classList.remove('show');
 
-  // Vérifier cooldown 90 jours
+  const prev = document.getElementById('photo-preview-btn');
+  const localPhotos = JSON.parse(localStorage.getItem('eclypse_photos')||'{}');
+  const photo = localPhotos[currentUser.id]?.url || currentUser.photo || '';
+  if (photo) prev.innerHTML=`<img src="${photo}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+  else prev.innerHTML=`<span>${currentUser.pseudo[0].toUpperCase()}</span><div class="photo-overlay"><span>Changer</span></div>`;
+
+  const lastEdit = currentUser.lastProfileEdit;
   const cdEl = document.getElementById('photo-cooldown');
-  const lastEdit = currentMembre.lastProfileEdit;
   if (lastEdit) {
-    const diff = Math.floor((Date.now() - new Date(lastEdit)) / (1000*60*60*24));
-    const reste = 90 - diff;
-    if (reste > 0) {
-      cdEl.textContent = `⏳ Modification photo/pseudo possible dans ${reste} jour${reste>1?'s':''}.`;
-      cdEl.className = 'photo-cooldown locked';
-      document.getElementById('photo-preview-btn').style.pointerEvents = 'none';
-      document.getElementById('profil-pseudo-input').disabled = true;
-    } else {
-      cdEl.textContent = '✦ Modification disponible';
-      cdEl.className = 'photo-cooldown';
-      document.getElementById('photo-preview-btn').style.pointerEvents = '';
-      document.getElementById('profil-pseudo-input').disabled = false;
-    }
-  } else {
-    cdEl.textContent = '✦ Première modification disponible';
-    cdEl.className = 'photo-cooldown';
-    document.getElementById('photo-preview-btn').style.pointerEvents = '';
-    document.getElementById('profil-pseudo-input').disabled = false;
-  }
+    const diff = Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24));
+    if (diff < 90) { cdEl.textContent=`⏳ Photo/pseudo modifiable dans ${90-diff} jour(s).`; cdEl.className='photo-cooldown locked'; }
+    else { cdEl.textContent='✦ Modification disponible'; cdEl.className='photo-cooldown'; }
+  } else { cdEl.textContent='✦ Première modification disponible'; cdEl.className='photo-cooldown'; }
 
   document.getElementById('modal-profil').classList.add('open');
 }
-
-function fermerProfil() {
-  document.getElementById('modal-profil').classList.remove('open');
-}
-
-function toggleConfirm() {
-  const v = document.getElementById('profil-code-new').value.trim();
-  document.getElementById('confirm-wrap').style.display = v ? 'block' : 'none';
-}
+function fermerProfil(){ document.getElementById('modal-profil').classList.remove('open'); }
+function togglePwdConfirm(){ document.getElementById('p-confirm-wrap').style.display = document.getElementById('p-newpwd').value ? 'block':'none'; }
 
 function previewPhoto(e) {
   const file = e.target.files[0];
   if (!file) return;
-  if (file.size > 5 * 1024 * 1024) { showModalMsg('❌ Image trop lourde (max 5 Mo)', 'err'); return; }
+  if (file.size > 5*1024*1024) { showToast('❌ Image trop lourde (max 5Mo)'); return; }
   const reader = new FileReader();
   reader.onload = ev => {
-    photoFileData = { file, dataUrl: ev.target.result };
+    photoFile = { file, dataUrl: ev.target.result };
     const prev = document.getElementById('photo-preview-btn');
     prev.innerHTML = `<img src="${ev.target.result}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
     document.getElementById('photo-upload-btn').style.display = 'inline-block';
@@ -852,286 +897,115 @@ function previewPhoto(e) {
 }
 
 async function uploadPhoto() {
-  if (!photoFileData) return;
+  if (!photoFile) return;
   const prog = document.getElementById('upload-progress');
   const fill = document.getElementById('progress-fill');
   const lbl  = document.getElementById('progress-label');
   prog.classList.add('show');
-  fill.style.width = '20%'; lbl.textContent = 'Upload vers Imgur…';
-
+  fill.style.width='30%'; lbl.textContent='Upload vers Imgur…';
   try {
-    // Upload vers Imgur (API anonyme)
-    const formData = new FormData();
-    formData.append('image', photoFileData.file);
-    fill.style.width = '50%';
-    const res  = await fetch('https://api.imgur.com/3/image', {
-      method: 'POST',
-      headers: { 'Authorization': `Client-ID ${IMGUR_CLIENT_ID}` },
-      body: formData
-    });
+    const fd = new FormData();
+    fd.append('image', photoFile.file);
+    fill.style.width='60%';
+    const res  = await fetch('https://api.imgur.com/3/image',{method:'POST',headers:{'Authorization':`Client-ID ${IMGUR_ID}`},body:fd});
     const json = await res.json();
-    if (!json.success) throw new Error(json.data?.error || 'Erreur Imgur');
-    fill.style.width = '90%'; lbl.textContent = 'Sauvegarde locale…';
-    const imageUrl = json.data.link;
-
-    // Sauvegarder en localStorage (pas besoin de token GitHub)
-    currentMembre.photo = imageUrl;
-    currentMembre.lastProfileEdit = new Date().toISOString();
-    localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
-
-    // Sauvegarder aussi dans un cache photos local
-    const photos = JSON.parse(localStorage.getItem('eclypse_photos') || '{}');
-    photos[currentMembre.id] = { url: imageUrl, pseudo: currentMembre.pseudo, ts: new Date().toISOString() };
+    if (!json.success) throw new Error(json.data?.error||'Erreur Imgur');
+    fill.style.width='90%'; lbl.textContent='Sauvegarde…';
+    const url = json.data.link;
+    const photos = JSON.parse(localStorage.getItem('eclypse_photos')||'{}');
+    photos[currentUser.id] = { url, ts: new Date().toISOString() };
     localStorage.setItem('eclypse_photos', JSON.stringify(photos));
-
-    fill.style.width = '100%'; lbl.textContent = '✓ Photo uploadée !';
-
-    // Mettre à jour l'affichage partout
-    const av = document.getElementById('profil-avatar');
-    av.innerHTML = `<img src="${imageUrl}" alt="${currentMembre.pseudo}">`;
-    const navAvU = document.getElementById('nav-avatar');
-    if (navAvU) navAvU.innerHTML = `<img src="${imageUrl}" alt="${currentMembre.pseudo}">`;
-
-    // Mettre à jour preview modal
-    const prev = document.getElementById('photo-preview-btn');
-    prev.innerHTML = `<img src="${imageUrl}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
-
-    photoFileData = null;
-    document.getElementById('photo-upload-btn').style.display = 'none';
-    showModalMsg('✦ Photo mise à jour ! Elle sera visible par tous après synchronisation.', 'ok');
-    setTimeout(() => prog.classList.remove('show'), 2000);
-
-    // Notifier l'admin pour synchro GitHub (afficher l'URL)
-    console.log('📸 Photo URL à synchro:', imageUrl);
-
-  } catch(e) {
-    fill.style.width = '100%'; fill.style.background = 'var(--rouge)';
-    lbl.textContent = '❌ Erreur : ' + e.message;
-    showModalMsg('❌ ' + e.message, 'err');
-  }
+    currentUser.photo = url;
+    localStorage.setItem('eclypse_user', JSON.stringify(currentUser));
+    // Push dans users.json
+    await pousserUser({ photo: url, lastProfileEdit: new Date().toISOString() });
+    fill.style.width='100%'; lbl.textContent='✓ Photo mise à jour !';
+    const av=document.getElementById('profil-avatar'); av.innerHTML=`<img src="${url}" alt="">`;
+    const navAv=document.getElementById('nav-avatar'); navAv.innerHTML=`<img src="${url}" alt="">`;
+    photoFile=null; document.getElementById('photo-upload-btn').style.display='none';
+    showModalMsg('✦ Photo mise à jour !','ok');
+  } catch(err) { fill.style.background='var(--rouge)'; lbl.textContent='❌ '+err.message; }
 }
 
 async function sauvegarderProfil() {
-  const pseudoVal  = document.getElementById('profil-pseudo-input').value.trim();
-  const codeActuel = document.getElementById('profil-code-actuel').value.trim().toUpperCase();
-  const codeNew    = document.getElementById('profil-code-new').value.trim().toUpperCase();
-  const codeConf   = document.getElementById('profil-code-confirm').value.trim().toUpperCase();
-
-  // Code actuel requis UNIQUEMENT si on veut changer le code
-  if (codeNew) {
-    if (!codeActuel) { showModalMsg('❌ Saisis ton code actuel pour changer le code', 'err'); return; }
-    const localCode = currentMembre.code.toUpperCase();
-    if (codeActuel !== localCode) { showModalMsg('❌ Code actuel incorrect', 'err'); return; }
-    if (codeNew.length < 8) { showModalMsg('❌ Nouveau code trop court (min 8 car.)', 'err'); return; }
-    if (codeNew !== codeConf) { showModalMsg('❌ Les codes ne correspondent pas', 'err'); return; }
-  }
-
-  // Vérifier cooldown pseudo
-  const lastEdit = currentMembre.lastProfileEdit;
-  const pseudoChange = pseudoVal && pseudoVal !== currentMembre.pseudo;
-  if (pseudoChange && lastEdit) {
-    const diff = Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24));
-    if (diff < 90) { showModalMsg(`❌ Pseudo modifiable dans ${90-diff} jour(s)`, 'err'); return; }
-  }
-
-  const xVal    = document.getElementById('profil-x-input') ? document.getElementById('profil-x-input').value.trim() : '';
-  const xChange = xVal !== (currentMembre.xLink || '');
+  const pseudo  = document.getElementById('p-pseudo').value.trim();
+  const xLink   = document.getElementById('p-xlink').value.trim();
+  const newPwd  = document.getElementById('p-newpwd').value;
+  const confPwd = document.getElementById('p-confirmpwd').value;
 
   const updates = {};
-  if (codeNew)      updates.code   = codeNew;
-  if (pseudoChange) { updates.pseudo = pseudoVal; updates.lastProfileEdit = new Date().toISOString(); }
-  if (xChange)      updates.xLink  = xVal;
 
-  if (!Object.keys(updates).length) { showModalMsg('Aucune modification détectée.', 'ok'); return; }
-
-  showModalMsg('⏳ Sauvegarde en cours…', 'ok');
-
-  // Pousser directement sur GitHub
-  const ok = await pousserProfilGitHub(updates);
-  if (!ok) { showModalMsg('❌ Erreur sauvegarde. Réessaie.', 'err'); return; }
-
-  // Appliquer en local
-  Object.assign(currentMembre, updates);
-  localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
-
-  if (currentMembre.admin) {
-    const adminData = JSON.parse(localStorage.getItem('eclypse_admin') || '{}');
-    if (updates.pseudo) adminData.nom  = updates.pseudo;
-    if (updates.code)   adminData.code = updates.code;
-    localStorage.setItem('eclypse_admin', JSON.stringify(adminData));
+  // Pseudo
+  if (pseudo && pseudo !== currentUser.pseudo) {
+    const lastEdit = currentUser.lastProfileEdit;
+    if (lastEdit && Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24)) < 90) {
+      showModalMsg('❌ Pseudo modifiable dans '+Math.max(0,90-Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24)))+' jour(s)', 'err'); return;
+    }
+    updates.pseudo = pseudo;
+    updates.lastProfileEdit = new Date().toISOString();
   }
 
-  // Rafraîchir affichage
-  document.getElementById('display-pseudo').textContent = currentMembre.pseudo;
-  document.getElementById('profil-pseudo').textContent  = currentMembre.pseudo;
-  const navAvR = document.getElementById('nav-avatar');
-  if (navAvR && currentMembre.photo) navAvR.innerHTML = `<img src="${currentMembre.photo}" alt="${currentMembre.pseudo}">`;
-  const xLR = document.getElementById('profil-x-link');
-  if (xLR) { if (currentMembre.xLink) { xLR.href=currentMembre.xLink; xLR.style.display='inline-flex'; } else { xLR.style.display='none'; } }
+  // X
+  if (xLink !== (currentUser.xLink||'')) updates.xLink = xLink;
 
-  showModalMsg('✦ Profil mis à jour !', 'ok');
-  showToast('✦ Profil sauvegardé !');
+  // Mot de passe
+  if (newPwd) {
+    if (newPwd.length < 8) { showModalMsg('❌ Mot de passe trop court (min 8)', 'err'); return; }
+    if (newPwd !== confPwd) { showModalMsg('❌ Les mots de passe ne correspondent pas', 'err'); return; }
+    updates.password = await sha256(newPwd);
+  }
+
+  if (!Object.keys(updates).length) { showModalMsg('Aucune modification détectée.','ok'); return; }
+
+  showModalMsg('⏳ Sauvegarde…','ok');
+  await pousserUser(updates);
+  Object.assign(currentUser, updates);
+  localStorage.setItem('eclypse_user', JSON.stringify(currentUser));
+
+  document.getElementById('display-pseudo').textContent = currentUser.pseudo;
+  document.getElementById('profil-pseudo').textContent  = currentUser.pseudo;
+  const xEl = document.getElementById('profil-x-link');
+  if (xEl) { if(currentUser.xLink){xEl.href=currentUser.xLink;xEl.style.display='inline-flex';}else{xEl.style.display='none';} }
+
+  showModalMsg('✦ Profil mis à jour !','ok');
+  showToast('✦ Sauvegardé !');
   setTimeout(fermerProfil, 1500);
 }
 
-async function pousserProfilGitHub(updates) {
-  // Utilise le token stocké — si pas disponible, on utilise le proxy admin
-  const token = await getToken();
-  if (!token) {
-    await mettreAJourMembre(updates);
-    showToast('⚠️ Sauvegarde locale uniquement');
-    return true;
-  }
+async function pousserUser(updates) {
+  const token  = await getToken();
+  const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
+  const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+  const getJson = await getRes.json();
+  const sha    = getJson.sha;
+  const data   = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
+  const idx    = data.users.findIndex(u => u.id === currentUser.id);
+  if (idx !== -1) Object.assign(data.users[idx], updates);
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  await fetch(apiUrl, { method:'PUT', headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'}, body:JSON.stringify({ message:`Update user ${currentUser.pseudo}`, content, sha }) });
+}
+
+/* ══ TOKEN SERVICE ══ */
+let _tok = null;
+async function getToken() {
+  if (_tok) return _tok;
+  const local = localStorage.getItem('eclypse_admin_token');
+  if (local) { _tok=local; return local; }
   try {
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
-    const getRes  = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
-    const getJson = await getRes.json();
-    const sha     = getJson.sha;
-    const data    = JSON.parse(atob(getJson.content.replace(/\n/g, '')));
-    const idx     = data.membres.findIndex(m => m.id === currentMembre.id);
-    if (idx !== -1) Object.assign(data.membres[idx], updates);
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    const putRes  = await fetch(apiUrl, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `Update profile ${currentMembre.pseudo}`, content, sha })
-    });
-    return putRes.ok;
-  } catch(e) {
-    console.error(e);
-    return false;
-  }
+    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
+    const data = await res.json();
+    if (data.p) { _tok=data.p.join(''); localStorage.setItem('eclypse_admin_token',_tok); return _tok; }
+  } catch(e) {}
+  return '';
 }
 
-async function mettreAJourMembre(updates) {
-  // Sauvegarder en localStorage uniquement
-  // La synchro GitHub se fait via le panel admin
-  Object.assign(currentMembre, updates);
-  localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
-
-  // Stocker les modifications en attente pour l'admin
-  const pending = JSON.parse(localStorage.getItem('eclypse_pending_updates') || '[]');
-  pending.push({
-    id: currentMembre.id,
-    pseudo: currentMembre.pseudo,
-    updates,
-    ts: new Date().toISOString()
-  });
-  localStorage.setItem('eclypse_pending_updates', JSON.stringify(pending));
-}
-
-function showModalMsg(msg, type) {
-  const el = document.getElementById('modal-msg');
-  el.textContent = msg;
-  el.className = 'modal-msg ' + type;
-}
-
-/* ═══ TOAST ═══ */
+/* ══ TOAST / MSG ══ */
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);}
+function showModalMsg(msg,type){const el=document.getElementById('modal-msg');el.textContent=msg;el.className='modal-msg '+type;}
 
-/* ═══ ONGLETS DASHBOARD ═══ */
-function switchDashTab(tab) {
-  document.querySelectorAll('.dash-tab').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-btn-' + tab).classList.add('active');
-  document.getElementById('tab-' + tab).classList.add('active');
-  if (tab === 'gestion') chargerGestion();
-}
-
-/* ═══ GESTION ═══ */
-function chargerGestion() {
-  const logs   = getLogs();
-  const tokens = getTokens();
-  const today  = new Date().toDateString();
-  document.getElementById('gs-today').textContent  = logs.filter(l => new Date(l.ts).toDateString() === today).length;
-  document.getElementById('gs-tokens').textContent = tokens.length;
-  document.getElementById('gs-used').textContent   = tokens.filter(t => t.used).length;
-  renderLogs();
-  renderTokens();
-}
-
-function randSeg(n) {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
-}
-
-function genererToken() {
-  const pseudo = document.getElementById('g-pseudo').value.trim();
-  if (!pseudo) { showToast('❌ Entre un pseudo'); return; }
-  const rang  = document.getElementById('g-rang').value;
-  const role  = document.getElementById('g-role').value;
-  const faction = document.getElementById('g-faction').value;
-  const ops   = document.getElementById('g-ops').value === 'true';
-  const slug  = pseudo.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4).padEnd(3,'X');
-  const code  = `ECL-${slug}-${randSeg(4)}-${randSeg(4)}`;
-
-  document.getElementById('code-val').textContent = code;
-  document.getElementById('code-result').classList.add('show');
-
-  const tokens = getTokens();
-  tokens.unshift({ code, pseudo, rang, role, faction, ops, ts: new Date().toISOString(), used: false });
-  localStorage.setItem('eclypse_tokens', JSON.stringify(tokens.slice(0,200)));
-  chargerGestion();
-  showToast('✦ Token généré !');
-}
-
-function copierToken() {
-  const val = document.getElementById('code-val').textContent;
-  navigator.clipboard.writeText(val).then(() => showToast('✦ Copié !'));
-}
-
-function getTokens() { try { return JSON.parse(localStorage.getItem('eclypse_tokens')||'[]'); } catch { return []; } }
-function viderTokens() { if(!confirm('Vider les tokens ?')) return; localStorage.removeItem('eclypse_tokens'); chargerGestion(); }
-
-function renderTokens() {
-  const list = getTokens();
-  const el   = document.getElementById('tokens-list');
-  if (!el) return;
-  if (!list.length) { el.innerHTML = '<div class="log-empty">Aucun token généré.</div>'; return; }
-  el.innerHTML = list.map(t => {
-    const d = new Date(t.ts);
-    const date = d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    return `<div class="token-item">
-      <div>
-        <div class="token-val">${t.code}</div>
-        <div class="token-meta">${t.pseudo} · ${t.rang} · ${t.role} · Ops: ${t.ops?'Oui':'Non'} · ${date}</div>
-      </div>
-      <span class="token-status ${t.used?'used':'unused'}">${t.used?'✓ Utilisé':'En attente'}</span>
-      <button class="btn-xs" onclick="supprimerToken('${t.code}')">✕</button>
-    </div>`;
-  }).join('');
-}
-
-function supprimerToken(code) {
-  const list = getTokens().filter(t => t.code !== code);
-  localStorage.setItem('eclypse_tokens', JSON.stringify(list));
-  renderTokens();
-  chargerGestion();
-}
-
-/* ═══ LOGS ═══ */
-function getLogs() { try { return JSON.parse(localStorage.getItem('eclypse_logs')||'[]'); } catch { return []; } }
-function viderLogs() { if(!confirm('Vider les logs ?')) return; localStorage.removeItem('eclypse_logs'); chargerGestion(); }
-function renderLogs() {
-  const logs = getLogs();
-  const el   = document.getElementById('log-box');
-  if (!el) return;
-  if (!logs.length) { el.innerHTML = '<div class="log-empty">Aucune connexion.</div>'; return; }
-  el.innerHTML = logs.map(l => {
-    const d  = new Date(l.ts);
-    const ts = d.toLocaleDateString('fr-FR') + ' · ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    return `<div class="log-item">
-      <div class="log-time">${ts}</div>
-      <div class="log-pseudo"><strong>${l.pseudo}</strong> — ${l.detail}</div>
-      <div class="log-status ${l.status}">${l.status.toUpperCase()}</div>
-    </div>`;
-  }).join('');
-}
-
-/* ═══ SESSION ═══ */
-const saved = localStorage.getItem('eclypse_membre');
-if (saved) { currentMembre = JSON.parse(saved); showDashboard(currentMembre); }
+/* ══ SESSION ══ */
+const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
+if (saved) { currentUser = JSON.parse(saved); afficherDashboard(currentUser); }
 </script>
-<!-- v2 -->
 </body>
 </html>
