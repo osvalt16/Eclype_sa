@@ -44,8 +44,6 @@
   .btn-topbar.red:hover{background:rgba(232,90,90,0.1);}
   .btn-topbar.violet{color:var(--texte-pale);border-color:var(--border-violet);}
   .btn-topbar.violet:hover{border-color:var(--or);color:var(--or);}
-  .btn-admin-panel{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#fff;background:rgba(232,90,90,0.2);border:1px solid rgba(232,90,90,0.5);padding:0.4rem 0.9rem;cursor:pointer;transition:all 0.3s;display:none;}
-  .btn-admin-panel:hover{background:rgba(232,90,90,0.35);}
 
   .dash-content{max-width:900px;margin:0 auto;padding:3rem 2rem;}
 
@@ -230,7 +228,6 @@
         <div class="nav-avatar" id="nav-avatar">?</div>
         <span id="display-pseudo">—</span>
       </button>
-      <button class="btn-admin-panel" id="btn-admin-panel" onclick="allerAdmin()">⚡ Panel Admin</button>
       <a href="index.html" class="btn-topbar violet">← Site</a>
       <button class="btn-topbar red" onclick="logout()">Déconnexion</button>
     </div>
@@ -453,9 +450,6 @@ function showDashboard(m) {
   }
 
   // Bouton Admin si applicable
-  if (m.admin) {
-    document.getElementById('btn-admin-panel').style.display = 'inline-block';
-  }
 
   if (!m.dashboard) {
     document.getElementById('btn-add').style.display = 'none';
@@ -464,9 +458,6 @@ function showDashboard(m) {
   loadEvents();
 }
 
-function allerAdmin() {
-  window.location.href = 'admin.html';
-}
 
 function logout() {
   localStorage.removeItem('eclypse_membre');
