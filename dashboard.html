@@ -7,520 +7,189 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --noir: #030208;
-    --violet: #1a0f2e;
-    --violet-mid: #2d1a50;
-    --violet-glow: #8b5cf6;
-    --or: #c9a227;
-    --or-clair: #e8c547;
-    --texte: #d4c9e8;
-    --texte-pale: #8a7fa0;
-    --border-or: rgba(201,162,39,0.3);
-    --border-violet: rgba(107,53,200,0.4);
-    --cyan: #00d4ff;
-    --rouge: #e85a5a;
-    --vert: #5ecfa0;
+    --noir:#030208; --violet:#1a0f2e; --violet-mid:#2d1a50;
+    --violet-glow:#8b5cf6; --or:#c9a227; --or-clair:#e8c547;
+    --texte:#d4c9e8; --texte-pale:#8a7fa0;
+    --border-or:rgba(201,162,39,0.3); --border-violet:rgba(107,53,200,0.4);
+    --cyan:#00d4ff; --rouge:#e85a5a; --vert:#5ecfa0;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background: var(--noir);
-    color: var(--texte);
-    font-family: 'Crimson Pro', serif;
-    font-size: 17px;
-    min-height: 100vh;
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--noir);color:var(--texte);font-family:'Crimson Pro',serif;font-size:17px;min-height:100vh;}
 
-  /* ── LOGIN ── */
-  #login-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(ellipse at center, #1a0f2e 0%, #030208 70%);
-  }
-  .login-box {
-    border: 1px solid var(--border-or);
-    padding: 3rem;
-    text-align: center;
-    max-width: 420px;
-    width: 90%;
-    background: rgba(26,15,46,0.6);
-  }
-  .login-box img { height: 80px; margin-bottom: 1.5rem; }
-  .login-box h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 1.2rem;
-    letter-spacing: 0.3em;
-    color: var(--or);
-    margin-bottom: 0.5rem;
-  }
-  .login-box p {
-    font-size: 0.9rem;
-    color: var(--texte-pale);
-    margin-bottom: 2rem;
-  }
-  .login-box input {
-    width: 100%;
-    background: rgba(7,6,13,0.8);
-    border: 1px solid var(--border-violet);
-    color: var(--texte);
-    padding: 0.9rem 1.2rem;
-    font-family: 'Cinzel', serif;
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-    text-align: center;
-    outline: none;
-    margin-bottom: 1rem;
-    transition: border-color 0.3s;
-  }
-  .login-box input:focus { border-color: var(--or); }
-  .login-box button {
-    width: 100%;
-    font-family: 'Cinzel', serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--noir);
-    background: var(--or);
-    border: none;
-    padding: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .login-box button:hover { background: var(--or-clair); }
-  .login-error {
-    color: var(--rouge);
-    font-size: 0.85rem;
-    margin-top: 1rem;
-    display: none;
-  }
+  /* LOGIN */
+  #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a0f2e 0%,#030208 70%);}
+  .login-box{border:1px solid var(--border-or);padding:3rem;text-align:center;max-width:420px;width:90%;background:rgba(26,15,46,0.6);}
+  .login-box img{height:80px;margin-bottom:1.5rem;}
+  .login-box h1{font-family:'Cinzel',serif;font-size:1.2rem;letter-spacing:0.3em;color:var(--or);margin-bottom:0.5rem;}
+  .login-box p{font-size:0.9rem;color:var(--texte-pale);margin-bottom:2rem;}
+  .login-box input{width:100%;background:rgba(7,6,13,0.8);border:1px solid var(--border-violet);color:var(--texte);padding:0.9rem 1.2rem;font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.2em;text-align:center;outline:none;margin-bottom:1rem;transition:border-color 0.3s;}
+  .login-box input:focus{border-color:var(--or);}
+  .login-box button{width:100%;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.9rem;cursor:pointer;transition:all 0.3s;}
+  .login-box button:hover{background:var(--or-clair);}
+  .login-error{color:var(--rouge);font-size:0.85rem;margin-top:1rem;display:none;}
 
-  /* ── DASHBOARD ── */
-  #dashboard { display: none; }
+  /* DASHBOARD */
+  #dashboard{display:none;}
+  .topbar{background:rgba(7,6,13,0.95);border-bottom:1px solid var(--border-or);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .topbar-left{display:flex;align-items:center;gap:1rem;}
+  .topbar-left img{height:36px;}
+  .topbar-title{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
+  .topbar-user{display:flex;align-items:center;gap:0.8rem;}
+  .user-badge{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--texte-pale);}
+  .user-badge span{color:var(--or-clair);}
+  .btn-topbar{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;background:none;border:1px solid var(--border-violet);padding:0.4rem 0.9rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;}
+  .btn-topbar.gold{color:var(--or);border-color:var(--border-or);}
+  .btn-topbar.gold:hover{background:rgba(201,162,39,0.1);}
+  .btn-topbar.red{color:var(--rouge);border-color:rgba(232,90,90,0.3);}
+  .btn-topbar.red:hover{background:rgba(232,90,90,0.1);}
+  .btn-topbar.violet{color:var(--texte-pale);border-color:var(--border-violet);}
+  .btn-topbar.violet:hover{border-color:var(--or);color:var(--or);}
+  .btn-admin-panel{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#fff;background:rgba(232,90,90,0.2);border:1px solid rgba(232,90,90,0.5);padding:0.4rem 0.9rem;cursor:pointer;transition:all 0.3s;display:none;}
+  .btn-admin-panel:hover{background:rgba(232,90,90,0.35);}
 
-  .topbar {
-    background: rgba(7,6,13,0.95);
-    border-bottom: 1px solid var(--border-or);
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .topbar-left img { height: 36px; }
-  .topbar-title {
-    font-family: 'Cinzel', serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--or);
-  }
-  .topbar-user {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .user-badge {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    color: var(--texte-pale);
-  }
-  .user-badge span { color: var(--or-clair); }
-  .btn-logout {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--rouge);
-    background: none;
-    border: 1px solid rgba(232,90,90,0.3);
-    padding: 0.4rem 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-logout:hover { background: rgba(232,90,90,0.1); }
-  .btn-home {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--texte-pale);
-    background: none;
-    border: 1px solid var(--border-violet);
-    padding: 0.4rem 0.9rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.3s;
-  }
-  .btn-home:hover { border-color: var(--or); color: var(--or); }
+  .dash-content{max-width:900px;margin:0 auto;padding:3rem 2rem;}
 
-  .dash-content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 3rem 2rem;
-  }
+  /* PROFIL CARD */
+  .profil-card{border:1px solid var(--border-or);padding:2rem;background:rgba(26,15,46,0.4);margin-bottom:2.5rem;display:flex;align-items:center;gap:2rem;position:relative;}
+  .profil-avatar-wrap{position:relative;flex-shrink:0;}
+  .profil-avatar{width:80px;height:80px;border-radius:50%;border:2px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);overflow:hidden;}
+  .profil-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .profil-info{}
+  .profil-rang{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);margin-bottom:0.3rem;}
+  .profil-pseudo{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;margin-bottom:0.3rem;}
+  .profil-role{font-size:0.9rem;color:var(--texte-pale);font-style:italic;margin-bottom:0.6rem;}
+  .profil-wallet{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.1em;color:var(--cyan);}
+  .btn-edit-profil{position:absolute;top:1rem;right:1rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.8rem;cursor:pointer;transition:all 0.3s;}
+  .btn-edit-profil:hover{background:rgba(201,162,39,0.1);}
 
-  /* ── PROFIL ── */
-  .profil-card {
-    border: 1px solid var(--border-or);
-    padding: 2rem;
-    background: rgba(26,15,46,0.4);
-    margin-bottom: 2.5rem;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
-  .profil-avatar {
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    border: 2px solid var(--or);
-    background: rgba(26,15,46,0.9);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cinzel', serif;
-    font-size: 2rem; color: var(--or);
-    flex-shrink: 0;
-  }
-  .profil-info {}
-  .profil-rang {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--or);
-    margin-bottom: 0.3rem;
-  }
-  .profil-pseudo {
-    font-family: 'Cinzel', serif;
-    font-size: 1.5rem;
-    color: #fff;
-    margin-bottom: 0.3rem;
-  }
-  .profil-role {
-    font-size: 0.9rem;
-    color: var(--texte-pale);
-    font-style: italic;
-    margin-bottom: 0.6rem;
-  }
-  .profil-wallet {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    color: var(--cyan);
-  }
+  /* SECTION */
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+  .section-header h2{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
 
-  /* ── SECTION TITRE ── */
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-  }
-  .section-header h2 {
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--or);
-  }
+  /* FORM EVENT */
+  #form-event{border:1px solid var(--border-violet);padding:2rem;background:rgba(10,8,20,0.7);margin-bottom:2.5rem;display:none;}
+  #form-event.visible{display:block;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem;}
+  .form-group label{display:block;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.5rem;}
+  .form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(7,6,13,0.8);border:1px solid var(--border-violet);color:var(--texte);padding:0.7rem 1rem;font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;transition:border-color 0.3s;}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--or);}
+  .form-group select option{background:#1a0f2e;}
+  .form-group textarea{resize:vertical;min-height:80px;}
+  .form-group.full{grid-column:1/-1;}
+  .form-actions{display:flex;gap:1rem;justify-content:flex-end;}
+  .btn-save{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.7rem 2rem;cursor:pointer;transition:all 0.3s;}
+  .btn-save:hover{background:var(--or-clair);}
+  .btn-cancel{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.7rem 2rem;cursor:pointer;transition:all 0.3s;}
+  .btn-cancel:hover{border-color:var(--rouge);color:var(--rouge);}
+  .btn-add{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.5rem 1.2rem;cursor:pointer;transition:all 0.3s;}
+  .btn-add:hover{background:rgba(201,162,39,0.1);}
 
-  /* ── FORMULAIRE EVENT ── */
-  #form-event {
-    border: 1px solid var(--border-violet);
-    padding: 2rem;
-    background: rgba(10,8,20,0.7);
-    margin-bottom: 2.5rem;
-    display: none;
-  }
-  #form-event.visible { display: block; }
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
-    margin-bottom: 1.2rem;
-  }
-  .form-group label {
-    display: block;
-    font-family: 'Cinzel', serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--or);
-    margin-bottom: 0.5rem;
-  }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    background: rgba(7,6,13,0.8);
-    border: 1px solid var(--border-violet);
-    color: var(--texte);
-    padding: 0.7rem 1rem;
-    font-family: 'Crimson Pro', serif;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.3s;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus { border-color: var(--or); }
-  .form-group select option { background: #1a0f2e; }
-  .form-group textarea { resize: vertical; min-height: 80px; }
-  .form-group.full { grid-column: 1 / -1; }
-  .form-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-  }
-  .btn-save {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--noir);
-    background: var(--or);
-    border: none;
-    padding: 0.7rem 2rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-save:hover { background: var(--or-clair); }
-  .btn-cancel {
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--texte-pale);
-    background: none;
-    border: 1px solid var(--border-violet);
-    padding: 0.7rem 2rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-cancel:hover { border-color: var(--rouge); color: var(--rouge); }
+  /* EVENTS */
+  .events-list{display:flex;flex-direction:column;gap:1rem;}
+  .event-item{border:1px solid var(--border-violet);padding:1.2rem 1.5rem;background:rgba(7,6,13,0.7);display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:center;transition:border-color 0.3s;}
+  .event-item:hover{border-color:var(--border-or);}
+  .event-date-badge{text-align:center;min-width:55px;}
+  .event-date-badge .day{font-family:'Cinzel',serif;font-size:1.8rem;color:var(--or);line-height:1;}
+  .event-date-badge .month{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--texte-pale);}
+  .event-type-badge{display:inline-block;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.15rem 0.6rem;margin-bottom:0.4rem;}
+  .type-fleetop{color:#e85a5a;border:1px solid rgba(232,90,90,0.3);}
+  .type-pvp{color:var(--violet-glow);border:1px solid rgba(139,92,246,0.3);}
+  .type-event{color:var(--or);border:1px solid var(--border-or);}
+  .type-mining{color:var(--vert);border:1px solid rgba(94,207,160,0.3);}
+  .event-name{font-family:'Cinzel',serif;font-size:0.88rem;color:#fff;margin-bottom:0.2rem;}
+  .event-meta{font-size:0.82rem;color:var(--texte-pale);}
+  .event-actions{display:flex;gap:0.5rem;}
+  .btn-delete{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.4rem 0.7rem;cursor:pointer;transition:all 0.3s;}
+  .btn-delete:hover{background:rgba(232,90,90,0.1);}
+  .empty-state{text-align:center;padding:3rem;color:var(--texte-pale);border:1px dashed var(--border-violet);font-style:italic;}
 
-  /* ── BOUTON AJOUTER ── */
-  .btn-add {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--or);
-    background: none;
-    border: 1px solid var(--border-or);
-    padding: 0.5rem 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-add:hover { background: rgba(201,162,39,0.1); }
+  /* FILTRES */
+  .filter-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border-violet);}
+  .filter-tab{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;padding:0.65rem 1.1rem;cursor:pointer;position:relative;transition:color 0.3s;}
+  .filter-tab::after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:2px;background:var(--or);transition:width 0.3s;}
+  .filter-tab:hover{color:var(--texte);}
+  .filter-tab.active{color:var(--or);}
+  .filter-tab.active::after{width:100%;}
 
-  /* ── LISTE EVENTS ── */
-  .events-list { display: flex; flex-direction: column; gap: 1rem; }
-  .event-item {
-    border: 1px solid var(--border-violet);
-    padding: 1.2rem 1.5rem;
-    background: rgba(7,6,13,0.7);
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1.2rem;
-    align-items: center;
-    transition: border-color 0.3s;
-  }
-  .event-item:hover { border-color: var(--border-or); }
-  .event-date-badge {
-    text-align: center;
-    min-width: 55px;
-  }
-  .event-date-badge .day {
-    font-family: 'Cinzel', serif;
-    font-size: 1.8rem;
-    color: var(--or);
-    line-height: 1;
-  }
-  .event-date-badge .month {
-    font-family: 'Cinzel', serif;
-    font-size: 0.55rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--texte-pale);
-  }
-  .event-info {}
-  .event-type-badge {
-    display: inline-block;
-    font-family: 'Cinzel', serif;
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 0.15rem 0.6rem;
-    margin-bottom: 0.4rem;
-  }
-  .type-fleetop { color: #e85a5a; border: 1px solid rgba(232,90,90,0.3); }
-  .type-pvp { color: var(--violet-glow); border: 1px solid rgba(139,92,246,0.3); }
-  .type-event { color: var(--or); border: 1px solid var(--border-or); }
-  .type-mining { color: var(--vert); border: 1px solid rgba(94,207,160,0.3); }
-  .event-name {
-    font-family: 'Cinzel', serif;
-    font-size: 0.88rem;
-    color: #fff;
-    margin-bottom: 0.2rem;
-  }
-  .event-meta { font-size: 0.82rem; color: var(--texte-pale); }
-  .event-actions { display: flex; gap: 0.5rem; }
-  .btn-delete {
-    font-family: 'Cinzel', serif;
-    font-size: 0.55rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--rouge);
-    background: none;
-    border: 1px solid rgba(232,90,90,0.3);
-    padding: 0.4rem 0.7rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .btn-delete:hover { background: rgba(232,90,90,0.1); }
+  /* MINI CAL */
+  .mini-cal-wrapper{border:1px solid var(--border-or);background:rgba(10,8,20,0.85);padding:1.5rem;margin-bottom:2rem;}
+  .mini-cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
+  .mini-cal-title{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);}
+  .mini-cal-nav{background:none;border:1px solid var(--border-violet);color:var(--texte-pale);width:26px;height:26px;cursor:pointer;font-size:0.8rem;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+  .mini-cal-nav:hover{border-color:var(--or);color:var(--or);}
+  .mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
+  .mini-cal-grid .day-label{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.08em;color:var(--texte-pale);padding-bottom:0.4rem;text-transform:uppercase;}
+  .mini-cal-grid .mcday{font-size:0.75rem;color:var(--texte-pale);padding:0.3rem 0;border-radius:2px;position:relative;transition:all 0.2s;}
+  .mini-cal-grid .mcday.has-event{color:var(--or-clair);font-family:'Cinzel',serif;}
+  .mini-cal-grid .mcday.has-event::after{content:'•';position:absolute;bottom:0px;left:50%;transform:translateX(-50%);font-size:0.45rem;color:var(--or);}
+  .mini-cal-grid .mcday.today{background:rgba(107,53,200,0.3);border:1px solid var(--border-violet);color:#fff;}
+  .mini-cal-grid .mcday.empty{color:transparent;pointer-events:none;}
+  .cal-legend-dash{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border-violet);}
+  .cal-legend-dash .legend-title{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.8rem;}
+  .legend-items-dash{display:flex;flex-direction:column;gap:0.5rem;}
+  .legend-item-dash{display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--texte-pale);}
+  .legend-dot-dash{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
+  .planning-layout{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:start;}
 
-  .empty-state {
-    text-align: center;
-    padding: 3rem;
-    color: var(--texte-pale);
-    border: 1px dashed var(--border-violet);
-    font-style: italic;
-  }
+  /* ACCESS DENIED */
+  .access-denied{border:1px solid rgba(232,90,90,0.3);padding:2rem;text-align:center;background:rgba(232,90,90,0.05);}
+  .access-denied h3{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.2em;color:var(--rouge);margin-bottom:0.8rem;}
+  .access-denied p{font-size:0.9rem;color:var(--texte-pale);}
 
-  .toast {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: rgba(26,15,46,0.95);
-    border: 1px solid var(--or);
-    padding: 1rem 1.5rem;
-    font-family: 'Cinzel', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    color: var(--or);
-    z-index: 999;
-    display: none;
-    animation: fadeInUp 0.3s ease;
-  }
-  @keyframes fadeInUp {
-    from { opacity:0; transform:translateY(10px); }
-    to { opacity:1; transform:translateY(0); }
-  }
+  /* ═══ MODAL PROFIL ═══ */
+  .modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(3,2,8,0.88);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+  .modal-overlay.open{opacity:1;pointer-events:all;}
+  .modal-box{background:rgba(12,8,24,0.98);border:1px solid var(--border-or);width:90%;max-width:520px;position:relative;transform:translateY(20px);transition:transform 0.25s;max-height:90vh;overflow-y:auto;}
+  .modal-overlay.open .modal-box{transform:translateY(0);}
+  .modal-box::-webkit-scrollbar{width:4px;}
+  .modal-box::-webkit-scrollbar-thumb{background:var(--border-violet);}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.8rem;border-bottom:1px solid var(--border-or);position:sticky;top:0;background:rgba(12,8,24,0.98);z-index:1;}
+  .modal-header h3{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--or);}
+  .modal-close{background:none;border:none;color:var(--texte-pale);font-size:1.2rem;cursor:pointer;line-height:1;transition:color 0.2s;padding:0.2rem 0.4rem;}
+  .modal-close:hover{color:var(--rouge);}
+  .modal-body{padding:2rem 1.8rem;}
 
+  /* Photo upload */
+  .photo-upload-area{text-align:center;margin-bottom:2rem;}
+  .photo-preview{width:100px;height:100px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2.2rem;color:var(--or);margin:0 auto 1rem;overflow:hidden;cursor:pointer;position:relative;transition:all 0.3s;}
+  .photo-preview:hover{border-color:var(--or);}
+  .photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .photo-preview .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;}
+  .photo-preview:hover .photo-overlay{opacity:1;}
+  .photo-overlay span{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:#fff;}
+  #photo-file-input{display:none;}
+  .photo-upload-btn{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.4rem 1rem;cursor:pointer;transition:all 0.3s;}
+  .photo-upload-btn:hover{background:rgba(201,162,39,0.1);}
+  .photo-cooldown{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.12em;color:var(--texte-pale);margin-top:0.5rem;}
+  .photo-cooldown.locked{color:var(--rouge);}
 
-  /* ── FILTRES ── */
-  .filter-tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-violet);
-  }
-  .filter-tab {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--texte-pale);
-    background: none;
-    border: none;
-    padding: 0.65rem 1.1rem;
-    cursor: pointer;
-    position: relative;
-    transition: color 0.3s;
-  }
-  .filter-tab::after {
-    content: ''; position: absolute; bottom: -1px; left: 0;
-    width: 0; height: 2px; background: var(--or); transition: width 0.3s;
-  }
-  .filter-tab:hover { color: var(--texte); }
-  .filter-tab.active { color: var(--or); }
-  .filter-tab.active::after { width: 100%; }
+  .modal-field{margin-bottom:1.4rem;}
+  .modal-field label{display:block;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--or);margin-bottom:0.5rem;}
+  .modal-field input{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.75rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
+  .modal-field input:focus{border-color:var(--or);}
+  .modal-field .hint{font-size:0.75rem;color:var(--texte-pale);margin-top:0.4rem;font-style:italic;}
+  .modal-divider{border:none;border-top:1px solid var(--border-violet);margin:1.5rem 0;}
+  .modal-footer{padding:1.2rem 1.8rem;border-top:1px solid var(--border-or);display:flex;gap:0.8rem;justify-content:flex-end;position:sticky;bottom:0;background:rgba(12,8,24,0.98);}
+  .btn-modal-save{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.6rem 1.6rem;cursor:pointer;transition:all 0.3s;}
+  .btn-modal-save:hover{background:var(--or-clair);}
+  .btn-modal-cancel{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.6rem 1.4rem;cursor:pointer;transition:all 0.3s;}
+  .btn-modal-cancel:hover{border-color:var(--rouge);color:var(--rouge);}
+  .modal-msg{text-align:center;padding:0.6rem;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.12em;display:none;}
+  .modal-msg.ok{color:var(--vert);display:block;}
+  .modal-msg.err{color:var(--rouge);display:block;}
 
-  /* ── MINI CAL ── */
-  .mini-cal-wrapper {
-    border: 1px solid var(--border-or);
-    background: rgba(10,8,20,0.85);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  .mini-cal-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 1.2rem;
-  }
-  .mini-cal-title {
-    font-family: 'Cinzel', serif; font-size: 0.75rem;
-    letter-spacing: 0.2em; text-transform: uppercase; color: var(--or);
-  }
-  .mini-cal-nav {
-    background: none; border: 1px solid var(--border-violet);
-    color: var(--texte-pale); width: 26px; height: 26px;
-    cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .mini-cal-nav:hover { border-color: var(--or); color: var(--or); }
-  .mini-cal-grid {
-    display: grid; grid-template-columns: repeat(7,1fr);
-    gap: 3px; text-align: center;
-  }
-  .mini-cal-grid .day-label {
-    font-family: 'Cinzel', serif; font-size: 0.5rem;
-    letter-spacing: 0.08em; color: var(--texte-pale);
-    padding-bottom: 0.4rem; text-transform: uppercase;
-  }
-  .mini-cal-grid .mcday {
-    font-size: 0.75rem; color: var(--texte-pale);
-    padding: 0.3rem 0; border-radius: 2px; position: relative;
-    transition: all 0.2s;
-  }
-  .mini-cal-grid .mcday.has-event { color: var(--or-clair); font-family: 'Cinzel', serif; }
-  .mini-cal-grid .mcday.has-event::after {
-    content: '•'; position: absolute; bottom: 0px; left: 50%;
-    transform: translateX(-50%); font-size: 0.45rem; color: var(--or);
-  }
-  .mini-cal-grid .mcday.today {
-    background: rgba(107,53,200,0.3); border: 1px solid var(--border-violet); color: #fff;
-  }
-  .mini-cal-grid .mcday.empty { color: transparent; pointer-events: none; }
-  .cal-legend-dash { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border-violet); }
-  .cal-legend-dash .legend-title {
-    font-family: 'Cinzel', serif; font-size: 0.55rem;
-    letter-spacing: 0.22em; text-transform: uppercase; color: var(--texte-pale); margin-bottom: 0.8rem;
-  }
-  .legend-items-dash { display: flex; flex-direction: column; gap: 0.5rem; }
-  .legend-item-dash { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; color: var(--texte-pale); }
-  .legend-dot-dash { width: 7px; height: 7px; border-radius: 1px; flex-shrink: 0; }
+  /* UPLOAD PROGRESS */
+  .upload-progress{display:none;margin-top:0.8rem;}
+  .upload-progress.show{display:block;}
+  .progress-bar{height:3px;background:var(--border-violet);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
+  .progress-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;color:var(--texte-pale);margin-top:0.4rem;text-align:center;}
 
-  .planning-layout { display: grid; grid-template-columns: 1fr 260px; gap: 2rem; align-items: start; }
-  @media (max-width: 700px) { .planning-layout { grid-template-columns: 1fr; } }
-  /* ── ACCESS DENIED ── */
-  .access-denied {
-    border: 1px solid rgba(232,90,90,0.3);
-    padding: 2rem;
-    text-align: center;
-    background: rgba(232,90,90,0.05);
-  }
-  .access-denied h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.2em;
-    color: var(--rouge);
-    margin-bottom: 0.8rem;
-  }
-  .access-denied p { font-size: 0.9rem; color: var(--texte-pale); }
+  /* TOAST */
+  .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeInUp 0.3s ease;}
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-  @media (max-width: 600px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .profil-card { flex-direction: column; text-align: center; }
-    .topbar { flex-direction: column; gap: 1rem; }
-  }
+  @media(max-width:700px){.planning-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profil-card{flex-direction:column;text-align:center}.topbar{flex-direction:column;gap:1rem}}
 </style>
 </head>
 <body>
@@ -531,8 +200,7 @@
     <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
     <h1>Dashboard Éclypse</h1>
     <p>Entre ton code d'accès pour rejoindre le panneau de contrôle</p>
-    <input type="text" id="code-input" placeholder="ECL-XXXX-2025" maxlength="20"
-           onkeydown="if(event.key==='Enter') login()">
+    <input type="text" id="code-input" placeholder="ECL-XXXX-XXXX" maxlength="25" onkeydown="if(event.key==='Enter')login()">
     <button onclick="login()">Accéder au Dashboard</button>
     <p class="login-error" id="login-error">❌ Code invalide ou accès révoqué</p>
   </div>
@@ -547,22 +215,26 @@
     </div>
     <div class="topbar-user">
       <div class="user-badge">Connecté : <span id="display-pseudo">—</span></div>
-      <a href="index.html" class="btn-home">← Site</a>
-      <button class="btn-logout" onclick="logout()">Déconnexion</button>
+      <button class="btn-admin-panel" id="btn-admin-panel" onclick="allerAdmin()">⚡ Panel Admin</button>
+      <a href="index.html" class="btn-topbar violet">← Site</a>
+      <button class="btn-topbar red" onclick="logout()">Déconnexion</button>
     </div>
   </div>
 
   <div class="dash-content">
 
-    <!-- PROFIL -->
+    <!-- PROFIL CARD -->
     <div class="profil-card">
-      <div class="profil-avatar" id="profil-avatar">?</div>
+      <div class="profil-avatar-wrap">
+        <div class="profil-avatar" id="profil-avatar">?</div>
+      </div>
       <div class="profil-info">
         <div class="profil-rang" id="profil-rang">—</div>
         <div class="profil-pseudo" id="profil-pseudo">—</div>
         <div class="profil-role" id="profil-role">—</div>
         <div class="profil-wallet" id="profil-wallet">—</div>
       </div>
+      <button class="btn-edit-profil" onclick="ouvrirProfil()">✦ Modifier le profil</button>
     </div>
 
     <!-- PLANNING -->
@@ -571,59 +243,30 @@
         <h2>📅 Opérations & Planning</h2>
         <button class="btn-add" id="btn-add" onclick="toggleForm()">+ Nouvelle Op</button>
       </div>
-
-      <!-- FORMULAIRE -->
       <div id="form-event">
         <div class="form-grid">
-          <div class="form-group">
-            <label>Nom de l'opération *</label>
-            <input type="text" id="f-nom" placeholder="Ex: Mining Run Sector Alpha">
-          </div>
-          <div class="form-group">
-            <label>Type *</label>
-            <select id="f-type">
-              <option value="fleetop">Fleet Op</option>
-              <option value="pvp">PvP / Guild War</option>
-              <option value="mining">Mining Run</option>
-              <option value="event">Événement SAGE</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Date *</label>
-            <input type="date" id="f-date">
-          </div>
-          <div class="form-group">
-            <label>Heure (FR) *</label>
-            <input type="time" id="f-heure" value="21:00">
-          </div>
-          <div class="form-group full">
-            <label>Description</label>
-            <textarea id="f-desc" placeholder="Vaisseaux requis, zone, objectif..."></textarea>
-          </div>
+          <div class="form-group"><label>Nom de l'opération *</label><input type="text" id="f-nom" placeholder="Ex: Mining Run Sector Alpha"></div>
+          <div class="form-group"><label>Type *</label><select id="f-type"><option value="fleetop">Fleet Op</option><option value="pvp">PvP / Guild War</option><option value="mining">Mining Run</option><option value="event">Événement SAGE</option></select></div>
+          <div class="form-group"><label>Date *</label><input type="date" id="f-date"></div>
+          <div class="form-group"><label>Heure (FR) *</label><input type="time" id="f-heure" value="21:00"></div>
+          <div class="form-group full"><label>Description</label><textarea id="f-desc" placeholder="Vaisseaux requis, zone, objectif..."></textarea></div>
         </div>
         <div class="form-actions">
           <button class="btn-cancel" onclick="toggleForm()">Annuler</button>
           <button class="btn-save" onclick="saveEvent()">✦ Publier l'opération</button>
         </div>
       </div>
-
-      <!-- LAYOUT LISTE + MINI-CAL -->
       <div class="planning-layout">
         <div>
-          <!-- FILTRES -->
           <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterEvents('tous', this)">Tous</button>
-            <button class="filter-tab" onclick="filterEvents('fleetop', this)">Fleet Op</button>
-            <button class="filter-tab" onclick="filterEvents('pvp', this)">PvP</button>
-            <button class="filter-tab" onclick="filterEvents('event', this)">Événements</button>
-            <button class="filter-tab" onclick="filterEvents('mining', this)">Mining</button>
+            <button class="filter-tab active" onclick="filterEvents('tous',this)">Tous</button>
+            <button class="filter-tab" onclick="filterEvents('fleetop',this)">Fleet Op</button>
+            <button class="filter-tab" onclick="filterEvents('pvp',this)">PvP</button>
+            <button class="filter-tab" onclick="filterEvents('event',this)">Événements</button>
+            <button class="filter-tab" onclick="filterEvents('mining',this)">Mining</button>
           </div>
-          <!-- LISTE -->
-          <div class="events-list" id="events-list">
-            <div class="empty-state">Aucune opération planifiée — crée la première !</div>
-          </div>
+          <div class="events-list" id="events-list"><div class="empty-state">Aucune opération planifiée — crée la première !</div></div>
         </div>
-        <!-- MINI CALENDRIER -->
         <div>
           <div class="mini-cal-wrapper">
             <div class="mini-cal-header">
@@ -644,244 +287,225 @@
           </div>
         </div>
       </div>
-
-      <!-- ACCÈS REFUSÉ -->
       <div id="no-access" class="access-denied" style="display:none">
         <h3>🔒 Accès Restreint</h3>
-        <p>Tu n'as pas les droits pour créer des événements. Contacte le Fleet Commander pour obtenir l'accès.</p>
+        <p>Tu n'as pas les droits pour créer des événements. Contacte le Fleet Commander.</p>
       </div>
     </div>
+  </div>
+</div>
 
+<!-- MODAL PROFIL -->
+<div class="modal-overlay" id="modal-profil" onclick="if(event.target===this)fermerProfil()">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>✦ Mon Profil</h3>
+      <button class="modal-close" onclick="fermerProfil()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Photo -->
+      <div class="photo-upload-area">
+        <div class="photo-preview" id="photo-preview-btn" onclick="document.getElementById('photo-file-input').click()">
+          <span id="photo-initiale">?</span>
+          <div class="photo-overlay"><span>Changer</span></div>
+        </div>
+        <input type="file" id="photo-file-input" accept="image/*" onchange="previewPhoto(event)">
+        <button class="photo-upload-btn" id="photo-upload-btn" onclick="uploadPhoto()">⬆ Uploader la photo</button>
+        <div class="upload-progress" id="upload-progress">
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="progress-label" id="progress-label">Upload en cours…</div>
+        </div>
+        <div class="photo-cooldown" id="photo-cooldown"></div>
+      </div>
+
+      <!-- Pseudo -->
+      <div class="modal-field">
+        <label>Pseudo affiché</label>
+        <input type="text" id="profil-pseudo-input" placeholder="Ton pseudo">
+        <div class="hint">Visible sur la page membres publique. Modifiable tous les 90 jours.</div>
+      </div>
+
+      <hr class="modal-divider">
+
+      <!-- Code actuel -->
+      <div class="modal-field">
+        <label>Code actuel (confirmation) *</label>
+        <input type="password" id="profil-code-actuel" placeholder="Ton code actuel pour confirmer">
+      </div>
+      <!-- Nouveau code -->
+      <div class="modal-field">
+        <label>Nouveau code d'accès</label>
+        <input type="text" id="profil-code-new" placeholder="Laisser vide pour ne pas changer" style="letter-spacing:0.12em" oninput="toggleConfirm()">
+        <div class="hint">Minimum 8 caractères.</div>
+      </div>
+      <div class="modal-field" id="confirm-wrap" style="display:none">
+        <label>Confirmer le nouveau code *</label>
+        <input type="text" id="profil-code-confirm" placeholder="Répète le nouveau code" style="letter-spacing:0.12em">
+      </div>
+
+      <div class="modal-msg" id="modal-msg"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-cancel" onclick="fermerProfil()">Annuler</button>
+      <button class="btn-modal-save" onclick="sauvegarderProfil()">✦ Enregistrer</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const REPO_OWNER = 'osvalt16';
-const REPO_NAME = 'Eclype_sa';
+const REPO_OWNER  = 'osvalt16';
+const REPO_NAME   = 'Eclype_sa';
 const MEMBRES_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/membres.json`;
-const EVENTS_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
-
-// Token stocké via GitHub Actions secret — NE JAMAIS mettre ici en clair
-// Le dashboard utilise un proxy GitHub Actions pour écrire
-// Pour l'instant lecture seule depuis raw.githubusercontent.com
+const EVENTS_URL  = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
+const IMGUR_CLIENT_ID = '546c25a59c58ad7'; // Client ID public Imgur
 
 let currentMembre = null;
-let allEvents = [];
+let allEvents     = [];
+let photoFileData = null; // { file, dataUrl }
 
+/* ═══ LOGIN ═══ */
 async function login() {
   const code = document.getElementById('code-input').value.trim().toUpperCase();
   if (!code) return;
-
   try {
-    const res = await fetch(MEMBRES_URL + '?t=' + Date.now());
+    const res  = await fetch(MEMBRES_URL + '?t=' + Date.now());
     const data = await res.json();
-    const membre = data.membres.find(m =>
-      m.code.toUpperCase() === code && m.actif === true
-    );
-
-    if (!membre) {
-      // Log tentative échouée
-      try {
-        const logs = JSON.parse(localStorage.getItem('eclypse_logs') || '[]');
-        logs.unshift({ pseudo: code, detail: 'Tentative de connexion échouée', status: 'fail', ts: new Date().toISOString() });
-        localStorage.setItem('eclypse_logs', JSON.stringify(logs.slice(0,500)));
-      } catch(e){}
+    const m = data.membres.find(x => x.code.toUpperCase() === code && x.actif === true);
+    if (!m) {
+      logLocal(code, 'Tentative échouée', 'fail');
       document.getElementById('login-error').style.display = 'block';
       return;
     }
-
-    currentMembre = membre;
-    localStorage.setItem('eclypse_membre', JSON.stringify(membre));
-    // Log connexion pour le panneau admin
-    try {
-      const logs = JSON.parse(localStorage.getItem('eclypse_logs') || '[]');
-      logs.unshift({ pseudo: membre.pseudo, detail: `Connexion dashboard (${membre.rang})`, status: 'ok', ts: new Date().toISOString() });
-      localStorage.setItem('eclypse_logs', JSON.stringify(logs.slice(0,500)));
-    } catch(e){}
-    showDashboard(membre);
-
+    currentMembre = m;
+    localStorage.setItem('eclypse_membre', JSON.stringify(m));
+    // Si admin aussi → stocker session admin
+    if (m.admin) {
+      localStorage.setItem('eclypse_admin', JSON.stringify({ nom: m.pseudo, level: 'admin', code: m.code }));
+    }
+    logLocal(m.pseudo, `Connexion dashboard (${m.rang})`, 'ok');
+    showDashboard(m);
   } catch(e) {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('login-error').textContent = '❌ Erreur de connexion. Réessaie.';
   }
 }
 
-function showDashboard(membre) {
+function logLocal(pseudo, detail, status) {
+  try {
+    const logs = JSON.parse(localStorage.getItem('eclypse_logs') || '[]');
+    logs.unshift({ pseudo, detail, status, ts: new Date().toISOString() });
+    localStorage.setItem('eclypse_logs', JSON.stringify(logs.slice(0,500)));
+  } catch(e){}
+}
+
+function showDashboard(m) {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('display-pseudo').textContent = m.pseudo;
+  document.getElementById('profil-rang').textContent   = '★ ' + m.rang;
+  document.getElementById('profil-pseudo').textContent = m.pseudo;
+  document.getElementById('profil-role').textContent   = m.role + ' · Faction ' + m.faction;
+  document.getElementById('profil-wallet').textContent = '🔵 Wallet: ' + m.wallet;
 
-  document.getElementById('display-pseudo').textContent = membre.pseudo;
-  document.getElementById('profil-avatar').textContent = membre.pseudo[0].toUpperCase();
-  document.getElementById('profil-rang').textContent = '★ ' + membre.rang;
-  document.getElementById('profil-pseudo').textContent = membre.pseudo;
-  document.getElementById('profil-role').textContent = membre.role + ' · Faction ' + membre.faction;
-  document.getElementById('profil-wallet').textContent = '🔵 Wallet: ' + membre.wallet;
+  // Avatar : photo ou initiale
+  const av = document.getElementById('profil-avatar');
+  if (m.photo) {
+    av.innerHTML = `<img src="${m.photo}" alt="${m.pseudo}">`;
+  } else {
+    av.textContent = m.pseudo[0].toUpperCase();
+  }
 
-  if (!membre.dashboard) {
+  // Bouton Admin si applicable
+  if (m.admin) {
+    document.getElementById('btn-admin-panel').style.display = 'inline-block';
+  }
+
+  if (!m.dashboard) {
     document.getElementById('btn-add').style.display = 'none';
     document.getElementById('no-access').style.display = 'block';
   }
-
   loadEvents();
+}
+
+function allerAdmin() {
+  window.location.href = 'admin.html';
 }
 
 function logout() {
   localStorage.removeItem('eclypse_membre');
+  if (currentMembre && currentMembre.admin) localStorage.removeItem('eclypse_admin');
   currentMembre = null;
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('code-input').value = '';
   document.getElementById('login-error').style.display = 'none';
+  document.getElementById('btn-admin-panel').style.display = 'none';
 }
 
+/* ═══ EVENTS ═══ */
 async function loadEvents() {
   try {
     const res = await fetch(EVENTS_URL + '?t=' + Date.now());
     const data = await res.json();
     allEvents = data.events || [];
-  } catch(e) {
-    allEvents = [];
-  }
-  renderEvents(); // renderEvents appelle renderMiniCal en interne
+  } catch(e) { allEvents = []; }
+  renderEvents();
 }
 
 let activeFilter = 'tous';
-
 function renderEvents() {
   const list = document.getElementById('events-list');
-  const typeLabels = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
+  const typeLabels  = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
   const typeClasses = { fleetop:'type-fleetop', pvp:'type-pvp', mining:'type-mining', event:'type-event' };
-
-  const filtered = activeFilter === 'tous'
-    ? allEvents
-    : allEvents.filter(ev => ev.type === activeFilter);
-
-  if (filtered.length === 0) {
-    list.innerHTML = allEvents.length === 0
-      ? '<div class="empty-state">Aucune opération planifiée — crée la première !</div>'
-      : '<div class="empty-state">Aucune opération de ce type.</div>';
-    renderMiniCal();
-    return;
+  const filtered = activeFilter === 'tous' ? allEvents : allEvents.filter(e => e.type === activeFilter);
+  if (!filtered.length) {
+    list.innerHTML = '<div class="empty-state">Aucune opération planifiée.</div>';
+    renderMiniCal(); return;
   }
-
-  const now = new Date();
-  now.setHours(0,0,0,0);
-  const sorted = [...filtered].sort((a, b) => new Date(a.date) - new Date(b.date));
-
+  const now = new Date(); now.setHours(0,0,0,0);
+  const sorted = [...filtered].sort((a,b) => new Date(a.date)-new Date(b.date));
   list.innerHTML = sorted.map(ev => {
-    const d = new Date(ev.date + 'T00:00:00');
-    const day = d.getDate();
-    const month = d.toLocaleDateString('fr-FR', { month: 'short' });
-    const isPast = d < now;
-    const canDelete = currentMembre && (currentMembre.dashboard || ev.createdBy === currentMembre.pseudo);
-    const pastClass = isPast ? 'style="opacity:0.5;filter:grayscale(0.4)"' : '';
-
-    return `
-    <div class="event-item" id="ev-${ev.id}" ${pastClass}>
-      <div class="event-date-badge">
-        <div class="day">${day}</div>
-        <div class="month">${month}</div>
-      </div>
+    const d = new Date(ev.date+'T00:00:00');
+    const past = d < now;
+    const canDel = currentMembre && (currentMembre.dashboard || ev.createdBy === currentMembre.pseudo);
+    return `<div class="event-item" ${past?'style="opacity:0.5"':''}>
+      <div class="event-date-badge"><div class="day">${d.getDate()}</div><div class="month">${d.toLocaleDateString('fr-FR',{month:'short'})}</div></div>
       <div class="event-info">
-        <span class="event-type-badge ${typeClasses[ev.type] || 'type-event'}">${typeLabels[ev.type] || ev.type}</span>
-        <div class="event-name">${ev.nom}${isPast ? ' ✓' : ''}</div>
-        <div class="event-meta">${ev.heure}h FR · ${ev.description || ''} · Créé par ${ev.createdBy}</div>
+        <span class="event-type-badge ${typeClasses[ev.type]||'type-event'}">${typeLabels[ev.type]||ev.type}</span>
+        <div class="event-name">${ev.nom}${past?' ✓':''}</div>
+        <div class="event-meta">${ev.heure}h FR · ${ev.description||''} · ${ev.createdBy||''}</div>
       </div>
-      <div class="event-actions">
-        ${canDelete ? `<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>` : ''}
-      </div>
+      <div class="event-actions">${canDel?`<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>`:''}</div>
     </div>`;
   }).join('');
-
   renderMiniCal();
 }
 
 function filterEvents(type, btn) {
   activeFilter = type;
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   renderEvents();
-}
-
-/* ── MINI CALENDRIER ── */
-const monthNames = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-const dayLabels = ['L','M','M','J','V','S','D'];
-const today = new Date();
-let calYear = today.getFullYear();
-let calMonth = today.getMonth();
-
-function renderMiniCal() {
-  const grid = document.getElementById('mini-cal-grid');
-  const label = document.getElementById('cal-month-label');
-  if (!grid || !label) return;
-  label.textContent = monthNames[calMonth] + ' ' + calYear;
-
-  // Construire map date → types pour ce mois
-  const evMap = {};
-  allEvents.forEach(ev => {
-    const d = new Date(ev.date + 'T00:00:00');
-    if (d.getFullYear() === calYear && d.getMonth() === calMonth) {
-      const day = d.getDate();
-      if (!evMap[day]) evMap[day] = [];
-      evMap[day].push(ev.type);
-    }
-  });
-
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const offset = firstDay === 0 ? 6 : firstDay - 1;
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-
-  let html = dayLabels.map(d => `<div class="day-label">${d}</div>`).join('');
-  for (let i = 0; i < offset; i++) html += `<div class="mcday empty"></div>`;
-  for (let d = 1; d <= daysInMonth; d++) {
-    const isToday = (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear());
-    const hasEv = evMap[d] ? 'has-event' : '';
-    html += `<div class="mcday ${hasEv} ${isToday ? 'today' : ''}">${d}</div>`;
-  }
-  grid.innerHTML = html;
-}
-
-function calNav(dir) {
-  calMonth += dir;
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  if (calMonth < 0) { calMonth = 11; calYear--; }
-  renderMiniCal();
 }
 
 function toggleForm() {
   if (!currentMembre?.dashboard) return;
   const form = document.getElementById('form-event');
   form.classList.toggle('visible');
-  if (form.classList.contains('visible')) {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('f-date').value = today;
-  }
+  if (form.classList.contains('visible')) document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 }
 
 async function saveEvent() {
   if (!currentMembre?.dashboard) return;
-
   const nom = document.getElementById('f-nom').value.trim();
-  const type = document.getElementById('f-type').value;
   const date = document.getElementById('f-date').value;
-  const heure = document.getElementById('f-heure').value;
-  const desc = document.getElementById('f-desc').value.trim();
-
-  if (!nom || !date) { showToast('❌ Remplis au moins le nom et la date !'); return; }
-
-  const newEvent = {
-    id: 'ev_' + Date.now(),
-    nom, type, date, heure,
-    description: desc,
-    createdBy: currentMembre.pseudo,
-    createdAt: new Date().toISOString()
-  };
-
-  allEvents.push(newEvent);
-  await pushEventsToGitHub();
-
+  if (!nom||!date) { showToast('❌ Remplis le nom et la date !'); return; }
+  const newEv = { id:'ev_'+Date.now(), nom, type:document.getElementById('f-type').value, date, heure:document.getElementById('f-heure').value, description:document.getElementById('f-desc').value.trim(), createdBy:currentMembre.pseudo, createdAt:new Date().toISOString() };
+  allEvents.push(newEv);
+  await pushEvents();
   document.getElementById('form-event').classList.remove('visible');
   document.getElementById('f-nom').value = '';
   document.getElementById('f-desc').value = '';
@@ -891,63 +515,242 @@ async function saveEvent() {
 
 async function deleteEvent(id) {
   if (!confirm('Supprimer cette opération ?')) return;
-  allEvents = allEvents.filter(e => e.id !== id);
-  await pushEventsToGitHub();
+  allEvents = allEvents.filter(e=>e.id!==id);
+  await pushEvents();
   renderEvents();
   showToast('Opération supprimée');
 }
 
-async function pushEventsToGitHub() {
-  // Récupérer le SHA actuel du fichier
+async function pushEvents() {
   try {
     const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
+    const getRes = await fetch(apiUrl,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});
+    const {sha} = await getRes.json();
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify({events:allEvents},null,2))));
+    await fetch(apiUrl,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message:`Update events by ${currentMembre.pseudo}`,content,sha})});
+  } catch(e){showToast('⚠️ Erreur sauvegarde');console.error(e);}
+}
 
-    // Récupérer SHA
-    const getRes = await fetch(apiUrl, {
-      headers: { 'Authorization': `token ${getToken()}`, 'Accept': 'application/vnd.github.v3+json' }
+function getToken(){return localStorage.getItem('eclypse_admin_token')||'';}
+
+/* ═══ MINI CAL ═══ */
+const monthNames=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const dayLabels=['L','M','M','J','V','S','D'];
+const todayD=new Date();
+let calYear=todayD.getFullYear(),calMonth=todayD.getMonth();
+function renderMiniCal(){
+  const grid=document.getElementById('mini-cal-grid');
+  const label=document.getElementById('cal-month-label');
+  if(!grid||!label)return;
+  label.textContent=monthNames[calMonth]+' '+calYear;
+  const evMap={};
+  allEvents.forEach(ev=>{const d=new Date(ev.date+'T00:00:00');if(d.getFullYear()===calYear&&d.getMonth()===calMonth)evMap[d.getDate()]=true;});
+  const fd=new Date(calYear,calMonth,1).getDay();
+  const off=fd===0?6:fd-1;
+  const tot=new Date(calYear,calMonth+1,0).getDate();
+  let html=dayLabels.map(d=>`<div class="day-label">${d}</div>`).join('');
+  for(let i=0;i<off;i++)html+='<div class="mcday empty"></div>';
+  for(let d=1;d<=tot;d++){
+    const iT=d===todayD.getDate()&&calMonth===todayD.getMonth()&&calYear===todayD.getFullYear();
+    html+=`<div class="mcday ${evMap[d]?'has-event':''} ${iT?'today':''}">${d}</div>`;
+  }
+  grid.innerHTML=html;
+}
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderMiniCal();}
+
+/* ═══ MODAL PROFIL ═══ */
+function ouvrirProfil() {
+  if (!currentMembre) return;
+  // Remplir les champs
+  document.getElementById('profil-pseudo-input').value = currentMembre.pseudo;
+  document.getElementById('profil-code-actuel').value  = '';
+  document.getElementById('profil-code-new').value     = '';
+  document.getElementById('profil-code-confirm').value = '';
+  document.getElementById('confirm-wrap').style.display = 'none';
+  document.getElementById('modal-msg').className = 'modal-msg';
+  document.getElementById('modal-msg').textContent = '';
+  photoFileData = null;
+
+  // Photo preview
+  const prev = document.getElementById('photo-preview-btn');
+  if (currentMembre.photo) {
+    prev.innerHTML = `<img src="${currentMembre.photo}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+  } else {
+    prev.innerHTML = `<span id="photo-initiale">${currentMembre.pseudo[0].toUpperCase()}</span><div class="photo-overlay"><span>Changer</span></div>`;
+  }
+  document.getElementById('photo-upload-btn').style.display = 'none';
+  document.getElementById('upload-progress').classList.remove('show');
+
+  // Vérifier cooldown 90 jours
+  const cdEl = document.getElementById('photo-cooldown');
+  const lastEdit = currentMembre.lastProfileEdit;
+  if (lastEdit) {
+    const diff = Math.floor((Date.now() - new Date(lastEdit)) / (1000*60*60*24));
+    const reste = 90 - diff;
+    if (reste > 0) {
+      cdEl.textContent = `⏳ Modification photo/pseudo possible dans ${reste} jour${reste>1?'s':''}.`;
+      cdEl.className = 'photo-cooldown locked';
+      document.getElementById('photo-preview-btn').style.pointerEvents = 'none';
+      document.getElementById('profil-pseudo-input').disabled = true;
+    } else {
+      cdEl.textContent = '✦ Modification disponible';
+      cdEl.className = 'photo-cooldown';
+      document.getElementById('photo-preview-btn').style.pointerEvents = '';
+      document.getElementById('profil-pseudo-input').disabled = false;
+    }
+  } else {
+    cdEl.textContent = '✦ Première modification disponible';
+    cdEl.className = 'photo-cooldown';
+    document.getElementById('photo-preview-btn').style.pointerEvents = '';
+    document.getElementById('profil-pseudo-input').disabled = false;
+  }
+
+  document.getElementById('modal-profil').classList.add('open');
+}
+
+function fermerProfil() {
+  document.getElementById('modal-profil').classList.remove('open');
+}
+
+function toggleConfirm() {
+  const v = document.getElementById('profil-code-new').value.trim();
+  document.getElementById('confirm-wrap').style.display = v ? 'block' : 'none';
+}
+
+function previewPhoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showModalMsg('❌ Image trop lourde (max 5 Mo)', 'err'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    photoFileData = { file, dataUrl: ev.target.result };
+    const prev = document.getElementById('photo-preview-btn');
+    prev.innerHTML = `<img src="${ev.target.result}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+    document.getElementById('photo-upload-btn').style.display = 'inline-block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadPhoto() {
+  if (!photoFileData) return;
+  const prog = document.getElementById('upload-progress');
+  const fill = document.getElementById('progress-fill');
+  const lbl  = document.getElementById('progress-label');
+  prog.classList.add('show');
+  fill.style.width = '20%'; lbl.textContent = 'Upload vers Imgur…';
+
+  try {
+    // Upload vers Imgur (API anonyme)
+    const formData = new FormData();
+    formData.append('image', photoFileData.file);
+    fill.style.width = '50%';
+    const res  = await fetch('https://api.imgur.com/3/image', {
+      method: 'POST',
+      headers: { 'Authorization': `Client-ID ${IMGUR_CLIENT_ID}` },
+      body: formData
     });
-    const getJson = await getRes.json();
-    const sha = getJson.sha;
+    const json = await res.json();
+    if (!json.success) throw new Error(json.data?.error || 'Erreur Imgur');
+    fill.style.width = '80%'; lbl.textContent = 'Sauvegarde…';
+    const imageUrl = json.data.link;
 
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify({ events: allEvents }, null, 2))));
+    // Sauvegarder dans membres.json
+    await mettreAJourMembre({ photo: imageUrl, lastProfileEdit: new Date().toISOString() });
+    fill.style.width = '100%'; lbl.textContent = '✓ Photo mise à jour !';
 
-    await fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `token ${getToken()}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github.v3+json'
-      },
-      body: JSON.stringify({
-        message: `Update events by ${currentMembre.pseudo}`,
-        content: content,
-        sha: sha
-      })
-    });
+    // Mettre à jour l'affichage
+    currentMembre.photo = imageUrl;
+    localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
+    const av = document.getElementById('profil-avatar');
+    av.innerHTML = `<img src="${imageUrl}" alt="${currentMembre.pseudo}">`;
+    photoFileData = null;
+    document.getElementById('photo-upload-btn').style.display = 'none';
+    showModalMsg('✦ Photo mise à jour !', 'ok');
+    setTimeout(()=>prog.classList.remove('show'), 2000);
   } catch(e) {
-    showToast('⚠️ Erreur de sauvegarde');
-    console.error(e);
+    fill.style.width = '100%'; fill.style.background = 'var(--rouge)';
+    lbl.textContent = '❌ Erreur : ' + e.message;
+    showModalMsg('❌ Erreur upload : ' + e.message, 'err');
   }
 }
 
-function getToken() {
-  // Token stocké localement par l'admin — voir README
-  return localStorage.getItem('eclypse_admin_token') || '';
+async function sauvegarderProfil() {
+  const pseudoVal  = document.getElementById('profil-pseudo-input').value.trim();
+  const codeActuel = document.getElementById('profil-code-actuel').value.trim().toUpperCase();
+  const codeNew    = document.getElementById('profil-code-new').value.trim().toUpperCase();
+  const codeConf   = document.getElementById('profil-code-confirm').value.trim().toUpperCase();
+
+  if (!codeActuel) { showModalMsg('❌ Saisis ton code actuel pour confirmer', 'err'); return; }
+  if (codeActuel !== currentMembre.code.toUpperCase()) { showModalMsg('❌ Code actuel incorrect', 'err'); return; }
+
+  if (codeNew) {
+    if (codeNew.length < 8) { showModalMsg('❌ Nouveau code trop court (min 8 car.)', 'err'); return; }
+    if (codeNew !== codeConf) { showModalMsg('❌ Les codes ne correspondent pas', 'err'); return; }
+  }
+
+  // Vérifier cooldown pseudo
+  const lastEdit = currentMembre.lastProfileEdit;
+  const pseudoChange = pseudoVal && pseudoVal !== currentMembre.pseudo;
+  if (pseudoChange && lastEdit) {
+    const diff = Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24));
+    if (diff < 90) { showModalMsg(`❌ Pseudo modifiable dans ${90-diff} jour(s)`, 'err'); return; }
+  }
+
+  const updates = {};
+  if (codeNew)       { updates.code = codeNew; }
+  if (pseudoChange)  { updates.pseudo = pseudoVal; updates.lastProfileEdit = new Date().toISOString(); }
+
+  if (!Object.keys(updates).length) { showModalMsg('Aucune modification détectée.', 'ok'); return; }
+
+  await mettreAJourMembre(updates);
+
+  // Appliquer en local
+  Object.assign(currentMembre, updates);
+  localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
+  if (currentMembre.admin) {
+    const adminData = JSON.parse(localStorage.getItem('eclypse_admin')||'{}');
+    if (updates.pseudo) adminData.nom = updates.pseudo;
+    if (updates.code)   adminData.code = updates.code;
+    localStorage.setItem('eclypse_admin', JSON.stringify(adminData));
+  }
+
+  // Rafraîchir affichage
+  document.getElementById('display-pseudo').textContent = currentMembre.pseudo;
+  document.getElementById('profil-pseudo').textContent  = currentMembre.pseudo;
+  showModalMsg('✦ Profil mis à jour !', 'ok');
+  showToast('✦ Profil sauvegardé !');
+  setTimeout(fermerProfil, 1500);
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 3000);
+async function mettreAJourMembre(updates) {
+  // Lire membres.json depuis GitHub, modifier le membre, réécrire
+  const token = getToken();
+  if (!token) { showToast('⚠️ Token requis — configure eclypse_admin_token'); return; }
+  try {
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
+    const getRes = await fetch(apiUrl,{headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
+    const getJson = await getRes.json();
+    const sha = getJson.sha;
+    const current = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
+    const idx = current.membres.findIndex(m => m.id === currentMembre.id);
+    if (idx !== -1) Object.assign(current.membres[idx], updates);
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(current,null,2))));
+    await fetch(apiUrl,{method:'PUT',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message:`Update profile ${currentMembre.pseudo}`,content,sha})});
+  } catch(e){showToast('⚠️ Erreur sauvegarde profil');console.error(e);}
 }
 
-// Vérifier session existante
+function showModalMsg(msg, type) {
+  const el = document.getElementById('modal-msg');
+  el.textContent = msg;
+  el.className = 'modal-msg ' + type;
+}
+
+/* ═══ TOAST ═══ */
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);}
+
+/* ═══ SESSION ═══ */
 const saved = localStorage.getItem('eclypse_membre');
-if (saved) {
-  currentMembre = JSON.parse(saved);
-  showDashboard(currentMembre);
-}
+if (saved) { currentMembre = JSON.parse(saved); showDashboard(currentMembre); }
 </script>
 </body>
 </html>
