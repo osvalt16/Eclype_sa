@@ -420,12 +420,17 @@ function showDashboard(m) {
   document.getElementById('profil-role').textContent   = m.role + ' · Faction ' + m.faction;
   document.getElementById('profil-wallet').textContent = '🔵 Wallet: ' + m.wallet;
 
-  // Avatar : photo ou initiale — profil card + nav
+  // Avatar : photo depuis localStorage ou membres.json
   const av = document.getElementById('profil-avatar');
   const navAv = document.getElementById('nav-avatar');
-  if (m.photo) {
-    av.innerHTML = `<img src="${m.photo}" alt="${m.pseudo}">`;
-    if (navAv) navAv.innerHTML = `<img src="${m.photo}" alt="${m.pseudo}">`;
+  // Priorité : localStorage (mise à jour locale) > membres.json
+  const localPhotos = JSON.parse(localStorage.getItem('eclypse_photos') || '{}');
+  const photoUrl = localPhotos[m.id]?.url || m.photo || '';
+  if (photoUrl) {
+    av.innerHTML = `<img src="${photoUrl}" alt="${m.pseudo}">`;
+    if (navAv) navAv.innerHTML = `<img src="${photoUrl}" alt="${m.pseudo}">`;
+    // Mettre à jour currentMembre avec la photo locale
+    currentMembre.photo = photoUrl;
   } else {
     av.textContent = m.pseudo[0].toUpperCase();
     if (navAv) navAv.textContent = m.pseudo[0].toUpperCase();
@@ -664,28 +669,43 @@ async function uploadPhoto() {
     });
     const json = await res.json();
     if (!json.success) throw new Error(json.data?.error || 'Erreur Imgur');
-    fill.style.width = '80%'; lbl.textContent = 'Sauvegarde…';
+    fill.style.width = '90%'; lbl.textContent = 'Sauvegarde locale…';
     const imageUrl = json.data.link;
 
-    // Sauvegarder dans membres.json
-    await mettreAJourMembre({ photo: imageUrl, lastProfileEdit: new Date().toISOString() });
-    fill.style.width = '100%'; lbl.textContent = '✓ Photo mise à jour !';
-
-    // Mettre à jour l'affichage
+    // Sauvegarder en localStorage (pas besoin de token GitHub)
     currentMembre.photo = imageUrl;
+    currentMembre.lastProfileEdit = new Date().toISOString();
     localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
+
+    // Sauvegarder aussi dans un cache photos local
+    const photos = JSON.parse(localStorage.getItem('eclypse_photos') || '{}');
+    photos[currentMembre.id] = { url: imageUrl, pseudo: currentMembre.pseudo, ts: new Date().toISOString() };
+    localStorage.setItem('eclypse_photos', JSON.stringify(photos));
+
+    fill.style.width = '100%'; lbl.textContent = '✓ Photo uploadée !';
+
+    // Mettre à jour l'affichage partout
     const av = document.getElementById('profil-avatar');
     av.innerHTML = `<img src="${imageUrl}" alt="${currentMembre.pseudo}">`;
     const navAvU = document.getElementById('nav-avatar');
     if (navAvU) navAvU.innerHTML = `<img src="${imageUrl}" alt="${currentMembre.pseudo}">`;
+
+    // Mettre à jour preview modal
+    const prev = document.getElementById('photo-preview-btn');
+    prev.innerHTML = `<img src="${imageUrl}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+
     photoFileData = null;
     document.getElementById('photo-upload-btn').style.display = 'none';
-    showModalMsg('✦ Photo mise à jour !', 'ok');
-    setTimeout(()=>prog.classList.remove('show'), 2000);
+    showModalMsg('✦ Photo mise à jour ! Elle sera visible par tous après synchronisation.', 'ok');
+    setTimeout(() => prog.classList.remove('show'), 2000);
+
+    // Notifier l'admin pour synchro GitHub (afficher l'URL)
+    console.log('📸 Photo URL à synchro:', imageUrl);
+
   } catch(e) {
     fill.style.width = '100%'; fill.style.background = 'var(--rouge)';
     lbl.textContent = '❌ Erreur : ' + e.message;
-    showModalMsg('❌ Erreur upload : ' + e.message, 'err');
+    showModalMsg('❌ ' + e.message, 'err');
   }
 }
 
@@ -741,20 +761,20 @@ async function sauvegarderProfil() {
 }
 
 async function mettreAJourMembre(updates) {
-  // Lire membres.json depuis GitHub, modifier le membre, réécrire
-  const token = getToken();
-  if (!token) { showToast('⚠️ Token requis — configure eclypse_admin_token'); return; }
-  try {
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/membres.json`;
-    const getRes = await fetch(apiUrl,{headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
-    const getJson = await getRes.json();
-    const sha = getJson.sha;
-    const current = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
-    const idx = current.membres.findIndex(m => m.id === currentMembre.id);
-    if (idx !== -1) Object.assign(current.membres[idx], updates);
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(current,null,2))));
-    await fetch(apiUrl,{method:'PUT',headers:{'Authorization':`token ${token}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify({message:`Update profile ${currentMembre.pseudo}`,content,sha})});
-  } catch(e){showToast('⚠️ Erreur sauvegarde profil');console.error(e);}
+  // Sauvegarder en localStorage uniquement
+  // La synchro GitHub se fait via le panel admin
+  Object.assign(currentMembre, updates);
+  localStorage.setItem('eclypse_membre', JSON.stringify(currentMembre));
+
+  // Stocker les modifications en attente pour l'admin
+  const pending = JSON.parse(localStorage.getItem('eclypse_pending_updates') || '[]');
+  pending.push({
+    id: currentMembre.id,
+    pseudo: currentMembre.pseudo,
+    updates,
+    ts: new Date().toISOString()
+  });
+  localStorage.setItem('eclypse_pending_updates', JSON.stringify(pending));
 }
 
 function showModalMsg(msg, type) {
