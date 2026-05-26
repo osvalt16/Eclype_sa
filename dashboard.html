@@ -58,10 +58,7 @@
   .profil-rang{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);margin-bottom:0.3rem;}
   .profil-pseudo{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;margin-bottom:0.3rem;}
   .profil-role{font-size:0.9rem;color:var(--texte-pale);font-style:italic;margin-bottom:0.6rem;}
-  .profil-pseudo-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.3rem;}
-  .profil-x-btn{display:inline-flex;align-items:center;transition:transform 0.2s,opacity 0.2s;opacity:0.8;}
-  .profil-x-btn:hover{transform:scale(1.1);opacity:1;}
-  .profil-x-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;}
+  .profil-wallet{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.1em;color:var(--cyan);}
   .btn-edit-profil{position:absolute;top:1rem;right:1rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.8rem;cursor:pointer;transition:all 0.3s;}
   .btn-edit-profil:hover{background:rgba(201,162,39,0.1);}
 
@@ -243,13 +240,9 @@
       </div>
       <div class="profil-info">
         <div class="profil-rang" id="profil-rang">—</div>
-        <div class="profil-pseudo-row">
-          <div class="profil-pseudo" id="profil-pseudo">—</div>
-          <a id="profil-x-link" href="#" target="_blank" class="profil-x-btn" style="display:none" title="Profil X">
-            <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" alt="X" class="profil-x-logo">
-          </a>
-        </div>
+        <div class="profil-pseudo" id="profil-pseudo">—</div>
         <div class="profil-role" id="profil-role">—</div>
+        <div class="profil-wallet" id="profil-wallet">—</div>
       </div>
       <button class="btn-edit-profil" onclick="ouvrirProfil()">✦ Modifier le profil</button>
     </div>
@@ -343,16 +336,6 @@
         <div class="hint">Visible sur la page membres publique. Modifiable tous les 90 jours.</div>
       </div>
 
-      <!-- Lien X -->
-      <div class="modal-field">
-        <label>Profil X (Twitter)</label>
-        <div style="display:flex;align-items:center;gap:0.8rem;">
-          <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;">
-          <input type="url" id="profil-x-input" placeholder="https://x.com/tonpseudo" style="flex:1">
-        </div>
-        <div class="hint">Lien complet vers ton profil X. Visible sur ta carte publique.</div>
-      </div>
-
       <hr class="modal-divider">
 
       <!-- Code actuel -->
@@ -436,16 +419,7 @@ function showDashboard(m) {
   document.getElementById('profil-rang').textContent   = '★ ' + m.rang;
   document.getElementById('profil-pseudo').textContent = m.pseudo;
   document.getElementById('profil-role').textContent   = m.role + ' · Faction ' + m.faction;
-  // Lien X
-  const xLink = document.getElementById('profil-x-link');
-  if (xLink) {
-    if (m.xLink) {
-      xLink.href = m.xLink;
-      xLink.style.display = 'inline-flex';
-    } else {
-      xLink.style.display = 'none';
-    }
-  }
+  document.getElementById('profil-wallet').textContent = '🔵 Wallet: ' + m.wallet;
 
   // Avatar : photo depuis localStorage ou membres.json
   const av = document.getElementById('profil-avatar');
@@ -626,7 +600,6 @@ function ouvrirProfil() {
   if (!currentMembre) return;
   // Remplir les champs
   document.getElementById('profil-pseudo-input').value = currentMembre.pseudo;
-  document.getElementById('profil-x-input').value       = currentMembre.xLink || '';
   document.getElementById('profil-code-actuel').value  = '';
   document.getElementById('profil-code-new').value     = '';
   document.getElementById('profil-code-confirm').value = '';
@@ -761,13 +734,11 @@ async function sauvegarderProfil() {
   const codeNew    = document.getElementById('profil-code-new').value.trim().toUpperCase();
   const codeConf   = document.getElementById('profil-code-confirm').value.trim().toUpperCase();
 
-  if (!codeActuel) { showModalMsg('❌ Saisis ton code actuel pour confirmer', 'err'); return; }
-
-  // Vérifier contre le code localStorage ET membres.json (le vrai)
-  const localCode = currentMembre.code.toUpperCase();
-  if (codeActuel !== localCode) { showModalMsg('❌ Code actuel incorrect', 'err'); return; }
-
+  // Code actuel requis UNIQUEMENT si on veut changer le code
   if (codeNew) {
+    if (!codeActuel) { showModalMsg('❌ Saisis ton code actuel pour changer le code', 'err'); return; }
+    const localCode = currentMembre.code.toUpperCase();
+    if (codeActuel !== localCode) { showModalMsg('❌ Code actuel incorrect', 'err'); return; }
     if (codeNew.length < 8) { showModalMsg('❌ Nouveau code trop court (min 8 car.)', 'err'); return; }
     if (codeNew !== codeConf) { showModalMsg('❌ Les codes ne correspondent pas', 'err'); return; }
   }
@@ -780,13 +751,9 @@ async function sauvegarderProfil() {
     if (diff < 90) { showModalMsg(`❌ Pseudo modifiable dans ${90-diff} jour(s)`, 'err'); return; }
   }
 
-  const xVal    = document.getElementById('profil-x-input').value.trim();
-  const xChange = xVal !== (currentMembre.xLink || '');
-
   const updates = {};
   if (codeNew)      updates.code   = codeNew;
   if (pseudoChange) { updates.pseudo = pseudoVal; updates.lastProfileEdit = new Date().toISOString(); }
-  if (xChange)      updates.xLink  = xVal;
 
   if (!Object.keys(updates).length) { showModalMsg('Aucune modification détectée.', 'ok'); return; }
 
@@ -812,12 +779,6 @@ async function sauvegarderProfil() {
   document.getElementById('profil-pseudo').textContent  = currentMembre.pseudo;
   const navAvR = document.getElementById('nav-avatar');
   if (navAvR && currentMembre.photo) navAvR.innerHTML = `<img src="${currentMembre.photo}" alt="${currentMembre.pseudo}">`;
-  // Mettre à jour lien X
-  const xLinkR = document.getElementById('profil-x-link');
-  if (xLinkR) {
-    if (currentMembre.xLink) { xLinkR.href = currentMembre.xLink; xLinkR.style.display = 'inline-flex'; }
-    else { xLinkR.style.display = 'none'; }
-  }
 
   showModalMsg('✦ Profil mis à jour !', 'ok');
   showToast('✦ Profil sauvegardé !');
