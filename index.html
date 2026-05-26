@@ -1451,7 +1451,7 @@ if (document.readyState === 'loading') {
 /* ── PHOTOS MEMBRES ── */
 (async function loadMemberData() {
   try {
-    const res  = await fetch('https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/membres.json?t='+Date.now());
+    const res  = await fetch('https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/users.json?t='+Date.now());
     const data = await res.json();
     data.membres.forEach(m => {
       document.querySelectorAll('.membre-card').forEach(card => {
