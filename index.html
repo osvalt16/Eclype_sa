@@ -759,7 +759,9 @@
     width:30px !important; height:30px !important;
     object-fit:cover; border-radius:50%; display:block;
   }
-  .nav-user-pseudo { font-family:'Cinzel',serif; font-size:0.62rem; letter-spacing:0.15em; color:var(--or-clair); }
+  .nav-user-pseudo { font-family:'Cinzel',serif; font-size:0.62rem; letter-spacing:0.15em; color:var(--or-clair); transition:color 0.2s; }
+  .nav-user-connected a:hover .nav-user-pseudo { color:#fff; text-shadow:0 0 12px rgba(201,162,39,0.7); }
+  .nav-user-connected a:hover .nav-user-avatar { border-color:var(--or-clair); box-shadow:0 0 10px rgba(201,162,39,0.4); }
   .nav-user-deco { font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--rouge); background:none; border:1px solid rgba(232,90,90,0.3); padding:0.28rem 0.6rem; cursor:pointer; transition:all 0.3s; }
   .nav-user-deco:hover { background:rgba(232,90,90,0.1); }
 </style>
