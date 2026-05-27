@@ -113,6 +113,62 @@
   .btn-refuser:hover { background:rgba(232,90,90,0.1); }
   .demandes-empty { padding:1.5rem; text-align:center; color:var(--texte-pale); font-style:italic; font-size:0.88rem; }
 
+  /* ── GRADES ── */
+  .grades-section { margin-bottom:2.5rem; }
+  .grade-card {
+    display:grid; grid-template-columns:60px 1fr; gap:1.5rem;
+    border:1px solid var(--border-violet); padding:1.5rem;
+    background:rgba(10,8,20,0.8); margin-bottom:0.8rem;
+    transition:border-color 0.3s; align-items:start;
+  }
+  .grade-card:hover { border-color:var(--border-or); }
+  .grade-badge {
+    width:52px; height:52px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; flex-shrink:0; border:2px solid;
+  }
+  .grade-badge.apply      { background:rgba(100,100,100,0.2); border-color:rgba(150,150,150,0.4); }
+  .grade-badge.membre     { background:rgba(107,53,200,0.2);  border-color:rgba(107,53,200,0.5); }
+  .grade-badge.veteran    { background:rgba(201,162,39,0.2);  border-color:var(--border-or); }
+  .grade-badge.sousofficier { background:rgba(232,130,30,0.2); border-color:rgba(232,130,30,0.5); }
+  .grade-badge.officier   { background:rgba(232,90,90,0.2);   border-color:rgba(232,90,90,0.5); }
+  .grade-info {}
+  .grade-name {
+    font-family:'Cinzel',serif; font-size:0.9rem; letter-spacing:0.2em;
+    text-transform:uppercase; margin-bottom:0.3rem;
+  }
+  .grade-name.apply        { color:#aaa; }
+  .grade-name.membre       { color:var(--violet-glow); }
+  .grade-name.veteran      { color:var(--or); }
+  .grade-name.sousofficier { color:#e88030; }
+  .grade-name.officier     { color:var(--rouge); }
+  .grade-condition {
+    font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.15em;
+    color:var(--texte-pale); margin-bottom:0.8rem; font-style:italic;
+  }
+  .grade-roles { display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .grade-role-tag {
+    font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.12em;
+    text-transform:uppercase; padding:0.2rem 0.6rem;
+    border:1px solid var(--border-or); color:var(--or);
+    background:rgba(201,162,39,0.06);
+  }
+  .grade-arrow {
+    text-align:center; color:var(--border-or); font-size:1.2rem;
+    margin-bottom:0.8rem; letter-spacing:0.3em;
+  }
+
+  /* Sélecteur grade dans tableau membres */
+  .grade-select {
+    font-family:'Cinzel',serif; font-size:0.52rem; letter-spacing:0.1em;
+    text-transform:uppercase; background:rgba(7,6,13,0.9);
+    border:1px solid var(--border-violet); color:var(--texte);
+    padding:0.3rem 0.5rem; cursor:pointer; outline:none;
+    transition:border-color 0.3s;
+  }
+  .grade-select:focus { border-color:var(--or); }
+  .grade-select option { background:#1a0f2e; }
+
   /* TOAST */
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -189,6 +245,81 @@
         <span class="demande-count" id="demande-count">0</span>
       </div>
       <div id="demandes-list"></div>
+    </div>
+
+    <!-- GRADES -->
+    <div class="section-hdr">
+      <h2>⚔ Progression des Grades</h2>
+    </div>
+    <div class="grades-section" id="grades-section">
+
+      <div class="grade-card">
+        <div class="grade-badge apply">⚪</div>
+        <div class="grade-info">
+          <div class="grade-name apply">Apply</div>
+          <div class="grade-condition">Premier contact avec un recruteur de la guilde</div>
+          <div class="grade-roles"><span class="grade-role-tag">Accès limité</span></div>
+        </div>
+      </div>
+
+      <div class="grade-arrow">▼</div>
+
+      <div class="grade-card">
+        <div class="grade-badge membre">🔵</div>
+        <div class="grade-info">
+          <div class="grade-name membre">Membre</div>
+          <div class="grade-condition">Automatique après premier contact recruteur</div>
+          <div class="grade-roles"><span class="grade-role-tag">Accès Dashboard</span></div>
+        </div>
+      </div>
+
+      <div class="grade-arrow">▼ 500 LP</div>
+
+      <div class="grade-card">
+        <div class="grade-badge veteran">⭐</div>
+        <div class="grade-info">
+          <div class="grade-name veteran">Vétéran</div>
+          <div class="grade-condition">500 points de loyauté (LP)</div>
+          <div class="grade-roles">
+            <span class="grade-role-tag">RH</span>
+            <span class="grade-role-tag">Aspirant FC</span>
+            <span class="grade-role-tag">Assistant FC</span>
+            <span class="grade-role-tag">Développeur</span>
+            <span class="grade-role-tag">Recruteur</span>
+            <span class="grade-role-tag">Logistique Alliance</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grade-arrow">▼ Vote Officiers</div>
+
+      <div class="grade-card">
+        <div class="grade-badge sousofficier">🟠</div>
+        <div class="grade-info">
+          <div class="grade-name sousofficier">Sous-Officier</div>
+          <div class="grade-condition">Recommandation conseil + approbation majorité Officiers</div>
+          <div class="grade-roles">
+            <span class="grade-role-tag">Skirmish FC</span>
+            <span class="grade-role-tag">Team SRP</span>
+            <span class="grade-role-tag">Team Infrastructure</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grade-arrow">▼ Leadership + Élection</div>
+
+      <div class="grade-card">
+        <div class="grade-badge officier">🔴</div>
+        <div class="grade-info">
+          <div class="grade-name officier">Officier</div>
+          <div class="grade-condition">Leadership exceptionnel + élu par les Officiers actuels</div>
+          <div class="grade-roles">
+            <span class="grade-role-tag">Diplomate</span>
+            <span class="grade-role-tag">Tactical Fleet Commander</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- MEMBRES -->
@@ -368,7 +499,7 @@ function renderTable(users) {
   // Header
   var thead = document.createElement('thead');
   var hrow  = document.createElement('tr');
-  ['Pseudo','Email','Rang','Inscrit le','Statut','Droits','Action'].forEach(function(h) {
+  ['Pseudo','Email','Grade','Inscrit le','Statut','Droits','Action'].forEach(function(h) {
     var th = document.createElement('th');
     th.textContent = h;
     hrow.appendChild(th);
@@ -399,7 +530,20 @@ function renderTable(users) {
 
     // Rang
     var tdR = document.createElement('td');
-    tdR.textContent = u.rang || 'Recrue';
+    var sel = document.createElement('select');
+    sel.className = 'grade-select';
+    var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
+    grades.forEach(function(g) {
+      var opt = document.createElement('option');
+      opt.value = g; opt.textContent = g;
+      if ((u.rang||'Membre') === g) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    sel.onchange = (function(id) {
+      return function() { setGrade(id, this.value); };
+    })(u.id);
+    if (isMe) sel.disabled = true;
+    tdR.appendChild(sel);
     row.appendChild(tdR);
 
     // Date
@@ -466,6 +610,12 @@ function renderTable(users) {
 }
 
 /* ══ ACTIONS DROITS ══ */
+async function setGrade(userId, grade) {
+  await updateUser(userId, { rang: grade });
+  showToast('✦ Grade mis à jour → ' + grade);
+  charger();
+}
+
 async function setRole(userId, role) {
   const updates = {
     dashboard: role === 'ops' || role === 'admin',
