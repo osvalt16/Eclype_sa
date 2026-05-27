@@ -1447,10 +1447,11 @@ if (document.readyState === 'loading') {
   try {
     const res  = await fetch('https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/users.json?t='+Date.now());
     const data = await res.json();
-    data.membres.forEach(m => {
+    const membres = data.users || data.membres || [];
+    membres.forEach(m => {
       document.querySelectorAll('.membre-card').forEach(card => {
         const nameEl = card.querySelector('.membre-name');
-        if (!nameEl || nameEl.textContent.trim() !== m.pseudo) return;
+        if (!nameEl || nameEl.textContent.trim().toLowerCase() !== (m.pseudo||'').toLowerCase()) return;
         // Photo
         if (m.photo) {
           const av = card.querySelector('.membre-avatar');
