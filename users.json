@@ -30,6 +30,22 @@
       "actif": true,
       "statut": "approuve",
       "createdAt": "2026-05-27T11:06:31.832Z"
+    },
+    {
+      "id": "milouz_1779882347406",
+      "pseudo": "Milouz",
+      "email": "3milienm4@hmail.com",
+      "password": "d7242cd6ff43fb2535f291bc5c80b5d05063ab7ad3dcb1a1a1e51c869d2f4a69",
+      "rang": "Recrue",
+      "role": "",
+      "faction": "MUD",
+      "photo": "",
+      "xLink": "",
+      "dashboard": false,
+      "admin": false,
+      "actif": false,
+      "statut": "en_attente",
+      "createdAt": "2026-05-27T11:45:47.406Z"
     }
   ]
 }
