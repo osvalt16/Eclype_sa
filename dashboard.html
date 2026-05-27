@@ -442,8 +442,15 @@ async function doLogin(e) {
     const res  = await fetch(USERS_URL + '?t=' + Date.now());
     const data = await res.json();
     const hash = await sha256(password);
-    const user = data.users.find(u => u.email.toLowerCase() === email && u.password === hash && u.actif);
+    // Vérifier si email/mdp correct mais compte en attente
+    const userPending = data.users.find(u => u.email.toLowerCase() === email && u.password === hash && !u.actif);
+    if (userPending) {
+      msg.className = 'auth-msg err';
+      msg.textContent = '⏳ Ton compte est en attente de validation par un administrateur.';
+      return;
+    }
 
+    const user = data.users.find(u => u.email.toLowerCase() === email && u.password === hash && u.actif);
     if (!user) {
       logConn(email, 'Tentative échouée', 'fail');
       msg.className = 'auth-msg err';
@@ -499,7 +506,8 @@ async function doRegister(e) {
       pseudo, email, password: hash,
       rang: 'Recrue', role: '', faction: 'MUD',
       photo: '', xLink: '',
-      dashboard: false, admin: false, actif: true,
+      dashboard: false, admin: false, actif: false,
+      statut: 'en_attente',
       createdAt: new Date().toISOString()
     };
 
@@ -512,8 +520,7 @@ async function doRegister(e) {
     });
 
     msg.className = 'auth-msg ok';
-    msg.textContent = '✦ Compte créé ! Tu peux te connecter.';
-    setTimeout(() => switchAuth('login'), 2000);
+    msg.textContent = '✦ Compte créé ! Tu recevras accès après validation par un administrateur.';
 
   } catch(err) {
     msg.className = 'auth-msg err';
