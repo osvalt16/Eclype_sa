@@ -558,6 +558,7 @@ async function setRole(userId, role) {
 }
 
 async function toggleActif(userId, actif) {
+  actif = actif === true || actif === 1 || actif === '1';
   await updateUser(userId, { actif });
   showToast(actif ? '✦ Compte activé' : '✦ Compte désactivé');
   charger();
