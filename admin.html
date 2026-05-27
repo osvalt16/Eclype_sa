@@ -530,46 +530,19 @@ function renderTable(users) {
     var rangActuel = u.rang || 'Membre';
     if (!grades.includes(rangActuel)) rangActuel = 'Membre';
 
-    // Dropdown pour tout le monde (désactivé pour soi-même)
-    {
-      var drop = document.createElement('div');
-      drop.className = 'grade-dropdown';
-
-      var curr = document.createElement('div');
-      curr.className = 'grade-current';
-      curr.textContent = rangActuel;
-      curr.onclick = function(e) {
-        e.stopPropagation();
-        drop.classList.toggle('open');
-      };
-
-      var opts = document.createElement('div');
-      opts.className = 'grade-options';
-
-      grades.forEach(function(g) {
-        var opt = document.createElement('div');
-        opt.className = 'grade-option' + (g === rangActuel ? ' active' : '');
-        opt.textContent = g;
-        opt.onclick = (function(id, grade, dropEl, currEl) {
-          return function(e) {
-            e.stopPropagation();
-            currEl.textContent = grade;
-            dropEl.classList.remove('open');
-            setGrade(id, grade);
-          };
-        })(u.id, g, drop, curr);
-        opts.appendChild(opt);
-      });
-
-      drop.appendChild(curr);
-      drop.appendChild(opts);
-      if (isMe) {
-        curr.style.opacity = '0.5';
-        curr.style.cursor = 'default';
-        curr.onclick = null;
-      }
-      tdR.appendChild(drop);
-    }
+    var sel = document.createElement('select');
+    sel.style.cssText = 'font-family:Cinzel,serif;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(7,6,13,0.9);border:1px solid rgba(107,53,200,0.4);color:#d4c9e8;padding:0.35rem 0.5rem;cursor:pointer;outline:none;width:100%;';
+    grades.forEach(function(g) {
+      var opt = document.createElement('option');
+      opt.value = g; opt.textContent = g;
+      opt.style.background = '#1a0f2e';
+      if (g === rangActuel) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    if (!isMe) {
+      sel.addEventListener('change', (function(id){ return function(){ setGrade(id, this.value); }; })(u.id));
+    } else { sel.disabled = true; sel.style.opacity = '0.5'; }
+    tdR.appendChild(sel);
     row.appendChild(tdR);
 
     // Date
