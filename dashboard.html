@@ -472,7 +472,8 @@ async function doLogin(e) {
     const token  = await getToken();
     const res    = await fetch(USERS_API, { headers: { 'Authorization': 'token ' + token } });
     const gjson  = await res.json();
-    const data   = JSON.parse(atob(gjson.content.split('\n').join('')));
+    const raw    = gjson.content.split('\n').join('');
+    const data   = JSON.parse(decodeURIComponent(escape(atob(raw))));
     const hash   = await sha256(password);
     // Vérifier si email/mdp correct mais compte en attente
     const userPending = data.users.find(u => u.email.toLowerCase() === email && u.password === hash && !u.actif);
