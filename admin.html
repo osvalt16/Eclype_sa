@@ -165,9 +165,11 @@
     border:1px solid var(--border-violet); color:var(--texte);
     padding:0.3rem 0.5rem; cursor:pointer; outline:none;
     transition:border-color 0.3s;
+    -webkit-appearance:auto; appearance:auto;
+    pointer-events:all; z-index:10; position:relative;
   }
   .grade-select:focus { border-color:var(--or); }
-  .grade-select option { background:#1a0f2e; }
+  .grade-select option { background:#1a0f2e; color:var(--texte); }
 
   /* TOAST */
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
@@ -533,10 +535,13 @@ function renderTable(users) {
     var sel = document.createElement('select');
     sel.className = 'grade-select';
     var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
+    var rangActuel = u.rang || 'Membre';
+    // Normaliser les anciens rangs
+    if (!grades.includes(rangActuel)) rangActuel = 'Membre';
     grades.forEach(function(g) {
       var opt = document.createElement('option');
       opt.value = g; opt.textContent = g;
-      if ((u.rang||'Membre') === g) opt.selected = true;
+      if (rangActuel === g) opt.selected = true;
       sel.appendChild(opt);
     });
     sel.onchange = (function(id) {
