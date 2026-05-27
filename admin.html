@@ -5,18 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ÉCLYPSE — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root {
-    --noir:#030208; --violet:#1a0f2e; --violet-glow:#8b5cf6;
-    --or:#c9a227; --or-clair:#e8c547;
-    --texte:#d4c9e8; --texte-pale:#8a7fa0;
-    --border-or:rgba(201,162,39,0.3); --border-violet:rgba(107,53,200,0.4);
-    --cyan:#00d4ff; --rouge:#e85a5a; --vert:#5ecfa0;
-  }
+  :root{--noir:#030208;--violet:#1a0f2e;--violet-glow:#8b5cf6;--or:#c9a227;--or-clair:#e8c547;--texte:#d4c9e8;--texte-pale:#8a7fa0;--border-or:rgba(201,162,39,0.3);--border-violet:rgba(107,53,200,0.4);--cyan:#00d4ff;--rouge:#e85a5a;--vert:#5ecfa0;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--noir);color:var(--texte);font-family:'Crimson Pro',serif;font-size:17px;min-height:100vh;}
-
-  /* TOPBAR */
   .topbar{background:rgba(7,6,13,0.97);border-bottom:1px solid rgba(232,90,90,0.25);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
   .topbar-left{display:flex;align-items:center;gap:1rem;}
   .topbar-left img{height:32px;opacity:0.85;}
@@ -28,42 +21,55 @@
   .btn-nav{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.35rem 0.8rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;}
   .btn-nav:hover{border-color:var(--or);color:var(--or);}
   .btn-nav.red{color:var(--rouge);border-color:rgba(232,90,90,0.3);}
-  .btn-nav.red:hover{background:rgba(232,90,90,0.1);}
-
-  /* CONTENU */
   .admin-content{max-width:1100px;margin:0 auto;padding:2.5rem 2rem;}
 
   /* STATS */
   .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2.5rem;}
-  .stat-card{border:1px solid var(--border-violet);padding:1.5rem 1.2rem;background:rgba(10,8,20,0.8);position:relative;overflow:hidden;transition:border-color 0.3s;}
-  .stat-card:hover{border-color:var(--border-or);}
+  .stat-card{border:1px solid var(--border-violet);padding:1.5rem 1.2rem;background:rgba(10,8,20,0.8);position:relative;overflow:hidden;}
   .stat-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;}
   .stat-card.rouge::after{background:linear-gradient(to right,transparent,var(--rouge),transparent);}
   .stat-card.or::after{background:linear-gradient(to right,transparent,var(--or),transparent);}
   .stat-card.vert::after{background:linear-gradient(to right,transparent,var(--vert),transparent);}
   .stat-card.cyan::after{background:linear-gradient(to right,transparent,var(--cyan),transparent);}
   .stat-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.7rem;}
-  .stat-value{font-family:'Cinzel',serif;font-size:2rem;line-height:1;margin-bottom:0.2rem;}
+  .stat-value{font-family:'Cinzel',serif;font-size:2rem;line-height:1;}
   .stat-value.rouge{color:var(--rouge);}
   .stat-value.or{color:var(--or);}
   .stat-value.vert{color:var(--vert);}
   .stat-value.cyan{color:var(--cyan);}
-  .stat-detail{font-size:0.78rem;color:var(--texte-pale);}
 
   /* SECTION */
   .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border-or);}
   .section-hdr h2{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
 
-  /* TABLE MEMBRES */
-  .table-wrap{border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);margin-bottom:2.5rem;}
-  table{width:100%;border-collapse:collapse;}
-  thead tr{border-bottom:1px solid var(--border-or);background:rgba(26,15,46,0.6);}
-  thead th{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);padding:0.9rem 1rem;text-align:left;white-space:nowrap;}
-  tbody tr{border-bottom:1px solid rgba(107,53,200,0.12);transition:background 0.2s;}
-  tbody tr:hover{background:rgba(26,15,46,0.35);}
-  tbody td{padding:0.8rem 1rem;font-size:0.85rem;color:var(--texte);vertical-align:middle;}
+  /* DEMANDES */
+  .demandes-box{border:1px solid rgba(201,162,39,0.5);background:rgba(26,15,46,0.4);margin-bottom:2.5rem;}
+  .demandes-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-or);}
+  .demandes-header h2{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
+  .demande-count{font-family:'Cinzel',serif;font-size:0.65rem;color:var(--rouge);background:rgba(232,90,90,0.15);border:1px solid rgba(232,90,90,0.4);padding:0.15rem 0.6rem;}
+  .demande-item{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-violet);}
+  .demande-item:last-child{border-bottom:none;}
+  .demande-pseudo{font-family:'Cinzel',serif;font-size:0.92rem;color:#fff;margin-bottom:0.2rem;}
+  .demande-email{font-size:0.8rem;color:var(--texte-pale);margin-bottom:0.2rem;}
+  .demande-date{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;color:var(--texte-pale);}
+  .demande-actions{display:flex;gap:0.6rem;}
+  .btn-approuver{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--vert);background:none;border:1px solid rgba(94,207,160,0.4);padding:0.4rem 0.9rem;cursor:pointer;}
+  .btn-approuver:hover{background:rgba(94,207,160,0.12);}
+  .btn-refuser{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.4rem 0.9rem;cursor:pointer;}
+  .btn-refuser:hover{background:rgba(232,90,90,0.1);}
+  .log-empty{padding:2rem;text-align:center;color:var(--texte-pale);font-style:italic;}
 
-  /* BADGES DROITS */
+  /* MEMBRES CARDS */
+  .membres-cards{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2.5rem;}
+  .membre-row{display:grid;grid-template-columns:1fr 180px 1fr auto;gap:1.5rem;align-items:center;border:1px solid var(--border-violet);padding:1rem 1.2rem;background:rgba(10,8,20,0.8);}
+  .membre-row:hover{border-color:var(--border-or);}
+  .mr-pseudo{font-family:'Cinzel',serif;font-size:0.85rem;color:#fff;margin-bottom:0.2rem;}
+  .mr-email{font-size:0.75rem;color:var(--texte-pale);margin-bottom:0.15rem;}
+  .mr-date{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;color:var(--texte-pale);}
+  .mr-label{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:0.4rem;}
+  .mr-select{width:100%;padding:0.5rem 0.6rem;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);font-size:0.85rem;cursor:pointer;outline:none;}
+  .mr-select:focus{border-color:var(--or);}
+  .mr-select option{background:#1a0f2e;color:#d4c9e8;}
   .role-badges{display:flex;gap:0.4rem;flex-wrap:wrap;}
   .role-btn{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.65rem;cursor:pointer;transition:all 0.25s;border:1px solid;background:none;}
   .role-btn.membre{color:var(--texte-pale);border-color:var(--border-violet);}
@@ -72,169 +78,52 @@
   .role-btn.ops.active{background:rgba(0,212,255,0.12);border-color:var(--cyan);}
   .role-btn.admin{color:var(--rouge);border-color:rgba(232,90,90,0.3);}
   .role-btn.admin.active{background:rgba(232,90,90,0.12);border-color:var(--rouge);}
-  .role-btn:hover{opacity:0.8;}
-
+  .membre-row-actions{display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end;}
   .badge{font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.12rem 0.45rem;display:inline-block;}
   .badge.actif{color:var(--vert);border:1px solid rgba(94,207,160,0.3);}
   .badge.inactif{color:var(--rouge);border:1px solid rgba(232,90,90,0.3);}
-
-  /* LOGS */
-  .log-box{border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);max-height:320px;overflow-y:auto;margin-bottom:2.5rem;}
-  .log-box::-webkit-scrollbar{width:3px;}
-  .log-box::-webkit-scrollbar-thumb{background:var(--border-violet);}
-  .log-item{display:grid;grid-template-columns:160px 1fr 80px;gap:0.8rem;align-items:center;padding:0.65rem 1rem;border-bottom:1px solid rgba(107,53,200,0.1);font-size:0.82rem;}
-  .log-item:last-child{border-bottom:none;}
-  .log-time{font-family:'Cinzel',serif;font-size:0.56rem;color:var(--texte-pale);}
-  .log-pseudo strong{color:var(--or-clair);font-weight:400;}
-  .log-status{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;text-align:right;}
-  .log-status.ok{color:var(--vert);}
-  .log-status.fail{color:var(--rouge);}
-  .log-empty{padding:2rem;text-align:center;color:var(--texte-pale);font-style:italic;}
-
-  /* BOUTONS */
-  .btn-xs{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.25rem 0.55rem;cursor:pointer;transition:all 0.3s;}
+  .btn-xs{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.25rem 0.55rem;cursor:pointer;}
   .btn-xs:hover{background:rgba(232,90,90,0.1);}
 
-  /* DEMANDES EN ATTENTE */
-  .demandes-box { border:1px solid rgba(201,162,39,0.5); background:rgba(26,15,46,0.4); margin-bottom:2.5rem; }
-  .demandes-header { display:flex; align-items:center; justify-content:space-between; padding:1.2rem 1.5rem; border-bottom:1px solid var(--border-or); }
-  .demandes-header h2 { font-family:'Cinzel',serif; font-size:0.78rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--or); }
-  .demande-count { font-family:'Cinzel',serif; font-size:0.65rem; color:var(--rouge); background:rgba(232,90,90,0.15); border:1px solid rgba(232,90,90,0.4); padding:0.15rem 0.6rem; border-radius:2px; }
-  .demande-item { display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:center; padding:1.2rem 1.5rem; border-bottom:1px solid var(--border-violet); }
-  .demande-item:last-child { border-bottom:none; }
-  .demande-info { }
-  .demande-pseudo { font-family:'Cinzel',serif; font-size:0.92rem; color:#fff; margin-bottom:0.2rem; }
-  .demande-email { font-size:0.8rem; color:var(--texte-pale); margin-bottom:0.2rem; }
-  .demande-date { font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.12em; color:var(--texte-pale); }
-  .demande-actions { display:flex; gap:0.6rem; }
-  .btn-approuver { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--vert); background:none; border:1px solid rgba(94,207,160,0.4); padding:0.4rem 0.9rem; cursor:pointer; transition:all 0.3s; }
-  .btn-approuver:hover { background:rgba(94,207,160,0.12); }
-  .btn-refuser { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--rouge); background:none; border:1px solid rgba(232,90,90,0.3); padding:0.4rem 0.9rem; cursor:pointer; transition:all 0.3s; }
-  .btn-refuser:hover { background:rgba(232,90,90,0.1); }
-  .demandes-empty { padding:1.5rem; text-align:center; color:var(--texte-pale); font-style:italic; font-size:0.88rem; }
+  /* GRADES */
+  .grades-timeline{display:flex;align-items:stretch;gap:0;border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);margin-bottom:2.5rem;overflow:hidden;}
+  .grade-step{flex:1;padding:1rem 0.8rem;border-right:1px solid var(--border-violet);transition:background 0.2s;}
+  .grade-step:last-child{border-right:none;}
+  .grade-step:hover{background:rgba(26,15,46,0.6);}
+  .grade-step-dot{width:10px;height:10px;border-radius:50%;margin:0 auto 0.6rem;border:2px solid;}
+  .grade-step-dot.apply{background:#555;border-color:#888;}
+  .grade-step-dot.membre{background:rgba(107,53,200,0.5);border-color:var(--violet-glow);}
+  .grade-step-dot.veteran{background:rgba(201,162,39,0.4);border-color:var(--or);}
+  .grade-step-dot.sousofficier{background:rgba(232,130,30,0.4);border-color:#e88030;}
+  .grade-step-dot.officier{background:rgba(232,90,90,0.4);border-color:var(--rouge);}
+  .grade-step-name{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;text-align:center;margin-bottom:0.4rem;}
+  .grade-step-name.apply{color:#888;}
+  .grade-step-name.membre{color:var(--violet-glow);}
+  .grade-step-name.veteran{color:var(--or);}
+  .grade-step-name.sousofficier{color:#e88030;}
+  .grade-step-name.officier{color:var(--rouge);}
+  .grade-step-cond{font-size:0.68rem;color:var(--texte-pale);text-align:center;margin-bottom:0.6rem;line-height:1.4;}
+  .grade-step-roles{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;}
+  .grade-role-tag{font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.15rem 0.45rem;border:1px solid var(--border-violet);color:var(--texte-pale);}
 
-  /* ── GRADES COMPACT ── */
-  .grades-timeline {
-    display:flex; align-items:stretch; gap:0;
-    border:1px solid var(--border-violet);
-    background:rgba(10,8,20,0.8);
-    margin-bottom:2.5rem; overflow:hidden;
-  }
-  .grade-step {
-    flex:1; padding:1rem 0.8rem; border-right:1px solid var(--border-violet);
-    position:relative; cursor:default; transition:background 0.2s;
-  }
-  .grade-step:last-child { border-right:none; }
-  .grade-step:hover { background:rgba(26,15,46,0.6); }
-  .grade-step-dot {
-    width:10px; height:10px; border-radius:50%; margin:0 auto 0.6rem;
-    border:2px solid;
-  }
-  .grade-step-dot.apply        { background:#555; border-color:#888; }
-  .grade-step-dot.membre       { background:rgba(107,53,200,0.5); border-color:var(--violet-glow); }
-  .grade-step-dot.veteran      { background:rgba(201,162,39,0.4); border-color:var(--or); }
-  .grade-step-dot.sousofficier { background:rgba(232,130,30,0.4); border-color:#e88030; }
-  .grade-step-dot.officier     { background:rgba(232,90,90,0.4); border-color:var(--rouge); }
-  .grade-step-name {
-    font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.18em;
-    text-transform:uppercase; text-align:center; margin-bottom:0.4rem;
-  }
-  .grade-step-name.apply        { color:#888; }
-  .grade-step-name.membre       { color:var(--violet-glow); }
-  .grade-step-name.veteran      { color:var(--or); }
-  .grade-step-name.sousofficier { color:#e88030; }
-  .grade-step-name.officier     { color:var(--rouge); }
-  .grade-step-cond {
-    font-size:0.68rem; color:var(--texte-pale); text-align:center;
-    margin-bottom:0.6rem; line-height:1.4;
-  }
-  .grade-step-roles { display:flex; flex-wrap:wrap; gap:0.3rem; justify-content:center; }
-  .grade-role-tag {
-    font-family:'Cinzel',serif; font-size:0.45rem; letter-spacing:0.1em;
-    text-transform:uppercase; padding:0.15rem 0.45rem;
-    border:1px solid var(--border-violet); color:var(--texte-pale);
-  }
-
-  /* Dropdown grade custom */
-  .grade-dropdown { position:relative; display:inline-block; }
-  .grade-current {
-    font-family:'Cinzel',serif; font-size:0.52rem; letter-spacing:0.12em;
-    text-transform:uppercase; background:rgba(7,6,13,0.9);
-    border:1px solid var(--border-violet); color:var(--texte);
-    padding:0.35rem 0.8rem; cursor:pointer;
-    display:flex; align-items:center; gap:0.5rem; white-space:nowrap;
-    transition:border-color 0.3s; user-select:none;
-  }
-  .grade-current:hover { border-color:var(--or); color:var(--or); }
-  .grade-current::after { content:'▾'; font-size:0.7rem; }
-  .grade-options {
-    display:none; position:absolute; top:100%; left:0; z-index:999;
-    background:rgba(7,6,13,0.98); border:1px solid var(--border-or);
-    min-width:140px; flex-direction:column;
-  }
-  .grade-dropdown.open .grade-options { display:flex; }
-  .grade-option {
-    font-family:'Cinzel',serif; font-size:0.52rem; letter-spacing:0.12em;
-    text-transform:uppercase; color:var(--texte-pale);
-    padding:0.5rem 0.8rem; cursor:pointer; transition:all 0.2s;
-    border-bottom:1px solid rgba(107,53,200,0.2);
-  }
-  .grade-option:last-child { border-bottom:none; }
-  .grade-option:hover { background:rgba(201,162,39,0.1); color:var(--or); }
-  .grade-option.active { color:var(--or); }
-
-  /* MEMBRES CARDS */
-  .membres-cards { display:flex; flex-direction:column; gap:0.6rem; }
-  .membre-row {
-    display:grid; grid-template-columns:1fr 160px 1fr auto;
-    gap:1.5rem; align-items:center;
-    border:1px solid var(--border-violet); padding:1rem 1.2rem;
-    background:rgba(10,8,20,0.8); transition:border-color 0.2s;
-  }
-  .membre-row:hover { border-color:var(--border-or); }
-  .mr-pseudo { font-family:'Cinzel',serif; font-size:0.85rem; color:#fff; margin-bottom:0.2rem; }
-  .mr-email  { font-size:0.75rem; color:var(--texte-pale); margin-bottom:0.15rem; }
-  .mr-date   { font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.1em; color:var(--texte-pale); }
-  .mr-label  { font-family:'Cinzel',serif; font-size:0.52rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--or); display:block; margin-bottom:0.4rem; }
-  .mr-select {
-    width:100%; padding:0.5rem 0.6rem;
-    background:rgba(7,6,13,0.9); border:1px solid var(--border-violet);
-    color:var(--texte); font-size:0.85rem; cursor:pointer; outline:none;
-    border-radius:0; -webkit-appearance:auto; appearance:auto;
-  }
-  .mr-select:focus { border-color:var(--or); }
-  .mr-select option { background:#1a0f2e; color:#d4c9e8; }
-  .membre-row-actions { display:flex; flex-direction:column; gap:0.4rem; align-items:flex-end; }
-
-  /* TOAST */
-  .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-  /* ACCÈS REFUSÉ */
+  .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;}
   #denied{min-height:100vh;display:none;align-items:center;justify-content:center;text-align:center;}
   #denied h1{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--rouge);margin-bottom:1rem;}
-  #denied p{color:var(--texte-pale);margin-bottom:2rem;}
-  #denied a{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);border:1px solid var(--border-or);padding:0.7rem 1.8rem;text-decoration:none;transition:all 0.3s;}
-  #denied a:hover{background:rgba(201,162,39,0.1);}
-
-  @media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}.admin-content{padding:1.5rem 1rem}.topbar{flex-wrap:wrap;gap:0.6rem}}
+  #denied a{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);border:1px solid var(--border-or);padding:0.7rem 1.8rem;text-decoration:none;}
+  @media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr)}.membre-row{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<!-- ACCÈS REFUSÉ -->
 <div id="denied" style="display:none">
   <div>
     <h1>🔒 Accès Refusé</h1>
-    <p>Tu n'as pas les droits pour accéder à cette page.</p>
+    <p style="color:var(--texte-pale);margin-bottom:2rem">Tu n'as pas les droits pour accéder à cette page.</p>
     <a href="dashboard.html">← Retour au Dashboard</a>
   </div>
 </div>
 
-<!-- PANEL ADMIN -->
 <div id="admin-panel" style="display:none">
-
   <div class="topbar">
     <div class="topbar-left">
       <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
@@ -251,31 +140,14 @@
 
   <div class="admin-content">
 
-    <!-- STATS -->
     <div class="stats-row">
-      <div class="stat-card rouge">
-        <div class="stat-label">Membres inscrits</div>
-        <div class="stat-value rouge" id="s-total">—</div>
-        <div class="stat-detail">comptes actifs</div>
-      </div>
-      <div class="stat-card or">
-        <div class="stat-label">Connexions aujourd'hui</div>
-        <div class="stat-value or" id="s-today">—</div>
-        <div class="stat-detail">sessions</div>
-      </div>
-      <div class="stat-card vert">
-        <div class="stat-label">Avec accès Ops</div>
-        <div class="stat-value vert" id="s-ops">—</div>
-        <div class="stat-detail">membres ops</div>
-      </div>
-      <div class="stat-card cyan">
-        <div class="stat-label">Admins</div>
-        <div class="stat-value cyan" id="s-admins">—</div>
-        <div class="stat-detail">comptes admin</div>
-      </div>
+      <div class="stat-card rouge"><div class="stat-label">Membres actifs</div><div class="stat-value rouge" id="s-total">—</div></div>
+      <div class="stat-card or"><div class="stat-label">En attente</div><div class="stat-value or" id="s-pending">—</div></div>
+      <div class="stat-card vert"><div class="stat-label">Avec accès Ops</div><div class="stat-value vert" id="s-ops">—</div></div>
+      <div class="stat-card cyan"><div class="stat-label">Admins</div><div class="stat-value cyan" id="s-admins">—</div></div>
     </div>
 
-    <!-- DEMANDES EN ATTENTE -->
+    <!-- DEMANDES -->
     <div class="demandes-box" id="demandes-box" style="display:none">
       <div class="demandes-header">
         <h2>⏳ Demandes en attente</h2>
@@ -285,60 +157,13 @@
     </div>
 
     <!-- GRADES -->
-    <div class="section-hdr">
-      <h2>⚔ Progression des Grades</h2>
-    </div>
+    <div class="section-hdr"><h2>⚔ Progression des Grades</h2></div>
     <div class="grades-timeline">
-
-      <div class="grade-step">
-        <div class="grade-step-dot apply"></div>
-        <div class="grade-step-name apply">Apply</div>
-        <div class="grade-step-cond">1er contact recruteur</div>
-        <div class="grade-step-roles"><span class="grade-role-tag">Accès limité</span></div>
-      </div>
-
-      <div class="grade-step">
-        <div class="grade-step-dot membre"></div>
-        <div class="grade-step-name membre">Membre</div>
-        <div class="grade-step-cond">Automatique</div>
-        <div class="grade-step-roles"><span class="grade-role-tag">Dashboard</span></div>
-      </div>
-
-      <div class="grade-step">
-        <div class="grade-step-dot veteran"></div>
-        <div class="grade-step-name veteran">Vétéran</div>
-        <div class="grade-step-cond">500 LP</div>
-        <div class="grade-step-roles">
-          <span class="grade-role-tag">RH</span>
-          <span class="grade-role-tag">Aspirant FC</span>
-          <span class="grade-role-tag">Assistant FC</span>
-          <span class="grade-role-tag">Développeur</span>
-          <span class="grade-role-tag">Recruteur</span>
-          <span class="grade-role-tag">Logistique</span>
-        </div>
-      </div>
-
-      <div class="grade-step">
-        <div class="grade-step-dot sousofficier"></div>
-        <div class="grade-step-name sousofficier">Sous-Officier</div>
-        <div class="grade-step-cond">Vote Officiers</div>
-        <div class="grade-step-roles">
-          <span class="grade-role-tag">Skirmish FC</span>
-          <span class="grade-role-tag">Team SRP</span>
-          <span class="grade-role-tag">Infrastructure</span>
-        </div>
-      </div>
-
-      <div class="grade-step">
-        <div class="grade-step-dot officier"></div>
-        <div class="grade-step-name officier">Officier</div>
-        <div class="grade-step-cond">Leadership + Élection</div>
-        <div class="grade-step-roles">
-          <span class="grade-role-tag">Diplomate</span>
-          <span class="grade-role-tag">Tactical FC</span>
-        </div>
-      </div>
-
+      <div class="grade-step"><div class="grade-step-dot apply"></div><div class="grade-step-name apply">Apply</div><div class="grade-step-cond">1er contact recruteur</div><div class="grade-step-roles"><span class="grade-role-tag">Accès limité</span></div></div>
+      <div class="grade-step"><div class="grade-step-dot membre"></div><div class="grade-step-name membre">Membre</div><div class="grade-step-cond">Automatique</div><div class="grade-step-roles"><span class="grade-role-tag">Dashboard</span></div></div>
+      <div class="grade-step"><div class="grade-step-dot veteran"></div><div class="grade-step-name veteran">Vétéran</div><div class="grade-step-cond">500 LP</div><div class="grade-step-roles"><span class="grade-role-tag">RH</span><span class="grade-role-tag">Aspirant FC</span><span class="grade-role-tag">Recruteur</span><span class="grade-role-tag">Logistique</span></div></div>
+      <div class="grade-step"><div class="grade-step-dot sousofficier"></div><div class="grade-step-name sousofficier">Sous-Officier</div><div class="grade-step-cond">Vote Officiers</div><div class="grade-step-roles"><span class="grade-role-tag">Skirmish FC</span><span class="grade-role-tag">Team SRP</span></div></div>
+      <div class="grade-step"><div class="grade-step-dot officier"></div><div class="grade-step-name officier">Officier</div><div class="grade-step-cond">Leadership + Élection</div><div class="grade-step-roles"><span class="grade-role-tag">Diplomate</span><span class="grade-role-tag">Tactical FC</span></div></div>
     </div>
 
     <!-- MEMBRES -->
@@ -346,18 +171,7 @@
       <h2>👥 Gestion des membres</h2>
       <button class="btn-xs" onclick="charger()" style="color:var(--or);border-color:var(--border-or)">↻ Actualiser</button>
     </div>
-    <div class="table-wrap" id="members-table">
-      <div class="log-empty">Chargement…</div>
-    </div>
-
-    <!-- LOGS -->
-    <div class="section-hdr">
-      <h2>📡 Journal des connexions</h2>
-      <button class="btn-xs" onclick="viderLogs()">Vider</button>
-    </div>
-    <div class="log-box" id="log-box">
-      <div class="log-empty">Aucune connexion enregistrée.</div>
-    </div>
+    <div id="membres-wrap"></div>
 
   </div>
 </div>
@@ -365,354 +179,194 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const REPO_OWNER = 'osvalt16';
-const REPO_NAME  = 'Eclype_sa';
-const USERS_URL  = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/users.json`;
+const SUPA_URL = 'https://dahmonpmxqqfmhiqugte.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhaG1vbnBteHFxZm1oaXF1Z3RlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNjA3MjcsImV4cCI6MjA2MzkzNjcyN30.vPRwTmKSSwAPQ4GJdnZDKMFNzPhGOiSuLjFPiRQYgTg';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-let currentUser = null;
-let usersData   = null;
+var currentUser = null;
 
-/* ══ INIT ══ */
 async function init() {
-  const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
+  var saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
   if (!saved) { window.location.href = 'dashboard.html'; return; }
+  currentUser = JSON.parse(saved);
 
-  let user = JSON.parse(saved);
-  console.log('User from storage:', user.id, user.email, user.admin);
-
-  // Re-fetch depuis GitHub pour avoir les données à jour (admin peut avoir changé)
-  try {
-    const token  = await getToken();
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-    const res    = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
-    const gjson  = await res.json();
-    const data   = JSON.parse(atob(gjson.content.replace(/\n/g,'')));
-    const fresh  = data.users.find(u => u.id === user.id || u.email === user.email);
-    if (fresh) {
-      user = fresh;
-      localStorage.setItem('eclypse_user', JSON.stringify(fresh));
-      console.log('Fresh user:', fresh.id, fresh.admin);
-    } else {
-      console.log('User not found in GitHub data');
-    }
-  } catch(e) { console.log('Re-fetch failed, using local:', e); }
-
-  currentUser = user;
-  console.log('currentUser.admin:', currentUser.admin);
+  // Rafraîchir depuis Supabase
+  var { data } = await supa.from('users').select('*').eq('id', currentUser.id).single();
+  if (data) {
+    currentUser = data;
+    localStorage.setItem('eclypse_user', JSON.stringify(data));
+  }
 
   if (!currentUser.admin) {
-    console.log('Not admin - showing denied');
     document.getElementById('denied').style.display = 'flex';
     return;
   }
-  console.log('Admin OK - showing panel');
+
   document.getElementById('admin-panel').style.display = 'block';
   document.getElementById('admin-pseudo').textContent = currentUser.pseudo;
   charger();
 }
 
-/* ══ CHARGEMENT ══ */
 async function charger() {
-  try {
-    const token  = await getToken();
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-    const res    = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
-    const json   = await res.json();
-    usersData    = { sha: json.sha, data: JSON.parse(atob(json.content.replace(/\n/g,''))) };
+  var { data: users } = await supa.from('users').select('*').order('created_at', { ascending: true });
+  if (!users) return;
 
-    const users = usersData.data.users;
+  var actifs   = users.filter(function(u){ return u.actif; });
+  var pending  = users.filter(function(u){ return !u.actif && u.statut === 'en_attente'; });
 
-    // Stats
-    const logs  = getLogs();
-    const today = new Date().toDateString();
-    var pending = users.filter(function(u){return !u.actif && u.statut==='en_attente';}).length;
-    document.getElementById('s-total').textContent  = users.filter(function(u){return u.actif;}).length + (pending ? ' (+'+pending+' en attente)' : '');
-    document.getElementById('s-today').textContent  = logs.filter(l=>new Date(l.ts).toDateString()===today).length;
-    document.getElementById('s-ops').textContent    = users.filter(u=>u.dashboard&&!u.admin).length;
-    document.getElementById('s-admins').textContent = users.filter(u=>u.admin).length;
+  document.getElementById('s-total').textContent   = actifs.length;
+  document.getElementById('s-pending').textContent = pending.length;
+  document.getElementById('s-ops').textContent     = actifs.filter(function(u){ return u.dashboard && !u.admin; }).length;
+  document.getElementById('s-admins').textContent  = actifs.filter(function(u){ return u.admin; }).length;
 
-    // Demandes en attente
-    renderDemandes(users);
-    // Table membres actifs
-    renderTable(users.filter(function(u) { return u.actif; }));
-    renderLogs();
-
-  } catch(e) { console.error(e); showToast('❌ Erreur chargement'); }
+  renderDemandes(pending);
+  renderMembres(actifs);
 }
 
-function renderDemandes(users) {
-  var pending = users.filter(function(u) { return !u.actif && u.statut === 'en_attente'; });
-  var box     = document.getElementById('demandes-box');
-  var list    = document.getElementById('demandes-list');
-  var count   = document.getElementById('demande-count');
-
+function renderDemandes(pending) {
+  var box  = document.getElementById('demandes-box');
+  var list = document.getElementById('demandes-list');
   if (!pending.length) { box.style.display = 'none'; return; }
-
   box.style.display = 'block';
-  count.textContent = pending.length;
-
+  document.getElementById('demande-count').textContent = pending.length;
   list.innerHTML = '';
   pending.forEach(function(u) {
     var item = document.createElement('div');
     item.className = 'demande-item';
-
     var info = document.createElement('div');
-    info.className = 'demande-info';
-    info.innerHTML = '<div class="demande-pseudo">' + u.pseudo + '</div>'
-      + '<div class="demande-email">' + u.email + '</div>'
-      + '<div class="demande-date">Inscrit le ' + new Date(u.createdAt).toLocaleDateString('fr-FR') + '</div>';
-
-    var actions = document.createElement('div');
-    actions.className = 'demande-actions';
-
+    info.innerHTML = '<div class="demande-pseudo">'+u.pseudo+'</div><div class="demande-email">'+u.email+'</div><div class="demande-date">Inscrit le '+new Date(u.created_at).toLocaleDateString('fr-FR')+'</div>';
+    var acts = document.createElement('div');
+    acts.className = 'demande-actions';
     var btnOk = document.createElement('button');
-    btnOk.className = 'btn-approuver';
-    btnOk.textContent = '✓ Approuver';
-    btnOk.onclick = (function(id) { return function() { approuver(id); }; })(u.id);
-
+    btnOk.className = 'btn-approuver'; btnOk.textContent = '✓ Approuver';
+    btnOk.onclick = (function(id){ return function(){ approuver(id); }; })(u.id);
     var btnNo = document.createElement('button');
-    btnNo.className = 'btn-refuser';
-    btnNo.textContent = '✕ Refuser';
-    btnNo.onclick = (function(id) { return function() { refuser(id); }; })(u.id);
-
-    actions.appendChild(btnOk);
-    actions.appendChild(btnNo);
-    item.appendChild(info);
-    item.appendChild(actions);
+    btnNo.className = 'btn-refuser'; btnNo.textContent = '✕ Refuser';
+    btnNo.onclick = (function(id){ return function(){ refuser(id); }; })(u.id);
+    acts.appendChild(btnOk); acts.appendChild(btnNo);
+    item.appendChild(info); item.appendChild(acts);
     list.appendChild(item);
   });
 }
 
-async function approuver(userId) {
-  await updateUser(userId, { actif: true, statut: 'approuve' });
-  showToast('✦ Compte approuvé !');
-  charger();
-}
-
-async function refuser(userId) {
-  if (!confirm('Supprimer définitivement cette demande ?')) return;
-  // Supprimer l'utilisateur
-  var token   = await getToken();
-  var apiUrl  = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/users.json';
-  var res     = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + token } });
-  var gjson   = await res.json();
-  var sha     = gjson.sha;
-  var data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-  data.users  = data.users.filter(function(u) { return u.id !== userId; });
-  var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, {
-    method: 'PUT',
-    headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'Refuse user ' + userId, content: content, sha: sha })
-  });
-  showToast('Demande refusée et supprimée');
-  charger();
-}
-
-function renderTable(users) {
-  var tbl = document.getElementById('members-table');
-  if (!users.length) {
-    tbl.innerHTML = '<div class="log-empty">Aucun membre actif.</div>';
-    return;
-  }
-
-  // Stocker les users globalement pour y accéder par index
-  window._adminUsers = users;
-
+function renderMembres(users) {
+  var wrap   = document.getElementById('membres-wrap');
   var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
-  var frag   = document.createDocumentFragment();
-  var wrap   = document.createElement('div');
-  wrap.className = 'membres-cards';
+  if (!users.length) { wrap.innerHTML = '<div class="log-empty">Aucun membre actif.</div>'; return; }
 
-  for (var i = 0; i < users.length; i++) {
-    var u     = users[i];
+  var cards = document.createElement('div');
+  cards.className = 'membres-cards';
+
+  users.forEach(function(u) {
     var isMe  = u.id === currentUser.id;
     var droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
     var rang  = grades.indexOf(u.rang) >= 0 ? u.rang : 'Membre';
-    var date  = new Date(u.createdAt).toLocaleDateString('fr-FR');
-
-    var row = document.createElement('div');
+    var row   = document.createElement('div');
     row.className = 'membre-row';
 
     // Info
     var info = document.createElement('div');
-    info.className = 'membre-row-info';
-    info.innerHTML = '<div class="mr-pseudo">' + u.pseudo + '</div>'
-      + '<div class="mr-email">' + u.email + '</div>'
-      + '<div class="mr-date">Inscrit le ' + date + '</div>';
+    info.innerHTML = '<div class="mr-pseudo">'+u.pseudo+'</div><div class="mr-email">'+u.email+'</div><div class="mr-date">'+new Date(u.created_at).toLocaleDateString('fr-FR')+'</div>';
     row.appendChild(info);
 
-    // Grade select
+    // Grade
     var gradeDiv = document.createElement('div');
-    gradeDiv.className = 'membre-row-grade';
-
-    var lbl = document.createElement('label');
-    lbl.className = 'mr-label';
-    lbl.textContent = 'Grade';
-    gradeDiv.appendChild(lbl);
-
-    var sel = document.createElement('select');
-    sel.className = 'mr-select';
+    var lbl = document.createElement('label'); lbl.className = 'mr-label'; lbl.textContent = 'Grade';
+    var sel = document.createElement('select'); sel.className = 'mr-select';
     if (isMe) sel.disabled = true;
-    for (var j = 0; j < grades.length; j++) {
+    grades.forEach(function(g) {
       var opt = document.createElement('option');
-      opt.value = grades[j];
-      opt.textContent = grades[j];
-      if (grades[j] === rang) opt.selected = true;
+      opt.value = g; opt.textContent = g;
+      if (g === rang) opt.selected = true;
       sel.appendChild(opt);
-    }
-    sel.dataset.idx = i;
-    sel.addEventListener('change', function() {
-      var idx = parseInt(this.dataset.idx);
-      setGrade(window._adminUsers[idx].id, this.value);
     });
-    gradeDiv.appendChild(sel);
+    sel.dataset.uid = u.id;
+    sel.addEventListener('change', function() { setGrade(this.dataset.uid, this.value); });
+    gradeDiv.appendChild(lbl); gradeDiv.appendChild(sel);
     row.appendChild(gradeDiv);
 
     // Droits
     var droitsDiv = document.createElement('div');
-    droitsDiv.className = 'membre-row-droits';
-
-    var lbl2 = document.createElement('label');
-    lbl2.className = 'mr-label';
-    lbl2.textContent = 'Droits';
-    droitsDiv.appendChild(lbl2);
-
-    var badges = document.createElement('div');
-    badges.className = 'role-badges';
-
+    var lbl2 = document.createElement('label'); lbl2.className = 'mr-label'; lbl2.textContent = 'Droits';
+    var badges = document.createElement('div'); badges.className = 'role-badges';
     ['membre','ops','admin'].forEach(function(role) {
       var labels = {membre:'Membre', ops:'+ Ops', admin:'Admin'};
       var btn = document.createElement('button');
       btn.className = 'role-btn ' + role + (droit === role ? ' active' : '');
       btn.textContent = labels[role];
-      if (isMe) {
-        btn.disabled = true;
-      } else {
-        btn.dataset.idx  = i;
+      if (!isMe) {
+        btn.dataset.uid  = u.id;
         btn.dataset.role = role;
-        btn.addEventListener('click', function() {
-          var idx = parseInt(this.dataset.idx);
-          setRole(window._adminUsers[idx].id, this.dataset.role);
-        });
-      }
+        btn.addEventListener('click', function() { setRole(this.dataset.uid, this.dataset.role); });
+      } else { btn.disabled = true; }
       badges.appendChild(btn);
     });
-    droitsDiv.appendChild(badges);
+    droitsDiv.appendChild(lbl2); droitsDiv.appendChild(badges);
     row.appendChild(droitsDiv);
 
     // Actions
-    var actDiv = document.createElement('div');
-    actDiv.className = 'membre-row-actions';
-
+    var actDiv = document.createElement('div'); actDiv.className = 'membre-row-actions';
     var badge = document.createElement('span');
     badge.className = 'badge ' + (u.actif ? 'actif' : 'inactif');
     badge.textContent = isMe ? 'Toi' : (u.actif ? 'Actif' : 'Inactif');
     actDiv.appendChild(badge);
-
     if (!isMe) {
-      var btnAct = document.createElement('button');
-      btnAct.className = 'btn-xs';
+      var btnAct = document.createElement('button'); btnAct.className = 'btn-xs';
       btnAct.textContent = u.actif ? 'Désactiver' : 'Activer';
-      btnAct.dataset.idx = i;
+      btnAct.dataset.uid   = u.id;
+      btnAct.dataset.actif = u.actif ? 'true' : 'false';
       btnAct.addEventListener('click', function() {
-        var idx  = parseInt(this.dataset.idx);
-        var user = window._adminUsers[idx];
-        toggleActif(user.id, !user.actif);
+        toggleActif(this.dataset.uid, this.dataset.actif !== 'true');
       });
       actDiv.appendChild(btnAct);
     }
     row.appendChild(actDiv);
-    wrap.appendChild(row);
-  }
+    cards.appendChild(row);
+  });
 
-  tbl.innerHTML = '';
-  tbl.appendChild(wrap);
+  wrap.innerHTML = '';
+  wrap.appendChild(cards);
 }
 
-
-async function setGrade(userId, grade) {
-  await updateUser(userId, { rang: grade });
-  showToast('✦ Grade mis à jour → ' + grade);
+async function approuver(id) {
+  await supa.from('users').update({ actif: true, statut: 'approuve' }).eq('id', id);
+  showToast('✦ Compte approuvé !');
   charger();
 }
 
-async function setRole(userId, role) {
-  const updates = {
-    dashboard: role === 'ops' || role === 'admin',
-    admin:     role === 'admin'
-  };
-  await updateUser(userId, updates);
-  showToast(`✦ Droits mis à jour → ${role}`);
+async function refuser(id) {
+  if (!confirm('Supprimer définitivement cette demande ?')) return;
+  await supa.from('users').delete().eq('id', id);
+  showToast('Demande refusée.');
   charger();
 }
 
-async function toggleActif(userId, actif) {
-  if (typeof actif === 'string') actif = actif === 'true';
-  await updateUser(userId, { actif });
+async function setGrade(uid, grade) {
+  await supa.from('users').update({ rang: grade }).eq('id', uid);
+  showToast('✦ Grade mis à jour : ' + grade);
+  charger();
+}
+
+async function setRole(uid, role) {
+  var updates = { dashboard: role === 'ops' || role === 'admin', admin: role === 'admin' };
+  await supa.from('users').update(updates).eq('id', uid);
+  showToast('✦ Droits mis à jour : ' + role);
+  charger();
+}
+
+async function toggleActif(uid, actif) {
+  await supa.from('users').update({ actif: actif }).eq('id', uid);
   showToast(actif ? '✦ Compte activé' : '✦ Compte désactivé');
   charger();
 }
 
-async function updateUser(userId, updates) {
-  const token  = await getToken();
-  const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-  // Re-fetch pour avoir le SHA frais
-  const res    = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
-  const json   = await res.json();
-  const sha    = json.sha;
-  const data   = JSON.parse(atob(json.content.replace(/\n/g,'')));
-  const idx    = data.users.findIndex(u => u.id === userId);
-  if (idx !== -1) Object.assign(data.users[idx], updates);
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: `Admin update user ${userId}`, content, sha })
-  });
-}
-
-/* ══ LOGS ══ */
-function getLogs(){ try{return JSON.parse(localStorage.getItem('eclypse_logs')||'[]');}catch{return[];} }
-function viderLogs(){ if(!confirm('Vider tous les logs ?')) return; localStorage.removeItem('eclypse_logs'); renderLogs(); charger(); showToast('Logs vidés'); }
-function renderLogs() {
-  const logs = getLogs();
-  const el   = document.getElementById('log-box');
-  if (!logs.length) { el.innerHTML='<div class="log-empty">Aucune connexion enregistrée.</div>'; return; }
-  el.innerHTML = logs.map(l => {
-    const d  = new Date(l.ts);
-    const ts = d.toLocaleDateString('fr-FR') + ' · ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    return `<div class="log-item">
-      <div class="log-time">${ts}</div>
-      <div class="log-pseudo"><strong>${l.pseudo}</strong> — ${l.detail}</div>
-      <div class="log-status ${l.status}">${l.status.toUpperCase()}</div>
-    </div>`;
-  }).join('');
-}
-
-/* ══ TOKEN ══ */
-let _tok = null;
-async function getToken() {
-  if (_tok) return _tok;
-  const local = localStorage.getItem('eclypse_admin_token');
-  if (local) { _tok=local; return local; }
-  try {
-    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
-    const data = await res.json();
-    if (data.p) { _tok=data.p.join(''); localStorage.setItem('eclypse_admin_token',_tok); return _tok; }
-  } catch(e) {}
-  return '';
-}
-
-/* ══ LOGOUT ══ */
 function logout() {
   localStorage.removeItem('eclypse_user');
   sessionStorage.removeItem('eclypse_user');
   window.location.href = 'dashboard.html';
 }
 
-/* ══ TOAST ══ */
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);}
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},3000);}
 
 init();
 </script>
