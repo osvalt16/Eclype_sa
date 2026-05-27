@@ -760,7 +760,14 @@
     <li><a href="#discord">Discord</a></li>
   </ul>
   <div class="nav-right">
-    <a href="dashboard.html" class="nav-btn-membre">
+    <!-- Connecté : photo + pseudo -->
+    <div class="nav-user-connected" id="nav-user-connected">
+      <div class="nav-user-avatar" id="nav-user-avatar">?</div>
+      <span class="nav-user-pseudo" id="nav-user-pseudo">—</span>
+      <button class="nav-user-deco" onclick="decoIndex()">Déco</button>
+    </div>
+    <!-- Non connecté -->
+    <a href="dashboard.html" class="nav-btn-membre" id="nav-btn-membre">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke-linecap="round"/>
       </svg>
