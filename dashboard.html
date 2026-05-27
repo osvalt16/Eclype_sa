@@ -551,10 +551,10 @@ async function doRegister(e) {
 
     data.users.push(newUser);
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    await fetch(apiUrl, {
+    await fetch(USERS_API, {
       method: 'PUT',
-      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `New user: ${pseudo}`, content, sha })
+      headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'New user: ' + pseudo, content: content, sha: sha })
     });
 
     msg.className = 'auth-msg ok';
