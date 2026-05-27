@@ -423,6 +423,7 @@
 const REPO_OWNER  = 'osvalt16';
 const REPO_NAME   = 'Eclype_sa';
 const USERS_URL   = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/users.json`;
+const USERS_API   = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
 const EVENTS_URL  = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
 const IMGUR_ID    = '546c25a59c58ad7';
 
@@ -467,9 +468,12 @@ async function doLogin(e) {
   const msg      = document.getElementById('login-msg');
 
   try {
-    const res  = await fetch(USERS_URL + '?t=' + Date.now());
-    const data = await res.json();
-    const hash = await sha256(password);
+    // Utiliser l'API GitHub pour éviter le cache raw
+    const token  = await getToken();
+    const res    = await fetch(USERS_API, { headers: { 'Authorization': 'token ' + token } });
+    const gjson  = await res.json();
+    const data   = JSON.parse(atob(gjson.content.split('\n').join('')));
+    const hash   = await sha256(password);
     // Vérifier si email/mdp correct mais compte en attente
     const userPending = data.users.find(u => u.email.toLowerCase() === email && u.password === hash && !u.actif);
     if (userPending) {
@@ -521,11 +525,10 @@ async function doRegister(e) {
 
   try {
     const token  = await getToken();
-    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-    const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+    const getRes  = await fetch(USERS_API, { headers: { 'Authorization': 'token ' + token } });
     const getJson = await getRes.json();
-    const sha    = getJson.sha;
-    const data   = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
+    const sha     = getJson.sha;
+    const data    = JSON.parse(atob(getJson.content.split('\n').join('')));
 
     // Vérifier email unique
     if (data.users.find(u => u.email.toLowerCase() === email)) {
