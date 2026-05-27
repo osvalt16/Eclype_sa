@@ -75,7 +75,7 @@
       "xLink": "",
       "dashboard": false,
       "admin": false,
-      "actif": true,
+      "actif": false,
       "statut": "approuve",
       "createdAt": "2026-05-27T11:54:15.849Z",
       "lastProfileEdit": "2026-05-27T11:55:13.165Z"
