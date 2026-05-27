@@ -158,18 +158,33 @@
     margin-bottom:0.8rem; letter-spacing:0.3em;
   }
 
-  /* Sélecteur grade dans tableau membres */
-  .grade-select {
-    font-family:'Cinzel',serif; font-size:0.52rem; letter-spacing:0.1em;
+  /* Dropdown grade custom */
+  .grade-dropdown { position:relative; display:inline-block; }
+  .grade-current {
+    font-family:'Cinzel',serif; font-size:0.52rem; letter-spacing:0.12em;
     text-transform:uppercase; background:rgba(7,6,13,0.9);
     border:1px solid var(--border-violet); color:var(--texte);
-    padding:0.3rem 0.5rem; cursor:pointer; outline:none;
-    transition:border-color 0.3s;
-    -webkit-appearance:auto; appearance:auto;
-    pointer-events:all; z-index:10; position:relative;
+    padding:0.35rem 0.8rem; cursor:pointer;
+    display:flex; align-items:center; gap:0.5rem; white-space:nowrap;
+    transition:border-color 0.3s; user-select:none;
   }
-  .grade-select:focus { border-color:var(--or); }
-  .grade-select option { background:#1a0f2e; color:var(--texte); }
+  .grade-current:hover { border-color:var(--or); color:var(--or); }
+  .grade-current::after { content:'▾'; font-size:0.7rem; }
+  .grade-options {
+    display:none; position:absolute; top:100%; left:0; z-index:999;
+    background:rgba(7,6,13,0.98); border:1px solid var(--border-or);
+    min-width:140px; flex-direction:column;
+  }
+  .grade-dropdown.open .grade-options { display:flex; }
+  .grade-option {
+    font-family:'Cinzel',serif; font-size:0.52rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--texte-pale);
+    padding:0.5rem 0.8rem; cursor:pointer; transition:all 0.2s;
+    border-bottom:1px solid rgba(107,53,200,0.2);
+  }
+  .grade-option:last-child { border-bottom:none; }
+  .grade-option:hover { background:rgba(201,162,39,0.1); color:var(--or); }
+  .grade-option.active { color:var(--or); }
 
   /* TOAST */
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
@@ -532,23 +547,54 @@ function renderTable(users) {
 
     // Rang
     var tdR = document.createElement('td');
-    var sel = document.createElement('select');
-    sel.className = 'grade-select';
     var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
     var rangActuel = u.rang || 'Membre';
-    // Normaliser les anciens rangs
     if (!grades.includes(rangActuel)) rangActuel = 'Membre';
-    grades.forEach(function(g) {
-      var opt = document.createElement('option');
-      opt.value = g; opt.textContent = g;
-      if (rangActuel === g) opt.selected = true;
-      sel.appendChild(opt);
-    });
-    sel.onchange = (function(id) {
-      return function() { setGrade(id, this.value); };
-    })(u.id);
-    if (isMe) sel.disabled = true;
-    tdR.appendChild(sel);
+
+    if (isMe) {
+      // Juste afficher le grade sans interaction
+      var sp = document.createElement('span');
+      sp.style.fontFamily = 'Cinzel,serif';
+      sp.style.fontSize = '0.52rem';
+      sp.style.letterSpacing = '0.12em';
+      sp.style.textTransform = 'uppercase';
+      sp.style.color = 'var(--or)';
+      sp.textContent = rangActuel;
+      tdR.appendChild(sp);
+    } else {
+      var drop = document.createElement('div');
+      drop.className = 'grade-dropdown';
+
+      var curr = document.createElement('div');
+      curr.className = 'grade-current';
+      curr.textContent = rangActuel;
+      curr.onclick = function(e) {
+        e.stopPropagation();
+        drop.classList.toggle('open');
+      };
+
+      var opts = document.createElement('div');
+      opts.className = 'grade-options';
+
+      grades.forEach(function(g) {
+        var opt = document.createElement('div');
+        opt.className = 'grade-option' + (g === rangActuel ? ' active' : '');
+        opt.textContent = g;
+        opt.onclick = (function(id, grade, dropEl, currEl) {
+          return function(e) {
+            e.stopPropagation();
+            currEl.textContent = grade;
+            dropEl.classList.remove('open');
+            setGrade(id, grade);
+          };
+        })(u.id, g, drop, curr);
+        opts.appendChild(opt);
+      });
+
+      drop.appendChild(curr);
+      drop.appendChild(opts);
+      tdR.appendChild(drop);
+    }
     row.appendChild(tdR);
 
     // Date
@@ -696,6 +742,13 @@ function logout() {
 
 /* ══ TOAST ══ */
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);}
+
+// Fermer dropdowns au clic ailleurs
+document.addEventListener('click', function() {
+  document.querySelectorAll('.grade-dropdown.open').forEach(function(d) {
+    d.classList.remove('open');
+  });
+});
 
 init();
 </script>
