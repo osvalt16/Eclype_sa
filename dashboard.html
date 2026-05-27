@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ÉCLYPSE — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --noir:#030208; --violet:#1a0f2e; --violet-glow:#8b5cf6;
@@ -16,7 +17,7 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--noir);color:var(--texte);font-family:'Crimson Pro',serif;font-size:17px;min-height:100vh;}
 
-  /* ── AUTH SCREEN ── */
+  /* AUTH */
   #auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a0f2e 0%,#030208 70%);}
   .auth-box{border:1px solid var(--border-or);max-width:440px;width:90%;background:rgba(26,15,46,0.5);position:relative;}
   .auth-box::before{content:'';position:absolute;top:-1px;left:15%;right:15%;height:2px;background:linear-gradient(to right,transparent,var(--or),transparent);}
@@ -40,9 +41,8 @@
   .auth-msg.ok{color:var(--vert);display:block;}
   .auth-footer{padding:1rem 2rem 1.5rem;text-align:center;font-size:0.82rem;color:var(--texte-pale);}
   .auth-footer a{color:var(--or);cursor:pointer;text-decoration:none;}
-  .auth-footer a:hover{color:var(--or-clair);}
 
-  /* ── DASHBOARD ── */
+  /* DASHBOARD */
   #dashboard{display:none;}
   .topbar{background:rgba(7,6,13,0.95);border-bottom:1px solid var(--border-or);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
   .topbar-left{display:flex;align-items:center;gap:1rem;}
@@ -58,22 +58,28 @@
   .btn-topbar:hover{border-color:var(--or);color:var(--or);}
   .btn-topbar.red{color:var(--rouge);border-color:rgba(232,90,90,0.3);}
   .btn-topbar.red:hover{background:rgba(232,90,90,0.1);}
+  .btn-topbar.admin-btn{color:var(--rouge);border-color:rgba(232,90,90,0.4);display:none;}
 
   .dash-content{max-width:900px;margin:0 auto;padding:3rem 2rem;}
-
-
 
   /* PROFIL CARD */
   .profil-card{border:1px solid var(--border-or);padding:2rem;background:rgba(26,15,46,0.4);margin-bottom:2.5rem;display:flex;align-items:center;gap:2rem;position:relative;}
   .profil-avatar{width:80px;height:80px;border-radius:50%;border:2px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);overflow:hidden;flex-shrink:0;}
   .profil-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-  .profil-rang{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);margin-bottom:0.3rem;}
-  .profil-pseudo-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.3rem;}
+  .grade-badge-inline{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.2rem 0.8rem;border:1px solid;border-radius:2px;}
+  .grade-badge-inline.apply{color:#aaa;border-color:rgba(150,150,150,0.4);background:rgba(100,100,100,0.1);}
+  .grade-badge-inline.membre{color:var(--violet-glow);border-color:rgba(107,53,200,0.4);background:rgba(107,53,200,0.1);}
+  .grade-badge-inline.veteran{color:var(--or);border-color:var(--border-or);background:rgba(201,162,39,0.1);}
+  .grade-badge-inline.sousofficier{color:#e88030;border-color:rgba(232,130,30,0.4);background:rgba(232,130,30,0.1);}
+  .grade-badge-inline.officier{color:var(--rouge);border-color:rgba(232,90,90,0.4);background:rgba(232,90,90,0.1);}
   .profil-pseudo{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;}
+  .profil-pseudo-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.3rem;}
   .profil-x-btn{display:inline-flex;align-items:center;opacity:0.8;transition:all 0.2s;}
   .profil-x-btn:hover{transform:scale(1.1);opacity:1;}
   .profil-x-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;}
   .profil-role{font-size:0.9rem;color:var(--texte-pale);font-style:italic;}
+  .grade-roles-list{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.5rem;}
+  .grade-role-mini{font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.12rem 0.5rem;border:1px solid var(--border-violet);color:var(--texte-pale);}
   .btn-edit-profil{position:absolute;top:1rem;right:1rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.8rem;cursor:pointer;transition:all 0.3s;}
   .btn-edit-profil:hover{background:rgba(201,162,39,0.1);}
 
@@ -90,10 +96,8 @@
   .form-group textarea{resize:vertical;min-height:80px;}
   .form-group.full{grid-column:1/-1;}
   .form-actions{display:flex;gap:1rem;justify-content:flex-end;}
-  .btn-save{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.7rem 2rem;cursor:pointer;transition:all 0.3s;}
-  .btn-save:hover{background:var(--or-clair);}
-  .btn-cancel-form{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.7rem 2rem;cursor:pointer;transition:all 0.3s;}
-  .btn-cancel-form:hover{border-color:var(--rouge);color:var(--rouge);}
+  .btn-save{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.7rem 2rem;cursor:pointer;}
+  .btn-cancel-form{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.7rem 2rem;cursor:pointer;}
   .btn-add{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.5rem 1.2rem;cursor:pointer;transition:all 0.3s;}
   .btn-add:hover{background:rgba(201,162,39,0.1);}
   .filter-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border-violet);}
@@ -114,11 +118,8 @@
   .type-mining{color:var(--vert);border:1px solid rgba(94,207,160,0.3);}
   .event-name{font-family:'Cinzel',serif;font-size:0.85rem;color:#fff;margin-bottom:0.2rem;}
   .event-meta{font-size:0.8rem;color:var(--texte-pale);}
-  .btn-delete{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.65rem;cursor:pointer;transition:all 0.3s;}
-  .btn-delete:hover{background:rgba(232,90,90,0.1);}
+  .btn-delete{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.65rem;cursor:pointer;}
   .empty-state{text-align:center;padding:3rem;color:var(--texte-pale);border:1px dashed var(--border-violet);font-style:italic;}
-  .access-denied{border:1px solid rgba(232,90,90,0.3);padding:2rem;text-align:center;background:rgba(232,90,90,0.05);}
-  .access-denied h3{font-family:'Cinzel',serif;font-size:0.82rem;letter-spacing:0.2em;color:var(--rouge);margin-bottom:0.8rem;}
   .planning-layout{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:start;}
   .mini-cal-wrapper{border:1px solid var(--border-or);background:rgba(10,8,20,0.85);padding:1.5rem;}
   .mini-cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
@@ -138,8 +139,6 @@
   .legend-item-dash{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--texte-pale);}
   .legend-dot-dash{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
 
-
-
   /* MODAL PROFIL */
   .modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(3,2,8,0.88);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
   .modal-overlay.open{opacity:1;pointer-events:all;}
@@ -147,20 +146,15 @@
   .modal-overlay.open .modal-box{transform:translateY(0);}
   .modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.8rem;border-bottom:1px solid var(--border-or);position:sticky;top:0;background:rgba(12,8,24,0.98);z-index:1;}
   .modal-header h3{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--or);}
-  .modal-close{background:none;border:none;color:var(--texte-pale);font-size:1.2rem;cursor:pointer;transition:color 0.2s;}
-  .modal-close:hover{color:var(--rouge);}
+  .modal-close{background:none;border:none;color:var(--texte-pale);font-size:1.2rem;cursor:pointer;}
   .modal-body{padding:2rem 1.8rem;}
   .photo-upload-area{text-align:center;margin-bottom:1.8rem;}
-  .photo-preview{width:90px;height:90px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);margin:0 auto 0.8rem;overflow:hidden;cursor:pointer;position:relative;transition:all 0.3s;}
-  .photo-preview:hover{border-color:var(--or);}
+  .photo-preview{width:90px;height:90px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);margin:0 auto 0.8rem;overflow:hidden;cursor:pointer;position:relative;}
   .photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
   .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;}
   .photo-preview:hover .photo-overlay{opacity:1;}
   .photo-overlay span{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:#fff;}
-  .photo-upload-btn{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.9rem;cursor:pointer;transition:all 0.3s;}
-  .photo-upload-btn:hover{background:rgba(201,162,39,0.1);}
-  .photo-cooldown{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.1em;color:var(--texte-pale);margin-top:0.5rem;}
-  .photo-cooldown.locked{color:var(--rouge);}
+  .photo-upload-btn{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.9rem;cursor:pointer;}
   .modal-field{margin-bottom:1.2rem;}
   .modal-field label{display:block;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.45rem;}
   .modal-field input{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.72rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
@@ -168,10 +162,8 @@
   .modal-field .hint{font-size:0.75rem;color:var(--texte-pale);margin-top:0.35rem;font-style:italic;}
   .modal-divider{border:none;border-top:1px solid var(--border-violet);margin:1.4rem 0;}
   .modal-footer{padding:1.2rem 1.8rem;border-top:1px solid var(--border-or);display:flex;gap:0.8rem;justify-content:flex-end;position:sticky;bottom:0;background:rgba(12,8,24,0.98);}
-  .btn-modal-save{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.6rem 1.6rem;cursor:pointer;transition:all 0.3s;}
-  .btn-modal-save:hover{background:var(--or-clair);}
-  .btn-modal-cancel{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.6rem 1.4rem;cursor:pointer;transition:all 0.3s;}
-  .btn-modal-cancel:hover{border-color:var(--rouge);color:var(--rouge);}
+  .btn-modal-save{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.6rem 1.6rem;cursor:pointer;}
+  .btn-modal-cancel{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.6rem 1.4rem;cursor:pointer;}
   .modal-msg{text-align:center;padding:0.5rem;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.1em;display:none;}
   .modal-msg.ok{color:var(--vert);display:block;}
   .modal-msg.err{color:var(--rouge);display:block;}
@@ -181,30 +173,14 @@
   .progress-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
   .progress-label{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--texte-pale);margin-top:0.35rem;text-align:center;}
 
-  /* BADGE GRADE */
-  .grade-badge-inline {
-    display:inline-flex; align-items:center; gap:0.5rem;
-    font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.2em;
-    text-transform:uppercase; padding:0.2rem 0.8rem;
-    border:1px solid; border-radius:2px;
-  }
-  .grade-badge-inline.apply        { color:#aaa; border-color:rgba(150,150,150,0.4); background:rgba(100,100,100,0.1); }
-  .grade-badge-inline.membre       { color:var(--violet-glow); border-color:rgba(107,53,200,0.4); background:rgba(107,53,200,0.1); }
-  .grade-badge-inline.veteran      { color:var(--or); border-color:var(--border-or); background:rgba(201,162,39,0.1); }
-  .grade-badge-inline.sousofficier { color:#e88030; border-color:rgba(232,130,30,0.4); background:rgba(232,130,30,0.1); }
-  .grade-badge-inline.officier     { color:var(--rouge); border-color:rgba(232,90,90,0.4); background:rgba(232,90,90,0.1); }
-  .grade-roles-list { display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:0.5rem; }
-  .grade-role-mini { font-family:'Cinzel',serif; font-size:0.48rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.12rem 0.5rem; border:1px solid var(--border-violet); color:var(--texte-pale); }
-
-  /* TOAST */
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  @media(max-width:700px){.planning-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profil-card{flex-direction:column;text-align:center}.topbar{flex-wrap:wrap;gap:0.8rem}.stats-row{grid-template-columns:1fr}}
+  @media(max-width:700px){.planning-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profil-card{flex-direction:column;text-align:center}}
 </style>
 </head>
 <body>
 
-<!-- ══ AUTH ══ -->
+<!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-box">
     <div class="auth-header">
@@ -215,58 +191,28 @@
       <button class="auth-tab" onclick="switchAuth('register')">Inscription</button>
     </div>
     <div class="auth-body">
-
-      <!-- CONNEXION -->
       <form class="auth-form active" id="form-login" onsubmit="doLogin(event)">
-        <div class="auth-field">
-          <label>Adresse email</label>
-          <input type="email" id="l-email" placeholder="ton@email.com" required>
-        </div>
-        <div class="auth-field">
-          <label>Mot de passe</label>
-          <input type="password" id="l-password" placeholder="••••••••" required>
-        </div>
-        <label class="auth-check">
-          <input type="checkbox" id="l-remember">
-          Rester connecté
-        </label>
+        <div class="auth-field"><label>Email</label><input type="email" id="l-email" required></div>
+        <div class="auth-field"><label>Mot de passe</label><input type="password" id="l-password" required></div>
+        <label class="auth-check"><input type="checkbox" id="l-remember"> Rester connecté</label>
         <button type="submit" class="auth-btn">Se connecter</button>
         <div class="auth-msg" id="login-msg"></div>
       </form>
-
-      <!-- INSCRIPTION -->
       <form class="auth-form" id="form-register" onsubmit="doRegister(event)">
-        <div class="auth-field">
-          <label>Pseudo in-game *</label>
-          <input type="text" id="r-pseudo" placeholder="Ton pseudo Star Atlas" required>
-        </div>
-        <div class="auth-field">
-          <label>Adresse email *</label>
-          <input type="email" id="r-email" placeholder="ton@email.com" required>
-        </div>
-        <div class="auth-field">
-          <label>Mot de passe *</label>
-          <input type="password" id="r-password" placeholder="Minimum 8 caractères" required minlength="8">
-        </div>
-        <div class="auth-field">
-          <label>Confirmer le mot de passe *</label>
-          <input type="password" id="r-confirm" placeholder="Répète ton mot de passe" required>
-        </div>
+        <div class="auth-field"><label>Pseudo in-game *</label><input type="text" id="r-pseudo" required></div>
+        <div class="auth-field"><label>Email *</label><input type="email" id="r-email" required></div>
+        <div class="auth-field"><label>Mot de passe *</label><input type="password" id="r-password" required minlength="8"></div>
+        <div class="auth-field"><label>Confirmer *</label><input type="password" id="r-confirm" required></div>
         <button type="submit" class="auth-btn">Créer mon compte</button>
         <div class="auth-msg" id="register-msg"></div>
       </form>
-
     </div>
-    <div class="auth-footer" id="auth-footer-login">
-      Pas encore membre ? <a onclick="switchAuth('register')">Créer un compte</a>
-    </div>
-    <div class="auth-footer" id="auth-footer-register" style="display:none">
-      Déjà un compte ? <a onclick="switchAuth('login')">Se connecter</a>
-    </div>
+    <div class="auth-footer" id="auth-footer-login">Pas encore membre ? <a onclick="switchAuth('register')">Créer un compte</a></div>
+    <div class="auth-footer" id="auth-footer-register" style="display:none">Déjà un compte ? <a onclick="switchAuth('login')">Se connecter</a></div>
   </div>
 </div>
 
-<!-- ══ DASHBOARD ══ -->
+<!-- DASHBOARD -->
 <div id="dashboard">
   <div class="topbar">
     <div class="topbar-left">
@@ -278,21 +224,17 @@
         <div class="nav-avatar" id="nav-avatar">?</div>
         <span id="display-pseudo">—</span>
       </button>
-      <a href="admin.html" class="btn-topbar btn-admin-link" id="btn-admin-link" style="display:none;color:var(--rouge);border-color:rgba(232,90,90,0.4);">⚙ Admin</a>
+      <a href="admin.html" class="btn-topbar admin-btn" id="btn-admin-link">⚙ Admin</a>
       <a href="index.html" class="btn-topbar">← Site</a>
       <button class="btn-topbar red" onclick="logout()">Déconnexion</button>
     </div>
   </div>
 
   <div class="dash-content">
-
-
-
-    <!-- PROFIL -->
     <div class="profil-card">
       <div class="profil-avatar" id="profil-avatar">?</div>
       <div>
-        <div class="profil-rang" id="profil-rang">—</div>
+        <div id="profil-rang"></div>
         <div class="profil-pseudo-row">
           <div class="profil-pseudo" id="profil-pseudo">—</div>
           <a id="profil-x-link" href="#" target="_blank" class="profil-x-btn" style="display:none">
@@ -305,59 +247,54 @@
       <button class="btn-edit-profil" onclick="ouvrirProfil()">✦ Modifier le profil</button>
     </div>
 
-
-      <div class="section-header">
-        <h2>📅 Opérations &amp; Planning</h2>
-        <button class="btn-add" id="btn-add" onclick="toggleForm()" style="display:none">+ Nouvelle Op</button>
+    <div class="section-header">
+      <h2>📅 Opérations &amp; Planning</h2>
+      <button class="btn-add" id="btn-add" onclick="toggleForm()" style="display:none">+ Nouvelle Op</button>
+    </div>
+    <div id="form-event">
+      <div class="form-grid">
+        <div class="form-group"><label>Nom *</label><input type="text" id="f-nom"></div>
+        <div class="form-group"><label>Type *</label><select id="f-type"><option value="fleetop">Fleet Op</option><option value="pvp">PvP / Guild War</option><option value="mining">Mining Run</option><option value="event">Événement SAGE</option></select></div>
+        <div class="form-group"><label>Date *</label><input type="date" id="f-date"></div>
+        <div class="form-group"><label>Heure (FR)</label><input type="time" id="f-heure" value="21:00"></div>
+        <div class="form-group full"><label>Description</label><textarea id="f-desc"></textarea></div>
       </div>
-      <div id="form-event">
-        <div class="form-grid">
-          <div class="form-group"><label>Nom *</label><input type="text" id="f-nom" placeholder="Ex: Fleet Op Secteur Alpha"></div>
-          <div class="form-group"><label>Type *</label><select id="f-type"><option value="fleetop">Fleet Op</option><option value="pvp">PvP / Guild War</option><option value="mining">Mining Run</option><option value="event">Événement SAGE</option></select></div>
-          <div class="form-group"><label>Date *</label><input type="date" id="f-date"></div>
-          <div class="form-group"><label>Heure (FR)</label><input type="time" id="f-heure" value="21:00"></div>
-          <div class="form-group full"><label>Description</label><textarea id="f-desc" placeholder="Vaisseaux requis, zone, objectif..."></textarea></div>
-        </div>
-        <div class="form-actions">
-          <button class="btn-cancel-form" onclick="toggleForm()">Annuler</button>
-          <button class="btn-save" onclick="saveEvent()">✦ Publier</button>
-        </div>
+      <div class="form-actions">
+        <button class="btn-cancel-form" onclick="toggleForm()">Annuler</button>
+        <button class="btn-save" onclick="saveEvent()">✦ Publier</button>
       </div>
-      <div class="planning-layout">
-        <div>
-          <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterEvents('tous',this)">Tous</button>
-            <button class="filter-tab" onclick="filterEvents('fleetop',this)">Fleet Op</button>
-            <button class="filter-tab" onclick="filterEvents('pvp',this)">PvP</button>
-            <button class="filter-tab" onclick="filterEvents('event',this)">Événements</button>
-            <button class="filter-tab" onclick="filterEvents('mining',this)">Mining</button>
+    </div>
+    <div class="planning-layout">
+      <div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="filterEvents('tous',this)">Tous</button>
+          <button class="filter-tab" onclick="filterEvents('fleetop',this)">Fleet Op</button>
+          <button class="filter-tab" onclick="filterEvents('pvp',this)">PvP</button>
+          <button class="filter-tab" onclick="filterEvents('event',this)">Événements</button>
+          <button class="filter-tab" onclick="filterEvents('mining',this)">Mining</button>
+        </div>
+        <div class="events-list" id="events-list"><div class="empty-state">Aucune opération planifiée.</div></div>
+      </div>
+      <div>
+        <div class="mini-cal-wrapper">
+          <div class="mini-cal-header">
+            <button class="mini-cal-nav" onclick="calNav(-1)">&#8592;</button>
+            <div class="mini-cal-title" id="cal-month-label"></div>
+            <button class="mini-cal-nav" onclick="calNav(1)">&#8594;</button>
           </div>
-          <div class="events-list" id="events-list"><div class="empty-state">Aucune opération planifiée.</div></div>
-
-        </div>
-        <div>
-          <div class="mini-cal-wrapper">
-            <div class="mini-cal-header">
-              <button class="mini-cal-nav" onclick="calNav(-1)">&#8592;</button>
-              <div class="mini-cal-title" id="cal-month-label"></div>
-              <button class="mini-cal-nav" onclick="calNav(1)">&#8594;</button>
-            </div>
-            <div class="mini-cal-grid" id="mini-cal-grid"></div>
-            <div class="cal-legend-dash">
-              <div class="legend-title">Légende</div>
-              <div class="legend-items-dash">
-                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#e85a5a"></div>Fleet Op</div>
-                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#8b5cf6"></div>PvP</div>
-                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#c9a227"></div>Événement</div>
-                <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#5ecfa0"></div>Mining</div>
-              </div>
+          <div class="mini-cal-grid" id="mini-cal-grid"></div>
+          <div class="cal-legend-dash">
+            <div class="legend-title">Légende</div>
+            <div class="legend-items-dash">
+              <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#e85a5a"></div>Fleet Op</div>
+              <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#8b5cf6"></div>PvP</div>
+              <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#c9a227"></div>Événement</div>
+              <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#5ecfa0"></div>Mining</div>
             </div>
           </div>
         </div>
       </div>
- ═══ -->
-</div>
-
+    </div>
   </div>
 </div>
 
@@ -380,11 +317,10 @@
           <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
           <div class="progress-label" id="progress-label"></div>
         </div>
-        <div class="photo-cooldown" id="photo-cooldown"></div>
       </div>
       <div class="modal-field">
         <label>Pseudo in-game</label>
-        <input type="text" id="p-pseudo" placeholder="Ton pseudo">
+        <input type="text" id="p-pseudo">
         <div class="hint">Modifiable tous les 90 jours.</div>
       </div>
       <div class="modal-field">
@@ -397,7 +333,7 @@
       <hr class="modal-divider">
       <div class="modal-field" id="p-oldpwd-wrap" style="display:none">
         <label>Ancien mot de passe *</label>
-        <input type="password" id="p-oldpwd" placeholder="Ton mot de passe actuel">
+        <input type="password" id="p-oldpwd">
       </div>
       <div class="modal-field">
         <label>Nouveau mot de passe</label>
@@ -406,7 +342,7 @@
       </div>
       <div class="modal-field" id="p-confirm-wrap" style="display:none">
         <label>Confirmer le nouveau mot de passe</label>
-        <input type="password" id="p-confirmpwd" placeholder="Répète le nouveau mot de passe">
+        <input type="password" id="p-confirmpwd">
       </div>
       <div class="modal-msg" id="modal-msg"></div>
     </div>
@@ -420,36 +356,35 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const REPO_OWNER  = 'osvalt16';
-const REPO_NAME   = 'Eclype_sa';
-const USERS_URL   = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/users.json`;
-const USERS_API   = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-const EVENTS_URL  = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
-const IMGUR_ID    = '546c25a59c58ad7';
+const SUPA_URL = 'https://dahmonpmxqqfmhiqugte.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhaG1vbnBteHFxZm1oaXF1Z3RlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNjA3MjcsImV4cCI6MjA2MzkzNjcyN30.vPRwTmKSSwAPQ4GJdnZDKMFNzPhGOiSuLjFPiRQYgTg';
+const IMGUR_ID = '546c25a59c58ad7';
+
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 let currentUser = null;
 let allEvents   = [];
 let photoFile   = null;
 
-
-function validerMotDePasse(pwd) {
-  if (pwd.length < 8)          return '❌ Minimum 8 caractères';
-  if (!/[A-Z]/.test(pwd))      return '❌ Au moins une majuscule requise';
-  if (!/[^a-zA-Z0-9]/.test(pwd)) return '❌ Au moins un caractère spécial requis (!@#$%...)';
-  return null; // OK
-}
-
-/* ══ SHA-256 ══ */
+/* SHA-256 */
 async function sha256(msg) {
-  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-/* ══ AUTH ══ */
+/* Validation mot de passe */
+function validerMdp(pwd) {
+  if (pwd.length < 8)             return '❌ Minimum 8 caractères';
+  if (!/[A-Z]/.test(pwd))         return '❌ Au moins une majuscule';
+  if (!/[^a-zA-Z0-9]/.test(pwd)) return '❌ Au moins un caractère spécial';
+  return null;
+}
+
+/* AUTH */
 function switchAuth(mode) {
   document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-  document.getElementById('auth-footer-login').style.display   = mode === 'login'    ? '' : 'none';
+  document.getElementById('auth-footer-login').style.display    = mode === 'login'    ? '' : 'none';
   document.getElementById('auth-footer-register').style.display = mode === 'register' ? '' : 'none';
   if (mode === 'login') {
     document.querySelector('.auth-tab:first-child').classList.add('active');
@@ -466,42 +401,40 @@ async function doLogin(e) {
   const password = document.getElementById('l-password').value;
   const remember = document.getElementById('l-remember').checked;
   const msg      = document.getElementById('login-msg');
+  msg.className  = 'auth-msg';
 
-  try {
-    // Utiliser l'API GitHub pour éviter le cache raw
-    const token  = await getToken();
-    const res    = await fetch(USERS_API, { headers: { 'Authorization': 'token ' + token } });
-    const gjson  = await res.json();
-    const raw    = gjson.content.split('\n').join('');
-    const data   = JSON.parse(decodeURIComponent(escape(atob(raw))));
-    const hash   = await sha256(password);
-    // Vérifier si email/mdp correct mais compte en attente
-    const userPending = data.users.find(u => u.email.toLowerCase() === email && u.password === hash && !u.actif);
-    if (userPending) {
+  const hash = await sha256(password);
+
+  const { data, error } = await supa.from('users')
+    .select('*')
+    .eq('email', email)
+    .eq('password', hash)
+    .single();
+
+  if (error || !data) {
+    // Vérifier si compte en attente
+    const { data: pending } = await supa.from('users').select('actif,statut').eq('email', email).single();
+    if (pending && !pending.actif) {
       msg.className = 'auth-msg err';
       msg.textContent = '⏳ Ton compte est en attente de validation par un administrateur.';
-      return;
-    }
-
-    const user = data.users.find(u => u.email.toLowerCase() === email && u.password === hash && u.actif);
-    if (!user) {
-      logConn(email, 'Tentative échouée', 'fail');
+    } else {
       msg.className = 'auth-msg err';
       msg.textContent = '❌ Email ou mot de passe incorrect';
-      return;
     }
-
-    logConn(user.pseudo, `Connexion (${user.rang || 'Membre'})`, 'ok');
-    const storage = remember ? localStorage : sessionStorage;
-    storage.setItem('eclypse_user', JSON.stringify(user));
-    localStorage.setItem('eclypse_user', JSON.stringify(user));
-    currentUser = user;
-    afficherDashboard(user);
-
-  } catch(err) {
-    msg.className = 'auth-msg err';
-    msg.textContent = '❌ Erreur de connexion. Réessaie.';
+    return;
   }
+
+  if (!data.actif) {
+    msg.className = 'auth-msg err';
+    msg.textContent = '⏳ Ton compte est en attente de validation.';
+    return;
+  }
+
+  currentUser = data;
+  const storage = remember ? localStorage : sessionStorage;
+  storage.setItem('eclypse_user', JSON.stringify(data));
+  localStorage.setItem('eclypse_user', JSON.stringify(data));
+  afficherDashboard(data);
 }
 
 async function doRegister(e) {
@@ -512,122 +445,72 @@ async function doRegister(e) {
   const confirm  = document.getElementById('r-confirm').value;
   const msg      = document.getElementById('register-msg');
 
-  if (password !== confirm) {
+  if (password !== confirm) { msg.className='auth-msg err'; msg.textContent='❌ Les mots de passe ne correspondent pas'; return; }
+  const err = validerMdp(password);
+  if (err) { msg.className='auth-msg err'; msg.textContent=err; return; }
+
+  const hash = await sha256(password);
+
+  const { error } = await supa.from('users').insert({
+    pseudo, email, password: hash,
+    rang: 'Membre', role: '', faction: 'MUD',
+    photo: '', x_link: '',
+    dashboard: false, admin: false, actif: false,
+    statut: 'en_attente'
+  });
+
+  if (error) {
     msg.className = 'auth-msg err';
-    msg.textContent = '❌ Les mots de passe ne correspondent pas';
+    msg.textContent = error.code === '23505' ? '❌ Cet email est déjà utilisé' : '❌ Erreur. Réessaie.';
     return;
   }
-  const pwdErr = validerMotDePasse(password);
-  if (pwdErr) {
-    msg.className = 'auth-msg err';
-    msg.textContent = pwdErr;
-    return;
-  }
 
-  try {
-    const token  = await getToken();
-    const getRes  = await fetch(USERS_API, { headers: { 'Authorization': 'token ' + token } });
-    const getJson = await getRes.json();
-    const sha     = getJson.sha;
-    const data    = JSON.parse(decodeURIComponent(escape(atob(getJson.content.split('\n').join('')))));
-
-    // Vérifier email unique
-    if (data.users.find(u => u.email.toLowerCase() === email)) {
-      msg.className = 'auth-msg err';
-      msg.textContent = '❌ Cet email est déjà utilisé';
-      return;
-    }
-
-    const hash = await sha256(password);
-    const newUser = {
-      id: pseudo.toLowerCase().replace(/[^a-z0-9]/g,'') + '_' + Date.now(),
-      pseudo, email, password: hash,
-      rang: 'Recrue', role: '', faction: 'MUD',
-      photo: '', xLink: '',
-      dashboard: false, admin: false, actif: false,
-      statut: 'en_attente',
-      createdAt: new Date().toISOString()
-    };
-
-    data.users.push(newUser);
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    await fetch(USERS_API, {
-      method: 'PUT',
-      headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'New user: ' + pseudo, content: content, sha: sha })
-    });
-
-    msg.className = 'auth-msg ok';
-    msg.textContent = '✦ Compte créé ! Tu recevras accès après validation par un administrateur.';
-
-  } catch(err) {
-    msg.className = 'auth-msg err';
-    msg.textContent = '❌ Erreur lors de la création. Réessaie.';
-    console.error(err);
-  }
+  msg.className = 'auth-msg ok';
+  msg.textContent = '✦ Compte créé ! En attente de validation par un administrateur.';
 }
 
-/* ══ DASHBOARD ══ */
+/* DASHBOARD */
 function afficherDashboard(u) {
-  document.getElementById('auth-screen').style.display  = 'none';
-  document.getElementById('dashboard').style.display    = 'block';
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display   = 'block';
   document.getElementById('display-pseudo').textContent = u.pseudo;
-  // Badge grade visuel
-  var rang = u.rang || 'Membre';
-  var gradeClass = rang.toLowerCase()
-    .replace('é','e').replace('â','a')
-    .replace('vétéran','veteran')
-    .replace('sous-officier','sousofficier')
-    .replace(' ','');
-  var gradeIcons = {apply:'⚪',membre:'🔵',veteran:'⭐',sousofficier:'🟠',officier:'🔴'};
-  var gradeRoles = {
-    apply:[], membre:[],
-    veteran:['RH','Aspirant FC','Assistant FC','Développeur','Recruteur','Logistique Alliance'],
-    sousofficier:['Skirmish FC','Team SRP','Team Infrastructure'],
-    officier:['Diplomate','Tactical Fleet Commander']
-  };
-  var icon = gradeIcons[gradeClass] || '🔵';
-  var rangEl = document.getElementById('profil-rang');
-  rangEl.innerHTML = '<span class="grade-badge-inline ' + gradeClass + '">' + icon + ' ' + rang + '</span>';
-  // Rôles débloqués
-  var roles = gradeRoles[gradeClass] || [];
-  var rolesEl = document.getElementById('profil-roles-unlocked');
-  if (rolesEl && roles.length) {
-    rolesEl.innerHTML = roles.map(function(r) { return '<span class="grade-role-mini">' + r + '</span>'; }).join('');
-    rolesEl.style.display = 'flex';
-  } else if (rolesEl) { rolesEl.style.display = 'none'; }
   document.getElementById('profil-pseudo').textContent  = u.pseudo;
-  document.getElementById('profil-role').textContent    = [u.role, u.faction ? 'Faction '+u.faction : ''].filter(Boolean).join(' · ');
+
+  // Grade badge
+  var rang = u.rang || 'Membre';
+  var gc = rang.toLowerCase().replace(/é/g,'e').replace(/â/g,'a').replace('vétéran','veteran').replace('sous-officier','sousofficier').replace(/ /g,'');
+  var icons = {apply:'⚪',membre:'🔵',veteran:'⭐',sousofficier:'🟠',officier:'🔴','fleet commander':'🔴'};
+  var roles = {veteran:['RH','Aspirant FC','Assistant FC','Développeur','Recruteur','Logistique Alliance'],sousofficier:['Skirmish FC','Team SRP','Team Infrastructure'],officier:['Diplomate','Tactical Fleet Commander']};
+  var icon = icons[gc] || '🔵';
+  document.getElementById('profil-rang').innerHTML = '<span class="grade-badge-inline ' + gc + '">' + icon + ' ' + rang + '</span>';
+
+  var rolesList = roles[gc] || [];
+  var rolesEl = document.getElementById('profil-roles-unlocked');
+  if (rolesList.length) {
+    rolesEl.innerHTML = rolesList.map(function(r){ return '<span class="grade-role-mini">'+r+'</span>'; }).join('');
+    rolesEl.style.display = 'flex';
+  }
+
+  document.getElementById('profil-role').textContent = [u.role, u.faction ? 'Faction '+u.faction : ''].filter(Boolean).join(' · ');
 
   // Avatar
-  const av = document.getElementById('profil-avatar');
-  const navAv = document.getElementById('nav-avatar');
-  const localPhotos = JSON.parse(localStorage.getItem('eclypse_photos')||'{}');
-  const photo = localPhotos[u.id]?.url || u.photo || '';
-  if (photo) {
-    av.innerHTML  = `<img src="${photo}" alt="${u.pseudo}">`;
-    navAv.innerHTML = `<img src="${photo}" alt="${u.pseudo}">`;
+  var av = document.getElementById('profil-avatar');
+  var navAv = document.getElementById('nav-avatar');
+  if (u.photo) {
+    av.innerHTML = '<img src="'+u.photo+'" alt="'+u.pseudo+'">';
+    navAv.innerHTML = '<img src="'+u.photo+'" alt="'+u.pseudo+'">';
   } else {
-    av.textContent  = u.pseudo[0].toUpperCase();
+    av.textContent = u.pseudo[0].toUpperCase();
     navAv.textContent = u.pseudo[0].toUpperCase();
   }
 
-  // Lien X
-  const xEl = document.getElementById('profil-x-link');
-  if (xEl && u.xLink) { xEl.href = u.xLink; xEl.style.display = 'inline-flex'; }
+  // X link
+  var xEl = document.getElementById('profil-x-link');
+  if (xEl && u.x_link) { xEl.href = u.x_link; xEl.style.display = 'inline-flex'; }
 
   // Droits
-  // Bouton créer op uniquement si droits
-  if (u.dashboard || u.admin) {
-    document.getElementById('btn-add').style.display = '';
-  }
-  // Tout le monde voit les events (no-access masqué)
-
-  // Bouton Admin
-  if (u.admin) {
-    const adminBtn = document.getElementById('btn-admin-link');
-    if (adminBtn) adminBtn.style.display = 'inline-block';
-  }
+  if (u.dashboard || u.admin) document.getElementById('btn-add').style.display = '';
+  if (u.admin) document.getElementById('btn-admin-link').style.display = 'inline-block';
 
   loadEvents();
 }
@@ -636,165 +519,139 @@ function logout() {
   localStorage.removeItem('eclypse_user');
   sessionStorage.removeItem('eclypse_user');
   currentUser = null;
-  document.getElementById('auth-screen').style.display  = 'flex';
-  document.getElementById('dashboard').style.display    = 'none';
-  document.getElementById('l-email').value    = '';
-  document.getElementById('l-password').value = '';
-  document.getElementById('login-msg').className = 'auth-msg';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('dashboard').style.display   = 'none';
 }
 
-/* ══ EVENTS ══ */
+/* EVENTS */
 async function loadEvents() {
-  try {
-    const res = await fetch(EVENTS_URL + '?t=' + Date.now());
-    const d   = await res.json();
-    allEvents = d.events || [];
-  } catch(e) { allEvents = []; }
+  const { data } = await supa.from('events').select('*').order('date', { ascending: true });
+  allEvents = data || [];
   renderEvents();
 }
 
-let activeFilter = 'tous';
+var activeFilter = 'tous';
 function renderEvents() {
-  const list = document.getElementById('events-list');
-  const types = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
-  const cls   = { fleetop:'type-fleetop', pvp:'type-pvp', mining:'type-mining', event:'type-event' };
-  const now   = new Date(); now.setHours(0,0,0,0);
-  const filtered = (activeFilter === 'tous' ? allEvents : allEvents.filter(e => e.type === activeFilter))
-    .sort((a,b) => new Date(a.date) - new Date(b.date));
-
+  var list = document.getElementById('events-list');
+  var types = {fleetop:'Fleet Op',pvp:'PvP',mining:'Mining',event:'Événement'};
+  var cls   = {fleetop:'type-fleetop',pvp:'type-pvp',mining:'type-mining',event:'type-event'};
+  var now   = new Date(); now.setHours(0,0,0,0);
+  var filtered = activeFilter === 'tous' ? allEvents : allEvents.filter(function(e){ return e.type === activeFilter; });
   if (!filtered.length) { list.innerHTML = '<div class="empty-state">Aucune opération planifiée.</div>'; renderMiniCal(); return; }
-
-  list.innerHTML = filtered.map(ev => {
-    const d    = new Date(ev.date + 'T00:00:00');
-    const past = d < now;
-    const canDel = currentUser && (currentUser.dashboard || currentUser.admin);
-    return `<div class="event-item" ${past?'style="opacity:0.5"':''}>
-      <div class="event-date-badge"><div class="day">${d.getDate()}</div><div class="month">${d.toLocaleDateString('fr-FR',{month:'short'})}</div></div>
-      <div>
-        <span class="event-type-badge ${cls[ev.type]||'type-event'}">${types[ev.type]||ev.type}</span>
-        <div class="event-name">${ev.nom}${past?' ✓':''}</div>
-        <div class="event-meta">${ev.heure}h FR · ${ev.description||''}</div>
-      </div>
-      <div>${canDel ? `<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>` : ''}</div>
-    </div>`;
+  list.innerHTML = filtered.map(function(ev) {
+    var d = new Date(ev.date + 'T00:00:00');
+    var past = d < now;
+    var canDel = currentUser && (currentUser.dashboard || currentUser.admin);
+    return '<div class="event-item"' + (past?' style="opacity:0.5"':'') + '>'
+      + '<div class="event-date-badge"><div class="day">'+d.getDate()+'</div><div class="month">'+d.toLocaleDateString('fr-FR',{month:'short'})+'</div></div>'
+      + '<div><span class="event-type-badge '+(cls[ev.type]||'type-event')+'">'+(types[ev.type]||ev.type)+'</span>'
+      + '<div class="event-name">'+ev.nom+(past?' ✓':'')+'</div>'
+      + '<div class="event-meta">'+(ev.heure||'')+'h FR · '+(ev.description||'')+'</div></div>'
+      + '<div>'+(canDel?'<button class="btn-delete" data-id="'+ev.id+'" onclick="deleteEvent(this.dataset.id)">Supprimer</button>':'')+'</div>'
+      + '</div>';
   }).join('');
   renderMiniCal();
 }
 
 function filterEvents(type, btn) {
   activeFilter = type;
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
   btn.classList.add('active');
   renderEvents();
 }
 
 function toggleForm() {
-  const f = document.getElementById('form-event');
+  var f = document.getElementById('form-event');
   f.classList.toggle('visible');
   if (f.classList.contains('visible')) document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 }
 
 async function saveEvent() {
-  const nom = document.getElementById('f-nom').value.trim();
-  const date = document.getElementById('f-date').value;
-  if (!nom||!date) { showToast('❌ Remplis le nom et la date'); return; }
-  const ev = { id:'ev_'+Date.now(), nom, type:document.getElementById('f-type').value, date, heure:document.getElementById('f-heure').value, description:document.getElementById('f-desc').value.trim(), createdBy:currentUser.pseudo, createdAt:new Date().toISOString() };
-  allEvents.push(ev);
-  await pushEvents();
+  var nom = document.getElementById('f-nom').value.trim();
+  var date = document.getElementById('f-date').value;
+  if (!nom || !date) { showToast('❌ Remplis le nom et la date'); return; }
+
+  var { error } = await supa.from('events').insert({
+    nom: nom,
+    type: document.getElementById('f-type').value,
+    date: date,
+    heure: document.getElementById('f-heure').value,
+    description: document.getElementById('f-desc').value.trim(),
+    created_by: currentUser.pseudo
+  });
+
+  if (error) { showToast('❌ Erreur'); return; }
   document.getElementById('form-event').classList.remove('visible');
   document.getElementById('f-nom').value = '';
   document.getElementById('f-desc').value = '';
-  renderEvents();
+  await loadEvents();
   showToast('✦ Opération publiée !');
 }
 
 async function deleteEvent(id) {
   if (!confirm('Supprimer cette opération ?')) return;
-  allEvents = allEvents.filter(e => e.id !== id);
-  await pushEvents();
-  renderEvents();
+  await supa.from('events').delete().eq('id', id);
+  await loadEvents();
 }
 
-async function pushEvents() {
-  const token  = await getToken();
-  const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
-  const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
-  const { sha } = await getRes.json();
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify({ events: allEvents }, null, 2))));
-  await fetch(apiUrl, { method:'PUT', headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'}, body:JSON.stringify({ message:`Update events`, content, sha }) });
-}
-
-/* ══ MINI CAL ══ */
-const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-const dayL   = ['L','M','M','J','V','S','D'];
-const todayD = new Date();
-let calY = todayD.getFullYear(), calM = todayD.getMonth();
+/* MINI CAL */
+var months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+var dayL   = ['L','M','M','J','V','S','D'];
+var todayD = new Date();
+var calY = todayD.getFullYear(), calM = todayD.getMonth();
 function renderMiniCal() {
-  const grid = document.getElementById('mini-cal-grid');
-  const lbl  = document.getElementById('cal-month-label');
-  if (!grid||!lbl) return;
-  lbl.textContent = months[calM]+' '+calY;
-  const evMap = {};
-  allEvents.forEach(ev => { const d=new Date(ev.date+'T00:00:00'); if(d.getFullYear()===calY&&d.getMonth()===calM) evMap[d.getDate()]=true; });
-  const fd  = new Date(calY,calM,1).getDay();
-  const off = fd===0?6:fd-1;
-  const tot = new Date(calY,calM+1,0).getDate();
-  let html  = dayL.map(d=>`<div class="day-label">${d}</div>`).join('');
-  for(let i=0;i<off;i++) html+='<div class="mcday empty"></div>';
-  for(let d=1;d<=tot;d++){const iT=d===todayD.getDate()&&calM===todayD.getMonth()&&calY===todayD.getFullYear();html+=`<div class="mcday ${evMap[d]?'has-event':''} ${iT?'today':''}">${d}</div>`;}
+  var grid = document.getElementById('mini-cal-grid');
+  var lbl  = document.getElementById('cal-month-label');
+  if (!grid || !lbl) return;
+  lbl.textContent = months[calM] + ' ' + calY;
+  var evMap = {};
+  allEvents.forEach(function(ev) { var d = new Date(ev.date+'T00:00:00'); if(d.getFullYear()===calY&&d.getMonth()===calM) evMap[d.getDate()]=true; });
+  var fd = new Date(calY,calM,1).getDay(), off = fd===0?6:fd-1;
+  var tot = new Date(calY,calM+1,0).getDate();
+  var html = dayL.map(function(d){ return '<div class="day-label">'+d+'</div>'; }).join('');
+  for (var i=0;i<off;i++) html+='<div class="mcday empty"></div>';
+  for (var d=1;d<=tot;d++) {
+    var iT = d===todayD.getDate()&&calM===todayD.getMonth()&&calY===todayD.getFullYear();
+    html += '<div class="mcday'+(evMap[d]?' has-event':'')+(iT?' today':'')+'">'+d+'</div>';
+  }
   grid.innerHTML = html;
 }
-function calNav(dir){calM+=dir;if(calM>11){calM=0;calY++;}if(calM<0){calM=11;calY--;}renderMiniCal();}
+function calNav(dir){ calM+=dir; if(calM>11){calM=0;calY++;} if(calM<0){calM=11;calY--;} renderMiniCal(); }
 
-/* ══ LOGS ══ */
-function getLogs(){ try{return JSON.parse(localStorage.getItem('eclypse_logs')||'[]');}catch{return[];} }
-function logConn(pseudo,detail,status){ const l=getLogs(); l.unshift({pseudo,detail,status,ts:new Date().toISOString()}); localStorage.setItem('eclypse_logs',JSON.stringify(l.slice(0,500))); }
-
-/* ══ PROFIL MODAL ══ */
+/* PROFIL MODAL */
 function ouvrirProfil() {
   if (!currentUser) return;
   document.getElementById('p-pseudo').value  = currentUser.pseudo;
-  document.getElementById('p-xlink').value   = currentUser.xLink || '';
+  document.getElementById('p-xlink').value   = currentUser.x_link || '';
   document.getElementById('p-newpwd').value  = '';
   document.getElementById('p-confirmpwd').value = '';
+  document.getElementById('p-oldpwd').value  = '';
   document.getElementById('p-confirm-wrap').style.display = 'none';
+  document.getElementById('p-oldpwd-wrap').style.display  = 'none';
   document.getElementById('modal-msg').className = 'modal-msg';
   photoFile = null;
   document.getElementById('photo-upload-btn').style.display = 'none';
   document.getElementById('upload-progress').classList.remove('show');
-
-  const prev = document.getElementById('photo-preview-btn');
-  const localPhotos = JSON.parse(localStorage.getItem('eclypse_photos')||'{}');
-  const photo = localPhotos[currentUser.id]?.url || currentUser.photo || '';
-  if (photo) prev.innerHTML=`<img src="${photo}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
-  else prev.innerHTML=`<span>${currentUser.pseudo[0].toUpperCase()}</span><div class="photo-overlay"><span>Changer</span></div>`;
-
-  const lastEdit = currentUser.lastProfileEdit;
-  const cdEl = document.getElementById('photo-cooldown');
-  if (lastEdit) {
-    const diff = Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24));
-    if (diff < 90) { cdEl.textContent=`⏳ Photo/pseudo modifiable dans ${90-diff} jour(s).`; cdEl.className='photo-cooldown locked'; }
-    else { cdEl.textContent='✦ Modification disponible'; cdEl.className='photo-cooldown'; }
-  } else { cdEl.textContent='✦ Première modification disponible'; cdEl.className='photo-cooldown'; }
-
+  var prev = document.getElementById('photo-preview-btn');
+  if (currentUser.photo) prev.innerHTML = '<img src="'+currentUser.photo+'" alt=""><div class="photo-overlay"><span>Changer</span></div>';
+  else prev.innerHTML = '<span>'+currentUser.pseudo[0].toUpperCase()+'</span><div class="photo-overlay"><span>Changer</span></div>';
   document.getElementById('modal-profil').classList.add('open');
 }
 function fermerProfil(){ document.getElementById('modal-profil').classList.remove('open'); }
-function togglePwdConfirm() {
-  var hasNew = document.getElementById('p-newpwd').value.length > 0;
-  document.getElementById('p-confirm-wrap').style.display  = hasNew ? 'block' : 'none';
-  document.getElementById('p-oldpwd-wrap').style.display   = hasNew ? 'block' : 'none';
+function togglePwdConfirm(){
+  var has = document.getElementById('p-newpwd').value.length > 0;
+  document.getElementById('p-confirm-wrap').style.display = has ? 'block' : 'none';
+  document.getElementById('p-oldpwd-wrap').style.display  = has ? 'block' : 'none';
 }
 
 function previewPhoto(e) {
-  const file = e.target.files[0];
+  var file = e.target.files[0];
   if (!file) return;
   if (file.size > 5*1024*1024) { showToast('❌ Image trop lourde (max 5Mo)'); return; }
-  const reader = new FileReader();
-  reader.onload = ev => {
-    photoFile = { file, dataUrl: ev.target.result };
-    const prev = document.getElementById('photo-preview-btn');
-    prev.innerHTML = `<img src="${ev.target.result}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    photoFile = { file: file };
+    document.getElementById('photo-preview-btn').innerHTML = '<img src="'+ev.target.result+'" alt=""><div class="photo-overlay"><span>Changer</span></div>';
     document.getElementById('photo-upload-btn').style.display = 'inline-block';
   };
   reader.readAsDataURL(file);
@@ -802,120 +659,87 @@ function previewPhoto(e) {
 
 async function uploadPhoto() {
   if (!photoFile) return;
-  const prog = document.getElementById('upload-progress');
-  const fill = document.getElementById('progress-fill');
-  const lbl  = document.getElementById('progress-label');
+  var prog = document.getElementById('upload-progress');
+  var fill = document.getElementById('progress-fill');
+  var lbl  = document.getElementById('progress-label');
   prog.classList.add('show');
-  fill.style.width='30%'; lbl.textContent='Upload vers Imgur…';
+  fill.style.width = '40%'; lbl.textContent = 'Upload vers Imgur…';
   try {
-    const fd = new FormData();
+    var fd = new FormData();
     fd.append('image', photoFile.file);
-    fill.style.width='60%';
-    const res  = await fetch('https://api.imgur.com/3/image',{method:'POST',headers:{'Authorization':`Client-ID ${IMGUR_ID}`},body:fd});
-    const json = await res.json();
-    if (!json.success) throw new Error(json.data?.error||'Erreur Imgur');
-    fill.style.width='90%'; lbl.textContent='Sauvegarde…';
-    const url = json.data.link;
-    const photos = JSON.parse(localStorage.getItem('eclypse_photos')||'{}');
-    photos[currentUser.id] = { url, ts: new Date().toISOString() };
-    localStorage.setItem('eclypse_photos', JSON.stringify(photos));
-    currentUser.photo = url;
+    var res  = await fetch('https://api.imgur.com/3/image', {method:'POST', headers:{'Authorization':'Client-ID '+IMGUR_ID}, body:fd});
+    var json = await res.json();
+    if (!json.success) throw new Error(json.data && json.data.error || 'Erreur Imgur');
+    fill.style.width = '80%'; lbl.textContent = 'Sauvegarde…';
+    var imgUrl = json.data.link;
+    await supa.from('users').update({ photo: imgUrl }).eq('id', currentUser.id);
+    currentUser.photo = imgUrl;
     localStorage.setItem('eclypse_user', JSON.stringify(currentUser));
-    // Push dans users.json
-    await pousserUser({ photo: url, lastProfileEdit: new Date().toISOString() });
-    fill.style.width='100%'; lbl.textContent='✓ Photo mise à jour !';
-    const av=document.getElementById('profil-avatar'); av.innerHTML=`<img src="${url}" alt="">`;
-    const navAv=document.getElementById('nav-avatar'); navAv.innerHTML=`<img src="${url}" alt="">`;
-    photoFile=null; document.getElementById('photo-upload-btn').style.display='none';
-    showModalMsg('✦ Photo mise à jour !','ok');
-  } catch(err) { fill.style.background='var(--rouge)'; lbl.textContent='❌ '+err.message; }
+    fill.style.width = '100%'; lbl.textContent = '✓ Photo mise à jour !';
+    document.getElementById('profil-avatar').innerHTML = '<img src="'+imgUrl+'" alt="">';
+    document.getElementById('nav-avatar').innerHTML    = '<img src="'+imgUrl+'" alt="">';
+    photoFile = null;
+    document.getElementById('photo-upload-btn').style.display = 'none';
+    showModalMsg('✦ Photo mise à jour !', 'ok');
+  } catch(err) {
+    fill.style.background = 'var(--rouge)';
+    lbl.textContent = '❌ ' + err.message;
+  }
 }
 
 async function sauvegarderProfil() {
-  const pseudo  = document.getElementById('p-pseudo').value.trim();
-  const xLink   = document.getElementById('p-xlink').value.trim();
-  const newPwd  = document.getElementById('p-newpwd').value;
-  const confPwd = document.getElementById('p-confirmpwd').value;
+  var pseudo  = document.getElementById('p-pseudo').value.trim();
+  var xLink   = document.getElementById('p-xlink').value.trim();
+  var newPwd  = document.getElementById('p-newpwd').value;
+  var confPwd = document.getElementById('p-confirmpwd').value;
+  var oldPwd  = document.getElementById('p-oldpwd').value;
+  var updates = {};
 
-  const updates = {};
-
-  // Pseudo
   if (pseudo && pseudo !== currentUser.pseudo) {
-    const lastEdit = currentUser.lastProfileEdit;
+    var lastEdit = currentUser.last_profile_edit;
     if (lastEdit && Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24)) < 90) {
-      showModalMsg('❌ Pseudo modifiable dans '+Math.max(0,90-Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24)))+' jour(s)', 'err'); return;
+      showModalMsg('❌ Pseudo modifiable dans 90 jours max', 'err'); return;
     }
     updates.pseudo = pseudo;
-    updates.lastProfileEdit = new Date().toISOString();
+    updates.last_profile_edit = new Date().toISOString();
   }
 
-  // X
-  if (xLink !== (currentUser.xLink||'')) updates.xLink = xLink;
+  if (xLink !== (currentUser.x_link || '')) updates.x_link = xLink;
 
-  // Mot de passe
   if (newPwd) {
-    const oldPwd = document.getElementById('p-oldpwd').value;
     if (!oldPwd) { showModalMsg('❌ Saisis ton ancien mot de passe', 'err'); return; }
-    // Vérifier l'ancien mot de passe
-    const oldHash = await sha256(oldPwd);
+    var oldHash = await sha256(oldPwd);
     if (oldHash !== currentUser.password) { showModalMsg('❌ Ancien mot de passe incorrect', 'err'); return; }
-    // Valider le nouveau
-    const pwdErr = validerMotDePasse(newPwd);
+    var pwdErr = validerMdp(newPwd);
     if (pwdErr) { showModalMsg(pwdErr, 'err'); return; }
     if (newPwd !== confPwd) { showModalMsg('❌ Les mots de passe ne correspondent pas', 'err'); return; }
     updates.password = await sha256(newPwd);
   }
 
-  if (!Object.keys(updates).length) { showModalMsg('Aucune modification détectée.','ok'); return; }
+  if (!Object.keys(updates).length) { showModalMsg('Aucune modification.', 'ok'); return; }
 
-  showModalMsg('⏳ Sauvegarde…','ok');
-  await pousserUser(updates);
+  showModalMsg('⏳ Sauvegarde…', 'ok');
+  var { error } = await supa.from('users').update(updates).eq('id', currentUser.id);
+  if (error) { showModalMsg('❌ Erreur sauvegarde', 'err'); return; }
+
   Object.assign(currentUser, updates);
   localStorage.setItem('eclypse_user', JSON.stringify(currentUser));
 
   document.getElementById('display-pseudo').textContent = currentUser.pseudo;
   document.getElementById('profil-pseudo').textContent  = currentUser.pseudo;
-  const xEl = document.getElementById('profil-x-link');
-  if (xEl) { if(currentUser.xLink){xEl.href=currentUser.xLink;xEl.style.display='inline-flex';}else{xEl.style.display='none';} }
+  var xEl = document.getElementById('profil-x-link');
+  if (xEl) { if(currentUser.x_link){xEl.href=currentUser.x_link;xEl.style.display='inline-flex';}else{xEl.style.display='none';} }
 
-  showModalMsg('✦ Profil mis à jour !','ok');
+  showModalMsg('✦ Profil mis à jour !', 'ok');
   showToast('✦ Sauvegardé !');
   setTimeout(fermerProfil, 1500);
 }
 
-async function pousserUser(updates) {
-  const token  = await getToken();
-  const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-  const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
-  const getJson = await getRes.json();
-  const sha    = getJson.sha;
-  const data   = JSON.parse(decodeURIComponent(escape(atob(getJson.content.split('\n').join('')))));
-  const idx    = data.users.findIndex(u => u.id === currentUser.id);
-  if (idx !== -1) Object.assign(data.users[idx], updates);
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, { method:'PUT', headers:{'Authorization':`token ${token}`,'Content-Type':'application/json'}, body:JSON.stringify({ message:`Update user ${currentUser.pseudo}`, content, sha }) });
-}
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},3000);}
+function showModalMsg(msg,type){var el=document.getElementById('modal-msg');el.textContent=msg;el.className='modal-msg '+type;}
 
-/* ══ TOKEN SERVICE ══ */
-let _tok = null;
-async function getToken() {
-  if (_tok) return _tok;
-  const local = localStorage.getItem('eclypse_admin_token');
-  if (local) { _tok=local; return local; }
-  try {
-    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
-    const data = await res.json();
-    if (data.p) { _tok=data.p.join(''); localStorage.setItem('eclypse_admin_token',_tok); return _tok; }
-  } catch(e) {}
-  return '';
-}
-
-/* ══ TOAST / MSG ══ */
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);}
-function showModalMsg(msg,type){const el=document.getElementById('modal-msg');el.textContent=msg;el.className='modal-msg '+type;}
-
-/* ══ SESSION ══ */
-const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
+/* SESSION */
+var saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
 if (saved) { currentUser = JSON.parse(saved); afficherDashboard(currentUser); }
 </script>
 </body>
