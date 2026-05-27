@@ -75,8 +75,8 @@
       "xLink": "",
       "dashboard": false,
       "admin": false,
-      "actif": false,
-      "statut": "en_attente",
+      "actif": true,
+      "statut": "approuve",
       "createdAt": "2026-05-27T11:54:15.849Z"
     }
   ]
