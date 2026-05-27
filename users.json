@@ -1,10 +1,10 @@
 {
   "users": [
     {
-      "id": "oswalt",
-      "pseudo": "oswalt",
-      "email": "admin@eclypse.gg",
-      "password": "",
+      "id": "oswalt_1779831260996",
+      "pseudo": "OswalT",
+      "email": "emilienm4@gmail.com",
+      "password": "d7f0b7dbd61a70ebd7eecf1cfc9a65dd05178548f81e093f0f23e3e9020799bc",
       "rang": "Fleet Commander",
       "role": "Fighter",
       "faction": "MUD",
@@ -12,21 +12,6 @@
       "xLink": "",
       "dashboard": true,
       "admin": true,
-      "actif": true,
-      "createdAt": "2026-05-26T00:00:00.000Z"
-    },
-    {
-      "id": "oswalt_1779831260996",
-      "pseudo": "OswalT",
-      "email": "emilienm4@gmail.com",
-      "password": "d7f0b7dbd61a70ebd7eecf1cfc9a65dd05178548f81e093f0f23e3e9020799bc",
-      "rang": "Recrue",
-      "role": "",
-      "faction": "MUD",
-      "photo": "",
-      "xLink": "",
-      "dashboard": false,
-      "admin": false,
       "actif": true,
       "createdAt": "2026-05-26T21:34:20.996Z"
     }
