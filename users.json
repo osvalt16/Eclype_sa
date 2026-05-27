@@ -41,7 +41,7 @@
       "faction": "MUD",
       "photo": "",
       "xLink": "",
-      "dashboard": true,
+      "dashboard": false,
       "admin": false,
       "actif": true,
       "statut": "approuve",
