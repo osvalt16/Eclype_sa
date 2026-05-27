@@ -516,10 +516,13 @@ function renderTable(users) {
     return;
   }
 
-  var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
+  // Stocker les users globalement pour y accéder par index
+  window._adminUsers = users;
 
-  // Construire les cartes membres (pas un tableau avec overflow)
-  var html = '<div class="membres-cards">';
+  var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
+  var frag   = document.createDocumentFragment();
+  var wrap   = document.createElement('div');
+  wrap.className = 'membres-cards';
 
   for (var i = 0; i < users.length; i++) {
     var u     = users[i];
@@ -528,47 +531,103 @@ function renderTable(users) {
     var rang  = grades.indexOf(u.rang) >= 0 ? u.rang : 'Membre';
     var date  = new Date(u.createdAt).toLocaleDateString('fr-FR');
 
-    // Options grade
-    var opts = '';
+    var row = document.createElement('div');
+    row.className = 'membre-row';
+
+    // Info
+    var info = document.createElement('div');
+    info.className = 'membre-row-info';
+    info.innerHTML = '<div class="mr-pseudo">' + u.pseudo + '</div>'
+      + '<div class="mr-email">' + u.email + '</div>'
+      + '<div class="mr-date">Inscrit le ' + date + '</div>';
+    row.appendChild(info);
+
+    // Grade select
+    var gradeDiv = document.createElement('div');
+    gradeDiv.className = 'membre-row-grade';
+
+    var lbl = document.createElement('label');
+    lbl.className = 'mr-label';
+    lbl.textContent = 'Grade';
+    gradeDiv.appendChild(lbl);
+
+    var sel = document.createElement('select');
+    sel.className = 'mr-select';
+    if (isMe) sel.disabled = true;
     for (var j = 0; j < grades.length; j++) {
-      opts += '<option value="' + grades[j] + '"' + (grades[j] === rang ? ' selected' : '') + '>' + grades[j] + '</option>';
+      var opt = document.createElement('option');
+      opt.value = grades[j];
+      opt.textContent = grades[j];
+      if (grades[j] === rang) opt.selected = true;
+      sel.appendChild(opt);
     }
+    sel.dataset.idx = i;
+    sel.addEventListener('change', function() {
+      var idx = parseInt(this.dataset.idx);
+      setGrade(window._adminUsers[idx].id, this.value);
+    });
+    gradeDiv.appendChild(sel);
+    row.appendChild(gradeDiv);
 
-    html += '<div class="membre-row">';
-    html += '<div class="membre-row-info">';
-    html += '<div class="mr-pseudo">' + u.pseudo + '</div>';
-    html += '<div class="mr-email">' + u.email + '</div>';
-    html += '<div class="mr-date">Inscrit le ' + date + '</div>';
-    html += '</div>';
+    // Droits
+    var droitsDiv = document.createElement('div');
+    droitsDiv.className = 'membre-row-droits';
 
-    html += '<div class="membre-row-grade">';
-    html += '<label class="mr-label">Grade</label>';
-    html += '<select class="mr-select" onchange="setGrade('' + u.id + '',this.value)"' + (isMe ? ' disabled' : '') + '>' + opts + '</select>';
-    html += '</div>';
+    var lbl2 = document.createElement('label');
+    lbl2.className = 'mr-label';
+    lbl2.textContent = 'Droits';
+    droitsDiv.appendChild(lbl2);
 
-    html += '<div class="membre-row-droits">';
-    html += '<label class="mr-label">Droits</label>';
-    html += '<div class="role-badges">';
-    html += '<button class="role-btn membre' + (droit==='membre'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','membre')">Membre</button>';
-    html += '<button class="role-btn ops' + (droit==='ops'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','ops')">&plus; Ops</button>';
-    html += '<button class="role-btn admin' + (droit==='admin'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','admin')">Admin</button>';
-    html += '</div>';
-    html += '</div>';
+    var badges = document.createElement('div');
+    badges.className = 'role-badges';
 
-    html += '<div class="membre-row-actions">';
+    ['membre','ops','admin'].forEach(function(role) {
+      var labels = {membre:'Membre', ops:'+ Ops', admin:'Admin'};
+      var btn = document.createElement('button');
+      btn.className = 'role-btn ' + role + (droit === role ? ' active' : '');
+      btn.textContent = labels[role];
+      if (isMe) {
+        btn.disabled = true;
+      } else {
+        btn.dataset.idx  = i;
+        btn.dataset.role = role;
+        btn.addEventListener('click', function() {
+          var idx = parseInt(this.dataset.idx);
+          setRole(window._adminUsers[idx].id, this.dataset.role);
+        });
+      }
+      badges.appendChild(btn);
+    });
+    droitsDiv.appendChild(badges);
+    row.appendChild(droitsDiv);
+
+    // Actions
+    var actDiv = document.createElement('div');
+    actDiv.className = 'membre-row-actions';
+
+    var badge = document.createElement('span');
+    badge.className = 'badge ' + (u.actif ? 'actif' : 'inactif');
+    badge.textContent = isMe ? 'Toi' : (u.actif ? 'Actif' : 'Inactif');
+    actDiv.appendChild(badge);
+
     if (!isMe) {
-      html += '<span class="badge ' + (u.actif?'actif':'inactif') + '">' + (u.actif?'Actif':'Inactif') + '</span>';
-      html += '<button class="btn-xs" onclick="toggleActif('' + u.id + '',' + (u.actif?'false':'true') + ')">' + (u.actif?'Désactiver':'Activer') + '</button>';
-    } else {
-      html += '<span class="badge actif">Toi</span>';
+      var btnAct = document.createElement('button');
+      btnAct.className = 'btn-xs';
+      btnAct.textContent = u.actif ? 'Désactiver' : 'Activer';
+      btnAct.dataset.idx = i;
+      btnAct.addEventListener('click', function() {
+        var idx  = parseInt(this.dataset.idx);
+        var user = window._adminUsers[idx];
+        toggleActif(user.id, !user.actif);
+      });
+      actDiv.appendChild(btnAct);
     }
-    html += '</div>';
-
-    html += '</div>';
+    row.appendChild(actDiv);
+    wrap.appendChild(row);
   }
 
-  html += '</div>';
-  tbl.innerHTML = html;
+  tbl.innerHTML = '';
+  tbl.appendChild(wrap);
 }
 
 
