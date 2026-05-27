@@ -530,17 +530,8 @@ function renderTable(users) {
     var rangActuel = u.rang || 'Membre';
     if (!grades.includes(rangActuel)) rangActuel = 'Membre';
 
-    if (isMe) {
-      // Juste afficher le grade sans interaction
-      var sp = document.createElement('span');
-      sp.style.fontFamily = 'Cinzel,serif';
-      sp.style.fontSize = '0.52rem';
-      sp.style.letterSpacing = '0.12em';
-      sp.style.textTransform = 'uppercase';
-      sp.style.color = 'var(--or)';
-      sp.textContent = rangActuel;
-      tdR.appendChild(sp);
-    } else {
+    // Dropdown pour tout le monde (désactivé pour soi-même)
+    {
       var drop = document.createElement('div');
       drop.className = 'grade-dropdown';
 
@@ -572,6 +563,11 @@ function renderTable(users) {
 
       drop.appendChild(curr);
       drop.appendChild(opts);
+      if (isMe) {
+        curr.style.opacity = '0.5';
+        curr.style.cursor = 'default';
+        curr.onclick = null;
+      }
       tdR.appendChild(drop);
     }
     row.appendChild(tdR);
