@@ -743,6 +743,25 @@
   .pmb-logout:hover { background: rgba(232,90,90,0.1); }
 
   @media (max-width:900px) { .cal-unlocked-layout { grid-template-columns: 1fr; } .mini-cal-section { position: static; } }
+
+  /* NAV USER CONNECTÉ */
+  .nav-user-connected { display:none; align-items:center; gap:0.6rem; }
+  .nav-user-connected.visible { display:flex; }
+  .nav-user-avatar {
+    width:30px; height:30px; min-width:30px; max-width:30px;
+    border-radius:50%; border:1.5px solid var(--or);
+    background:rgba(26,15,46,0.9);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Cinzel',serif; font-size:0.8rem; color:var(--or);
+    overflow:hidden; flex-shrink:0;
+  }
+  .nav-user-avatar img {
+    width:30px !important; height:30px !important;
+    object-fit:cover; border-radius:50%; display:block;
+  }
+  .nav-user-pseudo { font-family:'Cinzel',serif; font-size:0.62rem; letter-spacing:0.15em; color:var(--or-clair); }
+  .nav-user-deco { font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--rouge); background:none; border:1px solid rgba(232,90,90,0.3); padding:0.28rem 0.6rem; cursor:pointer; transition:all 0.3s; }
+  .nav-user-deco:hover { background:rgba(232,90,90,0.1); }
 </style>
 </head>
 <body>
