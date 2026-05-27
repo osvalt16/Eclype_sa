@@ -113,49 +113,46 @@
   .btn-refuser:hover { background:rgba(232,90,90,0.1); }
   .demandes-empty { padding:1.5rem; text-align:center; color:var(--texte-pale); font-style:italic; font-size:0.88rem; }
 
-  /* ── GRADES ── */
-  .grades-section { margin-bottom:2.5rem; }
-  .grade-card {
-    display:grid; grid-template-columns:60px 1fr; gap:1.5rem;
-    border:1px solid var(--border-violet); padding:1.5rem;
-    background:rgba(10,8,20,0.8); margin-bottom:0.8rem;
-    transition:border-color 0.3s; align-items:start;
+  /* ── GRADES COMPACT ── */
+  .grades-timeline {
+    display:flex; align-items:stretch; gap:0;
+    border:1px solid var(--border-violet);
+    background:rgba(10,8,20,0.8);
+    margin-bottom:2.5rem; overflow:hidden;
   }
-  .grade-card:hover { border-color:var(--border-or); }
-  .grade-badge {
-    width:52px; height:52px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    font-size:1.5rem; flex-shrink:0; border:2px solid;
+  .grade-step {
+    flex:1; padding:1rem 0.8rem; border-right:1px solid var(--border-violet);
+    position:relative; cursor:default; transition:background 0.2s;
   }
-  .grade-badge.apply      { background:rgba(100,100,100,0.2); border-color:rgba(150,150,150,0.4); }
-  .grade-badge.membre     { background:rgba(107,53,200,0.2);  border-color:rgba(107,53,200,0.5); }
-  .grade-badge.veteran    { background:rgba(201,162,39,0.2);  border-color:var(--border-or); }
-  .grade-badge.sousofficier { background:rgba(232,130,30,0.2); border-color:rgba(232,130,30,0.5); }
-  .grade-badge.officier   { background:rgba(232,90,90,0.2);   border-color:rgba(232,90,90,0.5); }
-  .grade-info {}
-  .grade-name {
-    font-family:'Cinzel',serif; font-size:0.9rem; letter-spacing:0.2em;
-    text-transform:uppercase; margin-bottom:0.3rem;
+  .grade-step:last-child { border-right:none; }
+  .grade-step:hover { background:rgba(26,15,46,0.6); }
+  .grade-step-dot {
+    width:10px; height:10px; border-radius:50%; margin:0 auto 0.6rem;
+    border:2px solid;
   }
-  .grade-name.apply        { color:#aaa; }
-  .grade-name.membre       { color:var(--violet-glow); }
-  .grade-name.veteran      { color:var(--or); }
-  .grade-name.sousofficier { color:#e88030; }
-  .grade-name.officier     { color:var(--rouge); }
-  .grade-condition {
-    font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.15em;
-    color:var(--texte-pale); margin-bottom:0.8rem; font-style:italic;
+  .grade-step-dot.apply        { background:#555; border-color:#888; }
+  .grade-step-dot.membre       { background:rgba(107,53,200,0.5); border-color:var(--violet-glow); }
+  .grade-step-dot.veteran      { background:rgba(201,162,39,0.4); border-color:var(--or); }
+  .grade-step-dot.sousofficier { background:rgba(232,130,30,0.4); border-color:#e88030; }
+  .grade-step-dot.officier     { background:rgba(232,90,90,0.4); border-color:var(--rouge); }
+  .grade-step-name {
+    font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.18em;
+    text-transform:uppercase; text-align:center; margin-bottom:0.4rem;
   }
-  .grade-roles { display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .grade-step-name.apply        { color:#888; }
+  .grade-step-name.membre       { color:var(--violet-glow); }
+  .grade-step-name.veteran      { color:var(--or); }
+  .grade-step-name.sousofficier { color:#e88030; }
+  .grade-step-name.officier     { color:var(--rouge); }
+  .grade-step-cond {
+    font-size:0.68rem; color:var(--texte-pale); text-align:center;
+    margin-bottom:0.6rem; line-height:1.4;
+  }
+  .grade-step-roles { display:flex; flex-wrap:wrap; gap:0.3rem; justify-content:center; }
   .grade-role-tag {
-    font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.12em;
-    text-transform:uppercase; padding:0.2rem 0.6rem;
-    border:1px solid var(--border-or); color:var(--or);
-    background:rgba(201,162,39,0.06);
-  }
-  .grade-arrow {
-    text-align:center; color:var(--border-or); font-size:1.2rem;
-    margin-bottom:0.8rem; letter-spacing:0.3em;
+    font-family:'Cinzel',serif; font-size:0.45rem; letter-spacing:0.1em;
+    text-transform:uppercase; padding:0.15rem 0.45rem;
+    border:1px solid var(--border-violet); color:var(--texte-pale);
   }
 
   /* Dropdown grade custom */
@@ -268,72 +265,54 @@
     <div class="section-hdr">
       <h2>⚔ Progression des Grades</h2>
     </div>
-    <div class="grades-section" id="grades-section">
+    <div class="grades-timeline">
 
-      <div class="grade-card">
-        <div class="grade-badge apply">⚪</div>
-        <div class="grade-info">
-          <div class="grade-name apply">Apply</div>
-          <div class="grade-condition">Premier contact avec un recruteur de la guilde</div>
-          <div class="grade-roles"><span class="grade-role-tag">Accès limité</span></div>
+      <div class="grade-step">
+        <div class="grade-step-dot apply"></div>
+        <div class="grade-step-name apply">Apply</div>
+        <div class="grade-step-cond">1er contact recruteur</div>
+        <div class="grade-step-roles"><span class="grade-role-tag">Accès limité</span></div>
+      </div>
+
+      <div class="grade-step">
+        <div class="grade-step-dot membre"></div>
+        <div class="grade-step-name membre">Membre</div>
+        <div class="grade-step-cond">Automatique</div>
+        <div class="grade-step-roles"><span class="grade-role-tag">Dashboard</span></div>
+      </div>
+
+      <div class="grade-step">
+        <div class="grade-step-dot veteran"></div>
+        <div class="grade-step-name veteran">Vétéran</div>
+        <div class="grade-step-cond">500 LP</div>
+        <div class="grade-step-roles">
+          <span class="grade-role-tag">RH</span>
+          <span class="grade-role-tag">Aspirant FC</span>
+          <span class="grade-role-tag">Assistant FC</span>
+          <span class="grade-role-tag">Développeur</span>
+          <span class="grade-role-tag">Recruteur</span>
+          <span class="grade-role-tag">Logistique</span>
         </div>
       </div>
 
-      <div class="grade-arrow">▼</div>
-
-      <div class="grade-card">
-        <div class="grade-badge membre">🔵</div>
-        <div class="grade-info">
-          <div class="grade-name membre">Membre</div>
-          <div class="grade-condition">Automatique après premier contact recruteur</div>
-          <div class="grade-roles"><span class="grade-role-tag">Accès Dashboard</span></div>
+      <div class="grade-step">
+        <div class="grade-step-dot sousofficier"></div>
+        <div class="grade-step-name sousofficier">Sous-Officier</div>
+        <div class="grade-step-cond">Vote Officiers</div>
+        <div class="grade-step-roles">
+          <span class="grade-role-tag">Skirmish FC</span>
+          <span class="grade-role-tag">Team SRP</span>
+          <span class="grade-role-tag">Infrastructure</span>
         </div>
       </div>
 
-      <div class="grade-arrow">▼ 500 LP</div>
-
-      <div class="grade-card">
-        <div class="grade-badge veteran">⭐</div>
-        <div class="grade-info">
-          <div class="grade-name veteran">Vétéran</div>
-          <div class="grade-condition">500 points de loyauté (LP)</div>
-          <div class="grade-roles">
-            <span class="grade-role-tag">RH</span>
-            <span class="grade-role-tag">Aspirant FC</span>
-            <span class="grade-role-tag">Assistant FC</span>
-            <span class="grade-role-tag">Développeur</span>
-            <span class="grade-role-tag">Recruteur</span>
-            <span class="grade-role-tag">Logistique Alliance</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="grade-arrow">▼ Vote Officiers</div>
-
-      <div class="grade-card">
-        <div class="grade-badge sousofficier">🟠</div>
-        <div class="grade-info">
-          <div class="grade-name sousofficier">Sous-Officier</div>
-          <div class="grade-condition">Recommandation conseil + approbation majorité Officiers</div>
-          <div class="grade-roles">
-            <span class="grade-role-tag">Skirmish FC</span>
-            <span class="grade-role-tag">Team SRP</span>
-            <span class="grade-role-tag">Team Infrastructure</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="grade-arrow">▼ Leadership + Élection</div>
-
-      <div class="grade-card">
-        <div class="grade-badge officier">🔴</div>
-        <div class="grade-info">
-          <div class="grade-name officier">Officier</div>
-          <div class="grade-condition">Leadership exceptionnel + élu par les Officiers actuels</div>
-          <div class="grade-roles">
-            <span class="grade-role-tag">Diplomate</span>
-            <span class="grade-role-tag">Tactical Fleet Commander</span>
-          </div>
+      <div class="grade-step">
+        <div class="grade-step-dot officier"></div>
+        <div class="grade-step-name officier">Officier</div>
+        <div class="grade-step-cond">Leadership + Élection</div>
+        <div class="grade-step-roles">
+          <span class="grade-role-tag">Diplomate</span>
+          <span class="grade-role-tag">Tactical FC</span>
         </div>
       </div>
 
