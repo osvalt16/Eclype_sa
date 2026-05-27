@@ -488,127 +488,51 @@ async function refuser(userId) {
 
 function renderTable(users) {
   var tbl = document.getElementById('members-table');
-  if (!users.length) { tbl.innerHTML = '<div class="log-empty">Aucun membre.</div>'; return; }
+  if (!users.length) { tbl.innerHTML = '<div class="log-empty">Aucun membre actif.</div>'; return; }
 
-  var table = document.createElement('table');
+  var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
 
-  // Header
-  var thead = document.createElement('thead');
-  var hrow  = document.createElement('tr');
-  ['Pseudo','Email','Grade','Inscrit le','Statut','Droits','Action'].forEach(function(h) {
-    var th = document.createElement('th');
-    th.textContent = h;
-    hrow.appendChild(th);
-  });
-  thead.appendChild(hrow);
-  table.appendChild(thead);
-
-  var tbody = document.createElement('tbody');
+  var html = '<table><thead><tr>';
+  html += '<th>Pseudo</th><th>Email</th><th>Grade</th><th>Inscrit le</th><th>Statut</th><th>Droits</th><th>Action</th>';
+  html += '</tr></thead><tbody>';
 
   users.forEach(function(u) {
-    var droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
-    var isMe  = u.id === currentUser.id;
-    var row   = document.createElement('tr');
+    var droit     = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
+    var isMe      = u.id === currentUser.id;
+    var rang      = grades.includes(u.rang) ? u.rang : 'Membre';
+    var date      = new Date(u.createdAt).toLocaleDateString('fr-FR');
 
-    // Pseudo
-    var tdP = document.createElement('td');
-    tdP.textContent = u.pseudo;
-    tdP.style.fontFamily = 'Cinzel, serif';
-    tdP.style.color = '#fff';
-    row.appendChild(tdP);
+    // Options du select
+    var options = grades.map(function(g) {
+      return '<option value="' + g + '"' + (g === rang ? ' selected' : '') + '>' + g + '</option>';
+    }).join('');
 
-    // Email
-    var tdE = document.createElement('td');
-    tdE.textContent = u.email;
-    tdE.style.fontSize = '0.78rem';
-    tdE.style.color = 'var(--texte-pale)';
-    row.appendChild(tdE);
-
-    // Rang
-    var tdR = document.createElement('td');
-    var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
-    var rangActuel = u.rang || 'Membre';
-    if (!grades.includes(rangActuel)) rangActuel = 'Membre';
-
-    var sel = document.createElement('select');
-    sel.style.cssText = 'font-family:Cinzel,serif;font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(7,6,13,0.9);border:1px solid rgba(107,53,200,0.4);color:#d4c9e8;padding:0.35rem 0.5rem;cursor:pointer;outline:none;width:100%;';
-    grades.forEach(function(g) {
-      var opt = document.createElement('option');
-      opt.value = g; opt.textContent = g;
-      opt.style.background = '#1a0f2e';
-      if (g === rangActuel) opt.selected = true;
-      sel.appendChild(opt);
-    });
-    if (!isMe) {
-      sel.addEventListener('change', (function(id){ return function(){ setGrade(id, this.value); }; })(u.id));
-    } else { sel.disabled = true; sel.style.opacity = '0.5'; }
-    tdR.appendChild(sel);
-    row.appendChild(tdR);
-
-    // Date
-    var tdD = document.createElement('td');
-    tdD.textContent = new Date(u.createdAt).toLocaleDateString('fr-FR');
-    tdD.style.color = 'var(--texte-pale)';
-    row.appendChild(tdD);
-
-    // Statut
-    var tdS = document.createElement('td');
-    var span = document.createElement('span');
-    span.className = 'badge ' + (u.actif ? 'actif' : 'inactif');
-    span.textContent = u.actif ? 'Actif' : 'Inactif';
-    tdS.appendChild(span);
-    row.appendChild(tdS);
-
-    // Droits
-    var tdDr = document.createElement('td');
-    var div  = document.createElement('div');
-    div.className = 'role-badges';
-
-    ['membre','ops','admin'].forEach(function(role) {
-      var labels = {membre:'Membre', ops:'+ Ops', admin:'Admin'};
-      var btn = document.createElement('button');
-      btn.className = 'role-btn ' + role + (droit === role ? ' active' : '');
-      btn.textContent = labels[role];
-      if (!isMe) {
-        btn.onclick = (function(id, r) {
-          return function() { setRole(id, r); };
-        })(u.id, role);
-      } else {
-        btn.disabled = true;
-      }
-      div.appendChild(btn);
-    });
-    tdDr.appendChild(div);
-    row.appendChild(tdDr);
+    // Boutons droits
+    var btnM = '<button class="role-btn membre' + (droit==='membre'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','membre')">Membre</button>';
+    var btnO = '<button class="role-btn ops' + (droit==='ops'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','ops')">&plus; Ops</button>';
+    var btnA = '<button class="role-btn admin' + (droit==='admin'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','admin')">Admin</button>';
 
     // Action
-    var tdA = document.createElement('td');
-    if (!isMe) {
-      var btnA = document.createElement('button');
-      btnA.className = 'btn-xs';
-      btnA.textContent = u.actif ? 'Désactiver' : 'Activer';
-      btnA.onclick = (function(id, actif) {
-        return function() { toggleActif(id, actif); };
-      })(u.id, !u.actif);
-      tdA.appendChild(btnA);
-    } else {
-      var sp = document.createElement('span');
-      sp.textContent = 'Toi';
-      sp.style.fontSize = '0.7rem';
-      sp.style.color = 'var(--texte-pale)';
-      sp.style.fontStyle = 'italic';
-      tdA.appendChild(sp);
-    }
-    row.appendChild(tdA);
-    tbody.appendChild(row);
+    var action = isMe
+      ? '<span style="font-size:0.7rem;color:var(--texte-pale);font-style:italic">Toi</span>'
+      : '<button class="btn-xs" onclick="toggleActif('' + u.id + '',' + (!u.actif) + ')">' + (u.actif?'Désactiver':'Activer') + '</button>';
+
+    html += '<tr>';
+    html += '<td style="font-family:Cinzel,serif;color:#fff">' + u.pseudo + '</td>';
+    html += '<td style="font-size:0.78rem;color:var(--texte-pale)">' + u.email + '</td>';
+    html += '<td><select onchange="setGrade('' + u.id + '',this.value)" style="background:rgba(7,6,13,0.9);border:1px solid rgba(107,53,200,0.4);color:#d4c9e8;padding:0.3rem;font-size:0.8rem;cursor:pointer;outline:none;"' + (isMe?' disabled':'') + '>' + options + '</select></td>';
+    html += '<td style="font-size:0.75rem;color:var(--texte-pale)">' + date + '</td>';
+    html += '<td><span class="badge ' + (u.actif?'actif':'inactif') + '">' + (u.actif?'Actif':'Inactif') + '</span></td>';
+    html += '<td><div class="role-badges">' + btnM + btnO + btnA + '</div></td>';
+    html += '<td>' + action + '</td>';
+    html += '</tr>';
   });
 
-  table.appendChild(tbody);
-  tbl.innerHTML = '';
-  tbl.appendChild(table);
+  html += '</tbody></table>';
+  tbl.innerHTML = html;
 }
 
-/* ══ ACTIONS DROITS ══ */
+
 async function setGrade(userId, grade) {
   await updateUser(userId, { rang: grade });
   showToast('✦ Grade mis à jour → ' + grade);
