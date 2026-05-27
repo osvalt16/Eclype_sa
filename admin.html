@@ -95,6 +95,24 @@
   .btn-xs{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.25rem 0.55rem;cursor:pointer;transition:all 0.3s;}
   .btn-xs:hover{background:rgba(232,90,90,0.1);}
 
+  /* DEMANDES EN ATTENTE */
+  .demandes-box { border:1px solid rgba(201,162,39,0.5); background:rgba(26,15,46,0.4); margin-bottom:2.5rem; }
+  .demandes-header { display:flex; align-items:center; justify-content:space-between; padding:1.2rem 1.5rem; border-bottom:1px solid var(--border-or); }
+  .demandes-header h2 { font-family:'Cinzel',serif; font-size:0.78rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--or); }
+  .demande-count { font-family:'Cinzel',serif; font-size:0.65rem; color:var(--rouge); background:rgba(232,90,90,0.15); border:1px solid rgba(232,90,90,0.4); padding:0.15rem 0.6rem; border-radius:2px; }
+  .demande-item { display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:center; padding:1.2rem 1.5rem; border-bottom:1px solid var(--border-violet); }
+  .demande-item:last-child { border-bottom:none; }
+  .demande-info { }
+  .demande-pseudo { font-family:'Cinzel',serif; font-size:0.92rem; color:#fff; margin-bottom:0.2rem; }
+  .demande-email { font-size:0.8rem; color:var(--texte-pale); margin-bottom:0.2rem; }
+  .demande-date { font-family:'Cinzel',serif; font-size:0.55rem; letter-spacing:0.12em; color:var(--texte-pale); }
+  .demande-actions { display:flex; gap:0.6rem; }
+  .btn-approuver { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--vert); background:none; border:1px solid rgba(94,207,160,0.4); padding:0.4rem 0.9rem; cursor:pointer; transition:all 0.3s; }
+  .btn-approuver:hover { background:rgba(94,207,160,0.12); }
+  .btn-refuser { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--rouge); background:none; border:1px solid rgba(232,90,90,0.3); padding:0.4rem 0.9rem; cursor:pointer; transition:all 0.3s; }
+  .btn-refuser:hover { background:rgba(232,90,90,0.1); }
+  .demandes-empty { padding:1.5rem; text-align:center; color:var(--texte-pale); font-style:italic; font-size:0.88rem; }
+
   /* TOAST */
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -162,6 +180,15 @@
         <div class="stat-value cyan" id="s-admins">—</div>
         <div class="stat-detail">comptes admin</div>
       </div>
+    </div>
+
+    <!-- DEMANDES EN ATTENTE -->
+    <div class="demandes-box" id="demandes-box" style="display:none">
+      <div class="demandes-header">
+        <h2>⏳ Demandes en attente</h2>
+        <span class="demande-count" id="demande-count">0</span>
+      </div>
+      <div id="demandes-list"></div>
     </div>
 
     <!-- MEMBRES -->
@@ -248,16 +275,89 @@ async function charger() {
     // Stats
     const logs  = getLogs();
     const today = new Date().toDateString();
-    document.getElementById('s-total').textContent  = users.filter(u=>u.actif).length;
+    var pending = users.filter(function(u){return !u.actif && u.statut==='en_attente';}).length;
+    document.getElementById('s-total').textContent  = users.filter(function(u){return u.actif;}).length + (pending ? ' (+'+pending+' en attente)' : '');
     document.getElementById('s-today').textContent  = logs.filter(l=>new Date(l.ts).toDateString()===today).length;
     document.getElementById('s-ops').textContent    = users.filter(u=>u.dashboard&&!u.admin).length;
     document.getElementById('s-admins').textContent = users.filter(u=>u.admin).length;
 
-    // Table
-    renderTable(users);
+    // Demandes en attente
+    renderDemandes(users);
+    // Table membres actifs
+    renderTable(users.filter(function(u) { return u.actif; }));
     renderLogs();
 
   } catch(e) { console.error(e); showToast('❌ Erreur chargement'); }
+}
+
+function renderDemandes(users) {
+  var pending = users.filter(function(u) { return !u.actif && u.statut === 'en_attente'; });
+  var box     = document.getElementById('demandes-box');
+  var list    = document.getElementById('demandes-list');
+  var count   = document.getElementById('demande-count');
+
+  if (!pending.length) { box.style.display = 'none'; return; }
+
+  box.style.display = 'block';
+  count.textContent = pending.length;
+
+  list.innerHTML = '';
+  pending.forEach(function(u) {
+    var item = document.createElement('div');
+    item.className = 'demande-item';
+
+    var info = document.createElement('div');
+    info.className = 'demande-info';
+    info.innerHTML = '<div class="demande-pseudo">' + u.pseudo + '</div>'
+      + '<div class="demande-email">' + u.email + '</div>'
+      + '<div class="demande-date">Inscrit le ' + new Date(u.createdAt).toLocaleDateString('fr-FR') + '</div>';
+
+    var actions = document.createElement('div');
+    actions.className = 'demande-actions';
+
+    var btnOk = document.createElement('button');
+    btnOk.className = 'btn-approuver';
+    btnOk.textContent = '✓ Approuver';
+    btnOk.onclick = (function(id) { return function() { approuver(id); }; })(u.id);
+
+    var btnNo = document.createElement('button');
+    btnNo.className = 'btn-refuser';
+    btnNo.textContent = '✕ Refuser';
+    btnNo.onclick = (function(id) { return function() { refuser(id); }; })(u.id);
+
+    actions.appendChild(btnOk);
+    actions.appendChild(btnNo);
+    item.appendChild(info);
+    item.appendChild(actions);
+    list.appendChild(item);
+  });
+}
+
+async function approuver(userId) {
+  await updateUser(userId, { actif: true, statut: 'approuve' });
+  showToast('✦ Compte approuvé !');
+  charger();
+}
+
+async function refuser(userId) {
+  if (!confirm('Supprimer définitivement cette demande ?')) return;
+  // Supprimer l'utilisateur
+  var token   = await getToken();
+  var apiUrl  = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/users.json';
+  var res     = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + token } });
+  var gjson   = await res.json();
+  var sha     = gjson.sha;
+  var data    = JSON.parse(atob(gjson.content.replace(/
+/g,'')));
+  data.users  = data.users.filter(function(u) { return u.id !== userId; });
+  var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  await fetch(apiUrl, {
+    method: 'PUT',
+    headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Refuse user ' + userId, content: content, sha: sha })
+  });
+  showToast('Demande refusée et supprimée');
+  charger();
 }
 
 function renderTable(users) {
