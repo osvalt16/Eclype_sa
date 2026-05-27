@@ -347,8 +347,7 @@ async function refuser(userId) {
   var res     = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + token } });
   var gjson   = await res.json();
   var sha     = gjson.sha;
-  var data    = JSON.parse(atob(gjson.content.replace(/
-/g,'')));
+  var data    = JSON.parse(atob(gjson.content.split('\n').join('')));
   data.users  = data.users.filter(function(u) { return u.id !== userId; });
   var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
   await fetch(apiUrl, {
