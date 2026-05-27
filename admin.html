@@ -488,57 +488,83 @@ async function refuser(userId) {
 
 function renderTable(users) {
   var tbl = document.getElementById('members-table');
-  if (!users.length) { tbl.innerHTML = '<div class="log-empty">Aucun membre actif.</div>'; return; }
-
-  var grades = ['Apply', 'Membre', 'Vétéran', 'Sous-Officier', 'Officier'];
-
-  var rows = '';
-  for (var i = 0; i < users.length; i++) {
-    var u     = users[i];
-    var droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
-    var isMe  = u.id === currentUser.id;
-    var rang  = grades.indexOf(u.rang) >= 0 ? u.rang : 'Membre';
-    var date  = new Date(u.createdAt).toLocaleDateString('fr-FR');
-
-    var opts = '';
-    for (var j = 0; j < grades.length; j++) {
-      opts += '<option value="' + grades[j] + '"' + (grades[j] === rang ? ' selected' : '') + '>' + grades[j] + '</option>';
-    }
-
-    var sel = '<select style="background:rgba(7,6,13,0.9);border:1px solid rgba(107,53,200,0.4);color:#d4c9e8;padding:0.3rem;font-size:0.8rem;cursor:pointer;outline:none;"'
-      + (isMe ? ' disabled' : ' data-uid="' + u.id + '" onchange="setGrade(this.dataset.uid,this.value)"')
-      + '>' + opts + '</select>';
-
-    var mA = droit === 'membre' ? ' active' : '';
-    var oA = droit === 'ops'    ? ' active' : '';
-    var aA = droit === 'admin'  ? ' active' : '';
-    var dis = isMe ? ' disabled' : '';
-
-    var btns = '<div class="role-badges">'
-      + '<button class="role-btn membre' + mA + '"' + dis + (isMe ? '' : ' data-uid="' + u.id + '" data-role="membre" onclick="setRole(this.dataset.uid,this.dataset.role)"') + '>Membre</button>'
-      + '<button class="role-btn ops' + oA + '"' + dis + (isMe ? '' : ' data-uid="' + u.id + '" data-role="ops" onclick="setRole(this.dataset.uid,this.dataset.role)"') + '>+ Ops</button>'
-      + '<button class="role-btn admin' + aA + '"' + dis + (isMe ? '' : ' data-uid="' + u.id + '" data-role="admin" onclick="setRole(this.dataset.uid,this.dataset.role)"') + '>Admin</button>'
-      + '</div>';
-
-    var newActif = u.actif ? 0 : 1;
-    var actionLabel = u.actif ? 'Désactiver' : 'Activer';
-    var action = isMe
-      ? '<span style="font-size:0.7rem;color:var(--texte-pale);font-style:italic">Toi</span>'
-      : '<button class="btn-xs" onclick="toggleActif('' + u.id + '',' + newActif + ')">' + actionLabel + '</button>';
-
-    rows += '<tr>'
-      + '<td style="font-family:Cinzel,serif;color:#fff">' + u.pseudo + '</td>'
-      + '<td style="font-size:0.78rem;color:var(--texte-pale)">' + u.email + '</td>'
-      + '<td>' + sel + '</td>'
-      + '<td style="font-size:0.75rem;color:var(--texte-pale)">' + date + '</td>'
-      + '<td><span class="badge ' + (u.actif ? 'actif' : 'inactif') + '">' + (u.actif ? 'Actif' : 'Inactif') + '</span></td>'
-      + '<td>' + btns + '</td>'
-      + '<td>' + action + '</td>'
-      + '</tr>';
+  if (!users.length) {
+    tbl.innerHTML = '<div class="log-empty">Aucun membre actif.</div>';
+    return;
   }
 
-  tbl.innerHTML = '<table><thead><tr><th>Pseudo</th><th>Email</th><th>Grade</th><th>Inscrit le</th><th>Statut</th><th>Droits</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  var grades = ['Apply', 'Membre', 'Vétéran', 'Sous-Officier', 'Officier'];
+  var html   = buildTableHTML(users, grades, currentUser.id);
+  tbl.innerHTML = html;
 }
+
+function buildTableHTML(users, grades, meId) {
+  var h = '<table>';
+  h += '<thead><tr>';
+  h += '<th>Pseudo</th><th>Email</th><th>Grade</th>';
+  h += '<th>Inscrit le</th><th>Statut</th><th>Droits</th><th>Action</th>';
+  h += '</tr></thead><tbody>';
+
+  for (var i = 0; i < users.length; i++) {
+    h += buildRow(users[i], grades, meId);
+  }
+
+  h += '</tbody></table>';
+  return h;
+}
+
+function buildRow(u, grades, meId) {
+  var isMe  = u.id === meId;
+  var droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
+  var rang  = grades.indexOf(u.rang) >= 0 ? u.rang : 'Membre';
+  var date  = new Date(u.createdAt).toLocaleDateString('fr-FR');
+  var uid   = u.id;
+
+  // Select grade
+  var opts = '';
+  for (var j = 0; j < grades.length; j++) {
+    var sel = grades[j] === rang ? ' selected' : '';
+    opts += '<option value="' + grades[j] + '"' + sel + '>' + grades[j] + '</option>';
+  }
+  var selectDisabled = isMe ? ' disabled' : '';
+  var selectChange   = isMe ? '' : ' onchange="handleGradeChange(this)"';
+  var gradeCell = '<select data-uid="' + uid + '" class="grade-sel"'
+    + selectDisabled + selectChange
+    + ' style="background:rgba(7,6,13,0.9);border:1px solid rgba(107,53,200,0.4);color:#d4c9e8;padding:0.3rem;font-size:0.8rem;cursor:pointer;outline:none;">'
+    + opts + '</select>';
+
+  // Boutons droits
+  var disAttr = isMe ? ' disabled' : '';
+  var mActive = droit === 'membre' ? ' active' : '';
+  var oActive = droit === 'ops'    ? ' active' : '';
+  var aActive = droit === 'admin'  ? ' active' : '';
+  var droitsCell = '<div class="role-badges">'
+    + '<button class="role-btn membre' + mActive + '"' + disAttr + ' data-uid="' + uid + '" data-role="membre" onclick="handleRoleClick(this)">Membre</button>'
+    + '<button class="role-btn ops' + oActive + '"'    + disAttr + ' data-uid="' + uid + '" data-role="ops" onclick="handleRoleClick(this)">+ Ops</button>'
+    + '<button class="role-btn admin' + aActive + '"'  + disAttr + ' data-uid="' + uid + '" data-role="admin" onclick="handleRoleClick(this)">Admin</button>'
+    + '</div>';
+
+  // Action
+  var actifLabel = u.actif ? 'Désactiver' : 'Activer';
+  var newActif   = u.actif ? 0 : 1;
+  var actionCell = isMe
+    ? '<span style="font-size:0.7rem;color:var(--texte-pale);font-style:italic">Toi</span>'
+    : '<button class="btn-xs" data-uid="' + uid + '" data-val="' + newActif + '" onclick="handleActifClick(this)">' + actifLabel + '</button>';
+
+  return '<tr>'
+    + '<td style="font-family:Cinzel,serif;color:#fff">' + u.pseudo + '</td>'
+    + '<td style="font-size:0.78rem;color:var(--texte-pale)">' + u.email + '</td>'
+    + '<td>' + gradeCell + '</td>'
+    + '<td style="font-size:0.75rem;color:var(--texte-pale)">' + date + '</td>'
+    + '<td><span class="badge ' + (u.actif ? 'actif' : 'inactif') + '">' + (u.actif ? 'Actif' : 'Inactif') + '</span></td>'
+    + '<td>' + droitsCell + '</td>'
+    + '<td>' + actionCell + '</td>'
+    + '</tr>';
+}
+
+function handleGradeChange(el) { setGrade(el.dataset.uid, el.value); }
+function handleRoleClick(el)   { setRole(el.dataset.uid, el.dataset.role); }
+function handleActifClick(el)  { toggleActif(el.dataset.uid, el.dataset.val === '1'); }
 
 
 async function setGrade(userId, grade) {
