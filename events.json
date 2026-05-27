@@ -1,3 +1,14 @@
 {
-  "events": []
+  "events": [
+    {
+      "id": "ev_1779871820889",
+      "nom": "Minage",
+      "type": "mining",
+      "date": "2026-05-27",
+      "heure": "10:51",
+      "description": "miner la planete \"Arian\"  ressource copper ore",
+      "createdBy": "OswalT",
+      "createdAt": "2026-05-27T08:50:20.889Z"
+    }
+  ]
 }
