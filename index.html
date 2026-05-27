@@ -1266,7 +1266,7 @@ function handleSubmit() {
 }
 
 /* ── PLANNING — GESTION SESSION ── */
-const EVENTS_URL_IDX = 'https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/events.json';
+const EVENTS_URL_IDX = 'https://dahmonpmxqqfmhiqugte.supabase.co/rest/v1/events?select=*&order=date.asc';
 const monthNamesIdx  = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 const dayLabelsIdx   = ['L','M','M','J','V','S','D'];
 const todayIdx = new Date();
@@ -1443,7 +1443,7 @@ if (document.readyState === 'loading') {
 /* ── PHOTOS MEMBRES ── */
 (async function loadMemberData() {
   try {
-    const res  = await fetch('https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/users.json?t='+Date.now());
+    const res  = await fetch('https://dahmonpmxqqfmhiqugte.supabase.co/rest/v1/users?select=pseudo,photo,x_link&actif=eq.true'+Date.now());
     const data = await res.json();
     const membres = data.users || data.membres || [];
     membres.forEach(m => {
