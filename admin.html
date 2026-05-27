@@ -490,46 +490,52 @@ function renderTable(users) {
   var tbl = document.getElementById('members-table');
   if (!users.length) { tbl.innerHTML = '<div class="log-empty">Aucun membre actif.</div>'; return; }
 
-  var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
+  var grades = ['Apply', 'Membre', 'Vétéran', 'Sous-Officier', 'Officier'];
 
-  var html = '<table><thead><tr>';
-  html += '<th>Pseudo</th><th>Email</th><th>Grade</th><th>Inscrit le</th><th>Statut</th><th>Droits</th><th>Action</th>';
-  html += '</tr></thead><tbody>';
+  var rows = '';
+  for (var i = 0; i < users.length; i++) {
+    var u     = users[i];
+    var droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
+    var isMe  = u.id === currentUser.id;
+    var rang  = grades.indexOf(u.rang) >= 0 ? u.rang : 'Membre';
+    var date  = new Date(u.createdAt).toLocaleDateString('fr-FR');
 
-  users.forEach(function(u) {
-    var droit     = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
-    var isMe      = u.id === currentUser.id;
-    var rang      = grades.includes(u.rang) ? u.rang : 'Membre';
-    var date      = new Date(u.createdAt).toLocaleDateString('fr-FR');
+    var opts = '';
+    for (var j = 0; j < grades.length; j++) {
+      opts += '<option value="' + grades[j] + '"' + (grades[j] === rang ? ' selected' : '') + '>' + grades[j] + '</option>';
+    }
 
-    // Options du select
-    var options = grades.map(function(g) {
-      return '<option value="' + g + '"' + (g === rang ? ' selected' : '') + '>' + g + '</option>';
-    }).join('');
+    var sel = '<select style="background:rgba(7,6,13,0.9);border:1px solid rgba(107,53,200,0.4);color:#d4c9e8;padding:0.3rem;font-size:0.8rem;cursor:pointer;outline:none;"'
+      + (isMe ? ' disabled' : ' data-uid="' + u.id + '" onchange="setGrade(this.dataset.uid,this.value)"')
+      + '>' + opts + '</select>';
 
-    // Boutons droits
-    var btnM = '<button class="role-btn membre' + (droit==='membre'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','membre')">Membre</button>';
-    var btnO = '<button class="role-btn ops' + (droit==='ops'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','ops')">&plus; Ops</button>';
-    var btnA = '<button class="role-btn admin' + (droit==='admin'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','admin')">Admin</button>';
+    var mA = droit === 'membre' ? ' active' : '';
+    var oA = droit === 'ops'    ? ' active' : '';
+    var aA = droit === 'admin'  ? ' active' : '';
+    var dis = isMe ? ' disabled' : '';
 
-    // Action
+    var btns = '<div class="role-badges">'
+      + '<button class="role-btn membre' + mA + '"' + dis + (isMe ? '' : ' data-uid="' + u.id + '" data-role="membre" onclick="setRole(this.dataset.uid,this.dataset.role)"') + '>Membre</button>'
+      + '<button class="role-btn ops' + oA + '"' + dis + (isMe ? '' : ' data-uid="' + u.id + '" data-role="ops" onclick="setRole(this.dataset.uid,this.dataset.role)"') + '>+ Ops</button>'
+      + '<button class="role-btn admin' + aA + '"' + dis + (isMe ? '' : ' data-uid="' + u.id + '" data-role="admin" onclick="setRole(this.dataset.uid,this.dataset.role)"') + '>Admin</button>'
+      + '</div>';
+
     var action = isMe
       ? '<span style="font-size:0.7rem;color:var(--texte-pale);font-style:italic">Toi</span>'
-      : '<button class="btn-xs" onclick="toggleActif('' + u.id + '',' + (!u.actif) + ')">' + (u.actif?'Désactiver':'Activer') + '</button>';
+      : '<button class="btn-xs" data-uid="' + u.id + '" data-actif="' + (!u.actif) + '" onclick="toggleActif(this.dataset.uid,this.dataset.actif==='true')">' + (u.actif ? 'Désactiver' : 'Activer') + '</button>';
 
-    html += '<tr>';
-    html += '<td style="font-family:Cinzel,serif;color:#fff">' + u.pseudo + '</td>';
-    html += '<td style="font-size:0.78rem;color:var(--texte-pale)">' + u.email + '</td>';
-    html += '<td><select onchange="setGrade('' + u.id + '',this.value)" style="background:rgba(7,6,13,0.9);border:1px solid rgba(107,53,200,0.4);color:#d4c9e8;padding:0.3rem;font-size:0.8rem;cursor:pointer;outline:none;"' + (isMe?' disabled':'') + '>' + options + '</select></td>';
-    html += '<td style="font-size:0.75rem;color:var(--texte-pale)">' + date + '</td>';
-    html += '<td><span class="badge ' + (u.actif?'actif':'inactif') + '">' + (u.actif?'Actif':'Inactif') + '</span></td>';
-    html += '<td><div class="role-badges">' + btnM + btnO + btnA + '</div></td>';
-    html += '<td>' + action + '</td>';
-    html += '</tr>';
-  });
+    rows += '<tr>'
+      + '<td style="font-family:Cinzel,serif;color:#fff">' + u.pseudo + '</td>'
+      + '<td style="font-size:0.78rem;color:var(--texte-pale)">' + u.email + '</td>'
+      + '<td>' + sel + '</td>'
+      + '<td style="font-size:0.75rem;color:var(--texte-pale)">' + date + '</td>'
+      + '<td><span class="badge ' + (u.actif ? 'actif' : 'inactif') + '">' + (u.actif ? 'Actif' : 'Inactif') + '</span></td>'
+      + '<td>' + btns + '</td>'
+      + '<td>' + action + '</td>'
+      + '</tr>';
+  }
 
-  html += '</tbody></table>';
-  tbl.innerHTML = html;
+  tbl.innerHTML = '<table><thead><tr><th>Pseudo</th><th>Email</th><th>Grade</th><th>Inscrit le</th><th>Statut</th><th>Droits</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table>';
 }
 
 
