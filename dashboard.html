@@ -405,30 +405,32 @@ async function doLogin(e) {
 
   const hash = await sha256(password);
 
-  const { data, error } = await supa.from('users')
+  // Chercher par email d'abord
+  const { data: userByEmail, error: emailError } = await supa.from('users')
     .select('*')
     .eq('email', email)
-    .eq('password', hash)
     .single();
 
-  if (error || !data) {
-    // Vérifier si compte en attente
-    const { data: pending } = await supa.from('users').select('actif,statut').eq('email', email).single();
-    if (pending && !pending.actif) {
-      msg.className = 'auth-msg err';
-      msg.textContent = '⏳ Ton compte est en attente de validation par un administrateur.';
-    } else {
-      msg.className = 'auth-msg err';
-      msg.textContent = '❌ Email ou mot de passe incorrect';
-    }
+  if (emailError || !userByEmail) {
+    msg.className = 'auth-msg err';
+    msg.textContent = '❌ Email introuvable';
     return;
   }
 
-  if (!data.actif) {
+  if (!userByEmail.actif) {
     msg.className = 'auth-msg err';
     msg.textContent = '⏳ Ton compte est en attente de validation.';
     return;
   }
+
+  // Vérifier le mot de passe
+  if (userByEmail.password !== hash) {
+    msg.className = 'auth-msg err';
+    msg.textContent = '❌ Mot de passe incorrect';
+    return;
+  }
+
+  var data = userByEmail;
 
   currentUser = data;
   const storage = remember ? localStorage : sessionStorage;
