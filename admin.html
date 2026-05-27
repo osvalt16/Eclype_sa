@@ -520,9 +520,11 @@ function renderTable(users) {
       + '<button class="role-btn admin' + aA + '"' + dis + (isMe ? '' : ' data-uid="' + u.id + '" data-role="admin" onclick="setRole(this.dataset.uid,this.dataset.role)"') + '>Admin</button>'
       + '</div>';
 
+    var newActif = u.actif ? 0 : 1;
+    var actionLabel = u.actif ? 'Désactiver' : 'Activer';
     var action = isMe
       ? '<span style="font-size:0.7rem;color:var(--texte-pale);font-style:italic">Toi</span>'
-      : '<button class="btn-xs" data-uid="' + u.id + '" data-actif="' + (!u.actif) + '" onclick="toggleActif(this.dataset.uid,this.dataset.actif==='true')">' + (u.actif ? 'Désactiver' : 'Activer') + '</button>';
+      : '<button class="btn-xs" onclick="toggleActif('' + u.id + '',' + newActif + ')">' + actionLabel + '</button>';
 
     rows += '<tr>'
       + '<td style="font-family:Cinzel,serif;color:#fff">' + u.pseudo + '</td>'
