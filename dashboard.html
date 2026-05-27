@@ -369,10 +369,7 @@
             <button class="filter-tab" onclick="filterEvents('mining',this)">Mining</button>
           </div>
           <div class="events-list" id="events-list"><div class="empty-state">Aucune opération planifiée.</div></div>
-          <div id="no-access" class="access-denied" style="display:none;margin-top:1rem;">
-            <h3>🔒 Accès restreint</h3>
-            <p style="font-size:0.9rem;color:var(--texte-pale)">Tu n'as pas les droits pour créer des ops.</p>
-          </div>
+
         </div>
         <div>
           <div class="mini-cal-wrapper">
@@ -641,8 +638,11 @@ function afficherDashboard(u) {
   if (xEl && u.xLink) { xEl.href = u.xLink; xEl.style.display = 'inline-flex'; }
 
   // Droits
-  if (u.dashboard || u.admin) document.getElementById('btn-add').style.display = '';
-  else document.getElementById('no-access').style.display = 'block';
+  // Bouton créer op uniquement si droits
+  if (u.dashboard || u.admin) {
+    document.getElementById('btn-add').style.display = '';
+  }
+  // Tout le monde voit les events (no-access masqué)
 
   // Bouton Admin + onglets
   if (u.admin) {
