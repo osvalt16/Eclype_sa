@@ -183,6 +183,29 @@
   .grade-option:hover { background:rgba(201,162,39,0.1); color:var(--or); }
   .grade-option.active { color:var(--or); }
 
+  /* MEMBRES CARDS */
+  .membres-cards { display:flex; flex-direction:column; gap:0.6rem; }
+  .membre-row {
+    display:grid; grid-template-columns:1fr 160px 1fr auto;
+    gap:1.5rem; align-items:center;
+    border:1px solid var(--border-violet); padding:1rem 1.2rem;
+    background:rgba(10,8,20,0.8); transition:border-color 0.2s;
+  }
+  .membre-row:hover { border-color:var(--border-or); }
+  .mr-pseudo { font-family:'Cinzel',serif; font-size:0.85rem; color:#fff; margin-bottom:0.2rem; }
+  .mr-email  { font-size:0.75rem; color:var(--texte-pale); margin-bottom:0.15rem; }
+  .mr-date   { font-family:'Cinzel',serif; font-size:0.5rem; letter-spacing:0.1em; color:var(--texte-pale); }
+  .mr-label  { font-family:'Cinzel',serif; font-size:0.52rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--or); display:block; margin-bottom:0.4rem; }
+  .mr-select {
+    width:100%; padding:0.5rem 0.6rem;
+    background:rgba(7,6,13,0.9); border:1px solid var(--border-violet);
+    color:var(--texte); font-size:0.85rem; cursor:pointer; outline:none;
+    border-radius:0; -webkit-appearance:auto; appearance:auto;
+  }
+  .mr-select:focus { border-color:var(--or); }
+  .mr-select option { background:#1a0f2e; color:#d4c9e8; }
+  .membre-row-actions { display:flex; flex-direction:column; gap:0.4rem; align-items:flex-end; }
+
   /* TOAST */
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -493,78 +516,60 @@ function renderTable(users) {
     return;
   }
 
-  var grades = ['Apply', 'Membre', 'Vétéran', 'Sous-Officier', 'Officier'];
-  var html   = buildTableHTML(users, grades, currentUser.id);
-  tbl.innerHTML = html;
-}
+  var grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
 
-function buildTableHTML(users, grades, meId) {
-  var h = '<table>';
-  h += '<thead><tr>';
-  h += '<th>Pseudo</th><th>Email</th><th>Grade</th>';
-  h += '<th>Inscrit le</th><th>Statut</th><th>Droits</th><th>Action</th>';
-  h += '</tr></thead><tbody>';
+  // Construire les cartes membres (pas un tableau avec overflow)
+  var html = '<div class="membres-cards">';
 
   for (var i = 0; i < users.length; i++) {
-    h += buildRow(users[i], grades, meId);
+    var u     = users[i];
+    var isMe  = u.id === currentUser.id;
+    var droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
+    var rang  = grades.indexOf(u.rang) >= 0 ? u.rang : 'Membre';
+    var date  = new Date(u.createdAt).toLocaleDateString('fr-FR');
+
+    // Options grade
+    var opts = '';
+    for (var j = 0; j < grades.length; j++) {
+      opts += '<option value="' + grades[j] + '"' + (grades[j] === rang ? ' selected' : '') + '>' + grades[j] + '</option>';
+    }
+
+    html += '<div class="membre-row">';
+    html += '<div class="membre-row-info">';
+    html += '<div class="mr-pseudo">' + u.pseudo + '</div>';
+    html += '<div class="mr-email">' + u.email + '</div>';
+    html += '<div class="mr-date">Inscrit le ' + date + '</div>';
+    html += '</div>';
+
+    html += '<div class="membre-row-grade">';
+    html += '<label class="mr-label">Grade</label>';
+    html += '<select class="mr-select" onchange="setGrade('' + u.id + '',this.value)"' + (isMe ? ' disabled' : '') + '>' + opts + '</select>';
+    html += '</div>';
+
+    html += '<div class="membre-row-droits">';
+    html += '<label class="mr-label">Droits</label>';
+    html += '<div class="role-badges">';
+    html += '<button class="role-btn membre' + (droit==='membre'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','membre')">Membre</button>';
+    html += '<button class="role-btn ops' + (droit==='ops'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','ops')">&plus; Ops</button>';
+    html += '<button class="role-btn admin' + (droit==='admin'?' active':'') + '"' + (isMe?' disabled':'') + ' onclick="setRole('' + u.id + '','admin')">Admin</button>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="membre-row-actions">';
+    if (!isMe) {
+      html += '<span class="badge ' + (u.actif?'actif':'inactif') + '">' + (u.actif?'Actif':'Inactif') + '</span>';
+      html += '<button class="btn-xs" onclick="toggleActif('' + u.id + '',' + (u.actif?'false':'true') + ')">' + (u.actif?'Désactiver':'Activer') + '</button>';
+    } else {
+      html += '<span class="badge actif">Toi</span>';
+    }
+    html += '</div>';
+
+    html += '</div>';
   }
 
-  h += '</tbody></table>';
-  return h;
+  html += '</div>';
+  tbl.innerHTML = html;
 }
-
-function buildRow(u, grades, meId) {
-  var isMe  = u.id === meId;
-  var droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
-  var rang  = grades.indexOf(u.rang) >= 0 ? u.rang : 'Membre';
-  var date  = new Date(u.createdAt).toLocaleDateString('fr-FR');
-  var uid   = u.id;
-
-  // Select grade
-  var opts = '';
-  for (var j = 0; j < grades.length; j++) {
-    var sel = grades[j] === rang ? ' selected' : '';
-    opts += '<option value="' + grades[j] + '"' + sel + '>' + grades[j] + '</option>';
-  }
-  var selectDisabled = isMe ? ' disabled' : '';
-  var selectChange   = isMe ? '' : ' onchange="handleGradeChange(this)"';
-  var gradeCell = '<select data-uid="' + uid + '" class="grade-sel"'
-    + selectDisabled + selectChange
-    + ' style="background:rgba(7,6,13,0.9);border:1px solid rgba(107,53,200,0.4);color:#d4c9e8;padding:0.3rem;font-size:0.8rem;cursor:pointer;outline:none;">'
-    + opts + '</select>';
-
-  // Boutons droits
-  var disAttr = isMe ? ' disabled' : '';
-  var mActive = droit === 'membre' ? ' active' : '';
-  var oActive = droit === 'ops'    ? ' active' : '';
-  var aActive = droit === 'admin'  ? ' active' : '';
-  var droitsCell = '<div class="role-badges">'
-    + '<button class="role-btn membre' + mActive + '"' + disAttr + ' data-uid="' + uid + '" data-role="membre" onclick="handleRoleClick(this)">Membre</button>'
-    + '<button class="role-btn ops' + oActive + '"'    + disAttr + ' data-uid="' + uid + '" data-role="ops" onclick="handleRoleClick(this)">+ Ops</button>'
-    + '<button class="role-btn admin' + aActive + '"'  + disAttr + ' data-uid="' + uid + '" data-role="admin" onclick="handleRoleClick(this)">Admin</button>'
-    + '</div>';
-
-  // Action
-  var actifLabel = u.actif ? 'Désactiver' : 'Activer';
-  var newActif   = u.actif ? 0 : 1;
-  var actionCell = isMe
-    ? '<span style="font-size:0.7rem;color:var(--texte-pale);font-style:italic">Toi</span>'
-    : '<button class="btn-xs" data-uid="' + uid + '" data-val="' + newActif + '" onclick="handleActifClick(this)">' + actifLabel + '</button>';
-
-  return '<tr>'
-    + '<td style="font-family:Cinzel,serif;color:#fff">' + u.pseudo + '</td>'
-    + '<td style="font-size:0.78rem;color:var(--texte-pale)">' + u.email + '</td>'
-    + '<td>' + gradeCell + '</td>'
-    + '<td style="font-size:0.75rem;color:var(--texte-pale)">' + date + '</td>'
-    + '<td><span class="badge ' + (u.actif ? 'actif' : 'inactif') + '">' + (u.actif ? 'Actif' : 'Inactif') + '</span></td>'
-    + '<td>' + droitsCell + '</td>'
-    + '<td>' + actionCell + '</td>'
-    + '</tr>';
-}
-
-function handleGradeChange(el) { setGrade(el.dataset.uid, el.value); }
-function handleRoleClick(el)   { setRole(el.dataset.uid, el.dataset.role); }
-function handleActifClick(el)  { toggleActif(el.dataset.uid, el.dataset.val === '1'); }
 
 
 async function setGrade(userId, grade) {
@@ -584,7 +589,7 @@ async function setRole(userId, role) {
 }
 
 async function toggleActif(userId, actif) {
-  actif = actif === true || actif === 1 || actif === '1';
+  if (typeof actif === 'string') actif = actif === 'true';
   await updateUser(userId, { actif });
   showToast(actif ? '✦ Compte activé' : '✦ Compte désactivé');
   charger();
