@@ -529,7 +529,7 @@ async function doRegister(e) {
     const getRes  = await fetch(USERS_API, { headers: { 'Authorization': 'token ' + token } });
     const getJson = await getRes.json();
     const sha     = getJson.sha;
-    const data    = JSON.parse(atob(getJson.content.split('\n').join('')));
+    const data    = JSON.parse(decodeURIComponent(escape(atob(getJson.content.split('\n').join('')))));
 
     // Vérifier email unique
     if (data.users.find(u => u.email.toLowerCase() === email)) {
@@ -889,7 +889,7 @@ async function pousserUser(updates) {
   const getRes = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
   const getJson = await getRes.json();
   const sha    = getJson.sha;
-  const data   = JSON.parse(atob(getJson.content.replace(/\n/g,'')));
+  const data   = JSON.parse(decodeURIComponent(escape(atob(getJson.content.split('\n').join('')))));
   const idx    = data.users.findIndex(u => u.id === currentUser.id);
   if (idx !== -1) Object.assign(data.users[idx], updates);
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
