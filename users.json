@@ -43,7 +43,7 @@
       "xLink": "",
       "dashboard": false,
       "admin": false,
-      "actif": true,
+      "actif": false,
       "statut": "approuve",
       "createdAt": "2026-05-27T11:45:47.406Z"
     }
