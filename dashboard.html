@@ -310,6 +310,7 @@
         <div class="nav-avatar" id="nav-avatar">?</div>
         <span id="display-pseudo">—</span>
       </button>
+      <a href="admin.html" class="btn-topbar btn-admin-link" id="btn-admin-link" style="display:none;color:var(--rouge);border-color:rgba(232,90,90,0.4);">⚙ Admin</a>
       <a href="index.html" class="btn-topbar">← Site</a>
       <button class="btn-topbar red" onclick="logout()">Déconnexion</button>
     </div>
@@ -643,10 +644,12 @@ function afficherDashboard(u) {
   if (u.dashboard || u.admin) document.getElementById('btn-add').style.display = '';
   else document.getElementById('no-access').style.display = 'block';
 
-  // Onglets admin
+  // Bouton Admin + onglets
   if (u.admin) {
     const tabs = document.getElementById('dash-tabs');
-    tabs.style.display = 'flex';
+    if (tabs) tabs.style.display = 'flex';
+    const adminBtn = document.getElementById('btn-admin-link');
+    if (adminBtn) adminBtn.style.display = 'inline-block';
   }
 
   loadEvents();
