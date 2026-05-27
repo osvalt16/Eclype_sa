@@ -1277,7 +1277,6 @@ let calFilter = 'tous';
 let sessionMembre = null;
 
 function verifierSession() {
-  // Lire depuis le nouveau système users.json
   const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
   if (saved) {
     try { sessionMembre = JSON.parse(saved); } catch(e) {}
@@ -1312,8 +1311,7 @@ function mettreAJourNav() {
 
   // Photo
   if (avatar) {
-    const localPhotos = JSON.parse(localStorage.getItem('eclypse_photos') || '{}');
-    const photo = localPhotos[sessionMembre.id]?.url || sessionMembre.photo || '';
+    const photo = sessionMembre.photo || '';
     if (photo) {
       avatar.innerHTML = '<img src="' + photo + '" alt="' + sessionMembre.pseudo + '">';
     } else {
