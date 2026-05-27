@@ -718,13 +718,6 @@ function logout() {
 /* ══ TOAST ══ */
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);}
 
-// Fermer dropdowns au clic ailleurs
-document.addEventListener('click', function() {
-  document.querySelectorAll('.grade-dropdown.open').forEach(function(d) {
-    d.classList.remove('open');
-  });
-});
-
 init();
 </script>
 </body>
