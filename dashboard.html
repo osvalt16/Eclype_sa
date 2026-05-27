@@ -181,6 +181,21 @@
   .progress-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
   .progress-label{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--texte-pale);margin-top:0.35rem;text-align:center;}
 
+  /* BADGE GRADE */
+  .grade-badge-inline {
+    display:inline-flex; align-items:center; gap:0.5rem;
+    font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.2em;
+    text-transform:uppercase; padding:0.2rem 0.8rem;
+    border:1px solid; border-radius:2px;
+  }
+  .grade-badge-inline.apply        { color:#aaa; border-color:rgba(150,150,150,0.4); background:rgba(100,100,100,0.1); }
+  .grade-badge-inline.membre       { color:var(--violet-glow); border-color:rgba(107,53,200,0.4); background:rgba(107,53,200,0.1); }
+  .grade-badge-inline.veteran      { color:var(--or); border-color:var(--border-or); background:rgba(201,162,39,0.1); }
+  .grade-badge-inline.sousofficier { color:#e88030; border-color:rgba(232,130,30,0.4); background:rgba(232,130,30,0.1); }
+  .grade-badge-inline.officier     { color:var(--rouge); border-color:rgba(232,90,90,0.4); background:rgba(232,90,90,0.1); }
+  .grade-roles-list { display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:0.5rem; }
+  .grade-role-mini { font-family:'Cinzel',serif; font-size:0.48rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.12rem 0.5rem; border:1px solid var(--border-violet); color:var(--texte-pale); }
+
   /* TOAST */
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -285,6 +300,7 @@
           </a>
         </div>
         <div class="profil-role" id="profil-role">—</div>
+        <div class="grade-roles-list" id="profil-roles-unlocked" style="display:none"></div>
       </div>
       <button class="btn-edit-profil" onclick="ouvrirProfil()">✦ Modifier le profil</button>
     </div>
@@ -552,7 +568,30 @@ function afficherDashboard(u) {
   document.getElementById('auth-screen').style.display  = 'none';
   document.getElementById('dashboard').style.display    = 'block';
   document.getElementById('display-pseudo').textContent = u.pseudo;
-  document.getElementById('profil-rang').textContent    = '★ ' + (u.rang || 'Recrue');
+  // Badge grade visuel
+  var rang = u.rang || 'Membre';
+  var gradeClass = rang.toLowerCase()
+    .replace('é','e').replace('â','a')
+    .replace('vétéran','veteran')
+    .replace('sous-officier','sousofficier')
+    .replace(' ','');
+  var gradeIcons = {apply:'⚪',membre:'🔵',veteran:'⭐',sousofficier:'🟠',officier:'🔴'};
+  var gradeRoles = {
+    apply:[], membre:[],
+    veteran:['RH','Aspirant FC','Assistant FC','Développeur','Recruteur','Logistique Alliance'],
+    sousofficier:['Skirmish FC','Team SRP','Team Infrastructure'],
+    officier:['Diplomate','Tactical Fleet Commander']
+  };
+  var icon = gradeIcons[gradeClass] || '🔵';
+  var rangEl = document.getElementById('profil-rang');
+  rangEl.innerHTML = '<span class="grade-badge-inline ' + gradeClass + '">' + icon + ' ' + rang + '</span>';
+  // Rôles débloqués
+  var roles = gradeRoles[gradeClass] || [];
+  var rolesEl = document.getElementById('profil-roles-unlocked');
+  if (rolesEl && roles.length) {
+    rolesEl.innerHTML = roles.map(function(r) { return '<span class="grade-role-mini">' + r + '</span>'; }).join('');
+    rolesEl.style.display = 'flex';
+  } else if (rolesEl) { rolesEl.style.display = 'none'; }
   document.getElementById('profil-pseudo').textContent  = u.pseudo;
   document.getElementById('profil-role').textContent    = [u.role, u.faction ? 'Faction '+u.faction : ''].filter(Boolean).join(' · ');
 
