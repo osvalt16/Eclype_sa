@@ -74,7 +74,7 @@
       "photo": "",
       "xLink": "",
       "dashboard": true,
-      "admin": false,
+      "admin": true,
       "actif": true,
       "statut": "approuve",
       "createdAt": "2026-05-27T11:54:15.849Z",
