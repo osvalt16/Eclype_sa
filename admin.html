@@ -196,10 +196,28 @@ let currentUser = null;
 let usersData   = null;
 
 /* ══ INIT ══ */
-function init() {
+async function init() {
   const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
   if (!saved) { window.location.href = 'dashboard.html'; return; }
-  currentUser = JSON.parse(saved);
+
+  let user = JSON.parse(saved);
+
+  // Re-fetch depuis GitHub pour avoir les données à jour (admin peut avoir changé)
+  try {
+    const token  = await getToken();
+    const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
+    const res    = await fetch(apiUrl, { headers: { 'Authorization': `token ${token}` } });
+    const gjson  = await res.json();
+    const data   = JSON.parse(atob(gjson.content.replace(/\n/g,'')));
+    const fresh  = data.users.find(u => u.id === user.id || u.email === user.email);
+    if (fresh) {
+      user = fresh;
+      localStorage.setItem('eclypse_user', JSON.stringify(fresh));
+    }
+  } catch(e) { console.log('Re-fetch failed, using local:', e); }
+
+  currentUser = user;
+
   if (!currentUser.admin) {
     document.getElementById('denied').style.display = 'flex';
     return;
