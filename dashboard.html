@@ -379,10 +379,14 @@
         </div>
       </div>
       <hr class="modal-divider">
+      <div class="modal-field" id="p-oldpwd-wrap" style="display:none">
+        <label>Ancien mot de passe *</label>
+        <input type="password" id="p-oldpwd" placeholder="Ton mot de passe actuel">
+      </div>
       <div class="modal-field">
         <label>Nouveau mot de passe</label>
         <input type="password" id="p-newpwd" placeholder="Laisser vide pour ne pas changer" oninput="togglePwdConfirm()">
-        <div class="hint">Minimum 8 caractères.</div>
+        <div class="hint">Min. 8 caractères, 1 majuscule, 1 caractère spécial.</div>
       </div>
       <div class="modal-field" id="p-confirm-wrap" style="display:none">
         <label>Confirmer le nouveau mot de passe</label>
@@ -409,6 +413,14 @@ const IMGUR_ID    = '546c25a59c58ad7';
 let currentUser = null;
 let allEvents   = [];
 let photoFile   = null;
+
+
+function validerMotDePasse(pwd) {
+  if (pwd.length < 8)          return '❌ Minimum 8 caractères';
+  if (!/[A-Z]/.test(pwd))      return '❌ Au moins une majuscule requise';
+  if (!/[^a-zA-Z0-9]/.test(pwd)) return '❌ Au moins un caractère spécial requis (!@#$%...)';
+  return null; // OK
+}
 
 /* ══ SHA-256 ══ */
 async function sha256(msg) {
@@ -482,6 +494,12 @@ async function doRegister(e) {
   if (password !== confirm) {
     msg.className = 'auth-msg err';
     msg.textContent = '❌ Les mots de passe ne correspondent pas';
+    return;
+  }
+  const pwdErr = validerMotDePasse(password);
+  if (pwdErr) {
+    msg.className = 'auth-msg err';
+    msg.textContent = pwdErr;
     return;
   }
 
@@ -719,7 +737,11 @@ function ouvrirProfil() {
   document.getElementById('modal-profil').classList.add('open');
 }
 function fermerProfil(){ document.getElementById('modal-profil').classList.remove('open'); }
-function togglePwdConfirm(){ document.getElementById('p-confirm-wrap').style.display = document.getElementById('p-newpwd').value ? 'block':'none'; }
+function togglePwdConfirm() {
+  var hasNew = document.getElementById('p-newpwd').value.length > 0;
+  document.getElementById('p-confirm-wrap').style.display  = hasNew ? 'block' : 'none';
+  document.getElementById('p-oldpwd-wrap').style.display   = hasNew ? 'block' : 'none';
+}
 
 function previewPhoto(e) {
   const file = e.target.files[0];
@@ -789,7 +811,14 @@ async function sauvegarderProfil() {
 
   // Mot de passe
   if (newPwd) {
-    if (newPwd.length < 8) { showModalMsg('❌ Mot de passe trop court (min 8)', 'err'); return; }
+    const oldPwd = document.getElementById('p-oldpwd').value;
+    if (!oldPwd) { showModalMsg('❌ Saisis ton ancien mot de passe', 'err'); return; }
+    // Vérifier l'ancien mot de passe
+    const oldHash = await sha256(oldPwd);
+    if (oldHash !== currentUser.password) { showModalMsg('❌ Ancien mot de passe incorrect', 'err'); return; }
+    // Valider le nouveau
+    const pwdErr = validerMotDePasse(newPwd);
+    if (pwdErr) { showModalMsg(pwdErr, 'err'); return; }
     if (newPwd !== confPwd) { showModalMsg('❌ Les mots de passe ne correspondent pas', 'err'); return; }
     updates.password = await sha256(newPwd);
   }
