@@ -201,6 +201,7 @@ async function init() {
   if (!saved) { window.location.href = 'dashboard.html'; return; }
 
   let user = JSON.parse(saved);
+  console.log('User from storage:', user.id, user.email, user.admin);
 
   // Re-fetch depuis GitHub pour avoir les données à jour (admin peut avoir changé)
   try {
@@ -213,15 +214,21 @@ async function init() {
     if (fresh) {
       user = fresh;
       localStorage.setItem('eclypse_user', JSON.stringify(fresh));
+      console.log('Fresh user:', fresh.id, fresh.admin);
+    } else {
+      console.log('User not found in GitHub data');
     }
   } catch(e) { console.log('Re-fetch failed, using local:', e); }
 
   currentUser = user;
+  console.log('currentUser.admin:', currentUser.admin);
 
   if (!currentUser.admin) {
+    console.log('Not admin - showing denied');
     document.getElementById('denied').style.display = 'flex';
     return;
   }
+  console.log('Admin OK - showing panel');
   document.getElementById('admin-panel').style.display = 'block';
   document.getElementById('admin-pseudo').textContent = currentUser.pseudo;
   charger();
