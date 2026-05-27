@@ -261,58 +261,109 @@ async function charger() {
 }
 
 function renderTable(users) {
-  const tbl = document.getElementById('members-table');
-  if (!users.length) { tbl.innerHTML='<div class="log-empty">Aucun membre.</div>'; return; }
+  var tbl = document.getElementById('members-table');
+  if (!users.length) { tbl.innerHTML = '<div class="log-empty">Aucun membre.</div>'; return; }
+
+  var table = document.createElement('table');
 
   // Header
-  let html = '<table><thead><tr>';
-  html += '<th>Pseudo</th><th>Email</th><th>Rang</th><th>Inscrit le</th><th>Statut</th><th>Droits</th><th>Action</th>';
-  html += '</tr></thead><tbody>';
+  var thead = document.createElement('thead');
+  var hrow  = document.createElement('tr');
+  ['Pseudo','Email','Rang','Inscrit le','Statut','Droits','Action'].forEach(function(h) {
+    var th = document.createElement('th');
+    th.textContent = h;
+    hrow.appendChild(th);
+  });
+  thead.appendChild(hrow);
+  table.appendChild(thead);
+
+  var tbody = document.createElement('tbody');
 
   users.forEach(function(u) {
-    const droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
-    const date  = new Date(u.createdAt).toLocaleDateString('fr-FR');
-    const isMe  = u.id === currentUser.id;
+    var droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
+    var isMe  = u.id === currentUser.id;
+    var row   = document.createElement('tr');
 
-    html += '<tr>';
-    html += '<td style="font-family:Cinzel,serif;color:#fff;font-size:0.88rem">' + u.pseudo + '</td>';
-    html += '<td style="font-size:0.78rem;color:var(--texte-pale)">' + u.email + '</td>';
-    html += '<td style="font-size:0.82rem">' + (u.rang||'Recrue') + '</td>';
-    html += '<td style="font-size:0.75rem;color:var(--texte-pale)">' + date + '</td>';
-    html += '<td><span class="badge ' + (u.actif?'actif':'inactif') + '">' + (u.actif?'Actif':'Inactif') + '</span></td>';
+    // Pseudo
+    var tdP = document.createElement('td');
+    tdP.textContent = u.pseudo;
+    tdP.style.fontFamily = 'Cinzel, serif';
+    tdP.style.color = '#fff';
+    row.appendChild(tdP);
 
-    // Boutons droits
-    html += '<td><div class="role-badges">';
-    html += '<button class="role-btn membre' + (droit==='membre'?' active':'') + '"';
-    if (!isMe) html += ' onclick="setRole('' + u.id + '','membre')"';
-    else html += ' disabled';
-    html += '>Membre</button>';
+    // Email
+    var tdE = document.createElement('td');
+    tdE.textContent = u.email;
+    tdE.style.fontSize = '0.78rem';
+    tdE.style.color = 'var(--texte-pale)';
+    row.appendChild(tdE);
 
-    html += '<button class="role-btn ops' + (droit==='ops'?' active':'') + '"';
-    if (!isMe) html += ' onclick="setRole('' + u.id + '','ops')"';
-    else html += ' disabled';
-    html += '>+ Ops</button>';
+    // Rang
+    var tdR = document.createElement('td');
+    tdR.textContent = u.rang || 'Recrue';
+    row.appendChild(tdR);
 
-    html += '<button class="role-btn admin' + (droit==='admin'?' active':'') + '"';
-    if (!isMe) html += ' onclick="setRole('' + u.id + '','admin')"';
-    else html += ' disabled';
-    html += '>Admin</button>';
+    // Date
+    var tdD = document.createElement('td');
+    tdD.textContent = new Date(u.createdAt).toLocaleDateString('fr-FR');
+    tdD.style.color = 'var(--texte-pale)';
+    row.appendChild(tdD);
 
-    html += '</div></td>';
+    // Statut
+    var tdS = document.createElement('td');
+    var span = document.createElement('span');
+    span.className = 'badge ' + (u.actif ? 'actif' : 'inactif');
+    span.textContent = u.actif ? 'Actif' : 'Inactif';
+    tdS.appendChild(span);
+    row.appendChild(tdS);
 
-    // Action activer/désactiver
-    html += '<td>';
+    // Droits
+    var tdDr = document.createElement('td');
+    var div  = document.createElement('div');
+    div.className = 'role-badges';
+
+    ['membre','ops','admin'].forEach(function(role) {
+      var labels = {membre:'Membre', ops:'+ Ops', admin:'Admin'};
+      var btn = document.createElement('button');
+      btn.className = 'role-btn ' + role + (droit === role ? ' active' : '');
+      btn.textContent = labels[role];
+      if (!isMe) {
+        btn.onclick = (function(id, r) {
+          return function() { setRole(id, r); };
+        })(u.id, role);
+      } else {
+        btn.disabled = true;
+      }
+      div.appendChild(btn);
+    });
+    tdDr.appendChild(div);
+    row.appendChild(tdDr);
+
+    // Action
+    var tdA = document.createElement('td');
     if (!isMe) {
-      html += '<button class="btn-xs" onclick="toggleActif('' + u.id + '',' + (!u.actif) + ')">';
-      html += (u.actif ? 'Désactiver' : 'Activer') + '</button>';
+      var btnA = document.createElement('button');
+      btnA.className = 'btn-xs';
+      btnA.textContent = u.actif ? 'Désactiver' : 'Activer';
+      btnA.onclick = (function(id, actif) {
+        return function() { toggleActif(id, actif); };
+      })(u.id, !u.actif);
+      tdA.appendChild(btnA);
     } else {
-      html += '<span style="font-size:0.7rem;color:var(--texte-pale);font-style:italic">Toi</span>';
+      var sp = document.createElement('span');
+      sp.textContent = 'Toi';
+      sp.style.fontSize = '0.7rem';
+      sp.style.color = 'var(--texte-pale)';
+      sp.style.fontStyle = 'italic';
+      tdA.appendChild(sp);
     }
-    html += '</td></tr>';
+    row.appendChild(tdA);
+    tbody.appendChild(row);
   });
 
-  html += '</tbody></table>';
-  tbl.innerHTML = html;
+  table.appendChild(tbody);
+  tbl.innerHTML = '';
+  tbl.appendChild(table);
 }
 
 /* ══ ACTIONS DROITS ══ */
