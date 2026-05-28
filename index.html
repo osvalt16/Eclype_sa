@@ -245,37 +245,36 @@
   #recrutement { background:var(--noir-deep); }
   .recru-intro { max-width:680px; margin-bottom:3rem; font-size:1.05rem; color:var(--texte); font-style:italic; }
   .roles-grid {
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:1.5rem; margin-bottom:4rem;
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:0; background:var(--border-violet);
+    border:1px solid var(--border-violet); margin-bottom:4rem;
   }
   .role-card {
-    border:1px solid var(--border-violet); padding:2rem 1.5rem;
-    background:rgba(10,8,20,0.7); transition:all 0.35s; position:relative;
+    padding:2rem 1.8rem; background:rgba(7,6,13,0.97);
+    transition:background 0.3s; position:relative; overflow:hidden;
   }
-  .role-card::after {
-    content:''; position:absolute; bottom:0; left:0;
-    width:0; height:2px; background:var(--or); transition:width 0.4s;
+  .role-card::before {
+    content:''; position:absolute; top:0; left:0;
+    width:2px; height:0; background:var(--or); transition:height 0.35s;
   }
-  .role-card:hover {
-    border-color:var(--violet-glow);
-    background:rgba(26,15,46,0.85); transform:translateY(-4px);
-  }
-  .role-card:hover::after { width:100%; }
-  .role-icon { font-size:2rem; margin-bottom:1rem; display:block; }
+  .role-card:hover::before { height:100%; }
+  .role-card:hover { background:rgba(26,15,46,0.7); }
+  .role-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
   .role-name {
-    font-family:'Cinzel',serif; font-size:0.82rem;
-    letter-spacing:0.15em; text-transform:uppercase;
-    color:var(--or-clair); margin-bottom:0.6rem;
+    font-family:'Cinzel',serif; font-size:0.78rem;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--or);
   }
   .role-status {
-    display:inline-block; font-family:'Cinzel',serif;
-    font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase;
-    padding:0.22rem 0.65rem; margin-bottom:0.8rem;
+    font-family:'Cinzel',serif; font-size:0.48rem;
+    letter-spacing:0.15em; text-transform:uppercase;
+    padding:0.15rem 0.55rem; border:1px solid;
   }
-  .status-ouvert { color:#5ecfa0; border:1px solid rgba(94,207,160,0.3); background:rgba(94,207,160,0.07); }
-  .status-limite { color:var(--or); border:1px solid var(--border-or); background:rgba(201,162,39,0.07); }
-  .status-ferme { color:var(--texte-pale); border:1px solid rgba(138,127,160,0.3); }
-  .role-desc { font-size:0.9rem; color:var(--texte-pale); line-height:1.5; }
+  .status-ouvert { color:var(--vert); border-color:rgba(94,207,160,0.4); }
+  .status-limite { color:var(--or); border-color:var(--border-or); }
+  .status-complet { color:var(--texte-pale); border-color:var(--border-violet); }
+  .role-divider { width:20px; height:1px; background:var(--border-or); margin-bottom:1rem; }
+  .role-desc { font-size:0.88rem; color:var(--texte-pale); line-height:1.7; }
+  @media(max-width:768px){ .roles-grid{ grid-template-columns:1fr; } }
   .conditions-block {
     display:grid; grid-template-columns:1fr 1fr; gap:2.5rem;
     border:1px solid var(--border-or); padding:3rem;
@@ -871,42 +870,13 @@
 
     <div class="roles-grid">
       <div class="role-card reveal">
-        <span class="role-icon">🚀</span>
-        <div class="role-name">Fleet Commander</div>
-        <span class="role-status status-ouvert">Ouvert</span>
+        <div class="role-card-top">
+          <div class="role-name">Fleet Commander</div>
+          <span class="role-status status-ouvert">Ouvert</span>
+        </div>
+        <div class="role-divider"></div>
         <p class="role-desc">Coordonne les opérations de flotte, gère les déplacements et les engagements PvP en zone dangereuse.</p>
       </div>
-      <div class="role-card reveal">
-        <span class="role-icon">⛏️</span>
-        <div class="role-name">Miner</div>
-        <span class="role-status status-ouvert">Ouvert</span>
-        <p class="role-desc">Exploitation des ressources en MRZ et IRZ. Fuel, food, ammo — le nerf de la guerre stellaire.</p>
-      </div>
-      <div class="role-card reveal">
-        <span class="role-icon">🛸</span>
-        <div class="role-name">Fighter</div>
-        <span class="role-status status-limite">Limité</span>
-        <p class="role-desc">Protection des flottes de mining, engagements PvP, raids sur les flottes ennemies en zone inner.</p>
-      </div>
-      <div class="role-card reveal">
-        <span class="role-icon">🔭</span>
-        <div class="role-name">Scout</div>
-        <span class="role-status status-ouvert">Ouvert</span>
-        <p class="role-desc">Reconnaissance des secteurs, détection des menaces et identification des ressources rares.</p>
-      </div>
-      <div class="role-card reveal">
-        <span class="role-icon">🔧</span>
-        <div class="role-name">Support</div>
-        <span class="role-status status-ouvert">Ouvert</span>
-        <p class="role-desc">Ravitaillement en fuel, réparation de vaisseaux, transfert de ressources entre flottes.</p>
-      </div>
-      <div class="role-card reveal">
-        <span class="role-icon">💹</span>
-        <div class="role-name">Trader</div>
-        <span class="role-status status-ferme">Complet</span>
-        <p class="role-desc">Gestion des routes commerciales, optimisation des échanges ATLAS/POLIS sur les marchés.</p>
-      </div>
-    </div>
 
     <div class="conditions-block reveal">
       <div>
