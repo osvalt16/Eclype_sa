@@ -125,6 +125,19 @@
   .btn-no:hover{background:rgba(232,90,90,0.1);}
   .empty{padding:1.5rem;text-align:center;color:var(--texte-pale);font-style:italic;}
 
+  /* RECRUTEMENT */
+  .recru-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-bottom:2.5rem;}
+  .recru-card{border:1px solid var(--border-violet);padding:1rem 1.2rem;background:rgba(10,8,20,0.8);display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+  .recru-nom{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:#fff;}
+  .recru-btns{display:flex;gap:0.3rem;flex-shrink:0;}
+  .recru-btn{font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.5rem;cursor:pointer;border:1px solid;background:none;transition:all 0.2s;}
+  .recru-btn.ouvert{color:var(--vert);border-color:rgba(94,207,160,0.3);}
+  .recru-btn.ouvert.active{background:rgba(94,207,160,0.15);border-color:var(--vert);}
+  .recru-btn.limite{color:var(--or);border-color:var(--border-or);}
+  .recru-btn.limite.active{background:rgba(201,162,39,0.15);border-color:var(--or);}
+  .recru-btn.complet{color:var(--texte-pale);border-color:var(--border-violet);}
+  .recru-btn.complet.active{background:rgba(138,127,160,0.15);border-color:var(--texte-pale);}
+
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;}
   #denied{min-height:100vh;display:none;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:1.5rem;}
   #denied h1{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--rouge);}
@@ -209,6 +222,10 @@
       </div>
     </div>
 
+    <!-- RECRUTEMENT -->
+    <div class="section-hdr"><h2>🎯 Statuts de Recrutement</h2></div>
+    <div class="recru-grid" id="recru-grid"></div>
+
     <!-- GRADES -->
     <div class="section-hdr"><h2>⚔ Progression des Grades</h2></div>
     <div class="grades-timeline mb-25">
@@ -287,6 +304,7 @@ async function init() {
   document.getElementById('panel').style.display = 'block';
   document.getElementById('admin-pseudo').textContent = currentUser.pseudo;
   charger();
+  chargerRecrutement();
 }
 
 /* ─── CHARGER ─── */
@@ -547,6 +565,66 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.display = 'block';
   clearTimeout(t._t); t._t = setTimeout(() => t.style.display = 'none', 3000);
+}
+
+/* ─── RECRUTEMENT ─── */
+async function chargerRecrutement() {
+  try {
+    const ghToken = await getToken();
+    const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/recrutement.json`;
+    const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
+    const gjson   = await res.json();
+    const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
+    renderRecrutement(data.roles, gjson.sha);
+  } catch(e) { console.error(e); }
+}
+
+function renderRecrutement(roles, sha) {
+  const grid = document.getElementById('recru-grid');
+  grid.innerHTML = '';
+  roles.forEach(function(role) {
+    const card = document.createElement('div');
+    card.className = 'recru-card';
+    const nom = document.createElement('div');
+    nom.className = 'recru-nom';
+    nom.textContent = role.nom;
+    const btns = document.createElement('div');
+    btns.className = 'recru-btns';
+    ['ouvert','limite','complet'].forEach(function(statut) {
+      const labels = {ouvert:'Ouvert', limite:'Limité', complet:'Complet'};
+      const btn = document.createElement('button');
+      btn.className = 'recru-btn ' + statut + (role.statut === statut ? ' active' : '');
+      btn.textContent = labels[statut];
+      btn.dataset.id = role.id;
+      btn.dataset.statut = statut;
+      btn.addEventListener('click', function() {
+        setStatutRecrutement(this.dataset.id, this.dataset.statut);
+      });
+      btns.appendChild(btn);
+    });
+    card.appendChild(nom);
+    card.appendChild(btns);
+    grid.appendChild(card);
+  });
+}
+
+async function setStatutRecrutement(roleId, statut) {
+  const ghToken = await getToken();
+  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/recrutement.json`;
+  const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
+  const gjson   = await res.json();
+  const sha     = gjson.sha;
+  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
+  const idx     = data.roles.findIndex(r => r.id === roleId);
+  if (idx !== -1) data.roles[idx].statut = statut;
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  await fetch(apiUrl, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Update recrutement: ' + roleId + ' → ' + statut, content, sha })
+  });
+  showToast('✦ ' + statut.charAt(0).toUpperCase() + statut.slice(1) + ' !');
+  chargerRecrutement();
 }
 
 init();
