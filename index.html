@@ -777,7 +777,6 @@
     <li><a href="#apropos">La Flotte</a></li>
     <li><a href="#membres">Équipage</a></li>
     <li><a href="#recrutement">Recrutement</a></li>
-    <li><a href="dashboard.html">Ops</a></li>
     <li><a href="#discord">Discord</a></li>
   </ul>
   <div class="nav-right">
@@ -961,90 +960,7 @@
   </div>
 </section>
 
-<!-- PLANNING -->
-<section id="calendrier">
-  <div class="container">
-    <p class="section-label reveal" style="text-align:center">Planning</p>
-    <h2 class="section-title reveal" style="text-align:center">Opérations <span>&amp; Planning</span></h2>
-    <div class="ornament reveal">
-      <div class="ornament-line"></div>
-      <div class="ornament-diamond"></div>
-      <div class="ornament-line right"></div>
-    </div>
 
-    <!-- BLOC CADENAS — visiteur non connecté -->
-    <div class="planning-locked reveal" id="planning-locked">
-      <div class="lock-glow"></div>
-      <div class="lock-icon">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="5" y="11" width="14" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
-          <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
-          <line x1="12" y1="17.5" x2="12" y2="19.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="lock-eyebrow">Accès membres uniquement</div>
-      <h3 class="lock-title">Planning des Opérations</h3>
-      <p class="lock-desc">Les Fleet Ops, Guild Wars, Mining Runs et événements SAGE C4 sont réservés aux membres de la flotte. Connecte-toi avec ton code d'accès pour consulter le planning complet.</p>
-      <div class="lock-tags">
-        <span class="lock-tag lock-tag-red">Fleet Op</span>
-        <span class="lock-tag lock-tag-violet">PvP / War</span>
-        <span class="lock-tag lock-tag-or">Événements</span>
-        <span class="lock-tag lock-tag-green">Mining Run</span>
-      </div>
-      <a href="dashboard.html" class="lock-btn">Accéder au Dashboard →</a>
-      <p class="lock-sub">Pas encore membre ? <a href="#candidature">Postuler ici</a></p>
-    </div>
-
-    <!-- PLANNING DÉVERROUILLÉ — membre/admin connecté -->
-    <div class="planning-unlocked" id="planning-unlocked">
-
-      <!-- Bandeau membre -->
-      <div class="planning-member-bar">
-        <div class="pmb-info">Connecté en tant que : <span id="pmb-pseudo">—</span> · <span id="pmb-rang">—</span></div>
-        <div class="pmb-actions">
-          <a href="dashboard.html" class="pmb-link">Dashboard →</a>
-          <button class="pmb-logout" onclick="deconnecterMembre()">Déconnexion</button>
-        </div>
-      </div>
-
-      <!-- Filtres -->
-      <div class="cal-tabs">
-        <button class="cal-tab active" onclick="filtrerCal('tous',this)">Tous</button>
-        <button class="cal-tab" onclick="filtrerCal('fleetop',this)">Fleet Op</button>
-        <button class="cal-tab" onclick="filtrerCal('pvp',this)">PvP</button>
-        <button class="cal-tab" onclick="filtrerCal('event',this)">Événements</button>
-        <button class="cal-tab" onclick="filtrerCal('mining',this)">Mining</button>
-      </div>
-
-      <div class="cal-unlocked-layout">
-        <!-- Liste events -->
-        <div class="cal-events-list" id="cal-events-list">
-          <div class="cal-empty-state">Chargement des opérations…</div>
-        </div>
-        <!-- Mini calendrier -->
-        <div>
-          <div class="mini-cal-section">
-            <div class="mcs-header">
-              <button class="mcs-nav" onclick="mcsNav(-1)">&#8592;</button>
-              <div class="mcs-title" id="mcs-month-label"></div>
-              <button class="mcs-nav" onclick="mcsNav(1)">&#8594;</button>
-            </div>
-            <div class="mcs-grid" id="mcs-grid"></div>
-            <div class="mcs-legend">
-              <div class="mcs-legend-title">Légende</div>
-              <div class="mcs-legend-item"><div class="mcs-legend-dot" style="background:#e85a5a"></div>Fleet Op</div>
-              <div class="mcs-legend-item"><div class="mcs-legend-dot" style="background:#8b5cf6"></div>PvP / Guild War</div>
-              <div class="mcs-legend-item"><div class="mcs-legend-dot" style="background:#c9a227"></div>Événement SAGE</div>
-              <div class="mcs-legend-item"><div class="mcs-legend-dot" style="background:#5ecfa0"></div>Mining Run</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
 
 <!-- CANDIDATURE -->
 <section id="candidature">
