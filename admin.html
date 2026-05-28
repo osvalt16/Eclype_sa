@@ -159,6 +159,11 @@ const IMGUR_ID   = '546c25a59c58ad7';
 let currentUser = null;
 let usersData   = null;
 
+let _tok = null;
+async function getToken() {
+  if (_tok) return _tok;
+  const l = localStorage.getItem('eclypse_admin_token');
+  if (l) { _tok = l; return l; }
   try {
     const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
     const data = await res.json();
