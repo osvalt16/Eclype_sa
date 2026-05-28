@@ -5,19 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ÉCLYPSE — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root{--noir:#030208;--violet:#1a0f2e;--violet-glow:#8b5cf6;--or:#c9a227;--or-clair:#e8c547;--texte:#d4c9e8;--texte-pale:#8a7fa0;--border-or:rgba(201,162,39,0.3);--border-violet:rgba(107,53,200,0.4);--cyan:#00d4ff;--rouge:#e85a5a;--vert:#5ecfa0;}
+  :root{--noir:#030208;--violet:#1a0f2e;--or:#c9a227;--or-clair:#e8c547;--texte:#d4c9e8;--texte-pale:#8a7fa0;--border-or:rgba(201,162,39,0.3);--border-violet:rgba(107,53,200,0.4);--cyan:#00d4ff;--rouge:#e85a5a;--vert:#5ecfa0;--violet-glow:#8b5cf6;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--noir);color:var(--texte);font-family:'Crimson Pro',serif;font-size:17px;min-height:100vh;}
 
   /* AUTH */
   #auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a0f2e 0%,#030208 70%);}
-  .auth-box{border:1px solid var(--border-or);max-width:420px;width:90%;background:rgba(26,15,46,0.5);position:relative;}
+  .auth-box{border:1px solid var(--border-or);max-width:420px;width:90%;background:rgba(26,15,46,0.6);position:relative;}
   .auth-box::before{content:'';position:absolute;top:-1px;left:15%;right:15%;height:2px;background:linear-gradient(to right,transparent,var(--or),transparent);}
   .auth-header{padding:2rem 2rem 1.5rem;text-align:center;}
   .auth-header img{height:60px;margin-bottom:1rem;}
-  .auth-header h2{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);}
+  .auth-subtitle{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);}
   .auth-body{padding:1.5rem 2rem 2rem;}
   .auth-field{margin-bottom:1.2rem;}
   .auth-field label{display:block;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.45rem;}
@@ -25,140 +24,140 @@
   .auth-field input:focus{border-color:var(--or);}
   .auth-check{display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;color:var(--texte-pale);margin-bottom:1.5rem;}
   .auth-check input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:var(--or);}
-  .auth-btn{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.9rem;cursor:pointer;transition:all 0.3s;width:100%;}
+  .auth-btn{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.9rem;cursor:pointer;width:100%;}
   .auth-btn:hover{background:var(--or-clair);}
   .auth-msg{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.12em;text-align:center;padding:0.6rem;margin-top:0.8rem;display:none;}
   .auth-msg.err{color:var(--rouge);display:block;}
   .auth-msg.ok{color:var(--vert);display:block;}
-  .auth-hint{padding:1rem 2rem 1.5rem;text-align:center;font-size:0.8rem;color:var(--texte-pale);border-top:1px solid var(--border-violet);}
+  .auth-footer{padding:0.8rem 2rem 1.2rem;text-align:center;font-size:0.8rem;color:var(--texte-pale);border-top:1px solid var(--border-violet);}
 
-  /* DASHBOARD */
+  /* TOPBAR */
   #dashboard{display:none;}
   .topbar{background:rgba(7,6,13,0.95);border-bottom:1px solid var(--border-or);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
   .topbar-left{display:flex;align-items:center;gap:1rem;}
   .topbar-left img{height:34px;}
   .topbar-title{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
   .topbar-right{display:flex;align-items:center;gap:0.8rem;}
-  .nav-profil-btn{display:flex;align-items:center;gap:0.6rem;background:none;border:none;cursor:pointer;padding:0.3rem 0.6rem;transition:background 0.2s;}
+  .nav-profil-btn{display:flex;align-items:center;gap:0.6rem;background:none;border:none;cursor:pointer;padding:0.3rem 0.6rem;}
   .nav-profil-btn:hover{background:rgba(201,162,39,0.08);}
   .nav-profil-btn span{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--or-clair);}
   .nav-avatar{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:0.85rem;color:var(--or);overflow:hidden;flex-shrink:0;}
   .nav-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-  .btn-topbar{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;background:none;border:1px solid var(--border-violet);padding:0.4rem 0.9rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;color:var(--texte-pale);}
-  .btn-topbar:hover{border-color:var(--or);color:var(--or);}
-  .btn-topbar.red{color:var(--rouge);border-color:rgba(232,90,90,0.3);}
-  .btn-topbar.red:hover{background:rgba(232,90,90,0.1);}
+  .btn-nav{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;background:none;border:1px solid var(--border-violet);padding:0.4rem 0.9rem;cursor:pointer;text-decoration:none;display:inline-block;color:var(--texte-pale);transition:all 0.2s;}
+  .btn-nav:hover{border-color:var(--or);color:var(--or);}
+  .btn-nav.red{color:var(--rouge);border-color:rgba(232,90,90,0.3);}
 
+  /* CONTENT */
   .dash-content{max-width:900px;margin:0 auto;padding:3rem 2rem;}
 
-  /* PROFIL */
+  /* PROFIL CARD */
   .profil-card{border:1px solid var(--border-or);padding:2rem;background:rgba(26,15,46,0.4);margin-bottom:2.5rem;display:flex;align-items:center;gap:2rem;position:relative;}
   .profil-avatar{width:80px;height:80px;border-radius:50%;border:2px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);overflow:hidden;flex-shrink:0;}
   .profil-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-  .grade-badge-inline{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.2rem 0.8rem;border:1px solid;border-radius:2px;margin-bottom:0.4rem;}
-  .grade-badge-inline.apply{color:#aaa;border-color:rgba(150,150,150,0.4);background:rgba(100,100,100,0.1);}
-  .grade-badge-inline.membre{color:var(--violet-glow);border-color:rgba(107,53,200,0.4);background:rgba(107,53,200,0.1);}
-  .grade-badge-inline.veteran{color:var(--or);border-color:var(--border-or);background:rgba(201,162,39,0.1);}
-  .grade-badge-inline.sousofficier{color:#e88030;border-color:rgba(232,130,30,0.4);background:rgba(232,130,30,0.1);}
-  .grade-badge-inline.officier{color:var(--rouge);border-color:rgba(232,90,90,0.4);background:rgba(232,90,90,0.1);}
-  .profil-pseudo{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;}
+  .profil-rang{margin-bottom:0.4rem;}
+  .grade-badge{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.2rem 0.8rem;border:1px solid;border-radius:2px;}
+  .grade-badge.apply{color:#aaa;border-color:rgba(150,150,150,0.4);background:rgba(100,100,100,0.1);}
+  .grade-badge.membre{color:var(--violet-glow);border-color:rgba(107,53,200,0.4);background:rgba(107,53,200,0.1);}
+  .grade-badge.veteran{color:var(--or);border-color:var(--border-or);background:rgba(201,162,39,0.1);}
+  .grade-badge.sousofficier{color:#e88030;border-color:rgba(232,130,30,0.4);background:rgba(232,130,30,0.1);}
+  .grade-badge.officier{color:var(--rouge);border-color:rgba(232,90,90,0.4);background:rgba(232,90,90,0.1);}
   .profil-pseudo-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.3rem;}
+  .profil-pseudo{font-family:'Cinzel',serif;font-size:1.5rem;color:#fff;}
   .profil-x-btn{display:inline-flex;align-items:center;opacity:0.8;transition:all 0.2s;}
   .profil-x-btn:hover{transform:scale(1.1);opacity:1;}
   .profil-x-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;}
   .profil-role{font-size:0.9rem;color:var(--texte-pale);font-style:italic;}
-  .grade-roles-list{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.5rem;}
-  .grade-role-mini{font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.12rem 0.5rem;border:1px solid var(--border-violet);color:var(--texte-pale);}
-  .btn-edit-profil{position:absolute;top:1rem;right:1rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.8rem;cursor:pointer;transition:all 0.3s;}
-  .btn-edit-profil:hover{background:rgba(201,162,39,0.1);}
+  .roles-list{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.5rem;}
+  .role-mini{font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.12rem 0.5rem;border:1px solid var(--border-violet);color:var(--texte-pale);}
+  .btn-edit{position:absolute;top:1rem;right:1rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.8rem;cursor:pointer;}
 
   /* PLANNING */
-  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
-  .section-header h2{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
-  #form-event{border:1px solid var(--border-violet);padding:2rem;background:rgba(10,8,20,0.7);margin-bottom:2.5rem;display:none;}
-  #form-event.visible{display:block;}
+  .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
+  .section-hdr h2{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--or);}
+  .btn-new-op{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.5rem 1.2rem;cursor:pointer;display:none;}
+  #form-op{border:1px solid var(--border-violet);padding:2rem;background:rgba(10,8,20,0.7);margin-bottom:2.5rem;display:none;}
+  #form-op.show{display:block;}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem;}
-  .form-group label{display:block;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.5rem;}
-  .form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(7,6,13,0.8);border:1px solid var(--border-violet);color:var(--texte);padding:0.7rem 1rem;font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;transition:border-color 0.3s;}
-  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--or);}
-  .form-group select option{background:#1a0f2e;}
-  .form-group textarea{resize:vertical;min-height:80px;}
-  .form-group.full{grid-column:1/-1;}
+  .fg label{display:block;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.5rem;}
+  .fg input,.fg select,.fg textarea{width:100%;background:rgba(7,6,13,0.8);border:1px solid var(--border-violet);color:var(--texte);padding:0.7rem 1rem;font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;transition:border-color 0.3s;}
+  .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--or);}
+  .fg select option{background:#1a0f2e;}
+  .fg textarea{resize:vertical;min-height:80px;}
+  .fg.full{grid-column:1/-1;}
   .form-actions{display:flex;gap:1rem;justify-content:flex-end;}
-  .btn-save{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.7rem 2rem;cursor:pointer;}
-  .btn-cancel-form{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.7rem 2rem;cursor:pointer;}
-  .btn-add{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.5rem 1.2rem;cursor:pointer;display:none;}
-  .filter-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border-violet);}
-  .filter-tab{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;padding:0.65rem 1.1rem;cursor:pointer;position:relative;transition:color 0.3s;}
-  .filter-tab::after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:2px;background:var(--or);transition:width 0.3s;}
-  .filter-tab.active{color:var(--or);}
-  .filter-tab.active::after{width:100%;}
+  .btn-publish{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.7rem 2rem;cursor:pointer;}
+  .btn-cancel-op{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.7rem 2rem;cursor:pointer;}
+  .filter-tabs{display:flex;border-bottom:1px solid var(--border-violet);margin-bottom:1.5rem;}
+  .ftab{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;padding:0.65rem 1.1rem;cursor:pointer;position:relative;}
+  .ftab::after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:2px;background:var(--or);transition:width 0.3s;}
+  .ftab.active{color:var(--or);}
+  .ftab.active::after{width:100%;}
   .events-list{display:flex;flex-direction:column;gap:1rem;}
-  .event-item{border:1px solid var(--border-violet);padding:1.2rem 1.5rem;background:rgba(7,6,13,0.7);display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:center;}
-  .event-item:hover{border-color:var(--border-or);}
-  .event-date-badge{text-align:center;min-width:50px;}
-  .event-date-badge .day{font-family:'Cinzel',serif;font-size:1.8rem;color:var(--or);line-height:1;}
-  .event-date-badge .month{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--texte-pale);}
-  .event-type-badge{display:inline-block;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.12rem 0.55rem;margin-bottom:0.3rem;}
-  .type-fleetop{color:#e85a5a;border:1px solid rgba(232,90,90,0.3);}
-  .type-pvp{color:var(--violet-glow);border:1px solid rgba(139,92,246,0.3);}
-  .type-event{color:var(--or);border:1px solid var(--border-or);}
-  .type-mining{color:var(--vert);border:1px solid rgba(94,207,160,0.3);}
-  .event-name{font-family:'Cinzel',serif;font-size:0.85rem;color:#fff;margin-bottom:0.2rem;}
-  .event-meta{font-size:0.8rem;color:var(--texte-pale);}
-  .btn-delete{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.65rem;cursor:pointer;}
-  .empty-state{text-align:center;padding:3rem;color:var(--texte-pale);border:1px dashed var(--border-violet);font-style:italic;}
-  .planning-layout{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:start;}
-  .mini-cal-wrapper{border:1px solid var(--border-or);background:rgba(10,8,20,0.85);padding:1.5rem;}
-  .mini-cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
-  .mini-cal-title{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);}
-  .mini-cal-nav{background:none;border:1px solid var(--border-violet);color:var(--texte-pale);width:26px;height:26px;cursor:pointer;font-size:0.8rem;display:flex;align-items:center;justify-content:center;}
-  .mini-cal-nav:hover{border-color:var(--or);color:var(--or);}
-  .mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
-  .mini-cal-grid .day-label{font-family:'Cinzel',serif;font-size:0.48rem;color:var(--texte-pale);padding-bottom:0.4rem;text-transform:uppercase;}
-  .mini-cal-grid .mcday{font-size:0.75rem;color:var(--texte-pale);padding:0.3rem 0;border-radius:2px;position:relative;}
-  .mini-cal-grid .mcday.has-event::after{content:'•';position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:0.4rem;color:var(--or);}
-  .mini-cal-grid .mcday.has-event{color:var(--or-clair);}
-  .mini-cal-grid .mcday.today{background:rgba(107,53,200,0.3);border:1px solid var(--border-violet);color:#fff;}
-  .mini-cal-grid .mcday.empty{color:transparent;}
+  .ev-item{border:1px solid var(--border-violet);padding:1.2rem 1.5rem;background:rgba(7,6,13,0.7);display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:center;}
+  .ev-item:hover{border-color:var(--border-or);}
+  .ev-date{text-align:center;min-width:50px;}
+  .ev-date .day{font-family:'Cinzel',serif;font-size:1.8rem;color:var(--or);line-height:1;}
+  .ev-date .mon{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--texte-pale);}
+  .ev-type{display:inline-block;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.12rem 0.55rem;margin-bottom:0.3rem;}
+  .t-fleetop{color:#e85a5a;border:1px solid rgba(232,90,90,0.3);}
+  .t-pvp{color:var(--violet-glow);border:1px solid rgba(139,92,246,0.3);}
+  .t-event{color:var(--or);border:1px solid var(--border-or);}
+  .t-mining{color:var(--vert);border:1px solid rgba(94,207,160,0.3);}
+  .ev-name{font-family:'Cinzel',serif;font-size:0.85rem;color:#fff;margin-bottom:0.2rem;}
+  .ev-meta{font-size:0.8rem;color:var(--texte-pale);}
+  .btn-del{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.65rem;cursor:pointer;}
+  .empty{text-align:center;padding:3rem;color:var(--texte-pale);border:1px dashed var(--border-violet);font-style:italic;}
+  .planning-layout{display:grid;grid-template-columns:1fr 250px;gap:2rem;align-items:start;}
+  .mini-cal{border:1px solid var(--border-or);background:rgba(10,8,20,0.85);padding:1.5rem;}
+  .cal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
+  .cal-title{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);}
+  .cal-nav{background:none;border:1px solid var(--border-violet);color:var(--texte-pale);width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem;}
+  .cal-nav:hover{border-color:var(--or);color:var(--or);}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
+  .cal-grid .dl{font-family:'Cinzel',serif;font-size:0.48rem;color:var(--texte-pale);padding-bottom:0.4rem;text-transform:uppercase;}
+  .cal-grid .cd{font-size:0.75rem;color:var(--texte-pale);padding:0.3rem 0;position:relative;}
+  .cal-grid .cd.has-ev{color:var(--or-clair);}
+  .cal-grid .cd.has-ev::after{content:'•';position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:0.4rem;color:var(--or);}
+  .cal-grid .cd.today{background:rgba(107,53,200,0.3);border:1px solid var(--border-violet);color:#fff;}
+  .cal-grid .cd.empty{color:transparent;}
   .cal-legend{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border-violet);}
-  .legend-title{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.7rem;}
-  .legend-item{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--texte-pale);margin-bottom:0.3rem;}
-  .legend-dot{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
+  .leg-title{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.6rem;}
+  .leg-item{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--texte-pale);margin-bottom:0.3rem;}
+  .leg-dot{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
 
   /* MODAL PROFIL */
   .modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(3,2,8,0.88);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
   .modal-overlay.open{opacity:1;pointer-events:all;}
-  .modal-box{background:rgba(12,8,24,0.98);border:1px solid var(--border-or);width:90%;max-width:480px;position:relative;transform:translateY(20px);transition:transform 0.25s;max-height:90vh;overflow-y:auto;}
+  .modal-box{background:rgba(12,8,24,0.98);border:1px solid var(--border-or);width:90%;max-width:480px;transform:translateY(20px);transition:transform 0.25s;max-height:90vh;overflow-y:auto;}
   .modal-overlay.open .modal-box{transform:translateY(0);}
-  .modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.8rem;border-bottom:1px solid var(--border-or);position:sticky;top:0;background:rgba(12,8,24,0.98);z-index:1;}
-  .modal-header h3{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--or);}
+  .modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.8rem;border-bottom:1px solid var(--border-or);position:sticky;top:0;background:rgba(12,8,24,0.98);}
+  .modal-hdr h3{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--or);}
   .modal-close{background:none;border:none;color:var(--texte-pale);font-size:1.2rem;cursor:pointer;}
   .modal-body{padding:2rem 1.8rem;}
-  .photo-area{text-align:center;margin-bottom:1.8rem;}
-  .photo-preview{width:80px;height:80px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.8rem;color:var(--or);margin:0 auto 0.8rem;overflow:hidden;cursor:pointer;position:relative;}
-  .photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-  .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;}
-  .photo-preview:hover .photo-overlay{opacity:1;}
-  .photo-overlay span{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:#fff;}
+  .photo-area{text-align:center;margin-bottom:1.5rem;}
+  .photo-prev{width:80px;height:80px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.8rem;color:var(--or);margin:0 auto 0.8rem;overflow:hidden;cursor:pointer;position:relative;}
+  .photo-prev img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .photo-ov{position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;}
+  .photo-prev:hover .photo-ov{opacity:1;}
+  .photo-ov span{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:#fff;}
   .btn-upload{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.3rem 0.8rem;cursor:pointer;display:none;}
-  .progress-wrap{display:none;margin-top:0.6rem;}
-  .progress-wrap.show{display:block;}
-  .progress-bar{height:3px;background:var(--border-violet);border-radius:2px;overflow:hidden;}
-  .progress-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
-  .progress-lbl{font-family:'Cinzel',serif;font-size:0.5rem;color:var(--texte-pale);margin-top:0.3rem;text-align:center;}
-  .modal-field{margin-bottom:1.1rem;}
-  .modal-field label{display:block;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.4rem;}
-  .modal-field input{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.7rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
-  .modal-field input:focus{border-color:var(--or);}
-  .modal-field .hint{font-size:0.73rem;color:var(--texte-pale);margin-top:0.3rem;font-style:italic;}
-  .modal-divider{border:none;border-top:1px solid var(--border-violet);margin:1.2rem 0;}
-  .modal-footer{padding:1.2rem 1.8rem;border-top:1px solid var(--border-or);display:flex;gap:0.8rem;justify-content:flex-end;position:sticky;bottom:0;background:rgba(12,8,24,0.98);}
-  .btn-modal-save{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.6rem 1.6rem;cursor:pointer;}
-  .btn-modal-cancel{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.6rem 1.4rem;cursor:pointer;}
-  .modal-msg{text-align:center;padding:0.5rem;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.1em;display:none;}
-  .modal-msg.ok{color:var(--vert);display:block;}
-  .modal-msg.err{color:var(--rouge);display:block;}
+  .prog{display:none;margin-top:0.6rem;}
+  .prog.show{display:block;}
+  .prog-bar{height:3px;background:var(--border-violet);border-radius:2px;overflow:hidden;}
+  .prog-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
+  .prog-lbl{font-family:'Cinzel',serif;font-size:0.5rem;color:var(--texte-pale);margin-top:0.3rem;text-align:center;}
+  .mfield{margin-bottom:1.1rem;}
+  .mfield label{display:block;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.4rem;}
+  .mfield input{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.7rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
+  .mfield input:focus{border-color:var(--or);}
+  .mfield .hint{font-size:0.73rem;color:var(--texte-pale);margin-top:0.3rem;font-style:italic;}
+  .mdivider{border:none;border-top:1px solid var(--border-violet);margin:1.2rem 0;}
+  .modal-ftr{padding:1.2rem 1.8rem;border-top:1px solid var(--border-or);display:flex;gap:0.8rem;justify-content:flex-end;position:sticky;bottom:0;background:rgba(12,8,24,0.98);}
+  .btn-msave{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.6rem 1.6rem;cursor:pointer;}
+  .btn-mcancel{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.6rem 1.4rem;cursor:pointer;}
+  .mmsg{text-align:center;padding:0.5rem;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.1em;display:none;}
+  .mmsg.ok{color:var(--vert);display:block;}
+  .mmsg.err{color:var(--rouge);display:block;}
 
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;}
   @media(max-width:700px){.planning-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profil-card{flex-direction:column;text-align:center}}
@@ -171,16 +170,17 @@
   <div class="auth-box">
     <div class="auth-header">
       <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
-      <h2>Accès Membres</h2>
+      <div class="auth-subtitle">Accès Membres</div>
     </div>
     <div class="auth-body">
       <div class="auth-field">
         <label>Pseudo in-game</label>
-        <input type="text" id="a-pseudo" placeholder="Ton pseudo Star Atlas">
+        <input type="text" id="a-pseudo" placeholder="Ton pseudo Star Atlas" autocomplete="username">
       </div>
       <div class="auth-field">
         <label>Token d'accès</label>
-        <input type="password" id="a-token" placeholder="ECL-XXXX-XXXX-XXXX" onkeydown="if(event.key==='Enter')doLogin()">
+        <input type="password" id="a-token" placeholder="ECL-XXXX-XXXX-XXXX" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')doLogin()">
       </div>
       <label class="auth-check">
         <input type="checkbox" id="a-remember"> Rester connecté
@@ -188,7 +188,7 @@
       <button class="auth-btn" onclick="doLogin()">✦ Accéder au Dashboard</button>
       <div class="auth-msg" id="auth-msg"></div>
     </div>
-    <div class="auth-hint">Token fourni par l'administrateur de la guilde</div>
+    <div class="auth-footer">Token fourni par l'administrateur de la guilde</div>
   </div>
 </div>
 
@@ -204,17 +204,19 @@
         <div class="nav-avatar" id="nav-avatar">?</div>
         <span id="display-pseudo">—</span>
       </button>
-      <a href="admin.html" class="btn-topbar" id="btn-admin" style="display:none;color:var(--rouge);border-color:rgba(232,90,90,0.4)">⚙ Admin</a>
-      <a href="index.html" class="btn-topbar">← Site</a>
-      <button class="btn-topbar red" onclick="logout()">Déconnexion</button>
+      <a href="admin.html" class="btn-nav" id="btn-admin" style="display:none;color:var(--rouge);border-color:rgba(232,90,90,0.4)">⚙ Admin</a>
+      <a href="index.html" class="btn-nav">← Site</a>
+      <button class="btn-nav red" onclick="logout()">Déconnexion</button>
     </div>
   </div>
 
   <div class="dash-content">
+
+    <!-- PROFIL CARD -->
     <div class="profil-card">
       <div class="profil-avatar" id="profil-avatar">?</div>
       <div>
-        <div id="profil-rang"></div>
+        <div class="profil-rang" id="profil-rang"></div>
         <div class="profil-pseudo-row">
           <div class="profil-pseudo" id="profil-pseudo">—</div>
           <a id="profil-x-link" href="#" target="_blank" class="profil-x-btn" style="display:none">
@@ -222,19 +224,21 @@
           </a>
         </div>
         <div class="profil-role" id="profil-role">—</div>
-        <div class="grade-roles-list" id="profil-roles-unlocked" style="display:none"></div>
+        <div class="roles-list" id="roles-unlocked" style="display:none"></div>
       </div>
-      <button class="btn-edit-profil" onclick="ouvrirProfil()">✦ Modifier le profil</button>
+      <button class="btn-edit" onclick="ouvrirProfil()">✦ Modifier le profil</button>
     </div>
 
-    <div class="section-header">
+    <!-- PLANNING -->
+    <div class="section-hdr">
       <h2>📅 Opérations &amp; Planning</h2>
-      <button class="btn-add" id="btn-add" onclick="toggleForm()">+ Nouvelle Op</button>
+      <button class="btn-new-op" id="btn-new-op" onclick="toggleForm()">+ Nouvelle Op</button>
     </div>
-    <div id="form-event">
+
+    <div id="form-op">
       <div class="form-grid">
-        <div class="form-group"><label>Nom *</label><input type="text" id="f-nom"></div>
-        <div class="form-group"><label>Type *</label>
+        <div class="fg"><label>Nom *</label><input type="text" id="f-nom"></div>
+        <div class="fg"><label>Type *</label>
           <select id="f-type">
             <option value="fleetop">Fleet Op</option>
             <option value="pvp">PvP / Guild War</option>
@@ -242,39 +246,40 @@
             <option value="event">Événement SAGE</option>
           </select>
         </div>
-        <div class="form-group"><label>Date *</label><input type="date" id="f-date"></div>
-        <div class="form-group"><label>Heure (FR)</label><input type="time" id="f-heure" value="21:00"></div>
-        <div class="form-group full"><label>Description</label><textarea id="f-desc"></textarea></div>
+        <div class="fg"><label>Date *</label><input type="date" id="f-date"></div>
+        <div class="fg"><label>Heure (FR)</label><input type="time" id="f-heure" value="21:00"></div>
+        <div class="fg full"><label>Description</label><textarea id="f-desc"></textarea></div>
       </div>
       <div class="form-actions">
-        <button class="btn-cancel-form" onclick="toggleForm()">Annuler</button>
-        <button class="btn-save" onclick="saveEvent()">✦ Publier</button>
+        <button class="btn-cancel-op" onclick="toggleForm()">Annuler</button>
+        <button class="btn-publish" onclick="saveEvent()">✦ Publier</button>
       </div>
     </div>
+
     <div class="planning-layout">
       <div>
         <div class="filter-tabs">
-          <button class="filter-tab active" onclick="filterEvents('tous',this)">Tous</button>
-          <button class="filter-tab" onclick="filterEvents('fleetop',this)">Fleet Op</button>
-          <button class="filter-tab" onclick="filterEvents('pvp',this)">PvP</button>
-          <button class="filter-tab" onclick="filterEvents('event',this)">Événements</button>
-          <button class="filter-tab" onclick="filterEvents('mining',this)">Mining</button>
+          <button class="ftab active" onclick="filterEv('tous',this)">Tous</button>
+          <button class="ftab" onclick="filterEv('fleetop',this)">Fleet Op</button>
+          <button class="ftab" onclick="filterEv('pvp',this)">PvP</button>
+          <button class="ftab" onclick="filterEv('event',this)">Événements</button>
+          <button class="ftab" onclick="filterEv('mining',this)">Mining</button>
         </div>
-        <div class="events-list" id="events-list"><div class="empty-state">Aucune opération planifiée.</div></div>
+        <div class="events-list" id="events-list"><div class="empty">Aucune opération planifiée.</div></div>
       </div>
-      <div class="mini-cal-wrapper">
-        <div class="mini-cal-header">
-          <button class="mini-cal-nav" onclick="calNav(-1)">&#8592;</button>
-          <div class="mini-cal-title" id="cal-title"></div>
-          <button class="mini-cal-nav" onclick="calNav(1)">&#8594;</button>
+      <div class="mini-cal">
+        <div class="cal-hdr">
+          <button class="cal-nav" onclick="calNav(-1)">&#8592;</button>
+          <div class="cal-title" id="cal-title"></div>
+          <button class="cal-nav" onclick="calNav(1)">&#8594;</button>
         </div>
-        <div class="mini-cal-grid" id="mini-cal"></div>
+        <div class="cal-grid" id="cal-grid"></div>
         <div class="cal-legend">
-          <div class="legend-title">Légende</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e85a5a"></div>Fleet Op</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>PvP</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#c9a227"></div>Événement</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#5ecfa0"></div>Mining</div>
+          <div class="leg-title">Légende</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#e85a5a"></div>Fleet Op</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#8b5cf6"></div>PvP</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#c9a227"></div>Événement</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#5ecfa0"></div>Mining</div>
         </div>
       </div>
     </div>
@@ -284,40 +289,40 @@
 <!-- MODAL PROFIL -->
 <div class="modal-overlay" id="modal-profil" onclick="if(event.target===this)fermerProfil()">
   <div class="modal-box">
-    <div class="modal-header">
+    <div class="modal-hdr">
       <h3>✦ Mon Profil</h3>
       <button class="modal-close" onclick="fermerProfil()">✕</button>
     </div>
     <div class="modal-body">
       <div class="photo-area">
-        <div class="photo-preview" id="photo-prev" onclick="document.getElementById('photo-input').click()">
+        <div class="photo-prev" id="photo-prev" onclick="document.getElementById('photo-input').click()">
           <span id="photo-init">?</span>
-          <div class="photo-overlay"><span>Changer</span></div>
+          <div class="photo-ov"><span>Changer</span></div>
         </div>
         <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(event)">
         <button class="btn-upload" id="btn-upload" onclick="uploadPhoto()">⬆ Uploader</button>
-        <div class="progress-wrap" id="prog-wrap">
-          <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
-          <div class="progress-lbl" id="prog-lbl"></div>
+        <div class="prog" id="prog">
+          <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+          <div class="prog-lbl" id="prog-lbl"></div>
         </div>
       </div>
-      <div class="modal-field">
+      <div class="mfield">
         <label>Pseudo in-game</label>
         <input type="text" id="p-pseudo">
         <div class="hint">Modifiable tous les 90 jours.</div>
       </div>
-      <div class="modal-field">
+      <div class="mfield">
         <label>Profil X</label>
         <div style="display:flex;align-items:center;gap:0.8rem;">
-          <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" style="width:20px;height:20px;border-radius:50%;">
+          <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" style="width:20px;height:20px;border-radius:50%;flex-shrink:0;">
           <input type="url" id="p-xlink" placeholder="https://x.com/tonpseudo" style="flex:1">
         </div>
       </div>
-      <div class="modal-msg" id="modal-msg"></div>
+      <div class="mmsg" id="mmsg"></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-modal-cancel" onclick="fermerProfil()">Annuler</button>
-      <button class="btn-modal-save" onclick="sauvegarderProfil()">✦ Enregistrer</button>
+    <div class="modal-ftr">
+      <button class="btn-mcancel" onclick="fermerProfil()">Annuler</button>
+      <button class="btn-msave" onclick="sauvegarderProfil()">✦ Enregistrer</button>
     </div>
   </div>
 </div>
@@ -325,20 +330,36 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const SUPA_URL = 'https://dahmonpmxqqfmhiqugte.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhaG1vbnBteHFxZm1oaXF1Z3RlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNjA3MjcsImV4cCI6MjA2MzkzNjcyN30.vPRwTmKSSwAPQ4GJdnZDKMFNzPhGOiSuLjFPiRQYgTg';
-const IMGUR   = '546c25a59c58ad7';
-const supa    = supabase.createClient(SUPA_URL, SUPA_KEY);
+const REPO_OWNER = 'osvalt16';
+const REPO_NAME  = 'Eclype_sa';
+const USERS_RAW  = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/users.json`;
+const EVENTS_RAW = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
+const IMGUR_ID   = '546c25a59c58ad7';
 
 let currentUser = null;
 let allEvents   = [];
 let photoFile   = null;
 
-/* ── LOGIN ── */
+/* ─── TOKEN SERVICE ─── */
+let _tok = null;
+async function getToken() {
+  if (_tok) return _tok;
+  const local = localStorage.getItem('eclypse_admin_token');
+  if (local) { _tok = local; return local; }
+  try {
+    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
+    const data = await res.json();
+    if (data.p) { _tok = data.p.join(''); localStorage.setItem('eclypse_admin_token', _tok); return _tok; }
+  } catch(e) {}
+  return '';
+}
+
+/* ─── LOGIN ─── */
 async function doLogin() {
-  const pseudo = document.getElementById('a-pseudo').value.trim();
-  const token  = document.getElementById('a-token').value.trim().toUpperCase();
-  const msg    = document.getElementById('auth-msg');
+  const pseudo  = document.getElementById('a-pseudo').value.trim();
+  const token   = document.getElementById('a-token').value.trim().toUpperCase();
+  const remember = document.getElementById('a-remember').checked;
+  const msg     = document.getElementById('auth-msg');
   msg.className = 'auth-msg';
 
   if (!pseudo || !token) {
@@ -347,65 +368,72 @@ async function doLogin() {
     return;
   }
 
-  const { data, error } = await supa
-    .from('users')
-    .select('*')
-    .ilike('pseudo', pseudo)
-    .eq('token', token)
-    .single();
+  try {
+    const ghToken = await getToken();
+    const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
+    const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
+    const gjson   = await res.json();
+    const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
 
-  if (error || !data) {
+    const user = data.users.find(u =>
+      u.pseudo.toLowerCase() === pseudo.toLowerCase() &&
+      u.token.toUpperCase()  === token
+    );
+
+    if (!user) {
+      msg.className = 'auth-msg err';
+      msg.textContent = '❌ Pseudo ou token incorrect';
+      return;
+    }
+
+    if (!user.actif) {
+      msg.className = 'auth-msg err';
+      msg.textContent = '⏳ Ton compte est en attente de validation.';
+      return;
+    }
+
+    currentUser = user;
+    const storage = remember ? localStorage : sessionStorage;
+    storage.setItem('eclypse_user', JSON.stringify(user));
+    afficherDashboard(user);
+
+  } catch(e) {
     msg.className = 'auth-msg err';
-    msg.textContent = '❌ Pseudo ou token incorrect';
-    return;
+    msg.textContent = '❌ Erreur de connexion. Réessaie.';
+    console.error(e);
   }
-
-  if (!data.actif) {
-    msg.className = 'auth-msg err';
-    msg.textContent = '⏳ Ton compte est en attente de validation.';
-    return;
-  }
-
-  currentUser = data;
-  const storage = document.getElementById('a-remember').checked ? localStorage : sessionStorage;
-  storage.setItem('eclypse_user', JSON.stringify(data));
-  afficherDashboard(data);
 }
 
-/* ── DASHBOARD ── */
+/* ─── DASHBOARD ─── */
 function afficherDashboard(u) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('dashboard').style.display   = 'block';
   document.getElementById('display-pseudo').textContent = u.pseudo;
   document.getElementById('profil-pseudo').textContent  = u.pseudo;
 
-  // Grade badge
-  const rang = u.rang || 'Membre';
-  const gc   = rang.toLowerCase()
-    .replace(/é/g,'e').replace(/â/g,'a')
-    .replace('vétéran','veteran')
-    .replace('sous-officier','sousofficier')
-    .replace(/ /g,'');
-  const icons = {apply:'⚪',membre:'🔵',veteran:'⭐',sousofficier:'🟠',officier:'🔴'};
-  const rolesMap = {
+  const rang   = u.rang || 'Membre';
+  const gc     = rang.toLowerCase().replace(/[éè]/g,'e').replace(/â/g,'a')
+                   .replace('vétéran','veteran').replace('sous-officier','sousofficier').replace(/ /g,'');
+  const icons  = {apply:'⚪',membre:'🔵',veteran:'⭐',sousofficier:'🟠',officier:'🔴'};
+  const rMap   = {
     veteran:['RH','Aspirant FC','Assistant FC','Développeur','Recruteur','Logistique Alliance'],
     sousofficier:['Skirmish FC','Team SRP','Team Infrastructure'],
     officier:['Diplomate','Tactical Fleet Commander']
   };
-  document.getElementById('profil-rang').innerHTML =
-    `<span class="grade-badge-inline ${gc}">${icons[gc]||'🔵'} ${rang}</span>`;
 
-  const rolesList = rolesMap[gc] || [];
-  const rolesEl   = document.getElementById('profil-roles-unlocked');
+  document.getElementById('profil-rang').innerHTML =
+    `<span class="grade-badge ${gc}">${icons[gc]||'🔵'} ${rang}</span>`;
+
+  const rolesList = rMap[gc] || [];
+  const rolesEl   = document.getElementById('roles-unlocked');
   if (rolesList.length) {
-    rolesEl.innerHTML = rolesList.map(r => `<span class="grade-role-mini">${r}</span>`).join('');
+    rolesEl.innerHTML = rolesList.map(r => `<span class="role-mini">${r}</span>`).join('');
     rolesEl.style.display = 'flex';
   }
 
   document.getElementById('profil-role').textContent =
     [u.role, u.faction ? 'Faction ' + u.faction : ''].filter(Boolean).join(' · ');
 
-  // Avatar
   const av    = document.getElementById('profil-avatar');
   const navAv = document.getElementById('nav-avatar');
   if (u.photo) {
@@ -416,15 +444,10 @@ function afficherDashboard(u) {
     navAv.textContent = u.pseudo[0].toUpperCase();
   }
 
-  // X link
-  if (u.x_link) {
-    const xEl = document.getElementById('profil-x-link');
-    xEl.href = u.x_link;
-    xEl.style.display = 'inline-flex';
-  }
+  const xEl = document.getElementById('profil-x-link');
+  if (u.x_link) { xEl.href = u.x_link; xEl.style.display = 'inline-flex'; }
 
-  // Droits
-  if (u.dashboard || u.admin) document.getElementById('btn-add').style.display = '';
+  if (u.dashboard || u.admin) document.getElementById('btn-new-op').style.display = '';
   if (u.admin) document.getElementById('btn-admin').style.display = 'inline-block';
 
   loadEvents();
@@ -438,10 +461,16 @@ function logout() {
   document.getElementById('dashboard').style.display   = 'none';
 }
 
-/* ── EVENTS ── */
+/* ─── EVENTS ─── */
 async function loadEvents() {
-  const { data } = await supa.from('events').select('*').order('date', { ascending: true });
-  allEvents = data || [];
+  try {
+    const ghToken = await getToken();
+    const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
+    const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
+    const gjson   = await res.json();
+    const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
+    allEvents = data.events || [];
+  } catch(e) { allEvents = []; }
   renderEvents();
 }
 
@@ -450,46 +479,46 @@ let activeFilter = 'tous';
 function renderEvents() {
   const list  = document.getElementById('events-list');
   const types = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
-  const cls   = { fleetop:'type-fleetop', pvp:'type-pvp', mining:'type-mining', event:'type-event' };
+  const cls   = { fleetop:'t-fleetop', pvp:'t-pvp', mining:'t-mining', event:'t-event' };
   const now   = new Date(); now.setHours(0,0,0,0);
   const items = activeFilter === 'tous' ? allEvents : allEvents.filter(e => e.type === activeFilter);
 
   if (!items.length) {
-    list.innerHTML = '<div class="empty-state">Aucune opération planifiée.</div>';
+    list.innerHTML = '<div class="empty">Aucune opération planifiée.</div>';
     renderCal(); return;
   }
 
-  list.innerHTML = items.map(ev => {
+  list.innerHTML = items.sort((a,b) => new Date(a.date) - new Date(b.date)).map(ev => {
     const d    = new Date(ev.date + 'T00:00:00');
     const past = d < now;
     const canDel = currentUser && (currentUser.dashboard || currentUser.admin);
-    return `<div class="event-item"${past ? ' style="opacity:0.5"' : ''}>
-      <div class="event-date-badge">
+    return `<div class="ev-item"${past ? ' style="opacity:0.5"' : ''}>
+      <div class="ev-date">
         <div class="day">${d.getDate()}</div>
-        <div class="month">${d.toLocaleDateString('fr-FR',{month:'short'})}</div>
+        <div class="mon">${d.toLocaleDateString('fr-FR',{month:'short'})}</div>
       </div>
       <div>
-        <span class="event-type-badge ${cls[ev.type]||'type-event'}">${types[ev.type]||ev.type}</span>
-        <div class="event-name">${ev.nom}${past?' ✓':''}</div>
-        <div class="event-meta">${ev.heure||''}h FR · ${ev.description||''}</div>
+        <span class="ev-type ${cls[ev.type]||'t-event'}">${types[ev.type]||ev.type}</span>
+        <div class="ev-name">${ev.nom}${past?' ✓':''}</div>
+        <div class="ev-meta">${ev.heure||''}h FR · ${ev.description||''}</div>
       </div>
-      <div>${canDel ? `<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>` : ''}</div>
+      <div>${canDel ? `<button class="btn-del" onclick="deleteEvent('${ev.id}')">Supprimer</button>` : ''}</div>
     </div>`;
   }).join('');
   renderCal();
 }
 
-function filterEvents(type, btn) {
+function filterEv(type, btn) {
   activeFilter = type;
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   renderEvents();
 }
 
 function toggleForm() {
-  const f = document.getElementById('form-event');
-  f.classList.toggle('visible');
-  if (f.classList.contains('visible'))
+  const f = document.getElementById('form-op');
+  f.classList.toggle('show');
+  if (f.classList.contains('show'))
     document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 }
 
@@ -498,53 +527,67 @@ async function saveEvent() {
   const date = document.getElementById('f-date').value;
   if (!nom || !date) { showToast('❌ Remplis le nom et la date'); return; }
 
-  await supa.from('events').insert({
+  const ev = {
+    id: 'ev_' + Date.now(),
     nom, type: document.getElementById('f-type').value,
     date, heure: document.getElementById('f-heure').value,
     description: document.getElementById('f-desc').value.trim(),
-    created_by: currentUser.pseudo
-  });
-
-  document.getElementById('form-event').classList.remove('visible');
+    createdBy: currentUser.pseudo,
+    createdAt: new Date().toISOString()
+  };
+  allEvents.push(ev);
+  await pushEvents();
+  document.getElementById('form-op').classList.remove('show');
   document.getElementById('f-nom').value  = '';
   document.getElementById('f-desc').value = '';
-  await loadEvents();
+  renderEvents();
   showToast('✦ Opération publiée !');
 }
 
 async function deleteEvent(id) {
   if (!confirm('Supprimer cette opération ?')) return;
-  await supa.from('events').delete().eq('id', id);
-  await loadEvents();
+  allEvents = allEvents.filter(e => e.id !== id);
+  await pushEvents();
+  renderEvents();
 }
 
-/* ── MINI CAL ── */
+async function pushEvents() {
+  const ghToken = await getToken();
+  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events.json`;
+  const getRes  = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
+  const { sha } = await getRes.json();
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify({ events: allEvents }, null, 2))));
+  await fetch(apiUrl, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Update events', content, sha })
+  });
+}
+
+/* ─── MINI CAL ─── */
 const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 const DAYS   = ['L','M','M','J','V','S','D'];
 const TODAY  = new Date();
 let calY = TODAY.getFullYear(), calM = TODAY.getMonth();
 
 function renderCal() {
-  const grid = document.getElementById('mini-cal');
+  const grid = document.getElementById('cal-grid');
   const lbl  = document.getElementById('cal-title');
   if (!grid) return;
   lbl.textContent = MONTHS[calM] + ' ' + calY;
-
   const evMap = {};
   allEvents.forEach(ev => {
     const d = new Date(ev.date + 'T00:00:00');
     if (d.getFullYear() === calY && d.getMonth() === calM) evMap[d.getDate()] = true;
   });
-
   const fd  = new Date(calY, calM, 1).getDay();
   const off = fd === 0 ? 6 : fd - 1;
   const tot = new Date(calY, calM + 1, 0).getDate();
-
-  let html = DAYS.map(d => `<div class="day-label">${d}</div>`).join('');
-  for (let i = 0; i < off; i++) html += '<div class="mcday empty"></div>';
+  let html = DAYS.map(d => `<div class="dl">${d}</div>`).join('');
+  for (let i = 0; i < off; i++) html += '<div class="cd empty"></div>';
   for (let d = 1; d <= tot; d++) {
     const isT = d === TODAY.getDate() && calM === TODAY.getMonth() && calY === TODAY.getFullYear();
-    html += `<div class="mcday${evMap[d]?' has-event':''}${isT?' today':''}">${d}</div>`;
+    html += `<div class="cd${evMap[d]?' has-ev':''}${isT?' today':''}">${d}</div>`;
   }
   grid.innerHTML = html;
 }
@@ -556,22 +599,20 @@ function calNav(dir) {
   renderCal();
 }
 
-/* ── PROFIL ── */
+/* ─── PROFIL ─── */
 function ouvrirProfil() {
   if (!currentUser) return;
   document.getElementById('p-pseudo').value = currentUser.pseudo;
   document.getElementById('p-xlink').value  = currentUser.x_link || '';
-  document.getElementById('modal-msg').className = 'modal-msg';
+  document.getElementById('mmsg').className = 'mmsg';
   photoFile = null;
   document.getElementById('btn-upload').style.display = 'none';
-  document.getElementById('prog-wrap').classList.remove('show');
-
+  document.getElementById('prog').classList.remove('show');
   const prev = document.getElementById('photo-prev');
   if (currentUser.photo)
-    prev.innerHTML = `<img src="${currentUser.photo}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+    prev.innerHTML = `<img src="${currentUser.photo}" alt=""><div class="photo-ov"><span>Changer</span></div>`;
   else
-    prev.innerHTML = `<span>${currentUser.pseudo[0].toUpperCase()}</span><div class="photo-overlay"><span>Changer</span></div>`;
-
+    prev.innerHTML = `<span>${currentUser.pseudo[0].toUpperCase()}</span><div class="photo-ov"><span>Changer</span></div>`;
   document.getElementById('modal-profil').classList.add('open');
 }
 
@@ -579,13 +620,12 @@ function fermerProfil() { document.getElementById('modal-profil').classList.remo
 
 function previewPhoto(e) {
   const file = e.target.files[0];
-  if (!file) return;
-  if (file.size > 5 * 1024 * 1024) { showToast('❌ Max 5Mo'); return; }
+  if (!file || file.size > 5*1024*1024) { showToast('❌ Max 5Mo'); return; }
   const reader = new FileReader();
   reader.onload = ev => {
     photoFile = file;
     document.getElementById('photo-prev').innerHTML =
-      `<img src="${ev.target.result}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+      `<img src="${ev.target.result}" alt=""><div class="photo-ov"><span>Changer</span></div>`;
     document.getElementById('btn-upload').style.display = 'inline-block';
   };
   reader.readAsDataURL(file);
@@ -593,22 +633,22 @@ function previewPhoto(e) {
 
 async function uploadPhoto() {
   if (!photoFile) return;
-  const prog = document.getElementById('prog-wrap');
+  const prog = document.getElementById('prog');
   const fill = document.getElementById('prog-fill');
   const lbl  = document.getElementById('prog-lbl');
   prog.classList.add('show');
   fill.style.width = '40%'; lbl.textContent = 'Upload vers Imgur…';
   try {
-    const fd  = new FormData();
+    const fd = new FormData();
     fd.append('image', photoFile);
     const res  = await fetch('https://api.imgur.com/3/image', {
-      method: 'POST', headers: { 'Authorization': `Client-ID ${IMGUR}` }, body: fd
+      method: 'POST', headers: { 'Authorization': `Client-ID ${IMGUR_ID}` }, body: fd
     });
     const json = await res.json();
     if (!json.success) throw new Error(json.data?.error || 'Erreur Imgur');
     fill.style.width = '80%'; lbl.textContent = 'Sauvegarde…';
     const imgUrl = json.data.link;
-    await supa.from('users').update({ photo: imgUrl }).eq('id', currentUser.id);
+    await pousserUser({ photo: imgUrl, lastProfileEdit: new Date().toISOString() });
     currentUser.photo = imgUrl;
     localStorage.setItem('eclypse_user', JSON.stringify(currentUser));
     fill.style.width = '100%'; lbl.textContent = '✓ Photo mise à jour !';
@@ -616,7 +656,7 @@ async function uploadPhoto() {
     document.getElementById('nav-avatar').innerHTML    = `<img src="${imgUrl}" alt="">`;
     photoFile = null;
     document.getElementById('btn-upload').style.display = 'none';
-    showModalMsg('✦ Photo mise à jour !', 'ok');
+    showMMsg('✦ Photo mise à jour !', 'ok');
   } catch(err) {
     fill.style.background = 'var(--rouge)';
     lbl.textContent = '❌ ' + err.message;
@@ -629,47 +669,59 @@ async function sauvegarderProfil() {
   const updates = {};
 
   if (pseudo && pseudo !== currentUser.pseudo) {
-    const lastEdit = currentUser.last_profile_edit;
-    if (lastEdit && Math.floor((Date.now() - new Date(lastEdit)) / (1000*60*60*24)) < 90) {
-      showModalMsg('❌ Pseudo modifiable dans 90 jours max', 'err'); return;
+    const lastEdit = currentUser.lastProfileEdit;
+    if (lastEdit && Math.floor((Date.now() - new Date(lastEdit)) / (86400000)) < 90) {
+      showMMsg('❌ Pseudo modifiable dans 90 jours max', 'err'); return;
     }
     updates.pseudo = pseudo;
-    updates.last_profile_edit = new Date().toISOString();
+    updates.lastProfileEdit = new Date().toISOString();
   }
 
   if (xLink !== (currentUser.x_link || '')) updates.x_link = xLink;
+  if (!Object.keys(updates).length) { showMMsg('Aucune modification.', 'ok'); return; }
 
-  if (!Object.keys(updates).length) { showModalMsg('Aucune modification.', 'ok'); return; }
-
-  showModalMsg('⏳ Sauvegarde…', 'ok');
-  const { error } = await supa.from('users').update(updates).eq('id', currentUser.id);
-  if (error) { showModalMsg('❌ Erreur', 'err'); return; }
-
+  showMMsg('⏳ Sauvegarde…', 'ok');
+  await pousserUser(updates);
   Object.assign(currentUser, updates);
   localStorage.setItem('eclypse_user', JSON.stringify(currentUser));
-
   document.getElementById('display-pseudo').textContent = currentUser.pseudo;
   document.getElementById('profil-pseudo').textContent  = currentUser.pseudo;
   const xEl = document.getElementById('profil-x-link');
   if (currentUser.x_link) { xEl.href = currentUser.x_link; xEl.style.display = 'inline-flex'; }
-  else { xEl.style.display = 'none'; }
-
-  showModalMsg('✦ Profil mis à jour !', 'ok');
+  else xEl.style.display = 'none';
+  showMMsg('✦ Profil mis à jour !', 'ok');
   setTimeout(fermerProfil, 1500);
 }
 
-/* ── UTILS ── */
+async function pousserUser(updates) {
+  const ghToken = await getToken();
+  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
+  const getRes  = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
+  const gjson   = await getRes.json();
+  const sha     = gjson.sha;
+  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
+  const idx     = data.users.findIndex(u => u.id === currentUser.id);
+  if (idx !== -1) Object.assign(data.users[idx], updates);
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  await fetch(apiUrl, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: `Update user ${currentUser.pseudo}`, content, sha })
+  });
+}
+
+/* ─── UTILS ─── */
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.display = 'block';
   clearTimeout(t._t); t._t = setTimeout(() => t.style.display = 'none', 3000);
 }
-function showModalMsg(msg, type) {
-  const el = document.getElementById('modal-msg');
-  el.textContent = msg; el.className = 'modal-msg ' + type;
+function showMMsg(msg, type) {
+  const el = document.getElementById('mmsg');
+  el.textContent = msg; el.className = 'mmsg ' + type;
 }
 
-/* ── SESSION ── */
+/* ─── SESSION ─── */
 const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
 if (saved) { currentUser = JSON.parse(saved); afficherDashboard(currentUser); }
 </script>
