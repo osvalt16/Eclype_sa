@@ -1331,6 +1331,30 @@ if (document.readyState === 'loading') {
 }
 
 /* ── PHOTOS MEMBRES ── */
+(async function loadRecrutement() {
+  try {
+    const res  = await fetch('https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/recrutement.json?t=' + Date.now());
+    const data = await res.json();
+    const statusLabels = {ouvert:'Ouvert', limite:'Limité', complet:'Complet'};
+    const statusClass  = {ouvert:'status-ouvert', limite:'status-limite', complet:'status-complet'};
+    data.roles.forEach(function(role) {
+      const cards = document.querySelectorAll('.role-card');
+      cards.forEach(function(card) {
+        const nameEl = card.querySelector('.role-name');
+        if (!nameEl) return;
+        const cardNom = nameEl.textContent.trim().toLowerCase().replace(/ /g,'');
+        if (cardNom === role.id) {
+          const badge = card.querySelector('.role-status');
+          if (badge) {
+            badge.className = 'role-status ' + statusClass[role.statut];
+            badge.textContent = statusLabels[role.statut];
+          }
+        }
+      });
+    });
+  } catch(e) {}
+})();
+
 (async function loadMemberData() {
   try {
     const res  = await fetch('https://dahmonpmxqqfmhiqugte.supabase.co/rest/v1/users?select=pseudo,photo,x_link&actif=eq.true'+Date.now());
