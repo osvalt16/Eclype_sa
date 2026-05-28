@@ -8,7 +8,7 @@
     {
       "id": "miner",
       "nom": "Miner",
-      "statut": "ouvert"
+      "statut": "limite"
     },
     {
       "id": "fighter",
