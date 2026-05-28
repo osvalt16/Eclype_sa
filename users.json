@@ -13,6 +13,21 @@
       "admin": true,
       "actif": true,
       "createdAt": "2026-05-26T00:00:00.000Z"
+    },
+    {
+      "id": "tendian_1779960268629",
+      "pseudo": "Tendian",
+      "token": "ECL-TEND-VVJE-5PRX",
+      "rang": "Membre",
+      "role": "",
+      "faction": "MUD",
+      "photo": "",
+      "x_link": "",
+      "dashboard": true,
+      "admin": false,
+      "actif": true,
+      "statut": "approuve",
+      "createdAt": "2026-05-28T09:24:28.629Z"
     }
   ]
 }
