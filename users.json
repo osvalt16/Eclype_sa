@@ -43,6 +43,21 @@
       "actif": true,
       "statut": "approuve",
       "createdAt": "2026-05-28T16:12:42.494Z"
+    },
+    {
+      "id": "mandalore_1779984986182",
+      "pseudo": "Mandalore",
+      "token": "ECL-MAND-C9JR-TTY7",
+      "rang": "Membre",
+      "role": "",
+      "faction": "MUD",
+      "photo": "",
+      "x_link": "",
+      "dashboard": true,
+      "admin": false,
+      "actif": true,
+      "statut": "approuve",
+      "createdAt": "2026-05-28T16:16:26.182Z"
     }
   ]
 }
