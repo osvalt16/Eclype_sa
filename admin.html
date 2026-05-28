@@ -153,18 +153,12 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const REPO_OWNER = 'osvalt16';
-const REPO_NAME  = 'Eclype_sa';
+
 const IMGUR_ID   = '546c25a59c58ad7';
 
 let currentUser = null;
 let usersData   = null;
 
-let _tok = null;
-async function getToken() {
-  if (_tok) return _tok;
-  const local = localStorage.getItem('eclypse_admin_token');
-  if (local) { _tok = local; return local; }
   try {
     const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
     const data = await res.json();
@@ -252,11 +246,9 @@ function renderMembres(users) {
     const row = document.createElement('div');
     row.className = 'membre-row';
 
-
     const tdInfo = document.createElement('div');
     tdInfo.innerHTML = `<div class="mr-pseudo">${u.pseudo}</div><div class="mr-token">${u.token}</div>`;
     row.appendChild(tdInfo);
-
 
     const tdRang = document.createElement('div');
     const sel = document.createElement('select');
@@ -272,7 +264,6 @@ function renderMembres(users) {
     sel.addEventListener('change', function() { setGrade(this.dataset.uid, this.value); });
     tdRang.appendChild(sel);
     row.appendChild(tdRang);
-
 
     const tdDroits = document.createElement('div');
     const btnWrap  = document.createElement('div');
@@ -291,7 +282,6 @@ function renderMembres(users) {
     });
     tdDroits.appendChild(btnWrap);
     row.appendChild(tdDroits);
-
 
     const tdAct = document.createElement('div');
     tdAct.className = 'mr-actions';
@@ -328,14 +318,12 @@ async function genToken() {
   const slug  = pseudo.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4).padEnd(4,'X');
   const token = `ECL-${slug}-${randSeg(4)}-${randSeg(4)}`;
 
-
   const ghToken = await getToken();
   const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
   const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
   const gjson   = await res.json();
   const sha     = gjson.sha;
   const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-
 
   if (data.users.find(u => u.pseudo.toLowerCase() === pseudo.toLowerCase())) {
     showToast('❌ Ce pseudo existe déjà'); return;
@@ -358,7 +346,6 @@ async function genToken() {
     headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: `Add member: ${pseudo}`, content, sha })
   });
-
 
   document.getElementById('token-val').textContent = token;
   document.getElementById('token-result').classList.add('show');
@@ -432,12 +419,6 @@ function logout() {
   localStorage.removeItem('eclypse_user');
   sessionStorage.removeItem('eclypse_user');
   window.location.href = 'dashboard.html';
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.display = 'block';
-  clearTimeout(t._t); t._t = setTimeout(() => t.style.display = 'none', 3000);
 }
 
 async function chargerCandidatures() {
@@ -664,5 +645,6 @@ async function setStatutRecrutement(roleId, statut) {
 
 init();
 </script>
+<script src="commun.js"></script>
 </body>
 </html>
