@@ -13,7 +13,7 @@
     {
       "id": "fighter",
       "nom": "Fighter",
-      "statut": "limite"
+      "statut": "ouvert"
     },
     {
       "id": "scout",
