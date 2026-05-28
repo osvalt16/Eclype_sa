@@ -1357,7 +1357,7 @@ async function loadMemberData() {
     actifs.forEach(function(m) {
       const isChef = m.admin || m.rang === 'Fleet Commander' || m.rang === 'Officier';
       const card   = document.createElement('div');
-      card.className = 'membre-card' + (isChef ? ' chef' : '') + ' reveal';
+      card.className = 'membre-card' + (isChef ? ' chef' : '');
 
       // Avatar
       const av = document.createElement('div');
@@ -1397,6 +1397,18 @@ async function loadMemberData() {
 
       grid.appendChild(card);
     });
+    // Déclencher les animations reveal sur les nouvelles cartes
+    if (window._revealObserver) {
+      grid.querySelectorAll('.membre-card').forEach(function(el) {
+        window._revealObserver.observe(el);
+      });
+    } else {
+      // Pas d'observer - rendre visible directement
+      grid.querySelectorAll('.membre-card').forEach(function(el) {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
   } catch(e) { console.error('loadMemberData:', e); }
 }
 
