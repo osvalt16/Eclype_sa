@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "oswalt_admin",
+      "pseudo": "OswalT",
+      "token": "ECL-OSW-9ERM-936X",
+      "rang": "Fleet Commander",
+      "role": "Fighter",
+      "faction": "MUD",
+      "photo": "https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/fvck_avatar.jpg",
+      "x_link": "https://x.com/Oswalt_SA",
+      "dashboard": true,
+      "admin": true,
+      "actif": true,
+      "createdAt": "2026-05-26T00:00:00.000Z"
+    }
+  ]
+}
