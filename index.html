@@ -1344,7 +1344,7 @@ if (document.readyState === 'loading') {
   } catch(e) {}
 })();
 
-(async function loadMemberData() {
+async function loadMemberData() {
   try {
     const res  = await fetch('https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/users.json?t=' + Date.now());
     const data = await res.json();
@@ -1399,7 +1399,9 @@ if (document.readyState === 'loading') {
       grid.appendChild(card);
     });
   } catch(e) { console.error('loadMemberData:', e); }
-})();
+}
+
+document.addEventListener('DOMContentLoaded', loadMemberData);
 </script>
 </body>
 </html>
