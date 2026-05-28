@@ -138,6 +138,24 @@
   .recru-btn.complet{color:var(--texte-pale);border-color:var(--border-violet);}
   .recru-btn.complet.active{background:rgba(138,127,160,0.15);border-color:var(--texte-pale);}
 
+  /* CANDIDATURES */
+  .cand-box{border:1px solid rgba(0,212,255,0.3);background:rgba(0,20,40,0.4);margin-bottom:2.5rem;}
+  .cand-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid rgba(0,212,255,0.2);}
+  .cand-hdr h2{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--cyan);}
+  .cand-count{font-family:'Cinzel',serif;font-size:0.62rem;color:var(--cyan);background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);padding:0.12rem 0.55rem;}
+  .cand-item{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-violet);display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;}
+  .cand-item:last-child{border-bottom:none;}
+  .cand-pseudo{font-family:'Cinzel',serif;font-size:0.88rem;color:#fff;margin-bottom:0.2rem;}
+  .cand-discord{font-family:'Cinzel',serif;font-size:0.78rem;color:var(--cyan);margin-bottom:0.3rem;display:flex;align-items:center;gap:0.5rem;}
+  .cand-details{font-size:0.82rem;color:var(--texte-pale);margin-bottom:0.3rem;}
+  .cand-motivation{font-size:0.82rem;color:var(--texte-pale);font-style:italic;border-left:2px solid var(--border-or);padding-left:0.8rem;margin-top:0.5rem;}
+  .cand-date{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;color:var(--texte-pale);}
+  .cand-actions{display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end;min-width:120px;}
+  .btn-copy-discord{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);background:none;border:1px solid rgba(0,212,255,0.3);padding:0.35rem 0.7rem;cursor:pointer;width:100%;}
+  .btn-copy-discord:hover{background:rgba(0,212,255,0.08);}
+  .btn-cand-del{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.7rem;cursor:pointer;width:100%;}
+  .btn-cand-del:hover{background:rgba(232,90,90,0.08);}
+
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;}
   #denied{min-height:100vh;display:none;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:1.5rem;}
   #denied h1{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--rouge);}
@@ -184,6 +202,15 @@
         <span class="d-count" id="d-count">0</span>
       </div>
       <div id="demandes-list"></div>
+    </div>
+
+    <!-- CANDIDATURES -->
+    <div id="cand-box" class="cand-box" style="display:none">
+      <div class="cand-hdr">
+        <h2>📨 Candidatures reçues</h2>
+        <span class="cand-count" id="cand-count">0</span>
+      </div>
+      <div id="cand-list"></div>
     </div>
 
     <!-- GÉNÉRATEUR TOKEN -->
@@ -304,6 +331,7 @@ async function init() {
   document.getElementById('panel').style.display = 'block';
   document.getElementById('admin-pseudo').textContent = currentUser.pseudo;
   charger();
+  chargerCandidatures();
   chargerRecrutement();
 }
 
@@ -565,6 +593,86 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.display = 'block';
   clearTimeout(t._t); t._t = setTimeout(() => t.style.display = 'none', 3000);
+}
+
+/* ─── CANDIDATURES ─── */
+async function chargerCandidatures() {
+  try {
+    const ghToken = await getToken();
+    const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
+    const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
+    const gjson   = await res.json();
+    const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
+    const cands   = (data.candidatures || []).filter(function(c) { return c.statut === 'en_attente'; });
+
+    const box  = document.getElementById('cand-box');
+    const list = document.getElementById('cand-list');
+    if (!cands.length) { box.style.display = 'none'; return; }
+
+    box.style.display = 'block';
+    document.getElementById('cand-count').textContent = cands.length;
+    list.innerHTML = '';
+
+    cands.forEach(function(cand) {
+      const item = document.createElement('div');
+      item.className = 'cand-item';
+
+      const info = document.createElement('div');
+      info.innerHTML =
+        '<div class="cand-pseudo">' + cand.pseudo + '</div>' +
+        '<div class="cand-discord">💬 ' + cand.discord + '</div>' +
+        '<div class="cand-details">Rôle : <strong>' + cand.role + '</strong> · Faction : ' + cand.faction + '</div>' +
+        (cand.vaisseaux ? '<div class="cand-details">Flotte : ' + cand.vaisseaux + '</div>' : '') +
+        (cand.motivation ? '<div class="cand-motivation">' + cand.motivation + '</div>' : '') +
+        '<div class="cand-date" style="margin-top:0.5rem">Reçue le ' + new Date(cand.date).toLocaleDateString('fr-FR') + '</div>';
+
+      const actions = document.createElement('div');
+      actions.className = 'cand-actions';
+
+      const btnCopy = document.createElement('button');
+      btnCopy.className = 'btn-copy-discord';
+      btnCopy.textContent = '📋 Copier Discord';
+      btnCopy.dataset.discord = cand.discord;
+      btnCopy.addEventListener('click', function() {
+        navigator.clipboard.writeText(this.dataset.discord).then(function() {
+          btnCopy.textContent = '✓ Copié !';
+          setTimeout(function() { btnCopy.textContent = '📋 Copier Discord'; }, 2000);
+        });
+      });
+
+      const btnDel = document.createElement('button');
+      btnDel.className = 'btn-cand-del';
+      btnDel.textContent = '✕ Archiver';
+      btnDel.dataset.id = cand.id;
+      btnDel.addEventListener('click', function() { archiverCandidature(this.dataset.id); });
+
+      actions.appendChild(btnCopy);
+      actions.appendChild(btnDel);
+      item.appendChild(info);
+      item.appendChild(actions);
+      list.appendChild(item);
+    });
+  } catch(e) { console.error(e); }
+}
+
+async function archiverCandidature(id) {
+  if (!confirm('Archiver cette candidature ?')) return;
+  const ghToken = await getToken();
+  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
+  const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
+  const gjson   = await res.json();
+  const sha     = gjson.sha;
+  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
+  const idx     = data.candidatures.findIndex(function(c) { return c.id === id; });
+  if (idx !== -1) data.candidatures[idx].statut = 'archive';
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  await fetch(apiUrl, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Archive candidature ' + id, content, sha })
+  });
+  showToast('✦ Candidature archivée');
+  chargerCandidatures();
 }
 
 /* ─── RECRUTEMENT ─── */
