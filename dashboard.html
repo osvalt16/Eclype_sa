@@ -175,8 +175,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const REPO_OWNER = 'osvalt16';
-const REPO_NAME  = 'Eclype_sa';
+
 const USERS_RAW  = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/users.json`;
 const EVENTS_RAW = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/events.json`;
 const IMGUR_ID   = '546c25a59c58ad7';
@@ -185,11 +184,6 @@ let currentUser = null;
 let allEvents   = [];
 let photoFile   = null;
 
-let _tok = null;
-async function getToken() {
-  if (_tok) return _tok;
-  const local = localStorage.getItem('eclypse_admin_token');
-  if (local) { _tok = local; return local; }
   try {
     const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
     const data = await res.json();
@@ -549,11 +543,6 @@ async function pousserUser(updates) {
   });
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.style.display = 'block';
-  clearTimeout(t._t); t._t = setTimeout(() => t.style.display = 'none', 3000);
-}
 function showMMsg(msg, type) {
   const el = document.getElementById('mmsg');
   el.textContent = msg; el.className = 'mmsg ' + type;
@@ -562,5 +551,6 @@ function showMMsg(msg, type) {
 const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
 if (saved) { currentUser = JSON.parse(saved); afficherDashboard(currentUser); }
 </script>
+<script src="commun.js"></script>
 </body>
 </html>
