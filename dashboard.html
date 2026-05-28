@@ -7,40 +7,30 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root {
-    --noir:#030208; --violet:#1a0f2e; --violet-glow:#8b5cf6;
-    --or:#c9a227; --or-clair:#e8c547;
-    --texte:#d4c9e8; --texte-pale:#8a7fa0;
-    --border-or:rgba(201,162,39,0.3); --border-violet:rgba(107,53,200,0.4);
-    --cyan:#00d4ff; --rouge:#e85a5a; --vert:#5ecfa0;
-  }
+  :root{--noir:#030208;--violet:#1a0f2e;--violet-glow:#8b5cf6;--or:#c9a227;--or-clair:#e8c547;--texte:#d4c9e8;--texte-pale:#8a7fa0;--border-or:rgba(201,162,39,0.3);--border-violet:rgba(107,53,200,0.4);--cyan:#00d4ff;--rouge:#e85a5a;--vert:#5ecfa0;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--noir);color:var(--texte);font-family:'Crimson Pro',serif;font-size:17px;min-height:100vh;}
 
   /* AUTH */
   #auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#1a0f2e 0%,#030208 70%);}
-  .auth-box{border:1px solid var(--border-or);max-width:440px;width:90%;background:rgba(26,15,46,0.5);position:relative;}
+  .auth-box{border:1px solid var(--border-or);max-width:420px;width:90%;background:rgba(26,15,46,0.5);position:relative;}
   .auth-box::before{content:'';position:absolute;top:-1px;left:15%;right:15%;height:2px;background:linear-gradient(to right,transparent,var(--or),transparent);}
-  .auth-header{padding:2rem 2rem 0;text-align:center;}
-  .auth-header img{height:64px;margin-bottom:1.2rem;}
-  .auth-tabs{display:flex;border-bottom:1px solid var(--border-violet);margin-top:1.5rem;}
-  .auth-tab{flex:1;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;padding:0.85rem;cursor:pointer;transition:all 0.25s;border-bottom:2px solid transparent;}
-  .auth-tab.active{color:var(--or);border-bottom-color:var(--or);}
-  .auth-body{padding:2rem;}
-  .auth-form{display:none;flex-direction:column;gap:1rem;}
-  .auth-form.active{display:flex;}
+  .auth-header{padding:2rem 2rem 1.5rem;text-align:center;}
+  .auth-header img{height:60px;margin-bottom:1rem;}
+  .auth-header h2{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);}
+  .auth-body{padding:1.5rem 2rem 2rem;}
+  .auth-field{margin-bottom:1.2rem;}
   .auth-field label{display:block;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.45rem;}
-  .auth-field input{width:100%;background:rgba(7,6,13,0.85);border:1px solid var(--border-violet);color:var(--texte);padding:0.8rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
+  .auth-field input{width:100%;background:rgba(7,6,13,0.85);border:1px solid var(--border-violet);color:var(--texte);padding:0.85rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
   .auth-field input:focus{border-color:var(--or);}
-  .auth-check{display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;color:var(--texte-pale);}
+  .auth-check{display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;color:var(--texte-pale);margin-bottom:1.5rem;}
   .auth-check input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:var(--or);}
-  .auth-btn{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.9rem;cursor:pointer;transition:all 0.3s;width:100%;margin-top:0.5rem;}
+  .auth-btn{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.9rem;cursor:pointer;transition:all 0.3s;width:100%;}
   .auth-btn:hover{background:var(--or-clair);}
-  .auth-msg{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.12em;text-align:center;padding:0.6rem;display:none;}
+  .auth-msg{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.12em;text-align:center;padding:0.6rem;margin-top:0.8rem;display:none;}
   .auth-msg.err{color:var(--rouge);display:block;}
   .auth-msg.ok{color:var(--vert);display:block;}
-  .auth-footer{padding:1rem 2rem 1.5rem;text-align:center;font-size:0.82rem;color:var(--texte-pale);}
-  .auth-footer a{color:var(--or);cursor:pointer;text-decoration:none;}
+  .auth-hint{padding:1rem 2rem 1.5rem;text-align:center;font-size:0.8rem;color:var(--texte-pale);border-top:1px solid var(--border-violet);}
 
   /* DASHBOARD */
   #dashboard{display:none;}
@@ -58,15 +48,14 @@
   .btn-topbar:hover{border-color:var(--or);color:var(--or);}
   .btn-topbar.red{color:var(--rouge);border-color:rgba(232,90,90,0.3);}
   .btn-topbar.red:hover{background:rgba(232,90,90,0.1);}
-  .btn-topbar.admin-btn{color:var(--rouge);border-color:rgba(232,90,90,0.4);display:none;}
 
   .dash-content{max-width:900px;margin:0 auto;padding:3rem 2rem;}
 
-  /* PROFIL CARD */
+  /* PROFIL */
   .profil-card{border:1px solid var(--border-or);padding:2rem;background:rgba(26,15,46,0.4);margin-bottom:2.5rem;display:flex;align-items:center;gap:2rem;position:relative;}
   .profil-avatar{width:80px;height:80px;border-radius:50%;border:2px solid var(--or);background:rgba(26,15,46,0.9);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);overflow:hidden;flex-shrink:0;}
   .profil-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-  .grade-badge-inline{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.2rem 0.8rem;border:1px solid;border-radius:2px;}
+  .grade-badge-inline{display:inline-flex;align-items:center;gap:0.5rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.2rem 0.8rem;border:1px solid;border-radius:2px;margin-bottom:0.4rem;}
   .grade-badge-inline.apply{color:#aaa;border-color:rgba(150,150,150,0.4);background:rgba(100,100,100,0.1);}
   .grade-badge-inline.membre{color:var(--violet-glow);border-color:rgba(107,53,200,0.4);background:rgba(107,53,200,0.1);}
   .grade-badge-inline.veteran{color:var(--or);border-color:var(--border-or);background:rgba(201,162,39,0.1);}
@@ -98,15 +87,14 @@
   .form-actions{display:flex;gap:1rem;justify-content:flex-end;}
   .btn-save{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.7rem 2rem;cursor:pointer;}
   .btn-cancel-form{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.7rem 2rem;cursor:pointer;}
-  .btn-add{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.5rem 1.2rem;cursor:pointer;transition:all 0.3s;}
-  .btn-add:hover{background:rgba(201,162,39,0.1);}
+  .btn-add{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.5rem 1.2rem;cursor:pointer;display:none;}
   .filter-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:1px solid var(--border-violet);}
   .filter-tab{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:none;padding:0.65rem 1.1rem;cursor:pointer;position:relative;transition:color 0.3s;}
   .filter-tab::after{content:'';position:absolute;bottom:-1px;left:0;width:0;height:2px;background:var(--or);transition:width 0.3s;}
   .filter-tab.active{color:var(--or);}
   .filter-tab.active::after{width:100%;}
   .events-list{display:flex;flex-direction:column;gap:1rem;}
-  .event-item{border:1px solid var(--border-violet);padding:1.2rem 1.5rem;background:rgba(7,6,13,0.7);display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:center;transition:border-color 0.3s;}
+  .event-item{border:1px solid var(--border-violet);padding:1.2rem 1.5rem;background:rgba(7,6,13,0.7);display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:center;}
   .event-item:hover{border-color:var(--border-or);}
   .event-date-badge{text-align:center;min-width:50px;}
   .event-date-badge .day{font-family:'Cinzel',serif;font-size:1.8rem;color:var(--or);line-height:1;}
@@ -124,57 +112,55 @@
   .mini-cal-wrapper{border:1px solid var(--border-or);background:rgba(10,8,20,0.85);padding:1.5rem;}
   .mini-cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
   .mini-cal-title{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);}
-  .mini-cal-nav{background:none;border:1px solid var(--border-violet);color:var(--texte-pale);width:26px;height:26px;cursor:pointer;font-size:0.8rem;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+  .mini-cal-nav{background:none;border:1px solid var(--border-violet);color:var(--texte-pale);width:26px;height:26px;cursor:pointer;font-size:0.8rem;display:flex;align-items:center;justify-content:center;}
   .mini-cal-nav:hover{border-color:var(--or);color:var(--or);}
   .mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;}
   .mini-cal-grid .day-label{font-family:'Cinzel',serif;font-size:0.48rem;color:var(--texte-pale);padding-bottom:0.4rem;text-transform:uppercase;}
   .mini-cal-grid .mcday{font-size:0.75rem;color:var(--texte-pale);padding:0.3rem 0;border-radius:2px;position:relative;}
-  .mini-cal-grid .mcday.has-event{color:var(--or-clair);}
   .mini-cal-grid .mcday.has-event::after{content:'•';position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:0.4rem;color:var(--or);}
+  .mini-cal-grid .mcday.has-event{color:var(--or-clair);}
   .mini-cal-grid .mcday.today{background:rgba(107,53,200,0.3);border:1px solid var(--border-violet);color:#fff;}
   .mini-cal-grid .mcday.empty{color:transparent;}
-  .cal-legend-dash{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border-violet);}
+  .cal-legend{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--border-violet);}
   .legend-title{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.7rem;}
-  .legend-items-dash{display:flex;flex-direction:column;gap:0.4rem;}
-  .legend-item-dash{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--texte-pale);}
-  .legend-dot-dash{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
+  .legend-item{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--texte-pale);margin-bottom:0.3rem;}
+  .legend-dot{width:7px;height:7px;border-radius:1px;flex-shrink:0;}
 
   /* MODAL PROFIL */
   .modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(3,2,8,0.88);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
   .modal-overlay.open{opacity:1;pointer-events:all;}
-  .modal-box{background:rgba(12,8,24,0.98);border:1px solid var(--border-or);width:90%;max-width:500px;position:relative;transform:translateY(20px);transition:transform 0.25s;max-height:90vh;overflow-y:auto;}
+  .modal-box{background:rgba(12,8,24,0.98);border:1px solid var(--border-or);width:90%;max-width:480px;position:relative;transform:translateY(20px);transition:transform 0.25s;max-height:90vh;overflow-y:auto;}
   .modal-overlay.open .modal-box{transform:translateY(0);}
   .modal-header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.8rem;border-bottom:1px solid var(--border-or);position:sticky;top:0;background:rgba(12,8,24,0.98);z-index:1;}
   .modal-header h3{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--or);}
   .modal-close{background:none;border:none;color:var(--texte-pale);font-size:1.2rem;cursor:pointer;}
   .modal-body{padding:2rem 1.8rem;}
-  .photo-upload-area{text-align:center;margin-bottom:1.8rem;}
-  .photo-preview{width:90px;height:90px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:2rem;color:var(--or);margin:0 auto 0.8rem;overflow:hidden;cursor:pointer;position:relative;}
+  .photo-area{text-align:center;margin-bottom:1.8rem;}
+  .photo-preview{width:80px;height:80px;border-radius:50%;border:2px solid var(--border-or);background:rgba(26,15,46,0.6);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.8rem;color:var(--or);margin:0 auto 0.8rem;overflow:hidden;cursor:pointer;position:relative;}
   .photo-preview img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
   .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;}
   .photo-preview:hover .photo-overlay{opacity:1;}
-  .photo-overlay span{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:#fff;}
-  .photo-upload-btn{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.35rem 0.9rem;cursor:pointer;}
-  .modal-field{margin-bottom:1.2rem;}
-  .modal-field label{display:block;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.45rem;}
-  .modal-field input{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.72rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
+  .photo-overlay span{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:#fff;}
+  .btn-upload{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.3rem 0.8rem;cursor:pointer;display:none;}
+  .progress-wrap{display:none;margin-top:0.6rem;}
+  .progress-wrap.show{display:block;}
+  .progress-bar{height:3px;background:var(--border-violet);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
+  .progress-lbl{font-family:'Cinzel',serif;font-size:0.5rem;color:var(--texte-pale);margin-top:0.3rem;text-align:center;}
+  .modal-field{margin-bottom:1.1rem;}
+  .modal-field label{display:block;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.4rem;}
+  .modal-field input{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.7rem 1rem;font-family:'Crimson Pro',serif;font-size:1rem;outline:none;transition:border-color 0.3s;}
   .modal-field input:focus{border-color:var(--or);}
-  .modal-field .hint{font-size:0.75rem;color:var(--texte-pale);margin-top:0.35rem;font-style:italic;}
-  .modal-divider{border:none;border-top:1px solid var(--border-violet);margin:1.4rem 0;}
+  .modal-field .hint{font-size:0.73rem;color:var(--texte-pale);margin-top:0.3rem;font-style:italic;}
+  .modal-divider{border:none;border-top:1px solid var(--border-violet);margin:1.2rem 0;}
   .modal-footer{padding:1.2rem 1.8rem;border-top:1px solid var(--border-or);display:flex;gap:0.8rem;justify-content:flex-end;position:sticky;bottom:0;background:rgba(12,8,24,0.98);}
   .btn-modal-save{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.6rem 1.6rem;cursor:pointer;}
   .btn-modal-cancel{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.6rem 1.4rem;cursor:pointer;}
   .modal-msg{text-align:center;padding:0.5rem;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.1em;display:none;}
   .modal-msg.ok{color:var(--vert);display:block;}
   .modal-msg.err{color:var(--rouge);display:block;}
-  .upload-progress{display:none;margin-top:0.7rem;}
-  .upload-progress.show{display:block;}
-  .progress-bar{height:3px;background:var(--border-violet);border-radius:2px;overflow:hidden;}
-  .progress-fill{height:100%;background:var(--or);width:0%;transition:width 0.3s;}
-  .progress-label{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--texte-pale);margin-top:0.35rem;text-align:center;}
 
-  .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;animation:fadeUp 0.3s ease;}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.95);border:1px solid var(--or);padding:1rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;}
   @media(max-width:700px){.planning-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.profil-card{flex-direction:column;text-align:center}}
 </style>
 </head>
@@ -185,30 +171,24 @@
   <div class="auth-box">
     <div class="auth-header">
       <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
-    </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchAuth('login')">Connexion</button>
-      <button class="auth-tab" onclick="switchAuth('register')">Inscription</button>
+      <h2>Accès Membres</h2>
     </div>
     <div class="auth-body">
-      <form class="auth-form active" id="form-login" onsubmit="doLogin(event)">
-        <div class="auth-field"><label>Email</label><input type="email" id="l-email" required></div>
-        <div class="auth-field"><label>Mot de passe</label><input type="password" id="l-password" required></div>
-        <label class="auth-check"><input type="checkbox" id="l-remember"> Rester connecté</label>
-        <button type="submit" class="auth-btn">Se connecter</button>
-        <div class="auth-msg" id="login-msg"></div>
-      </form>
-      <form class="auth-form" id="form-register" onsubmit="doRegister(event)">
-        <div class="auth-field"><label>Pseudo in-game *</label><input type="text" id="r-pseudo" required></div>
-        <div class="auth-field"><label>Email *</label><input type="email" id="r-email" required></div>
-        <div class="auth-field"><label>Mot de passe *</label><input type="password" id="r-password" required minlength="8"></div>
-        <div class="auth-field"><label>Confirmer *</label><input type="password" id="r-confirm" required></div>
-        <button type="submit" class="auth-btn">Créer mon compte</button>
-        <div class="auth-msg" id="register-msg"></div>
-      </form>
+      <div class="auth-field">
+        <label>Pseudo in-game</label>
+        <input type="text" id="a-pseudo" placeholder="Ton pseudo Star Atlas">
+      </div>
+      <div class="auth-field">
+        <label>Token d'accès</label>
+        <input type="password" id="a-token" placeholder="ECL-XXXX-XXXX-XXXX" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <label class="auth-check">
+        <input type="checkbox" id="a-remember"> Rester connecté
+      </label>
+      <button class="auth-btn" onclick="doLogin()">✦ Accéder au Dashboard</button>
+      <div class="auth-msg" id="auth-msg"></div>
     </div>
-    <div class="auth-footer" id="auth-footer-login">Pas encore membre ? <a onclick="switchAuth('register')">Créer un compte</a></div>
-    <div class="auth-footer" id="auth-footer-register" style="display:none">Déjà un compte ? <a onclick="switchAuth('login')">Se connecter</a></div>
+    <div class="auth-hint">Token fourni par l'administrateur de la guilde</div>
   </div>
 </div>
 
@@ -224,7 +204,7 @@
         <div class="nav-avatar" id="nav-avatar">?</div>
         <span id="display-pseudo">—</span>
       </button>
-      <a href="admin.html" class="btn-topbar admin-btn" id="btn-admin-link">⚙ Admin</a>
+      <a href="admin.html" class="btn-topbar" id="btn-admin" style="display:none;color:var(--rouge);border-color:rgba(232,90,90,0.4)">⚙ Admin</a>
       <a href="index.html" class="btn-topbar">← Site</a>
       <button class="btn-topbar red" onclick="logout()">Déconnexion</button>
     </div>
@@ -249,12 +229,19 @@
 
     <div class="section-header">
       <h2>📅 Opérations &amp; Planning</h2>
-      <button class="btn-add" id="btn-add" onclick="toggleForm()" style="display:none">+ Nouvelle Op</button>
+      <button class="btn-add" id="btn-add" onclick="toggleForm()">+ Nouvelle Op</button>
     </div>
     <div id="form-event">
       <div class="form-grid">
         <div class="form-group"><label>Nom *</label><input type="text" id="f-nom"></div>
-        <div class="form-group"><label>Type *</label><select id="f-type"><option value="fleetop">Fleet Op</option><option value="pvp">PvP / Guild War</option><option value="mining">Mining Run</option><option value="event">Événement SAGE</option></select></div>
+        <div class="form-group"><label>Type *</label>
+          <select id="f-type">
+            <option value="fleetop">Fleet Op</option>
+            <option value="pvp">PvP / Guild War</option>
+            <option value="mining">Mining Run</option>
+            <option value="event">Événement SAGE</option>
+          </select>
+        </div>
         <div class="form-group"><label>Date *</label><input type="date" id="f-date"></div>
         <div class="form-group"><label>Heure (FR)</label><input type="time" id="f-heure" value="21:00"></div>
         <div class="form-group full"><label>Description</label><textarea id="f-desc"></textarea></div>
@@ -275,23 +262,19 @@
         </div>
         <div class="events-list" id="events-list"><div class="empty-state">Aucune opération planifiée.</div></div>
       </div>
-      <div>
-        <div class="mini-cal-wrapper">
-          <div class="mini-cal-header">
-            <button class="mini-cal-nav" onclick="calNav(-1)">&#8592;</button>
-            <div class="mini-cal-title" id="cal-month-label"></div>
-            <button class="mini-cal-nav" onclick="calNav(1)">&#8594;</button>
-          </div>
-          <div class="mini-cal-grid" id="mini-cal-grid"></div>
-          <div class="cal-legend-dash">
-            <div class="legend-title">Légende</div>
-            <div class="legend-items-dash">
-              <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#e85a5a"></div>Fleet Op</div>
-              <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#8b5cf6"></div>PvP</div>
-              <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#c9a227"></div>Événement</div>
-              <div class="legend-item-dash"><div class="legend-dot-dash" style="background:#5ecfa0"></div>Mining</div>
-            </div>
-          </div>
+      <div class="mini-cal-wrapper">
+        <div class="mini-cal-header">
+          <button class="mini-cal-nav" onclick="calNav(-1)">&#8592;</button>
+          <div class="mini-cal-title" id="cal-title"></div>
+          <button class="mini-cal-nav" onclick="calNav(1)">&#8594;</button>
+        </div>
+        <div class="mini-cal-grid" id="mini-cal"></div>
+        <div class="cal-legend">
+          <div class="legend-title">Légende</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e85a5a"></div>Fleet Op</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>PvP</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#c9a227"></div>Événement</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#5ecfa0"></div>Mining</div>
         </div>
       </div>
     </div>
@@ -306,16 +289,16 @@
       <button class="modal-close" onclick="fermerProfil()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="photo-upload-area">
-        <div class="photo-preview" id="photo-preview-btn" onclick="document.getElementById('photo-input').click()">
-          <span id="photo-initiale">?</span>
+      <div class="photo-area">
+        <div class="photo-preview" id="photo-prev" onclick="document.getElementById('photo-input').click()">
+          <span id="photo-init">?</span>
           <div class="photo-overlay"><span>Changer</span></div>
         </div>
         <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(event)">
-        <button class="photo-upload-btn" id="photo-upload-btn" onclick="uploadPhoto()" style="display:none">⬆ Uploader</button>
-        <div class="upload-progress" id="upload-progress">
-          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-          <div class="progress-label" id="progress-label"></div>
+        <button class="btn-upload" id="btn-upload" onclick="uploadPhoto()">⬆ Uploader</button>
+        <div class="progress-wrap" id="prog-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+          <div class="progress-lbl" id="prog-lbl"></div>
         </div>
       </div>
       <div class="modal-field">
@@ -324,25 +307,11 @@
         <div class="hint">Modifiable tous les 90 jours.</div>
       </div>
       <div class="modal-field">
-        <label>Profil X (Twitter)</label>
+        <label>Profil X</label>
         <div style="display:flex;align-items:center;gap:0.8rem;">
-          <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" style="width:22px;height:22px;border-radius:50%;flex-shrink:0;">
+          <img src="https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp" style="width:20px;height:20px;border-radius:50%;">
           <input type="url" id="p-xlink" placeholder="https://x.com/tonpseudo" style="flex:1">
         </div>
-      </div>
-      <hr class="modal-divider">
-      <div class="modal-field" id="p-oldpwd-wrap" style="display:none">
-        <label>Ancien mot de passe *</label>
-        <input type="password" id="p-oldpwd">
-      </div>
-      <div class="modal-field">
-        <label>Nouveau mot de passe</label>
-        <input type="password" id="p-newpwd" placeholder="Laisser vide pour ne pas changer" oninput="togglePwdConfirm()">
-        <div class="hint">Min. 8 caractères, 1 majuscule, 1 caractère spécial.</div>
-      </div>
-      <div class="modal-field" id="p-confirm-wrap" style="display:none">
-        <label>Confirmer le nouveau mot de passe</label>
-        <input type="password" id="p-confirmpwd">
       </div>
       <div class="modal-msg" id="modal-msg"></div>
     </div>
@@ -358,120 +327,52 @@
 <script>
 const SUPA_URL = 'https://dahmonpmxqqfmhiqugte.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhaG1vbnBteHFxZm1oaXF1Z3RlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNjA3MjcsImV4cCI6MjA2MzkzNjcyN30.vPRwTmKSSwAPQ4GJdnZDKMFNzPhGOiSuLjFPiRQYgTg';
-const IMGUR_ID = '546c25a59c58ad7';
-
-const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+const IMGUR   = '546c25a59c58ad7';
+const supa    = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 let currentUser = null;
 let allEvents   = [];
 let photoFile   = null;
 
-/* SHA-256 */
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
+/* ── LOGIN ── */
+async function doLogin() {
+  const pseudo = document.getElementById('a-pseudo').value.trim();
+  const token  = document.getElementById('a-token').value.trim().toUpperCase();
+  const msg    = document.getElementById('auth-msg');
+  msg.className = 'auth-msg';
 
-/* Validation mot de passe */
-function validerMdp(pwd) {
-  if (pwd.length < 8)             return '❌ Minimum 8 caractères';
-  if (!/[A-Z]/.test(pwd))         return '❌ Au moins une majuscule';
-  if (!/[^a-zA-Z0-9]/.test(pwd)) return '❌ Au moins un caractère spécial';
-  return null;
-}
-
-/* AUTH */
-function switchAuth(mode) {
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-  document.getElementById('auth-footer-login').style.display    = mode === 'login'    ? '' : 'none';
-  document.getElementById('auth-footer-register').style.display = mode === 'register' ? '' : 'none';
-  if (mode === 'login') {
-    document.querySelector('.auth-tab:first-child').classList.add('active');
-    document.getElementById('form-login').classList.add('active');
-  } else {
-    document.querySelector('.auth-tab:last-child').classList.add('active');
-    document.getElementById('form-register').classList.add('active');
-  }
-}
-
-async function doLogin(e) {
-  e.preventDefault();
-  const email    = document.getElementById('l-email').value.trim().toLowerCase();
-  const password = document.getElementById('l-password').value;
-  const remember = document.getElementById('l-remember').checked;
-  const msg      = document.getElementById('login-msg');
-  msg.className  = 'auth-msg';
-
-  const hash = await sha256(password);
-
-  // Chercher par email d'abord
-  const { data: userByEmail, error: emailError } = await supa.from('users')
-    .select('*')
-    .eq('email', email)
-    .single();
-
-  if (emailError || !userByEmail) {
+  if (!pseudo || !token) {
     msg.className = 'auth-msg err';
-    msg.textContent = '❌ Email introuvable';
+    msg.textContent = '❌ Remplis les deux champs';
     return;
   }
 
-  if (!userByEmail.actif) {
+  const { data, error } = await supa
+    .from('users')
+    .select('*')
+    .ilike('pseudo', pseudo)
+    .eq('token', token)
+    .single();
+
+  if (error || !data) {
+    msg.className = 'auth-msg err';
+    msg.textContent = '❌ Pseudo ou token incorrect';
+    return;
+  }
+
+  if (!data.actif) {
     msg.className = 'auth-msg err';
     msg.textContent = '⏳ Ton compte est en attente de validation.';
     return;
   }
 
-  // Vérifier le mot de passe
-  if (userByEmail.password !== hash) {
-    msg.className = 'auth-msg err';
-    msg.textContent = '❌ Mot de passe incorrect';
-    return;
-  }
-
-  var data = userByEmail;
-
   currentUser = data;
-  const storage = remember ? localStorage : sessionStorage;
+  const storage = document.getElementById('a-remember').checked ? localStorage : sessionStorage;
   storage.setItem('eclypse_user', JSON.stringify(data));
-  localStorage.setItem('eclypse_user', JSON.stringify(data));
   afficherDashboard(data);
 }
 
-async function doRegister(e) {
-  e.preventDefault();
-  const pseudo   = document.getElementById('r-pseudo').value.trim();
-  const email    = document.getElementById('r-email').value.trim().toLowerCase();
-  const password = document.getElementById('r-password').value;
-  const confirm  = document.getElementById('r-confirm').value;
-  const msg      = document.getElementById('register-msg');
-
-  if (password !== confirm) { msg.className='auth-msg err'; msg.textContent='❌ Les mots de passe ne correspondent pas'; return; }
-  const err = validerMdp(password);
-  if (err) { msg.className='auth-msg err'; msg.textContent=err; return; }
-
-  const hash = await sha256(password);
-
-  const { error } = await supa.from('users').insert({
-    pseudo, email, password: hash,
-    rang: 'Membre', role: '', faction: 'MUD',
-    photo: '', x_link: '',
-    dashboard: false, admin: false, actif: false,
-    statut: 'en_attente'
-  });
-
-  if (error) {
-    msg.className = 'auth-msg err';
-    msg.textContent = error.code === '23505' ? '❌ Cet email est déjà utilisé' : '❌ Erreur. Réessaie.';
-    return;
-  }
-
-  msg.className = 'auth-msg ok';
-  msg.textContent = '✦ Compte créé ! En attente de validation par un administrateur.';
-}
-
-/* DASHBOARD */
+/* ── DASHBOARD ── */
 function afficherDashboard(u) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('dashboard').style.display   = 'block';
@@ -479,40 +380,52 @@ function afficherDashboard(u) {
   document.getElementById('profil-pseudo').textContent  = u.pseudo;
 
   // Grade badge
-  var rang = u.rang || 'Membre';
-  var gc = rang.toLowerCase().replace(/é/g,'e').replace(/â/g,'a').replace('vétéran','veteran').replace('sous-officier','sousofficier').replace(/ /g,'');
-  var icons = {apply:'⚪',membre:'🔵',veteran:'⭐',sousofficier:'🟠',officier:'🔴','fleet commander':'🔴'};
-  var roles = {veteran:['RH','Aspirant FC','Assistant FC','Développeur','Recruteur','Logistique Alliance'],sousofficier:['Skirmish FC','Team SRP','Team Infrastructure'],officier:['Diplomate','Tactical Fleet Commander']};
-  var icon = icons[gc] || '🔵';
-  document.getElementById('profil-rang').innerHTML = '<span class="grade-badge-inline ' + gc + '">' + icon + ' ' + rang + '</span>';
+  const rang = u.rang || 'Membre';
+  const gc   = rang.toLowerCase()
+    .replace(/é/g,'e').replace(/â/g,'a')
+    .replace('vétéran','veteran')
+    .replace('sous-officier','sousofficier')
+    .replace(/ /g,'');
+  const icons = {apply:'⚪',membre:'🔵',veteran:'⭐',sousofficier:'🟠',officier:'🔴'};
+  const rolesMap = {
+    veteran:['RH','Aspirant FC','Assistant FC','Développeur','Recruteur','Logistique Alliance'],
+    sousofficier:['Skirmish FC','Team SRP','Team Infrastructure'],
+    officier:['Diplomate','Tactical Fleet Commander']
+  };
+  document.getElementById('profil-rang').innerHTML =
+    `<span class="grade-badge-inline ${gc}">${icons[gc]||'🔵'} ${rang}</span>`;
 
-  var rolesList = roles[gc] || [];
-  var rolesEl = document.getElementById('profil-roles-unlocked');
+  const rolesList = rolesMap[gc] || [];
+  const rolesEl   = document.getElementById('profil-roles-unlocked');
   if (rolesList.length) {
-    rolesEl.innerHTML = rolesList.map(function(r){ return '<span class="grade-role-mini">'+r+'</span>'; }).join('');
+    rolesEl.innerHTML = rolesList.map(r => `<span class="grade-role-mini">${r}</span>`).join('');
     rolesEl.style.display = 'flex';
   }
 
-  document.getElementById('profil-role').textContent = [u.role, u.faction ? 'Faction '+u.faction : ''].filter(Boolean).join(' · ');
+  document.getElementById('profil-role').textContent =
+    [u.role, u.faction ? 'Faction ' + u.faction : ''].filter(Boolean).join(' · ');
 
   // Avatar
-  var av = document.getElementById('profil-avatar');
-  var navAv = document.getElementById('nav-avatar');
+  const av    = document.getElementById('profil-avatar');
+  const navAv = document.getElementById('nav-avatar');
   if (u.photo) {
-    av.innerHTML = '<img src="'+u.photo+'" alt="'+u.pseudo+'">';
-    navAv.innerHTML = '<img src="'+u.photo+'" alt="'+u.pseudo+'">';
+    av.innerHTML    = `<img src="${u.photo}" alt="${u.pseudo}">`;
+    navAv.innerHTML = `<img src="${u.photo}" alt="${u.pseudo}">`;
   } else {
-    av.textContent = u.pseudo[0].toUpperCase();
+    av.textContent    = u.pseudo[0].toUpperCase();
     navAv.textContent = u.pseudo[0].toUpperCase();
   }
 
   // X link
-  var xEl = document.getElementById('profil-x-link');
-  if (xEl && u.x_link) { xEl.href = u.x_link; xEl.style.display = 'inline-flex'; }
+  if (u.x_link) {
+    const xEl = document.getElementById('profil-x-link');
+    xEl.href = u.x_link;
+    xEl.style.display = 'inline-flex';
+  }
 
   // Droits
   if (u.dashboard || u.admin) document.getElementById('btn-add').style.display = '';
-  if (u.admin) document.getElementById('btn-admin-link').style.display = 'inline-block';
+  if (u.admin) document.getElementById('btn-admin').style.display = 'inline-block';
 
   loadEvents();
 }
@@ -525,66 +438,75 @@ function logout() {
   document.getElementById('dashboard').style.display   = 'none';
 }
 
-/* EVENTS */
+/* ── EVENTS ── */
 async function loadEvents() {
   const { data } = await supa.from('events').select('*').order('date', { ascending: true });
   allEvents = data || [];
   renderEvents();
 }
 
-var activeFilter = 'tous';
+let activeFilter = 'tous';
+
 function renderEvents() {
-  var list = document.getElementById('events-list');
-  var types = {fleetop:'Fleet Op',pvp:'PvP',mining:'Mining',event:'Événement'};
-  var cls   = {fleetop:'type-fleetop',pvp:'type-pvp',mining:'type-mining',event:'type-event'};
-  var now   = new Date(); now.setHours(0,0,0,0);
-  var filtered = activeFilter === 'tous' ? allEvents : allEvents.filter(function(e){ return e.type === activeFilter; });
-  if (!filtered.length) { list.innerHTML = '<div class="empty-state">Aucune opération planifiée.</div>'; renderMiniCal(); return; }
-  list.innerHTML = filtered.map(function(ev) {
-    var d = new Date(ev.date + 'T00:00:00');
-    var past = d < now;
-    var canDel = currentUser && (currentUser.dashboard || currentUser.admin);
-    return '<div class="event-item"' + (past?' style="opacity:0.5"':'') + '>'
-      + '<div class="event-date-badge"><div class="day">'+d.getDate()+'</div><div class="month">'+d.toLocaleDateString('fr-FR',{month:'short'})+'</div></div>'
-      + '<div><span class="event-type-badge '+(cls[ev.type]||'type-event')+'">'+(types[ev.type]||ev.type)+'</span>'
-      + '<div class="event-name">'+ev.nom+(past?' ✓':'')+'</div>'
-      + '<div class="event-meta">'+(ev.heure||'')+'h FR · '+(ev.description||'')+'</div></div>'
-      + '<div>'+(canDel?'<button class="btn-delete" data-id="'+ev.id+'" onclick="deleteEvent(this.dataset.id)">Supprimer</button>':'')+'</div>'
-      + '</div>';
+  const list  = document.getElementById('events-list');
+  const types = { fleetop:'Fleet Op', pvp:'PvP', mining:'Mining', event:'Événement' };
+  const cls   = { fleetop:'type-fleetop', pvp:'type-pvp', mining:'type-mining', event:'type-event' };
+  const now   = new Date(); now.setHours(0,0,0,0);
+  const items = activeFilter === 'tous' ? allEvents : allEvents.filter(e => e.type === activeFilter);
+
+  if (!items.length) {
+    list.innerHTML = '<div class="empty-state">Aucune opération planifiée.</div>';
+    renderCal(); return;
+  }
+
+  list.innerHTML = items.map(ev => {
+    const d    = new Date(ev.date + 'T00:00:00');
+    const past = d < now;
+    const canDel = currentUser && (currentUser.dashboard || currentUser.admin);
+    return `<div class="event-item"${past ? ' style="opacity:0.5"' : ''}>
+      <div class="event-date-badge">
+        <div class="day">${d.getDate()}</div>
+        <div class="month">${d.toLocaleDateString('fr-FR',{month:'short'})}</div>
+      </div>
+      <div>
+        <span class="event-type-badge ${cls[ev.type]||'type-event'}">${types[ev.type]||ev.type}</span>
+        <div class="event-name">${ev.nom}${past?' ✓':''}</div>
+        <div class="event-meta">${ev.heure||''}h FR · ${ev.description||''}</div>
+      </div>
+      <div>${canDel ? `<button class="btn-delete" onclick="deleteEvent('${ev.id}')">Supprimer</button>` : ''}</div>
+    </div>`;
   }).join('');
-  renderMiniCal();
+  renderCal();
 }
 
 function filterEvents(type, btn) {
   activeFilter = type;
-  document.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   renderEvents();
 }
 
 function toggleForm() {
-  var f = document.getElementById('form-event');
+  const f = document.getElementById('form-event');
   f.classList.toggle('visible');
-  if (f.classList.contains('visible')) document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  if (f.classList.contains('visible'))
+    document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 }
 
 async function saveEvent() {
-  var nom = document.getElementById('f-nom').value.trim();
-  var date = document.getElementById('f-date').value;
+  const nom  = document.getElementById('f-nom').value.trim();
+  const date = document.getElementById('f-date').value;
   if (!nom || !date) { showToast('❌ Remplis le nom et la date'); return; }
 
-  var { error } = await supa.from('events').insert({
-    nom: nom,
-    type: document.getElementById('f-type').value,
-    date: date,
-    heure: document.getElementById('f-heure').value,
+  await supa.from('events').insert({
+    nom, type: document.getElementById('f-type').value,
+    date, heure: document.getElementById('f-heure').value,
     description: document.getElementById('f-desc').value.trim(),
     created_by: currentUser.pseudo
   });
 
-  if (error) { showToast('❌ Erreur'); return; }
   document.getElementById('form-event').classList.remove('visible');
-  document.getElementById('f-nom').value = '';
+  document.getElementById('f-nom').value  = '';
   document.getElementById('f-desc').value = '';
   await loadEvents();
   showToast('✦ Opération publiée !');
@@ -596,92 +518,104 @@ async function deleteEvent(id) {
   await loadEvents();
 }
 
-/* MINI CAL */
-var months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-var dayL   = ['L','M','M','J','V','S','D'];
-var todayD = new Date();
-var calY = todayD.getFullYear(), calM = todayD.getMonth();
-function renderMiniCal() {
-  var grid = document.getElementById('mini-cal-grid');
-  var lbl  = document.getElementById('cal-month-label');
-  if (!grid || !lbl) return;
-  lbl.textContent = months[calM] + ' ' + calY;
-  var evMap = {};
-  allEvents.forEach(function(ev) { var d = new Date(ev.date+'T00:00:00'); if(d.getFullYear()===calY&&d.getMonth()===calM) evMap[d.getDate()]=true; });
-  var fd = new Date(calY,calM,1).getDay(), off = fd===0?6:fd-1;
-  var tot = new Date(calY,calM+1,0).getDate();
-  var html = dayL.map(function(d){ return '<div class="day-label">'+d+'</div>'; }).join('');
-  for (var i=0;i<off;i++) html+='<div class="mcday empty"></div>';
-  for (var d=1;d<=tot;d++) {
-    var iT = d===todayD.getDate()&&calM===todayD.getMonth()&&calY===todayD.getFullYear();
-    html += '<div class="mcday'+(evMap[d]?' has-event':'')+(iT?' today':'')+'">'+d+'</div>';
+/* ── MINI CAL ── */
+const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const DAYS   = ['L','M','M','J','V','S','D'];
+const TODAY  = new Date();
+let calY = TODAY.getFullYear(), calM = TODAY.getMonth();
+
+function renderCal() {
+  const grid = document.getElementById('mini-cal');
+  const lbl  = document.getElementById('cal-title');
+  if (!grid) return;
+  lbl.textContent = MONTHS[calM] + ' ' + calY;
+
+  const evMap = {};
+  allEvents.forEach(ev => {
+    const d = new Date(ev.date + 'T00:00:00');
+    if (d.getFullYear() === calY && d.getMonth() === calM) evMap[d.getDate()] = true;
+  });
+
+  const fd  = new Date(calY, calM, 1).getDay();
+  const off = fd === 0 ? 6 : fd - 1;
+  const tot = new Date(calY, calM + 1, 0).getDate();
+
+  let html = DAYS.map(d => `<div class="day-label">${d}</div>`).join('');
+  for (let i = 0; i < off; i++) html += '<div class="mcday empty"></div>';
+  for (let d = 1; d <= tot; d++) {
+    const isT = d === TODAY.getDate() && calM === TODAY.getMonth() && calY === TODAY.getFullYear();
+    html += `<div class="mcday${evMap[d]?' has-event':''}${isT?' today':''}">${d}</div>`;
   }
   grid.innerHTML = html;
 }
-function calNav(dir){ calM+=dir; if(calM>11){calM=0;calY++;} if(calM<0){calM=11;calY--;} renderMiniCal(); }
 
-/* PROFIL MODAL */
+function calNav(dir) {
+  calM += dir;
+  if (calM > 11) { calM = 0; calY++; }
+  if (calM < 0)  { calM = 11; calY--; }
+  renderCal();
+}
+
+/* ── PROFIL ── */
 function ouvrirProfil() {
   if (!currentUser) return;
-  document.getElementById('p-pseudo').value  = currentUser.pseudo;
-  document.getElementById('p-xlink').value   = currentUser.x_link || '';
-  document.getElementById('p-newpwd').value  = '';
-  document.getElementById('p-confirmpwd').value = '';
-  document.getElementById('p-oldpwd').value  = '';
-  document.getElementById('p-confirm-wrap').style.display = 'none';
-  document.getElementById('p-oldpwd-wrap').style.display  = 'none';
+  document.getElementById('p-pseudo').value = currentUser.pseudo;
+  document.getElementById('p-xlink').value  = currentUser.x_link || '';
   document.getElementById('modal-msg').className = 'modal-msg';
   photoFile = null;
-  document.getElementById('photo-upload-btn').style.display = 'none';
-  document.getElementById('upload-progress').classList.remove('show');
-  var prev = document.getElementById('photo-preview-btn');
-  if (currentUser.photo) prev.innerHTML = '<img src="'+currentUser.photo+'" alt=""><div class="photo-overlay"><span>Changer</span></div>';
-  else prev.innerHTML = '<span>'+currentUser.pseudo[0].toUpperCase()+'</span><div class="photo-overlay"><span>Changer</span></div>';
+  document.getElementById('btn-upload').style.display = 'none';
+  document.getElementById('prog-wrap').classList.remove('show');
+
+  const prev = document.getElementById('photo-prev');
+  if (currentUser.photo)
+    prev.innerHTML = `<img src="${currentUser.photo}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+  else
+    prev.innerHTML = `<span>${currentUser.pseudo[0].toUpperCase()}</span><div class="photo-overlay"><span>Changer</span></div>`;
+
   document.getElementById('modal-profil').classList.add('open');
 }
-function fermerProfil(){ document.getElementById('modal-profil').classList.remove('open'); }
-function togglePwdConfirm(){
-  var has = document.getElementById('p-newpwd').value.length > 0;
-  document.getElementById('p-confirm-wrap').style.display = has ? 'block' : 'none';
-  document.getElementById('p-oldpwd-wrap').style.display  = has ? 'block' : 'none';
-}
+
+function fermerProfil() { document.getElementById('modal-profil').classList.remove('open'); }
 
 function previewPhoto(e) {
-  var file = e.target.files[0];
+  const file = e.target.files[0];
   if (!file) return;
-  if (file.size > 5*1024*1024) { showToast('❌ Image trop lourde (max 5Mo)'); return; }
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    photoFile = { file: file };
-    document.getElementById('photo-preview-btn').innerHTML = '<img src="'+ev.target.result+'" alt=""><div class="photo-overlay"><span>Changer</span></div>';
-    document.getElementById('photo-upload-btn').style.display = 'inline-block';
+  if (file.size > 5 * 1024 * 1024) { showToast('❌ Max 5Mo'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    photoFile = file;
+    document.getElementById('photo-prev').innerHTML =
+      `<img src="${ev.target.result}" alt=""><div class="photo-overlay"><span>Changer</span></div>`;
+    document.getElementById('btn-upload').style.display = 'inline-block';
   };
   reader.readAsDataURL(file);
 }
 
 async function uploadPhoto() {
   if (!photoFile) return;
-  var prog = document.getElementById('upload-progress');
-  var fill = document.getElementById('progress-fill');
-  var lbl  = document.getElementById('progress-label');
+  const prog = document.getElementById('prog-wrap');
+  const fill = document.getElementById('prog-fill');
+  const lbl  = document.getElementById('prog-lbl');
   prog.classList.add('show');
   fill.style.width = '40%'; lbl.textContent = 'Upload vers Imgur…';
   try {
-    var fd = new FormData();
-    fd.append('image', photoFile.file);
-    var res  = await fetch('https://api.imgur.com/3/image', {method:'POST', headers:{'Authorization':'Client-ID '+IMGUR_ID}, body:fd});
-    var json = await res.json();
-    if (!json.success) throw new Error(json.data && json.data.error || 'Erreur Imgur');
+    const fd  = new FormData();
+    fd.append('image', photoFile);
+    const res  = await fetch('https://api.imgur.com/3/image', {
+      method: 'POST', headers: { 'Authorization': `Client-ID ${IMGUR}` }, body: fd
+    });
+    const json = await res.json();
+    if (!json.success) throw new Error(json.data?.error || 'Erreur Imgur');
     fill.style.width = '80%'; lbl.textContent = 'Sauvegarde…';
-    var imgUrl = json.data.link;
+    const imgUrl = json.data.link;
     await supa.from('users').update({ photo: imgUrl }).eq('id', currentUser.id);
     currentUser.photo = imgUrl;
     localStorage.setItem('eclypse_user', JSON.stringify(currentUser));
     fill.style.width = '100%'; lbl.textContent = '✓ Photo mise à jour !';
-    document.getElementById('profil-avatar').innerHTML = '<img src="'+imgUrl+'" alt="">';
-    document.getElementById('nav-avatar').innerHTML    = '<img src="'+imgUrl+'" alt="">';
+    document.getElementById('profil-avatar').innerHTML = `<img src="${imgUrl}" alt="">`;
+    document.getElementById('nav-avatar').innerHTML    = `<img src="${imgUrl}" alt="">`;
     photoFile = null;
-    document.getElementById('photo-upload-btn').style.display = 'none';
+    document.getElementById('btn-upload').style.display = 'none';
     showModalMsg('✦ Photo mise à jour !', 'ok');
   } catch(err) {
     fill.style.background = 'var(--rouge)';
@@ -690,16 +624,13 @@ async function uploadPhoto() {
 }
 
 async function sauvegarderProfil() {
-  var pseudo  = document.getElementById('p-pseudo').value.trim();
-  var xLink   = document.getElementById('p-xlink').value.trim();
-  var newPwd  = document.getElementById('p-newpwd').value;
-  var confPwd = document.getElementById('p-confirmpwd').value;
-  var oldPwd  = document.getElementById('p-oldpwd').value;
-  var updates = {};
+  const pseudo = document.getElementById('p-pseudo').value.trim();
+  const xLink  = document.getElementById('p-xlink').value.trim();
+  const updates = {};
 
   if (pseudo && pseudo !== currentUser.pseudo) {
-    var lastEdit = currentUser.last_profile_edit;
-    if (lastEdit && Math.floor((Date.now()-new Date(lastEdit))/(1000*60*60*24)) < 90) {
+    const lastEdit = currentUser.last_profile_edit;
+    if (lastEdit && Math.floor((Date.now() - new Date(lastEdit)) / (1000*60*60*24)) < 90) {
       showModalMsg('❌ Pseudo modifiable dans 90 jours max', 'err'); return;
     }
     updates.pseudo = pseudo;
@@ -708,40 +639,38 @@ async function sauvegarderProfil() {
 
   if (xLink !== (currentUser.x_link || '')) updates.x_link = xLink;
 
-  if (newPwd) {
-    if (!oldPwd) { showModalMsg('❌ Saisis ton ancien mot de passe', 'err'); return; }
-    var oldHash = await sha256(oldPwd);
-    if (oldHash !== currentUser.password) { showModalMsg('❌ Ancien mot de passe incorrect', 'err'); return; }
-    var pwdErr = validerMdp(newPwd);
-    if (pwdErr) { showModalMsg(pwdErr, 'err'); return; }
-    if (newPwd !== confPwd) { showModalMsg('❌ Les mots de passe ne correspondent pas', 'err'); return; }
-    updates.password = await sha256(newPwd);
-  }
-
   if (!Object.keys(updates).length) { showModalMsg('Aucune modification.', 'ok'); return; }
 
   showModalMsg('⏳ Sauvegarde…', 'ok');
-  var { error } = await supa.from('users').update(updates).eq('id', currentUser.id);
-  if (error) { showModalMsg('❌ Erreur sauvegarde', 'err'); return; }
+  const { error } = await supa.from('users').update(updates).eq('id', currentUser.id);
+  if (error) { showModalMsg('❌ Erreur', 'err'); return; }
 
   Object.assign(currentUser, updates);
   localStorage.setItem('eclypse_user', JSON.stringify(currentUser));
 
   document.getElementById('display-pseudo').textContent = currentUser.pseudo;
   document.getElementById('profil-pseudo').textContent  = currentUser.pseudo;
-  var xEl = document.getElementById('profil-x-link');
-  if (xEl) { if(currentUser.x_link){xEl.href=currentUser.x_link;xEl.style.display='inline-flex';}else{xEl.style.display='none';} }
+  const xEl = document.getElementById('profil-x-link');
+  if (currentUser.x_link) { xEl.href = currentUser.x_link; xEl.style.display = 'inline-flex'; }
+  else { xEl.style.display = 'none'; }
 
   showModalMsg('✦ Profil mis à jour !', 'ok');
-  showToast('✦ Sauvegardé !');
   setTimeout(fermerProfil, 1500);
 }
 
-function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(function(){t.style.display='none';},3000);}
-function showModalMsg(msg,type){var el=document.getElementById('modal-msg');el.textContent=msg;el.className='modal-msg '+type;}
+/* ── UTILS ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display = 'block';
+  clearTimeout(t._t); t._t = setTimeout(() => t.style.display = 'none', 3000);
+}
+function showModalMsg(msg, type) {
+  const el = document.getElementById('modal-msg');
+  el.textContent = msg; el.className = 'modal-msg ' + type;
+}
 
-/* SESSION */
-var saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
+/* ── SESSION ── */
+const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
 if (saved) { currentUser = JSON.parse(saved); afficherDashboard(currentUser); }
 </script>
 </body>
