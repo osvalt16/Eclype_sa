@@ -5,146 +5,255 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ÉCLYPSE — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:wght@300;400&display=swap" rel="stylesheet">
-<style>.content{max-width:1100px;margin:0 auto;padding:2.5rem 2rem;}.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2.5rem;}.stat{border:1px solid var(--border-violet);padding:1.4rem 1.2rem;background:rgba(10,8,20,0.8);position:relative;overflow:hidden;}.stat::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;}.stat.rouge::after{background:linear-gradient(to right,transparent,var(--rouge),transparent);}.stat.or::after{background:linear-gradient(to right,transparent,var(--or),transparent);}.stat.vert::after{background:linear-gradient(to right,transparent,var(--vert),transparent);}.stat.cyan::after{background:linear-gradient(to right,transparent,var(--cyan),transparent);}.stat-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.6rem;}.stat-val{font-family:'Cinzel',serif;font-size:2rem;line-height:1;}.stat-val.rouge{color:var(--rouge);}.stat-val.or{color:var(--or);}.stat-val.vert{color:var(--vert);}.stat-val.cyan{color:var(--cyan);}.mb-25{margin-bottom:2.5rem;}.gen-box{border:1px solid var(--border-or);padding:2rem;background:rgba(26,15,46,0.3);}.gen-form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:1rem;align-items:end;margin-bottom:1.2rem;}.gen-field label{display:block;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);margin-bottom:0.4rem;}.gen-field input,.gen-field select{width:100%;background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.65rem 0.9rem;font-family:'Crimson Pro',serif;font-size:0.95rem;outline:none;transition:border-color 0.3s;}.gen-field input:focus,.gen-field select:focus{border-color:var(--or);}.gen-field select option{background:#1a0f2e;}.btn-gen{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.65rem 1.5rem;cursor:pointer;white-space:nowrap;}.btn-gen:hover{background:var(--or-clair);}.token-result{display:none;border:1px solid var(--border-or);padding:1.2rem;background:rgba(201,162,39,0.05);text-align:center;}.token-result.show{display:block;}.token-val{font-family:'Cinzel',serif;font-size:1.3rem;letter-spacing:0.25em;color:var(--or-clair);margin-bottom:0.4rem;}.token-sub{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.8rem;}.btn-copy{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);background:none;border:1px solid var(--border-or);padding:0.4rem 1rem;cursor:pointer;}.btn-copy:hover{background:rgba(201,162,39,0.1);}.membres-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:2.5rem;}.membre-row{display:grid;grid-template-columns:180px 1fr 160px 1fr auto;gap:1rem;align-items:center;border:1px solid var(--border-violet);padding:1rem 1.2rem;background:rgba(10,8,20,0.8);}.membre-row:hover{border-color:var(--border-or);}.mr-pseudo{font-family:'Cinzel',serif;font-size:0.85rem;color:#fff;}.mr-token{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.1em;color:var(--cyan);}.mr-rang{font-size:0.8rem;color:var(--texte-pale);}.role-btns{display:flex;gap:0.3rem;flex-wrap:wrap;}.mr-actions{display:flex;flex-direction:column;gap:0.3rem;align-items:flex-end;}.mr-grade-sel{background:rgba(7,6,13,0.9);border:1px solid var(--border-violet);color:var(--texte);padding:0.3rem 0.5rem;font-size:0.8rem;cursor:pointer;outline:none;width:100%;}.mr-grade-sel:focus{border-color:var(--or);}.mr-grade-sel option{background:#1a0f2e;}.grades-timeline{display:flex;border:1px solid var(--border-violet);background:rgba(10,8,20,0.8);margin-bottom:2.5rem;overflow:hidden;}.grade-step{flex:1;padding:1rem 0.8rem;border-right:1px solid var(--border-violet);text-align:center;}.grade-step:last-child{border-right:none;}.grade-step:hover{background:rgba(26,15,46,0.5);}.gs-dot{width:10px;height:10px;border-radius:50%;margin:0 auto 0.6rem;border:2px solid;}.gs-dot.apply{background:#555;border-color:#888;}.gs-dot.membre{background:rgba(107,53,200,0.5);border-color:var(--violet-glow);}.gs-dot.veteran{background:rgba(201,162,39,0.4);border-color:var(--or);}.gs-dot.sousofficier{background:rgba(232,130,30,0.4);border-color:#e88030;}.gs-dot.officier{background:rgba(232,90,90,0.4);border-color:var(--rouge);}.gs-name{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:0.35rem;}.gs-name.apply{color:#888;}.gs-name.membre{color:var(--violet-glow);}.gs-name.veteran{color:var(--or);}.gs-name.sousofficier{color:#e88030;}.gs-name.officier{color:var(--rouge);}.gs-cond{font-size:0.7rem;color:var(--texte-pale);margin-bottom:0.5rem;line-height:1.3;}.gs-roles{display:flex;flex-wrap:wrap;gap:0.25rem;justify-content:center;}.gs-role{font-family:'Cinzel',serif;font-size:0.42rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.1rem 0.4rem;border:1px solid var(--border-violet);color:var(--texte-pale);}.demandes-box{border:1px solid rgba(201,162,39,0.5);background:rgba(26,15,46,0.3);margin-bottom:2.5rem;}.demandes-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border-or);}.demandes-hdr h2{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--or);}.d-count{font-family:'Cinzel',serif;font-size:0.62rem;color:var(--rouge);background:rgba(232,90,90,0.15);border:1px solid rgba(232,90,90,0.4);padding:0.12rem 0.55rem;}.demande-item{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid var(--border-violet);}.demande-item:last-child{border-bottom:none;}.d-pseudo{font-family:'Cinzel',serif;font-size:0.88rem;color:#fff;margin-bottom:0.15rem;}.d-token{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:0.15rem;}.d-date{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--texte-pale);}.d-btns{display:flex;gap:0.5rem;}.btn-ok{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--vert);background:none;border:1px solid rgba(94,207,160,0.4);padding:0.35rem 0.8rem;cursor:pointer;}.btn-ok:hover{background:rgba(94,207,160,0.1);}.btn-no{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.8rem;cursor:pointer;}.btn-no:hover{background:rgba(232,90,90,0.1);}.recru-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin-bottom:2.5rem;}.recru-card{border:1px solid var(--border-violet);padding:1rem 1.2rem;background:rgba(10,8,20,0.8);display:flex;align-items:center;justify-content:space-between;gap:1rem;}.recru-nom{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:#fff;}.recru-btns{display:flex;gap:0.3rem;flex-shrink:0;}.recru-btn{font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.5rem;cursor:pointer;border:1px solid;background:none;transition:all 0.2s;}.recru-btn.ouvert{color:var(--vert);border-color:rgba(94,207,160,0.3);}.recru-btn.ouvert.active{background:rgba(94,207,160,0.15);border-color:var(--vert);}.recru-btn.limite{color:var(--or);border-color:var(--border-or);}.recru-btn.limite.active{background:rgba(201,162,39,0.15);border-color:var(--or);}.recru-btn.complet{color:var(--texte-pale);border-color:var(--border-violet);}.recru-btn.complet.active{background:rgba(138,127,160,0.15);border-color:var(--texte-pale);}.cand-box{border:1px solid rgba(0,212,255,0.3);background:rgba(0,20,40,0.4);margin-bottom:2.5rem;}.cand-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid rgba(0,212,255,0.2);}.cand-hdr h2{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--cyan);}.cand-count{font-family:'Cinzel',serif;font-size:0.62rem;color:var(--cyan);background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);padding:0.12rem 0.55rem;}.cand-item{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-violet);display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;}.cand-item:last-child{border-bottom:none;}.cand-pseudo{font-family:'Cinzel',serif;font-size:0.88rem;color:#fff;margin-bottom:0.2rem;}.cand-discord{font-family:'Cinzel',serif;font-size:0.78rem;color:var(--cyan);margin-bottom:0.3rem;display:flex;align-items:center;gap:0.5rem;}.cand-details{font-size:0.82rem;color:var(--texte-pale);margin-bottom:0.3rem;}.cand-motivation{font-size:0.82rem;color:var(--texte-pale);font-style:italic;border-left:2px solid var(--border-or);padding-left:0.8rem;margin-top:0.5rem;}.cand-date{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;color:var(--texte-pale);}.cand-actions{display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end;min-width:120px;}.btn-copy-discord{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);background:none;border:1px solid rgba(0,212,255,0.3);padding:0.35rem 0.7rem;cursor:pointer;width:100%;}.btn-copy-discord:hover{background:rgba(0,212,255,0.08);}.btn-cand-del{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.7rem;cursor:pointer;width:100%;}.btn-cand-del:hover{background:rgba(232,90,90,0.08);}.cand-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:2.5rem;}.cand-item{border:1px solid var(--border-or);padding:1.2rem 1.5rem;background:rgba(26,15,46,0.3);display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:start;}.cand-pseudo{font-family:'Cinzel',serif;font-size:0.9rem;color:#fff;margin-bottom:0.2rem;}.cand-discord{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:0.3rem;}.cand-info{font-size:0.8rem;color:var(--texte-pale);margin-bottom:0.2rem;}.cand-date{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--texte-pale);}.cand-btns{display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end;}.btn-discord{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:#5865F2;background:none;border:1px solid rgba(88,101,242,0.4);padding:0.35rem 0.8rem;cursor:pointer;text-decoration:none;display:inline-block;}.btn-discord:hover{background:rgba(88,101,242,0.1);}.btn-cand-del{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.25rem 0.6rem;cursor:pointer;}#denied{min-height:100vh;display:none;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:1.5rem;}#denied h1{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--rouge);}#denied a{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);border:1px solid var(--border-or);padding:0.7rem 1.8rem;text-decoration:none;}@media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr)}.membre-row{grid-template-columns:1fr 1fr}.gen-form{grid-template-columns:1fr 1fr}}</style>
+<style>
+:root {
+  --noir: #030208; --violet: #1a0f2e; --vg: #8b5cf6;
+  --or: #c9a227; --orc: #e8c547; --tx: #d4c9e8; --txp: #8a7fa0;
+  --bor: rgba(201,162,39,0.3); --bov: rgba(107,53,200,0.4);
+  --cy: #00d4ff; --rg: #e85a5a; --vt: #5ecfa0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--noir); color: var(--tx); font-family: 'Crimson Pro', serif; font-size: 17px; min-height: 100vh; }
+
+/* TOPBAR */
+.topbar { background: rgba(3,2,8,0.97); border-bottom: 1px solid rgba(232,90,90,0.2); padding: 0.9rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.tb-left { display: flex; align-items: center; gap: 1rem; }
+.tb-left img { height: 30px; opacity: 0.9; }
+.tb-title { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--rg); opacity: 0.9; }
+.tb-badge { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: #fff; background: rgba(232,90,90,0.15); border: 1px solid rgba(232,90,90,0.35); padding: 0.16rem 0.5rem; }
+.tb-right { display: flex; align-items: center; gap: 0.6rem; }
+.tb-admin { font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.1em; color: var(--txp); }
+.tb-admin span { color: var(--rg); }
+.tb-btn { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase; background: none; border: 1px solid var(--bov); padding: 0.32rem 0.75rem; cursor: pointer; text-decoration: none; display: inline-block; color: var(--txp); transition: all 0.2s; }
+.tb-btn:hover { border-color: var(--or); color: var(--or); }
+.tb-btn.red { color: var(--rg); border-color: rgba(232,90,90,0.25); }
+.tb-btn.red:hover { background: rgba(232,90,90,0.08); }
+
+/* CONTENT */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 2rem; }
+
+/* STATS */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
+.stat { border: 1px solid var(--bov); padding: 1.2rem; background: rgba(10,7,20,0.85); position: relative; overflow: hidden; }
+.stat::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; }
+.stat.r::after { background: linear-gradient(90deg,transparent,var(--rg),transparent); }
+.stat.o::after { background: linear-gradient(90deg,transparent,var(--or),transparent); }
+.stat.v::after { background: linear-gradient(90deg,transparent,var(--vt),transparent); }
+.stat.c::after { background: linear-gradient(90deg,transparent,var(--cy),transparent); }
+.stat-lbl { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--txp); margin-bottom: 0.5rem; }
+.stat-val { font-family: 'Cinzel', serif; font-size: 1.9rem; line-height: 1; }
+.stat.r .stat-val { color: var(--rg); }
+.stat.o .stat-val { color: var(--or); }
+.stat.v .stat-val { color: var(--vt); }
+.stat.c .stat-val { color: var(--cy); }
+
+/* SECTION */
+.sec { margin-bottom: 2rem; }
+.sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--bor); }
+.sec-hdr h2 { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--or); }
+.btn-sm { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; background: none; border: 1px solid var(--bov); padding: 0.25rem 0.6rem; cursor: pointer; color: var(--txp); }
+.btn-sm.or { color: var(--or); border-color: var(--bor); }
+
+/* DEMANDES */
+.dem-item { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid var(--bov); background: rgba(26,15,46,0.25); }
+.dem-item:last-child { border-bottom: none; }
+.dem-box { border: 1px solid rgba(201,162,39,0.4); margin-bottom: 2rem; }
+.dem-box-hdr { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--bor); }
+.dem-box-hdr h2 { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--or); }
+.dem-count { font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--rg); background: rgba(232,90,90,0.12); border: 1px solid rgba(232,90,90,0.35); padding: 0.12rem 0.5rem; }
+.dem-pseudo { font-family: 'Cinzel', serif; font-size: 0.85rem; color: #fff; margin-bottom: 0.15rem; }
+.dem-token { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--cy); margin-bottom: 0.12rem; }
+.dem-date { font-family: 'Cinzel', serif; font-size: 0.5rem; color: var(--txp); }
+.dem-btns { display: flex; gap: 0.5rem; }
+.btn-ok { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--vt); background: none; border: 1px solid rgba(94,207,160,0.35); padding: 0.32rem 0.75rem; cursor: pointer; }
+.btn-ok:hover { background: rgba(94,207,160,0.08); }
+.btn-no { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rg); background: none; border: 1px solid rgba(232,90,90,0.25); padding: 0.32rem 0.75rem; cursor: pointer; }
+.btn-no:hover { background: rgba(232,90,90,0.08); }
+
+/* GÉNÉRATEUR TOKEN */
+.gen-box { border: 1px solid var(--bor); padding: 1.5rem; background: rgba(26,15,46,0.25); margin-bottom: 2rem; }
+.gen-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 1rem; align-items: end; margin-bottom: 1rem; }
+.gf label { display: block; font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(201,162,39,0.7); margin-bottom: 0.38rem; }
+.gf input, .gf select { width: 100%; background: rgba(3,2,8,0.8); border: 1px solid var(--bov); border-bottom: 1px solid var(--bor); color: var(--tx); padding: 0.6rem 0.85rem; font-family: 'Crimson Pro', serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+.gf input:focus, .gf select:focus { border-color: rgba(201,162,39,0.5); }
+.gf select option { background: #1a0f2e; }
+.btn-gen { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0a0614; background: linear-gradient(135deg,#c9a227,#e8c547); border: none; padding: 0.6rem 1.4rem; cursor: pointer; white-space: nowrap; }
+.tok-result { display: none; border: 1px solid var(--bor); padding: 1rem 1.2rem; background: rgba(201,162,39,0.04); text-align: center; }
+.tok-result.show { display: block; }
+.tok-val { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 0.25em; color: var(--orc); margin-bottom: 0.35rem; }
+.tok-sub { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--txp); margin-bottom: 0.7rem; }
+.btn-copy { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--or); background: none; border: 1px solid var(--bor); padding: 0.35rem 0.9rem; cursor: pointer; }
+
+/* MEMBRES */
+.mb-list { display: flex; flex-direction: column; gap: 0.45rem; }
+.mb-row { display: grid; grid-template-columns: 170px 170px 1fr auto; gap: 1rem; align-items: center; border: 1px solid var(--bov); padding: 0.9rem 1.1rem; background: rgba(10,7,20,0.8); transition: border-color 0.2s; }
+.mb-row:hover { border-color: var(--bor); }
+.mb-pseudo { font-family: 'Cinzel', serif; font-size: 0.82rem; color: #fff; margin-bottom: 0.15rem; }
+.mb-token { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.08em; color: var(--cy); }
+.mb-sel { width: 100%; background: rgba(3,2,8,0.9); border: 1px solid var(--bov); color: var(--tx); padding: 0.4rem 0.6rem; font-size: 0.82rem; cursor: pointer; outline: none; }
+.mb-sel:focus { border-color: var(--or); }
+.mb-sel option { background: #1a0f2e; }
+.role-btns { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.rbtn { font-family: 'Cinzel', serif; font-size: 0.46rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.22rem 0.5rem; cursor: pointer; border: 1px solid; background: none; transition: all 0.2s; }
+.rbtn.mb { color: var(--txp); border-color: var(--bov); }
+.rbtn.mb.on { color: #fff; background: rgba(107,53,200,0.25); border-color: var(--vg); }
+.rbtn.op { color: var(--cy); border-color: rgba(0,212,255,0.25); }
+.rbtn.op.on { background: rgba(0,212,255,0.08); border-color: var(--cy); }
+.rbtn.ad { color: var(--rg); border-color: rgba(232,90,90,0.25); }
+.rbtn.ad.on { background: rgba(232,90,90,0.08); border-color: var(--rg); }
+.mb-actions { display: flex; flex-direction: column; gap: 0.3rem; align-items: flex-end; }
+.badge { font-family: 'Cinzel', serif; font-size: 0.46rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.1rem 0.4rem; display: inline-block; }
+.badge.on { color: var(--vt); border: 1px solid rgba(94,207,160,0.25); }
+.badge.off { color: var(--rg); border: 1px solid rgba(232,90,90,0.25); }
+.btn-xs { font-family: 'Cinzel', serif; font-size: 0.46rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rg); background: none; border: 1px solid rgba(232,90,90,0.25); padding: 0.2rem 0.5rem; cursor: pointer; }
+.btn-xs:hover { background: rgba(232,90,90,0.08); }
+
+/* CANDIDATURES */
+.cand-item { display: grid; grid-template-columns: 1fr auto; gap: 1.2rem; align-items: start; padding: 1rem 1.2rem; border-bottom: 1px solid var(--bov); }
+.cand-item:last-child { border-bottom: none; }
+.cand-box { border: 1px solid var(--bor); }
+.c-pseudo { font-family: 'Cinzel', serif; font-size: 0.85rem; color: #fff; margin-bottom: 0.15rem; }
+.c-discord { font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--cy); margin-bottom: 0.12rem; }
+.c-info { font-size: 0.8rem; color: var(--txp); margin-bottom: 0.1rem; }
+.c-date { font-family: 'Cinzel', serif; font-size: 0.5rem; color: var(--txp); }
+.c-btns { display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-end; }
+.btn-dc { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: #7289da; background: none; border: 1px solid rgba(114,137,218,0.35); padding: 0.3rem 0.7rem; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn-dc:hover { background: rgba(114,137,218,0.08); }
+
+/* GRADES */
+.grades { display: flex; border: 1px solid var(--bov); overflow: hidden; margin-bottom: 2rem; }
+.gs { flex: 1; padding: 0.9rem 0.7rem; border-right: 1px solid var(--bov); text-align: center; transition: background 0.2s; }
+.gs:last-child { border-right: none; }
+.gs:hover { background: rgba(26,15,46,0.5); }
+.gs-dot { width: 9px; height: 9px; border-radius: 50%; margin: 0 auto 0.5rem; border: 2px solid; }
+.gs-dot.ap { background: #555; border-color: #888; }
+.gs-dot.mb { background: rgba(139,92,246,0.5); border-color: var(--vg); }
+.gs-dot.vt { background: rgba(201,162,39,0.4); border-color: var(--or); }
+.gs-dot.so { background: rgba(232,128,48,0.4); border-color: #e88030; }
+.gs-dot.of { background: rgba(232,90,90,0.4); border-color: var(--rg); }
+.gs-name { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.3rem; }
+.gs-name.ap { color: #888; }
+.gs-name.mb { color: var(--vg); }
+.gs-name.vt { color: var(--or); }
+.gs-name.so { color: #e88030; }
+.gs-name.of { color: var(--rg); }
+.gs-cond { font-size: 0.68rem; color: var(--txp); margin-bottom: 0.4rem; line-height: 1.3; }
+.gs-roles { display: flex; flex-wrap: wrap; gap: 0.2rem; justify-content: center; }
+.gs-role { font-family: 'Cinzel', serif; font-size: 0.4rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.08rem 0.38rem; border: 1px solid var(--bov); color: var(--txp); }
+
+/* RECRUTEMENT */
+.recru { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; margin-bottom: 2rem; }
+.recru-card { border: 1px solid var(--bov); padding: 0.9rem 1.1rem; background: rgba(10,7,20,0.8); display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; }
+.recru-nom { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; }
+.recru-btns { display: flex; gap: 0.25rem; flex-shrink: 0; }
+.r-btn { font-family: 'Cinzel', serif; font-size: 0.42rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.22rem 0.45rem; cursor: pointer; border: 1px solid; background: none; transition: all 0.2s; }
+.r-btn.ou { color: var(--vt); border-color: rgba(94,207,160,0.3); }
+.r-btn.ou.on { background: rgba(94,207,160,0.12); border-color: var(--vt); }
+.r-btn.li { color: var(--or); border-color: var(--bor); }
+.r-btn.li.on { background: rgba(201,162,39,0.12); border-color: var(--or); }
+.r-btn.co { color: var(--txp); border-color: var(--bov); }
+.r-btn.co.on { background: rgba(138,127,160,0.12); border-color: var(--txp); }
+
+.empty { padding: 1.5rem; text-align: center; color: var(--txp); font-style: italic; font-size: 0.9rem; }
+.toast { position: fixed; bottom: 2rem; right: 2rem; background: rgba(10,7,20,0.97); border: 1px solid var(--bor); border-left: 3px solid var(--or); padding: 0.85rem 1.3rem; font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--or); z-index: 999; display: none; }
+
+#denied { min-height: 100vh; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 1.5rem; text-align: center; }
+#denied h1 { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--rg); }
+#denied a { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--or); border: 1px solid var(--bor); padding: 0.65rem 1.6rem; text-decoration: none; }
+
+@media(max-width:900px) { .stats { grid-template-columns: repeat(2,1fr); } .mb-row { grid-template-columns: 1fr 1fr; } .recru { grid-template-columns: 1fr; } .gen-form { grid-template-columns: 1fr 1fr; } }
+</style>
 </head>
 <body>
 
-<div id="denied" style="display:none">
+<div id="denied">
   <h1>🔒 Accès Refusé</h1>
   <a href="dashboard.html">← Retour au Dashboard</a>
 </div>
 
 <div id="panel" style="display:none">
   <div class="topbar">
-    <div class="topbar-left">
+    <div class="tb-left">
       <img src="https://osvalt16.github.io/Eclype_sa/Picsart_26-05-25_11-42-55-217.png" alt="Éclypse">
-      <span class="topbar-title">Administration</span>
-      <span class="topbar-badge">ADMIN</span>
+      <span class="tb-title">Administration</span>
+      <span class="tb-badge">ADMIN</span>
     </div>
-    <div class="topbar-right">
-      <span class="topbar-admin">Connecté : <span id="admin-pseudo">—</span></span>
-      <a href="dashboard.html" class="btn-nav">← Dashboard</a>
-      <a href="index.html" class="btn-nav">← Site</a>
-      <button class="btn-nav red" onclick="logout()">Déconnexion</button>
+    <div class="tb-right">
+      <span class="tb-admin">Connecté : <span id="admin-pseudo">—</span></span>
+      <a href="dashboard.html" class="tb-btn">← Dashboard</a>
+      <a href="index.html" class="tb-btn">← Site</a>
+      <button class="tb-btn red" onclick="logout()">Déconnexion</button>
     </div>
   </div>
 
-  <div class="content">
+  <div class="wrap">
 
-
-    <div class="stats-row">
-      <div class="stat rouge"><div class="stat-label">Membres actifs</div><div class="stat-val rouge" id="s-total">—</div></div>
-      <div class="stat or"><div class="stat-label">En attente</div><div class="stat-val or" id="s-pending">—</div></div>
-      <div class="stat vert"><div class="stat-label">Avec accès Ops</div><div class="stat-val vert" id="s-ops">—</div></div>
-      <div class="stat cyan"><div class="stat-label">Admins</div><div class="stat-val cyan" id="s-admins">—</div></div>
+    <div class="stats">
+      <div class="stat r"><div class="stat-lbl">Membres actifs</div><div class="stat-val" id="s-tot">—</div></div>
+      <div class="stat o"><div class="stat-lbl">En attente</div><div class="stat-val" id="s-pen">—</div></div>
+      <div class="stat v"><div class="stat-lbl">Accès Ops</div><div class="stat-val" id="s-ops">—</div></div>
+      <div class="stat c"><div class="stat-lbl">Admins</div><div class="stat-val" id="s-adm">—</div></div>
     </div>
 
-
-    <div id="demandes-box" class="demandes-box" style="display:none">
-      <div class="demandes-hdr">
+    <div id="dem-box" class="dem-box" style="display:none">
+      <div class="dem-box-hdr">
         <h2>⏳ Demandes en attente</h2>
-        <span class="d-count" id="d-count">0</span>
+        <span class="dem-count" id="dem-count">0</span>
       </div>
-      <div id="demandes-list"></div>
+      <div id="dem-list"></div>
     </div>
 
-
-    <div id="cand-box" class="cand-box" style="display:none">
-      <div class="cand-hdr">
-        <h2>📨 Candidatures reçues</h2>
-        <span class="cand-count" id="cand-count">0</span>
-      </div>
-      <div id="cand-list"></div>
-    </div>
-
-
-    <div class="section-hdr mb-25">
-      <h2>🔑 Générer un token membre</h2>
-    </div>
-    <div class="gen-box mb-25">
-      <div class="gen-form">
-        <div class="gen-field">
-          <label>Pseudo in-game *</label>
-          <input type="text" id="g-pseudo" placeholder="Ex: Vaelthor">
+    <div class="sec">
+      <div class="sec-hdr"><h2>🔑 Générer un token membre</h2></div>
+      <div class="gen-box">
+        <div class="gen-form">
+          <div class="gf"><label>Pseudo in-game *</label><input type="text" id="g-pseudo" placeholder="Ex: Vaelthor"></div>
+          <div class="gf"><label>Rang</label>
+            <select id="g-rang">
+              <option>Apply</option><option selected>Membre</option><option>Vétéran</option><option>Sous-Officier</option><option>Officier</option>
+            </select>
+          </div>
+          <div class="gf"><label>Accès Ops</label>
+            <select id="g-ops">
+              <option value="false">Non — membre standard</option>
+              <option value="true">Oui — peut créer des ops</option>
+            </select>
+          </div>
+          <button class="btn-gen" onclick="genToken()">✦ Générer</button>
         </div>
-        <div class="gen-field">
-          <label>Rang</label>
-          <select id="g-rang">
-            <option>Apply</option>
-            <option selected>Membre</option>
-            <option>Vétéran</option>
-            <option>Sous-Officier</option>
-            <option>Officier</option>
-          </select>
+        <div class="tok-result" id="tok-result">
+          <div class="tok-val" id="tok-val">—</div>
+          <div class="tok-sub">Token d'accès — à transmettre en privé</div>
+          <button class="btn-copy" onclick="copyToken()">📋 Copier</button>
         </div>
-        <div class="gen-field">
-          <label>Accès Ops</label>
-          <select id="g-ops">
-            <option value="false">Non — membre standard</option>
-            <option value="true">Oui — peut créer des ops</option>
-          </select>
-        </div>
-        <button class="btn-gen" onclick="genToken()">✦ Générer</button>
-      </div>
-      <div class="token-result" id="token-result">
-        <div class="token-val" id="token-val">—</div>
-        <div class="token-sub">Token d'accès — à transmettre en privé au membre</div>
-        <button class="btn-copy" onclick="copyToken()">📋 Copier</button>
       </div>
     </div>
 
+    <div class="sec">
+      <div class="sec-hdr"><h2>📨 Candidatures Discord</h2><button class="btn-sm or" onclick="loadCands()">↻ Actualiser</button></div>
+      <div class="cand-box" id="cand-box"><div class="empty">Aucune candidature.</div></div>
+    </div>
 
-    <div class="section-hdr"><h2>🎯 Statuts de Recrutement</h2></div>
-    <div class="recru-grid" id="recru-grid"></div>
+    <div class="sec">
+      <div class="sec-hdr"><h2>🎯 Statuts de Recrutement</h2></div>
+      <div class="recru" id="recru-grid"></div>
+    </div>
 
-
-    <div class="section-hdr"><h2>⚔ Progression des Grades</h2></div>
-    <div class="grades-timeline mb-25">
-      <div class="grade-step">
-        <div class="gs-dot apply"></div>
-        <div class="gs-name apply">Apply</div>
-        <div class="gs-cond">1er contact recruteur</div>
-        <div class="gs-roles"><span class="gs-role">Accès limité</span></div>
-      </div>
-      <div class="grade-step">
-        <div class="gs-dot membre"></div>
-        <div class="gs-name membre">Membre</div>
-        <div class="gs-cond">Automatique</div>
-        <div class="gs-roles"><span class="gs-role">Dashboard</span></div>
-      </div>
-      <div class="grade-step">
-        <div class="gs-dot veteran"></div>
-        <div class="gs-name veteran">Vétéran</div>
-        <div class="gs-cond">500 LP</div>
-        <div class="gs-roles"><span class="gs-role">RH</span><span class="gs-role">Aspirant FC</span><span class="gs-role">Recruteur</span><span class="gs-role">Logistique</span></div>
-      </div>
-      <div class="grade-step">
-        <div class="gs-dot sousofficier"></div>
-        <div class="gs-name sousofficier">Sous-Officier</div>
-        <div class="gs-cond">Vote Officiers</div>
-        <div class="gs-roles"><span class="gs-role">Skirmish FC</span><span class="gs-role">Team SRP</span></div>
-      </div>
-      <div class="grade-step">
-        <div class="gs-dot officier"></div>
-        <div class="gs-name officier">Officier</div>
-        <div class="gs-cond">Leadership + Élection</div>
-        <div class="gs-roles"><span class="gs-role">Diplomate</span><span class="gs-role">Tactical FC</span></div>
+    <div class="sec">
+      <div class="sec-hdr"><h2>⚔ Progression des Grades</h2></div>
+      <div class="grades">
+        <div class="gs"><div class="gs-dot ap"></div><div class="gs-name ap">Apply</div><div class="gs-cond">1er contact</div><div class="gs-roles"><span class="gs-role">Accès limité</span></div></div>
+        <div class="gs"><div class="gs-dot mb"></div><div class="gs-name mb">Membre</div><div class="gs-cond">Automatique</div><div class="gs-roles"><span class="gs-role">Dashboard</span></div></div>
+        <div class="gs"><div class="gs-dot vt"></div><div class="gs-name vt">Vétéran</div><div class="gs-cond">500 LP</div><div class="gs-roles"><span class="gs-role">RH</span><span class="gs-role">Aspirant FC</span><span class="gs-role">Recruteur</span></div></div>
+        <div class="gs"><div class="gs-dot so"></div><div class="gs-name so">Sous-Officier</div><div class="gs-cond">Vote Officiers</div><div class="gs-roles"><span class="gs-role">Skirmish FC</span><span class="gs-role">Team SRP</span></div></div>
+        <div class="gs"><div class="gs-dot of"></div><div class="gs-name of">Officier</div><div class="gs-cond">Élection</div><div class="gs-roles"><span class="gs-role">Diplomate</span><span class="gs-role">Tactical FC</span></div></div>
       </div>
     </div>
 
-
-    <div class="section-hdr">
-      <h2>📨 Candidatures Discord</h2>
-      <button class="btn-xs" onclick="chargerCandidatures()" style="color:var(--or);border-color:var(--border-or)">↻ Actualiser</button>
+    <div class="sec">
+      <div class="sec-hdr"><h2>👥 Gestion des membres</h2><button class="btn-sm or" onclick="loadMembers()">↻ Actualiser</button></div>
+      <div class="mb-list" id="mb-list"><div class="empty">Chargement…</div></div>
     </div>
-    <div id="cand-list" class="cand-list"><div class="empty">Aucune candidature.</div></div>
-
-
-    <div class="section-hdr">
-      <h2>👥 Gestion des membres</h2>
-      <button class="btn-xs" onclick="charger()" style="color:var(--or);border-color:var(--border-or)">↻ Actualiser</button>
-    </div>
-    <div id="membres-list" class="membres-list"></div>
 
   </div>
 </div>
@@ -152,161 +261,191 @@
 <div class="toast" id="toast"></div>
 
 <script>
+const OWNER = 'osvalt16', REPO = 'Eclype_sa';
+const RAW = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main`;
+const API = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
 
-const IMGUR_ID   = '546c25a59c58ad7';
-
-let currentUser = null;
-let usersData   = null;
-
+let CU = null;
 let _tok = null;
-async function getToken() {
+
+async function gTok() {
   if (_tok) return _tok;
-  const l = localStorage.getItem('eclypse_admin_token');
+  const l = localStorage.getItem('eck');
   if (l) { _tok = l; return l; }
-  try {
-    const res  = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json?t=${Date.now()}`);
-    const data = await res.json();
-    if (data.p) { _tok = data.p.join(''); localStorage.setItem('eclypse_admin_token', _tok); return _tok; }
-  } catch(e) {}
-  return '';
+  const r = await fetch(`${RAW}/config.json?t=${Date.now()}`);
+  const d = await r.json();
+  _tok = d.p.join('');
+  localStorage.setItem('eck', _tok);
+  return _tok;
+}
+
+async function ghGet(file) {
+  const t = await gTok();
+  const r = await fetch(`${API}/${file}`, { headers: { 'Authorization': 'token ' + t } });
+  const j = await r.json();
+  return { sha: j.sha, data: JSON.parse(decodeURIComponent(escape(atob(j.content.split('\n').join(''))))) };
+}
+
+async function ghPut(file, data, sha, msg) {
+  const t = await gTok();
+  const c = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  await fetch(`${API}/${file}`, {
+    method: 'PUT',
+    headers: { 'Authorization': 'token ' + t, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg, content: c, sha })
+  });
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.style.display = 'block';
+  clearTimeout(el._t); el._t = setTimeout(() => el.style.display = 'none', 3000);
 }
 
 async function init() {
   const saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
   if (!saved) { window.location.href = 'dashboard.html'; return; }
-  currentUser = JSON.parse(saved);
-  if (!currentUser.admin) { document.getElementById('denied').style.display = 'flex'; return; }
+  CU = JSON.parse(saved);
+  if (!CU.admin) {
+    document.getElementById('denied').style.display = 'flex';
+    return;
+  }
   document.getElementById('panel').style.display = 'block';
-  document.getElementById('admin-pseudo').textContent = currentUser.pseudo;
-  charger();
-  chargerCandidatures();
-  chargerRecrutement();
+  document.getElementById('admin-pseudo').textContent = CU.pseudo;
+  loadMembers();
+  loadCands();
+  loadRecru();
 }
 
-async function charger() {
+async function loadMembers() {
+  const wrap = document.getElementById('mb-list');
   try {
-    const ghToken = await getToken();
-    const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-    const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
-    const gjson   = await res.json();
-    usersData = { sha: gjson.sha, data: JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join(''))))) };
-
-    const users   = usersData.data.users;
+    const { data } = await ghGet('users.json');
+    const users = data.users || [];
     const actifs  = users.filter(u => u.actif);
     const pending = users.filter(u => !u.actif && u.statut === 'en_attente');
-
-    document.getElementById('s-total').textContent   = actifs.length;
-    document.getElementById('s-pending').textContent = pending.length;
-    document.getElementById('s-ops').textContent     = actifs.filter(u => u.dashboard && !u.admin).length;
-    document.getElementById('s-admins').textContent  = actifs.filter(u => u.admin).length;
-
+    document.getElementById('s-tot').textContent = actifs.length;
+    document.getElementById('s-pen').textContent = pending.length;
+    document.getElementById('s-ops').textContent = actifs.filter(u => u.dashboard && !u.admin).length;
+    document.getElementById('s-adm').textContent = actifs.filter(u => u.admin).length;
     renderDemandes(pending);
-    renderMembres(actifs);
-  } catch(e) {
-    console.error(e);
-    showToast('❌ Erreur chargement');
-  }
+    renderMembers(actifs);
+  } catch(e) { wrap.innerHTML = '<div class="empty">Erreur chargement.</div>'; }
 }
 
-function renderDemandes(pending) {
-  const box  = document.getElementById('demandes-box');
-  const list = document.getElementById('demandes-list');
-  if (!pending.length) { box.style.display = 'none'; return; }
+function renderDemandes(list) {
+  const box = document.getElementById('dem-box');
+  const el  = document.getElementById('dem-list');
+  if (!list.length) { box.style.display = 'none'; return; }
   box.style.display = 'block';
-  document.getElementById('d-count').textContent = pending.length;
-  list.innerHTML = '';
-  pending.forEach(u => {
-    const item = document.createElement('div');
-    item.className = 'demande-item';
+  document.getElementById('dem-count').textContent = list.length;
+  el.innerHTML = '';
+  list.forEach(u => {
+    const row = document.createElement('div');
+    row.className = 'dem-item';
     const info = document.createElement('div');
-    info.innerHTML = `<div class="d-pseudo">${u.pseudo}</div>
-      <div class="d-token">${u.token}</div>
-      <div class="d-date">Inscrit le ${new Date(u.createdAt).toLocaleDateString('fr-FR')}</div>`;
+    info.innerHTML = `<div class="dem-pseudo">${u.pseudo}</div><div class="dem-token">${u.token}</div><div class="dem-date">${new Date(u.createdAt).toLocaleDateString('fr-FR')}</div>`;
     const btns = document.createElement('div');
-    btns.className = 'd-btns';
-    const ok = document.createElement('button');
-    ok.className = 'btn-ok'; ok.textContent = '✓ Approuver';
-    ok.addEventListener('click', () => approuver(u.id));
-    const no = document.createElement('button');
-    no.className = 'btn-no'; no.textContent = '✕ Refuser';
-    no.addEventListener('click', () => refuser(u.id));
-    btns.appendChild(ok); btns.appendChild(no);
-    item.appendChild(info); item.appendChild(btns);
-    list.appendChild(item);
+    btns.className = 'dem-btns';
+    const ok = document.createElement('button'); ok.className = 'btn-ok'; ok.textContent = '✓ Approuver';
+    ok.onclick = () => approuver(u.id);
+    const no = document.createElement('button'); no.className = 'btn-no'; no.textContent = '✕ Refuser';
+    no.onclick = () => refuser(u.id);
+    btns.append(ok, no); row.append(info, btns); el.appendChild(row);
   });
 }
 
-function renderMembres(users) {
-  const wrap   = document.getElementById('membres-list');
+function renderMembers(users) {
+  const wrap = document.getElementById('mb-list');
   const grades = ['Apply','Membre','Vétéran','Sous-Officier','Officier'];
   if (!users.length) { wrap.innerHTML = '<div class="empty">Aucun membre actif.</div>'; return; }
   wrap.innerHTML = '';
-
   users.forEach(u => {
-    const isMe  = u.id === currentUser.id;
-    const droit = u.admin ? 'admin' : u.dashboard ? 'ops' : 'membre';
+    const isMe  = u.id === CU.id;
+    const droit = u.admin ? 'ad' : u.dashboard ? 'op' : 'mb';
     const rang  = grades.includes(u.rang) ? u.rang : 'Membre';
+    const row   = document.createElement('div'); row.className = 'mb-row';
 
-    const row = document.createElement('div');
-    row.className = 'membre-row';
+    const info = document.createElement('div');
+    info.innerHTML = `<div class="mb-pseudo">${u.pseudo}</div><div class="mb-token">${u.token}</div>`;
+    row.appendChild(info);
 
-    const tdInfo = document.createElement('div');
-    tdInfo.innerHTML = `<div class="mr-pseudo">${u.pseudo}</div><div class="mr-token">${u.token}</div>`;
-    row.appendChild(tdInfo);
-
-    const tdRang = document.createElement('div');
-    const sel = document.createElement('select');
-    sel.className = 'mr-grade-sel';
+    const selWrap = document.createElement('div');
+    const sel = document.createElement('select'); sel.className = 'mb-sel';
     if (isMe) sel.disabled = true;
-    grades.forEach(g => {
-      const opt = document.createElement('option');
-      opt.value = g; opt.textContent = g;
-      if (g === rang) opt.selected = true;
-      sel.appendChild(opt);
-    });
+    grades.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; if (g === rang) o.selected = true; sel.appendChild(o); });
     sel.dataset.uid = u.id;
     sel.addEventListener('change', function() { setGrade(this.dataset.uid, this.value); });
-    tdRang.appendChild(sel);
-    row.appendChild(tdRang);
+    selWrap.appendChild(sel); row.appendChild(selWrap);
 
-    const tdDroits = document.createElement('div');
-    const btnWrap  = document.createElement('div');
-    btnWrap.className = 'role-btns';
-    ['membre','ops','admin'].forEach(role => {
-      const labels = {membre:'Membre', ops:'+ Ops', admin:'Admin'};
+    const droits = document.createElement('div');
+    droits.className = 'role-btns';
+    ['mb','op','ad'].forEach(role => {
+      const lbl = {mb:'Membre', op:'+ Ops', ad:'Admin'};
       const btn = document.createElement('button');
-      btn.className = `rbtn ${role}${droit === role ? ' active' : ''}`;
-      btn.textContent = labels[role];
-      if (!isMe) {
-        btn.dataset.uid  = u.id;
-        btn.dataset.role = role;
-        btn.addEventListener('click', function() { setRole(this.dataset.uid, this.dataset.role); });
-      } else btn.disabled = true;
-      btnWrap.appendChild(btn);
+      btn.className = 'rbtn ' + role + (droit === role ? ' on' : '');
+      btn.textContent = lbl[role];
+      if (!isMe) { btn.dataset.uid = u.id; btn.dataset.role = role; btn.addEventListener('click', function() { setRole(this.dataset.uid, this.dataset.role); }); }
+      else btn.disabled = true;
+      droits.appendChild(btn);
     });
-    tdDroits.appendChild(btnWrap);
-    row.appendChild(tdDroits);
+    row.appendChild(droits);
 
-    const tdAct = document.createElement('div');
-    tdAct.className = 'mr-actions';
+    const acts = document.createElement('div'); acts.className = 'mb-actions';
     const badge = document.createElement('span');
-    badge.className = `badge ${u.actif ? 'actif' : 'inactif'}`;
+    badge.className = 'badge ' + (u.actif ? 'on' : 'off');
     badge.textContent = isMe ? 'Toi' : (u.actif ? 'Actif' : 'Inactif');
-    tdAct.appendChild(badge);
+    acts.appendChild(badge);
     if (!isMe) {
-      const btnAct = document.createElement('button');
-      btnAct.className = 'btn-xs';
-      btnAct.textContent = u.actif ? 'Désactiver' : 'Activer';
-      btnAct.dataset.uid   = u.id;
-      btnAct.dataset.actif = u.actif;
-      btnAct.addEventListener('click', function() {
-        toggleActif(this.dataset.uid, this.dataset.actif !== 'true');
-      });
-      tdAct.appendChild(btnAct);
+      const btn = document.createElement('button'); btn.className = 'btn-xs';
+      btn.textContent = u.actif ? 'Désactiver' : 'Activer';
+      btn.dataset.uid = u.id; btn.dataset.actif = u.actif;
+      btn.addEventListener('click', function() { toggleActif(this.dataset.uid, this.dataset.actif !== 'true'); });
+      acts.appendChild(btn);
     }
-    row.appendChild(tdAct);
+    row.appendChild(acts);
     wrap.appendChild(row);
   });
+}
+
+async function approuver(uid) {
+  const { sha, data } = await ghGet('users.json');
+  const idx = data.users.findIndex(u => u.id === uid);
+  if (idx !== -1) { data.users[idx].actif = true; data.users[idx].statut = 'approuve'; }
+  await ghPut('users.json', data, sha, 'Approve user ' + uid);
+  toast('✦ Compte approuvé !'); loadMembers();
+}
+
+async function refuser(uid) {
+  if (!confirm('Supprimer définitivement ?')) return;
+  const { sha, data } = await ghGet('users.json');
+  data.users = data.users.filter(u => u.id !== uid);
+  await ghPut('users.json', data, sha, 'Refuse user ' + uid);
+  toast('Demande refusée.'); loadMembers();
+}
+
+async function setGrade(uid, grade) {
+  const { sha, data } = await ghGet('users.json');
+  const idx = data.users.findIndex(u => u.id === uid);
+  if (idx !== -1) data.users[idx].rang = grade;
+  await ghPut('users.json', data, sha, 'Set grade: ' + grade);
+  toast('✦ Grade → ' + grade);
+}
+
+async function setRole(uid, role) {
+  const { sha, data } = await ghGet('users.json');
+  const idx = data.users.findIndex(u => u.id === uid);
+  if (idx !== -1) { data.users[idx].dashboard = role === 'op' || role === 'ad'; data.users[idx].admin = role === 'ad'; }
+  await ghPut('users.json', data, sha, 'Set role: ' + role);
+  toast('✦ Droits → ' + role); loadMembers();
+}
+
+async function toggleActif(uid, actif) {
+  const { sha, data } = await ghGet('users.json');
+  const idx = data.users.findIndex(u => u.id === uid);
+  if (idx !== -1) data.users[idx].actif = actif;
+  await ghPut('users.json', data, sha, 'Toggle actif: ' + uid);
+  toast(actif ? '✦ Activé' : '✦ Désactivé'); loadMembers();
 }
 
 function randSeg(n) {
@@ -316,335 +455,89 @@ function randSeg(n) {
 
 async function genToken() {
   const pseudo = document.getElementById('g-pseudo').value.trim();
-  if (!pseudo) { showToast('❌ Entre un pseudo'); return; }
+  if (!pseudo) { toast('❌ Entre un pseudo'); return; }
   const rang = document.getElementById('g-rang').value;
   const ops  = document.getElementById('g-ops').value === 'true';
-  const slug  = pseudo.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4).padEnd(4,'X');
+  const slug = pseudo.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4).padEnd(4,'X');
   const token = `ECL-${slug}-${randSeg(4)}-${randSeg(4)}`;
-
-  const ghToken = await getToken();
-  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-  const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
-  const gjson   = await res.json();
-  const sha     = gjson.sha;
-  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-
-  if (data.users.find(u => u.pseudo.toLowerCase() === pseudo.toLowerCase())) {
-    showToast('❌ Ce pseudo existe déjà'); return;
-  }
-
-  const newUser = {
-    id: pseudo.toLowerCase().replace(/[^a-z0-9]/g,'') + '_' + Date.now(),
-    pseudo, token, rang,
-    role: '', faction: 'MUD',
-    photo: '', x_link: '',
-    dashboard: ops, admin: false, actif: true,
-    statut: 'approuve',
-    createdAt: new Date().toISOString()
-  };
-  data.users.push(newUser);
-
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: `Add member: ${pseudo}`, content, sha })
-  });
-
-  document.getElementById('token-val').textContent = token;
-  document.getElementById('token-result').classList.add('show');
+  const { sha, data } = await ghGet('users.json');
+  if (data.users.find(u => u.pseudo.toLowerCase() === pseudo.toLowerCase())) { toast('❌ Pseudo déjà utilisé'); return; }
+  data.users.push({ id: pseudo.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now(), pseudo, token, rang, role:'', faction:'MUD', photo:'', x_link:'', dashboard: ops, admin: false, actif: true, statut:'approuve', createdAt: new Date().toISOString() });
+  await ghPut('users.json', data, sha, 'Add member: ' + pseudo);
+  document.getElementById('tok-val').textContent = token;
+  document.getElementById('tok-result').classList.add('show');
   document.getElementById('g-pseudo').value = '';
-
-  showToast('✦ Membre créé !');
-  charger();
+  toast('✦ Membre créé !'); loadMembers();
 }
 
 function copyToken() {
-  const val = document.getElementById('token-val').textContent;
-  navigator.clipboard.writeText(val).then(() => showToast('✦ Token copié !'));
+  navigator.clipboard.writeText(document.getElementById('tok-val').textContent).then(() => toast('✦ Token copié !'));
 }
 
-async function approuver(uid) {
-  await updateUser(uid, { actif: true, statut: 'approuve' });
-  showToast('✦ Compte approuvé !'); charger();
+async function loadCands() {
+  const box = document.getElementById('cand-box');
+  try {
+    const { data } = await ghGet('candidatures.json');
+    const list = (data.candidatures || []).sort((a,b) => new Date(b.date) - new Date(a.date));
+    if (!list.length) { box.innerHTML = '<div class="empty">Aucune candidature.</div>'; return; }
+    box.innerHTML = '';
+    list.forEach(c => {
+      const item = document.createElement('div'); item.className = 'cand-item';
+      const info = document.createElement('div');
+      info.innerHTML = `<div class="c-pseudo">${c.pseudo}</div><div class="c-discord">Discord : ${c.discord}</div><div class="c-info">Rôle : ${c.role} · ${c.faction}</div>${c.vaisseaux?`<div class="c-info">${c.vaisseaux}</div>`:''}<div class="c-date">${new Date(c.date).toLocaleDateString('fr-FR')}</div>`;
+      const btns = document.createElement('div'); btns.className = 'c-btns';
+      const cp = document.createElement('button'); cp.className = 'btn-dc'; cp.textContent = '📋 Copier Discord';
+      cp.onclick = () => navigator.clipboard.writeText(c.discord).then(() => { cp.textContent = '✓ Copié !'; setTimeout(() => cp.textContent = '📋 Copier Discord', 2000); });
+      const del = document.createElement('button'); del.className = 'btn-xs'; del.textContent = '✕ Archiver';
+      del.onclick = () => archiveCand(c.id);
+      btns.append(cp, del); item.append(info, btns); box.appendChild(item);
+    });
+  } catch(e) { box.innerHTML = '<div class="empty">Erreur chargement.</div>'; }
 }
 
-async function refuser(uid) {
-  if (!confirm('Supprimer définitivement ?')) return;
-  const ghToken = await getToken();
-  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-  const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
-  const gjson   = await res.json();
-  const sha     = gjson.sha;
-  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-  data.users = data.users.filter(u => u.id !== uid);
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'Refuse user', content, sha })
-  });
-  showToast('Demande refusée.'); charger();
+async function archiveCand(id) {
+  if (!confirm('Archiver ?')) return;
+  const { sha, data } = await ghGet('candidatures.json');
+  data.candidatures = data.candidatures.filter(c => c.id !== id);
+  await ghPut('candidatures.json', data, sha, 'Archive cand ' + id);
+  toast('Archivée.'); loadCands();
 }
 
-async function setGrade(uid, grade) {
-  await updateUser(uid, { rang: grade });
-  showToast('✦ Grade → ' + grade); charger();
+async function loadRecru() {
+  const grid = document.getElementById('recru-grid');
+  try {
+    const { data } = await ghGet('recrutement.json');
+    const labels = { ouvert:'Ouvert', limite:'Limité', complet:'Complet' };
+    grid.innerHTML = '';
+    data.roles.forEach(role => {
+      const card = document.createElement('div'); card.className = 'recru-card';
+      const nom = document.createElement('div'); nom.className = 'recru-nom'; nom.textContent = role.nom;
+      const btns = document.createElement('div'); btns.className = 'recru-btns';
+      ['ouvert','limite','complet'].forEach(s => {
+        const cls = {ouvert:'ou', limite:'li', complet:'co'};
+        const btn = document.createElement('button');
+        btn.className = 'r-btn ' + cls[s] + (role.statut === s ? ' on' : '');
+        btn.textContent = labels[s];
+        btn.dataset.id = role.id; btn.dataset.s = s;
+        btn.addEventListener('click', function() { setRecru(this.dataset.id, this.dataset.s); });
+        btns.appendChild(btn);
+      });
+      card.append(nom, btns); grid.appendChild(card);
+    });
+  } catch(e) { grid.innerHTML = '<div class="empty">Erreur.</div>'; }
 }
 
-async function setRole(uid, role) {
-  await updateUser(uid, { dashboard: role === 'ops' || role === 'admin', admin: role === 'admin' });
-  showToast('✦ Droits → ' + role); charger();
-}
-
-async function toggleActif(uid, actif) {
-  await updateUser(uid, { actif });
-  showToast(actif ? '✦ Activé' : '✦ Désactivé'); charger();
-}
-
-async function updateUser(uid, updates) {
-  const ghToken = await getToken();
-  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users.json`;
-  const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
-  const gjson   = await res.json();
-  const sha     = gjson.sha;
-  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-  const idx     = data.users.findIndex(u => u.id === uid);
-  if (idx !== -1) Object.assign(data.users[idx], updates);
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: `Update user ${uid}`, content, sha })
-  });
+async function setRecru(id, statut) {
+  const { sha, data } = await ghGet('recrutement.json');
+  const idx = data.roles.findIndex(r => r.id === id);
+  if (idx !== -1) data.roles[idx].statut = statut;
+  await ghPut('recrutement.json', data, sha, 'Recru: ' + id + ' → ' + statut);
+  toast('✦ Mis à jour !'); loadRecru();
 }
 
 function logout() {
-  localStorage.removeItem('eclypse_user');
-  sessionStorage.removeItem('eclypse_user');
+  localStorage.removeItem('eclypse_user'); sessionStorage.removeItem('eclypse_user');
   window.location.href = 'dashboard.html';
-}
-
-async function chargerCandidatures() {
-  try {
-    const ghToken = await getToken();
-    const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
-    const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
-    const gjson   = await res.json();
-    const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-    const cands   = (data.candidatures || []).filter(function(c) { return c.statut === 'en_attente'; });
-
-    const box  = document.getElementById('cand-box');
-    const list = document.getElementById('cand-list');
-    if (!cands.length) { box.style.display = 'none'; return; }
-
-    box.style.display = 'block';
-    document.getElementById('cand-count').textContent = cands.length;
-    list.innerHTML = '';
-
-    cands.forEach(function(cand) {
-      const item = document.createElement('div');
-      item.className = 'cand-item';
-
-      const info = document.createElement('div');
-      info.innerHTML =
-        '<div class="cand-pseudo">' + cand.pseudo + '</div>' +
-        '<div class="cand-discord">💬 ' + cand.discord + '</div>' +
-        '<div class="cand-details">Rôle : <strong>' + cand.role + '</strong> · Faction : ' + cand.faction + '</div>' +
-        (cand.vaisseaux ? '<div class="cand-details">Flotte : ' + cand.vaisseaux + '</div>' : '') +
-        (cand.motivation ? '<div class="cand-motivation">' + cand.motivation + '</div>' : '') +
-        '<div class="cand-date" style="margin-top:0.5rem">Reçue le ' + new Date(cand.date).toLocaleDateString('fr-FR') + '</div>';
-
-      const actions = document.createElement('div');
-      actions.className = 'cand-actions';
-
-      const btnCopy = document.createElement('button');
-      btnCopy.className = 'btn-copy-discord';
-      btnCopy.textContent = '📋 Copier Discord';
-      btnCopy.dataset.discord = cand.discord;
-      btnCopy.addEventListener('click', function() {
-        navigator.clipboard.writeText(this.dataset.discord).then(function() {
-          btnCopy.textContent = '✓ Copié !';
-          setTimeout(function() { btnCopy.textContent = '📋 Copier Discord'; }, 2000);
-        });
-      });
-
-      const btnDel = document.createElement('button');
-      btnDel.className = 'btn-cand-del';
-      btnDel.textContent = '✕ Archiver';
-      btnDel.dataset.id = cand.id;
-      btnDel.addEventListener('click', function() { archiverCandidature(this.dataset.id); });
-
-      actions.appendChild(btnCopy);
-      actions.appendChild(btnDel);
-      item.appendChild(info);
-      item.appendChild(actions);
-      list.appendChild(item);
-    });
-  } catch(e) { console.error(e); }
-}
-
-async function archiverCandidature(id) {
-  if (!confirm('Archiver cette candidature ?')) return;
-  const ghToken = await getToken();
-  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/candidatures.json`;
-  const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
-  const gjson   = await res.json();
-  const sha     = gjson.sha;
-  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-  const idx     = data.candidatures.findIndex(function(c) { return c.id === id; });
-  if (idx !== -1) data.candidatures[idx].statut = 'archive';
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'Archive candidature ' + id, content, sha })
-  });
-  showToast('✦ Candidature archivée');
-  chargerCandidatures();
-}
-
-async function chargerCandidatures() {
-  const list = document.getElementById('cand-list');
-  try {
-    const ghToken = await getToken();
-    const apiUrl  = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/candidatures.json';
-    const res     = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + ghToken } });
-    const gjson   = await res.json();
-    const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('
-').join('')))));
-    const cands   = data.candidatures || [];
-
-    if (!cands.length) { list.innerHTML = '<div class="empty">Aucune candidature pour le moment.</div>'; return; }
-
-    list.innerHTML = '';
-    cands.sort(function(a,b){ return new Date(b.date) - new Date(a.date); }).forEach(function(c) {
-      const item = document.createElement('div');
-      item.className = 'cand-item';
-
-      const info = document.createElement('div');
-      info.innerHTML = '<div class="cand-pseudo">' + c.pseudo + '</div>'
-        + '<div class="cand-discord">Discord : ' + c.discord + '</div>'
-        + '<div class="cand-info">Rôle : ' + c.role + ' · Faction : ' + c.faction + '</div>'
-        + (c.vaisseaux ? '<div class="cand-info">Vaisseaux : ' + c.vaisseaux + '</div>' : '')
-        + (c.motivation ? '<div class="cand-info">Motivation : ' + c.motivation + '</div>' : '')
-        + '<div class="cand-date">' + new Date(c.date).toLocaleDateString('fr-FR') + '</div>';
-
-      const btns = document.createElement('div');
-      btns.className = 'cand-btns';
-
-      const btnDc = document.createElement('a');
-      btnDc.className = 'btn-discord';
-      btnDc.textContent = '💬 Contacter sur Discord';
-      btnDc.href = 'https://discord.com/users/' + encodeURIComponent(c.discord);
-      btnDc.target = '_blank';
-
-      const btnCopy = document.createElement('button');
-      btnCopy.className = 'btn-discord';
-      btnCopy.textContent = '📋 Copier pseudo Discord';
-      btnCopy.addEventListener('click', function() {
-        navigator.clipboard.writeText(c.discord).then(function() {
-          btnCopy.textContent = '✓ Copié !';
-          setTimeout(function(){ btnCopy.textContent = '📋 Copier pseudo Discord'; }, 2000);
-        });
-      });
-
-      const btnDel = document.createElement('button');
-      btnDel.className = 'btn-cand-del';
-      btnDel.textContent = '✕ Archiver';
-      btnDel.dataset.id = c.id;
-      btnDel.addEventListener('click', function() { archiverCandidature(this.dataset.id); });
-
-      btns.appendChild(btnDc);
-      btns.appendChild(btnCopy);
-      btns.appendChild(btnDel);
-      item.appendChild(info);
-      item.appendChild(btns);
-      list.appendChild(item);
-    });
-  } catch(e) {
-    list.innerHTML = '<div class="empty">Erreur chargement.</div>';
-    console.error(e);
-  }
-}
-
-async function archiverCandidature(id) {
-  if (!confirm('Archiver cette candidature ?')) return;
-  const ghToken = await getToken();
-  const apiUrl  = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/candidatures.json';
-  const res     = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + ghToken } });
-  const gjson   = await res.json();
-  const sha     = gjson.sha;
-  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('
-').join('')))));
-  data.candidatures = data.candidatures.filter(function(c) { return c.id !== id; });
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, {
-    method: 'PUT',
-    headers: { 'Authorization': 'token ' + ghToken, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'Archive candidature ' + id, content: content, sha: sha })
-  });
-  showToast('✦ Candidature archivée');
-  chargerCandidatures();
-}
-
-async function chargerRecrutement() {
-  try {
-    const ghToken = await getToken();
-    const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/recrutement.json`;
-    const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
-    const gjson   = await res.json();
-    const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-    renderRecrutement(data.roles, gjson.sha);
-  } catch(e) { console.error(e); }
-}
-
-function renderRecrutement(roles, sha) {
-  const grid = document.getElementById('recru-grid');
-  grid.innerHTML = '';
-  roles.forEach(function(role) {
-    const card = document.createElement('div');
-    card.className = 'recru-card';
-    const nom = document.createElement('div');
-    nom.className = 'recru-nom';
-    nom.textContent = role.nom;
-    const btns = document.createElement('div');
-    btns.className = 'recru-btns';
-    ['ouvert','limite','complet'].forEach(function(statut) {
-      const labels = {ouvert:'Ouvert', limite:'Limité', complet:'Complet'};
-      const btn = document.createElement('button');
-      btn.className = 'recru-btn ' + statut + (role.statut === statut ? ' active' : '');
-      btn.textContent = labels[statut];
-      btn.dataset.id = role.id;
-      btn.dataset.statut = statut;
-      btn.addEventListener('click', function() {
-        setStatutRecrutement(this.dataset.id, this.dataset.statut);
-      });
-      btns.appendChild(btn);
-    });
-    card.appendChild(nom);
-    card.appendChild(btns);
-    grid.appendChild(card);
-  });
-}
-
-async function setStatutRecrutement(roleId, statut) {
-  const ghToken = await getToken();
-  const apiUrl  = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/recrutement.json`;
-  const res     = await fetch(apiUrl, { headers: { 'Authorization': `token ${ghToken}` } });
-  const gjson   = await res.json();
-  const sha     = gjson.sha;
-  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
-  const idx     = data.roles.findIndex(r => r.id === roleId);
-  if (idx !== -1) data.roles[idx].statut = statut;
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  await fetch(apiUrl, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: 'Update recrutement: ' + roleId + ' → ' + statut, content, sha })
-  });
-  showToast('✦ ' + statut.charAt(0).toUpperCase() + statut.slice(1) + ' !');
-  chargerRecrutement();
 }
 
 init();
