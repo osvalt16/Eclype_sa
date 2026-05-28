@@ -28,7 +28,7 @@
     {
       "id": "trader",
       "nom": "Trader",
-      "statut": "ouvert"
+      "statut": "limite"
     }
   ]
 }
