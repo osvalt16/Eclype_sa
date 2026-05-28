@@ -1,0 +1,34 @@
+{
+  "roles": [
+    {
+      "id": "fleetcommander",
+      "nom": "Fleet Commander",
+      "statut": "ouvert"
+    },
+    {
+      "id": "miner",
+      "nom": "Miner",
+      "statut": "ouvert"
+    },
+    {
+      "id": "fighter",
+      "nom": "Fighter",
+      "statut": "limite"
+    },
+    {
+      "id": "scout",
+      "nom": "Scout",
+      "statut": "ouvert"
+    },
+    {
+      "id": "support",
+      "nom": "Support",
+      "statut": "ouvert"
+    },
+    {
+      "id": "trader",
+      "nom": "Trader",
+      "statut": "complet"
+    }
+  ]
+}
