@@ -1349,10 +1349,12 @@ async function loadMemberData() {
     const res  = await fetch('https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/users.json?t=' + Date.now());
     const data = await res.json();
     const grid = document.getElementById('membres-grid');
+    console.log('Grid trouvée:', !!grid, 'data:', data);
     if (!grid) return;
     grid.innerHTML = '';
 
     const actifs = (data.users || []).filter(function(u) { return u.actif; });
+    console.log('Membres actifs:', actifs.length, actifs.map(function(u){return u.pseudo;}));
     const xLogo  = 'https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/assets/x_logo.webp';
 
     actifs.forEach(function(m) {
