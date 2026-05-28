@@ -1255,15 +1255,6 @@ function deconnecterMembre() {
 
 function decoIndex() { deconnecterMembre(); }
 
-async function chargerEventsIndex() {
-  try {
-    const res  = await fetch(EVENTS_URL_IDX + '?t=' + Date.now());
-    const data = await res.json();
-    calEvents = data.events || [];
-  } catch(e) { calEvents = []; }
-  renderCalEvents();
-  renderMcsGrid();
-}
 
 function filtrerCal(type, btn) {
   calFilter = type;
