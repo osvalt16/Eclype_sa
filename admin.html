@@ -161,7 +161,53 @@ body { background: var(--noir); color: var(--tx); font-family: 'Crimson Pro', se
 #denied h1 { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--rg); }
 #denied a { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--or); border: 1px solid var(--bor); padding: 0.65rem 1.6rem; text-decoration: none; }
 
-@media(max-width:900px) { .stats { grid-template-columns: repeat(2,1fr); } .mb-row { grid-template-columns: 1fr 1fr; } .recru { grid-template-columns: 1fr; } .gen-form { grid-template-columns: 1fr 1fr; } }
+
+/* ── TABLET ── */
+@media(max-width:900px) {
+  .stats { grid-template-columns: repeat(2,1fr); }
+  .mb-row { grid-template-columns: 1fr 1fr; }
+  .recru { grid-template-columns: 1fr 1fr; }
+  .gen-form { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── MOBILE ── */
+@media(max-width:600px) {
+  .topbar { padding: 0.7rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
+  .tb-left { gap: 0.6rem; }
+  .tb-left img { height: 26px; }
+  .tb-title { font-size: 0.55rem; letter-spacing: 0.2em; }
+  .tb-badge { display: none; }
+  .tb-right { gap: 0.4rem; }
+  .tb-btn { font-size: 0.48rem; padding: 0.28rem 0.5rem; letter-spacing: 0.1em; }
+  .tb-admin { display: none; }
+
+  .wrap { padding: 1rem; }
+
+  .stats { grid-template-columns: repeat(2,1fr); gap: 0.6rem; }
+  .stat { padding: 0.9rem 0.8rem; }
+  .stat-val { font-size: 1.5rem; }
+
+  .sec-hdr h2 { font-size: 0.62rem; }
+
+  .gen-form { grid-template-columns: 1fr; }
+  .btn-gen { width: 100%; }
+
+  .mb-row { grid-template-columns: 1fr; gap: 0.7rem; padding: 1rem; }
+  .mb-actions { flex-direction: row; align-items: center; gap: 0.5rem; }
+
+  .recru { grid-template-columns: 1fr; }
+  .recru-card { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+
+  .grades { flex-direction: column; }
+  .gs { border-right: none; border-bottom: 1px solid var(--bov); }
+  .gs:last-child { border-bottom: none; }
+
+  .dem-item { grid-template-columns: 1fr; }
+  .dem-btns { flex-direction: row; }
+
+  .cand-item { grid-template-columns: 1fr; }
+  .c-btns { flex-direction: row; flex-wrap: wrap; }
+}
 </style>
 </head>
 <body>
