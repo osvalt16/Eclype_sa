@@ -156,6 +156,18 @@
   .btn-cand-del{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rouge);background:none;border:1px solid rgba(232,90,90,0.3);padding:0.35rem 0.7rem;cursor:pointer;width:100%;}
   .btn-cand-del:hover{background:rgba(232,90,90,0.08);}
 
+  /* CANDIDATURES */
+  .cand-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:2.5rem;}
+  .cand-item{border:1px solid var(--border-or);padding:1.2rem 1.5rem;background:rgba(26,15,46,0.3);display:grid;grid-template-columns:1fr auto;gap:1.5rem;align-items:start;}
+  .cand-pseudo{font-family:'Cinzel',serif;font-size:0.9rem;color:#fff;margin-bottom:0.2rem;}
+  .cand-discord{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:0.3rem;}
+  .cand-info{font-size:0.8rem;color:var(--texte-pale);margin-bottom:0.2rem;}
+  .cand-date{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.1em;color:var(--texte-pale);}
+  .cand-btns{display:flex;flex-direction:column;gap:0.4rem;align-items:flex-end;}
+  .btn-discord{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:#5865F2;background:none;border:1px solid rgba(88,101,242,0.4);padding:0.35rem 0.8rem;cursor:pointer;text-decoration:none;display:inline-block;}
+  .btn-discord:hover{background:rgba(88,101,242,0.1);}
+  .btn-cand-del{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--texte-pale);background:none;border:1px solid var(--border-violet);padding:0.25rem 0.6rem;cursor:pointer;}
+
   .toast{position:fixed;bottom:2rem;right:2rem;background:rgba(26,15,46,0.97);border:1px solid var(--or);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.15em;color:var(--or);z-index:999;display:none;}
   #denied{min-height:100vh;display:none;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:1.5rem;}
   #denied h1{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--rouge);}
@@ -287,6 +299,13 @@
         <div class="gs-roles"><span class="gs-role">Diplomate</span><span class="gs-role">Tactical FC</span></div>
       </div>
     </div>
+
+    <!-- CANDIDATURES -->
+    <div class="section-hdr">
+      <h2>📨 Candidatures Discord</h2>
+      <button class="btn-xs" onclick="chargerCandidatures()" style="color:var(--or);border-color:var(--border-or)">↻ Actualiser</button>
+    </div>
+    <div id="cand-list" class="cand-list"><div class="empty">Aucune candidature.</div></div>
 
     <!-- MEMBRES -->
     <div class="section-hdr">
@@ -670,6 +689,91 @@ async function archiverCandidature(id) {
     method: 'PUT',
     headers: { 'Authorization': `token ${ghToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: 'Archive candidature ' + id, content, sha })
+  });
+  showToast('✦ Candidature archivée');
+  chargerCandidatures();
+}
+
+/* ─── CANDIDATURES ─── */
+async function chargerCandidatures() {
+  const list = document.getElementById('cand-list');
+  try {
+    const ghToken = await getToken();
+    const apiUrl  = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/candidatures.json';
+    const res     = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + ghToken } });
+    const gjson   = await res.json();
+    const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('
+').join('')))));
+    const cands   = data.candidatures || [];
+
+    if (!cands.length) { list.innerHTML = '<div class="empty">Aucune candidature pour le moment.</div>'; return; }
+
+    list.innerHTML = '';
+    cands.sort(function(a,b){ return new Date(b.date) - new Date(a.date); }).forEach(function(c) {
+      const item = document.createElement('div');
+      item.className = 'cand-item';
+
+      const info = document.createElement('div');
+      info.innerHTML = '<div class="cand-pseudo">' + c.pseudo + '</div>'
+        + '<div class="cand-discord">Discord : ' + c.discord + '</div>'
+        + '<div class="cand-info">Rôle : ' + c.role + ' · Faction : ' + c.faction + '</div>'
+        + (c.vaisseaux ? '<div class="cand-info">Vaisseaux : ' + c.vaisseaux + '</div>' : '')
+        + (c.motivation ? '<div class="cand-info">Motivation : ' + c.motivation + '</div>' : '')
+        + '<div class="cand-date">' + new Date(c.date).toLocaleDateString('fr-FR') + '</div>';
+
+      const btns = document.createElement('div');
+      btns.className = 'cand-btns';
+
+      const btnDc = document.createElement('a');
+      btnDc.className = 'btn-discord';
+      btnDc.textContent = '💬 Contacter sur Discord';
+      btnDc.href = 'https://discord.com/users/' + encodeURIComponent(c.discord);
+      btnDc.target = '_blank';
+
+      const btnCopy = document.createElement('button');
+      btnCopy.className = 'btn-discord';
+      btnCopy.textContent = '📋 Copier pseudo Discord';
+      btnCopy.addEventListener('click', function() {
+        navigator.clipboard.writeText(c.discord).then(function() {
+          btnCopy.textContent = '✓ Copié !';
+          setTimeout(function(){ btnCopy.textContent = '📋 Copier pseudo Discord'; }, 2000);
+        });
+      });
+
+      const btnDel = document.createElement('button');
+      btnDel.className = 'btn-cand-del';
+      btnDel.textContent = '✕ Archiver';
+      btnDel.dataset.id = c.id;
+      btnDel.addEventListener('click', function() { archiverCandidature(this.dataset.id); });
+
+      btns.appendChild(btnDc);
+      btns.appendChild(btnCopy);
+      btns.appendChild(btnDel);
+      item.appendChild(info);
+      item.appendChild(btns);
+      list.appendChild(item);
+    });
+  } catch(e) {
+    list.innerHTML = '<div class="empty">Erreur chargement.</div>';
+    console.error(e);
+  }
+}
+
+async function archiverCandidature(id) {
+  if (!confirm('Archiver cette candidature ?')) return;
+  const ghToken = await getToken();
+  const apiUrl  = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/candidatures.json';
+  const res     = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + ghToken } });
+  const gjson   = await res.json();
+  const sha     = gjson.sha;
+  const data    = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('
+').join('')))));
+  data.candidatures = data.candidatures.filter(function(c) { return c.id !== id; });
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  await fetch(apiUrl, {
+    method: 'PUT',
+    headers: { 'Authorization': 'token ' + ghToken, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Archive candidature ' + id, content: content, sha: sha })
   });
   showToast('✦ Candidature archivée');
   chargerCandidatures();
