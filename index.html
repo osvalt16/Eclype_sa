@@ -946,21 +946,21 @@
       <div class="ornament-diamond"></div>
       <div class="ornament-line right"></div>
     </div>
-    <div class="form-wrapper reveal">
+    <div class="form-wrapper reveal" id="cand-form">
       <div class="form-row">
         <div class="form-group">
           <label>Pseudo Star Atlas *</label>
-          <input type="text" placeholder="VotrePseudo">
+          <input type="text" id="cand-pseudo" placeholder="VotrePseudo">
         </div>
         <div class="form-group">
-          <label>Discord *</label>
-          <input type="text" placeholder="pseudo#0000">
+          <label>Pseudo Discord *</label>
+          <input type="text" id="cand-discord" placeholder="Oswalt06">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Rôle souhaité *</label>
-          <select>
+          <select id="cand-role">
             <option value="" disabled selected>Choisir un rôle</option>
             <option>Fleet Commander</option>
             <option>Fighter</option>
@@ -972,7 +972,7 @@
         </div>
         <div class="form-group">
           <label>Faction actuelle *</label>
-          <select>
+          <select id="cand-faction">
             <option value="" disabled selected>Votre faction</option>
             <option>MUD Territory</option>
             <option>ONI Region</option>
@@ -982,15 +982,29 @@
       </div>
       <div class="form-group">
         <label>Vaisseaux &amp; flotte</label>
-        <textarea placeholder="Listez vos vaisseaux principaux, leur classe, et votre expérience SAGE..."></textarea>
+        <textarea id="cand-vaisseaux" placeholder="Listez vos vaisseaux principaux, leur classe, et votre expérience SAGE..."></textarea>
       </div>
       <div class="form-group">
         <label>Pourquoi rejoindre Éclypse ?</label>
-        <textarea placeholder="Qu'est-ce qui vous attire dans notre flotte ? Vos objectifs sur SAGE C4 ?" style="min-height:100px"></textarea>
+        <textarea id="cand-motivation" placeholder="Qu'est-ce qui vous attire dans notre flotte ? Vos objectifs sur SAGE C4 ?" style="min-height:100px"></textarea>
       </div>
       <div style="text-align:center;margin-top:2.5rem">
-        <button class="btn-submit" onclick="handleSubmit()">Envoyer ma candidature</button>
+        <button class="btn-submit" id="btn-cand-submit" onclick="envoyerCandidature()">Envoyer ma candidature</button>
       </div>
+      <div id="cand-msg" style="display:none;margin-top:1.5rem;text-align:center;"></div>
+    </div>
+
+    <!-- Message de confirmation -->
+    <div id="cand-confirmation" style="display:none;text-align:center;padding:3rem 2rem;">
+      <div style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--or);margin-bottom:1rem;">Candidature envoyée ✦</div>
+      <h3 style="font-family:'Cinzel',serif;font-size:1.1rem;color:#fff;margin-bottom:1rem;">Ta candidature a bien été reçue !</h3>
+      <p style="color:var(--texte-pale);margin-bottom:2rem;line-height:1.8;">Pour finaliser ton recrutement, ajoute le Fleet Commander sur Discord et envoie-lui un message.</p>
+      <div style="border:1px solid var(--border-or);padding:1.5rem 2rem;background:rgba(26,15,46,0.4);display:inline-block;margin-bottom:1.5rem;">
+        <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--texte-pale);margin-bottom:0.5rem;">Pseudo Discord du Fleet Commander</div>
+        <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--or);letter-spacing:0.15em;">Oswalt06</div>
+      </div>
+      <br>
+      <button onclick="copierDiscord()" style="font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--noir);background:var(--or);border:none;padding:0.8rem 2rem;cursor:pointer;margin-right:0.8rem;">📋 Copier le pseudo</button>
     </div>
   </div>
 </section>
@@ -1144,14 +1158,74 @@ const observer = new IntersectionObserver((entries) => {
 revealEls.forEach(el => observer.observe(el));
 
 /* ── FORM ── */
-function handleSubmit() {
-  const btn = document.querySelector('.btn-submit');
-  btn.textContent = '✦ Candidature envoyée !';
-  btn.style.background = '#3ecf8e'; btn.style.color = '#030208'; btn.disabled = true;
-  setTimeout(() => {
+async function envoyerCandidature() {
+  const pseudo     = document.getElementById('cand-pseudo').value.trim();
+  const discord    = document.getElementById('cand-discord').value.trim();
+  const role       = document.getElementById('cand-role').value;
+  const faction    = document.getElementById('cand-faction').value;
+  const vaisseaux  = document.getElementById('cand-vaisseaux').value.trim();
+  const motivation = document.getElementById('cand-motivation').value.trim();
+
+  if (!pseudo || !discord || !role || !faction) {
+    const msg = document.getElementById('cand-msg');
+    msg.style.display = 'block';
+    msg.innerHTML = '<span style="color:var(--rouge);font-family:Cinzel,serif;font-size:0.65rem;letter-spacing:0.15em">❌ Remplis tous les champs obligatoires *</span>';
+    return;
+  }
+
+  const btn = document.getElementById('btn-cand-submit');
+  btn.textContent = '⏳ Envoi en cours…';
+  btn.disabled = true;
+
+  try {
+    const tokenRes = await fetch('https://raw.githubusercontent.com/osvalt16/Eclype_sa/main/config.json?t=' + Date.now());
+    const tokenData = await tokenRes.json();
+    const ghToken = tokenData.p.join('');
+
+    const apiUrl = 'https://api.github.com/repos/osvalt16/Eclype_sa/contents/candidatures.json';
+    const getRes = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + ghToken } });
+    const gjson  = await getRes.json();
+    const sha    = gjson.sha;
+    const data   = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('\n').join('')))));
+
+    data.candidatures.push({
+      id: 'cand_' + Date.now(),
+      pseudo, discord, role, faction, vaisseaux, motivation,
+      date: new Date().toISOString(),
+      statut: 'en_attente'
+    });
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + ghToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'New candidature: ' + pseudo, content, sha })
+    });
+
+    // Afficher confirmation
+    document.getElementById('cand-form').style.display = 'none';
+    document.getElementById('cand-confirmation').style.display = 'block';
+
+  } catch(e) {
+    console.error(e);
     btn.textContent = 'Envoyer ma candidature';
-    btn.style.background = ''; btn.style.color = ''; btn.disabled = false;
-  }, 4000);
+    btn.disabled = false;
+    const msg = document.getElementById('cand-msg');
+    msg.style.display = 'block';
+    msg.innerHTML = '<span style="color:var(--rouge);font-family:Cinzel,serif;font-size:0.65rem">❌ Erreur. Réessaie.</span>';
+  }
+}
+
+function copierDiscord() {
+  navigator.clipboard.writeText('Oswalt06').then(function() {
+    const btn = event.target;
+    btn.textContent = '✓ Copié !';
+    setTimeout(function() { btn.textContent = '📋 Copier le pseudo'; }, 2000);
+  });
+}
+
+function handleSubmit() {
+  envoyerCandidature();
 }
 
 /* ── PLANNING — GESTION SESSION ── */
