@@ -43,12 +43,12 @@ nav.scrolled { background: rgba(3,2,8,0.97); border-bottom: 1px solid var(--bor)
 #video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%,-50%); z-index: 0; pointer-events: none; object-fit: cover; opacity: 0.5; }
 #hero::after { content: ''; position: absolute; inset: 0; z-index: 1; background: rgba(3,2,8,0.45); pointer-events: none; }
 .hero-content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; }
-.hero-sigil { width: 280px; height: auto; margin-bottom: 2rem; animation: sigil-pulse 4s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(201,162,39,0.3)); }
+.hero-sigil { width: 420px; height: auto; margin-bottom: 2.5rem; animation: sigil-pulse 4s ease-in-out infinite; filter: drop-shadow(0 0 10px rgba(201,162,39,0.3)); }
 @keyframes sigil-pulse { 0%,100%{filter:drop-shadow(0 0 10px rgba(201,162,39,0.3)) drop-shadow(0 0 30px rgba(107,53,200,0.2));} 50%{filter:drop-shadow(0 0 25px rgba(201,162,39,0.6)) drop-shadow(0 0 60px rgba(107,53,200,0.4));} }
-.hero-eyebrow { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--cy); margin-bottom: 0.8rem; }
-.hero-subtitle { font-family: 'Cinzel', serif; font-size: 0.82rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--txp); margin-bottom: 2rem; }
+.hero-eyebrow { font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--cy); margin-bottom: 0.8rem; }
+.hero-subtitle { font-family: 'Cinzel', serif; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--txp); margin-bottom: 2rem; }
 .hero-divider { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--or), transparent); margin: 0 auto 1.8rem; }
-.hero-tagline { font-size: 1.05rem; color: var(--tx); max-width: 600px; margin: 0 auto 2.5rem; font-style: italic; line-height: 1.8; }
+.hero-tagline { font-size: 1.25rem; color: var(--tx); max-width: 700px; margin: 0 auto 2.5rem; font-style: italic; line-height: 1.8; }
 .hero-btns { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
 .btn-primary { font-family: 'Cinzel', serif; font-size: 0.82rem; letter-spacing: 0.25em; text-transform: uppercase; color: #0a0614; background: linear-gradient(135deg, #c9a227, #e8c547); padding: 1.2rem 3.5rem; text-decoration: none; transition: all 0.3s; box-shadow: 0 0 25px rgba(201,162,39,0.3); }
 .btn-primary:hover { box-shadow: 0 0 30px rgba(201,162,39,0.4); }
