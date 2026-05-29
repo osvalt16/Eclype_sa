@@ -151,10 +151,19 @@ section { position: relative; padding: 7rem 2rem; }
 .discord-btn:hover { background: #4752c4; box-shadow: 0 0 30px rgba(88,101,242,0.4); }
 .discord-icon { width: 24px; height: 24px; fill: white; }
 
+/* ── NAV USER ── */
+.nav-user-connected { display: none; align-items: center; gap: 0.6rem; }
+.nav-user-connected.visible { display: flex; }
+.nav-user-avatar { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--bor); background: var(--violet); display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--or); overflow: hidden; flex-shrink: 0; }
+.nav-user-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.nav-user-pseudo { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.12em; color: var(--orc); }
+.nav-user-deco { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rg); background: none; border: 1px solid rgba(232,90,90,0.25); padding: 0.28rem 0.6rem; cursor: pointer; transition: all 0.2s; }
+.nav-user-deco:hover { background: rgba(232,90,90,0.08); }
+
 /* ── FOOTER ── */
 footer { background: rgba(3,2,8,0.98); border-top: 1px solid var(--bor); padding: 3rem 2rem; text-align: center; }
-.footer-logo img { height: 36px; margin-bottom: 1rem; opacity: 0.7; }
-.footer-copy { font-family: 'Cinzel', serif; font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--txp); }
+.footer-logo { font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 0.3em; color: var(--or); margin-bottom: 0.8rem; opacity: 0.6; }
+footer p { font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--txp); }
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px) {
@@ -443,5 +452,183 @@ footer { background: rgba(3,2,8,0.98); border-top: 1px solid var(--bor); padding
   <div class="footer-logo">ÉCLYPSE</div>
   <p>© 2025 Guilde Éclypse — Star Atlas · SAGE C4 · Serveur FR · Faction MUD</p>
 </footer>
+
+<script>
+const OWNER = 'osvalt16', REPO = 'Eclype_sa';
+const RAW = 'https://raw.githubusercontent.com/' + OWNER + '/' + REPO + '/main';
+
+/* ── SESSION NAV ── */
+function verifierSession() {
+  var saved = localStorage.getItem('eclypse_user') || sessionStorage.getItem('eclypse_user');
+  if (!saved) return;
+  try {
+    var u = JSON.parse(saved);
+    var el = document.getElementById('nav-user-connected');
+    var av = document.getElementById('nav-user-avatar');
+    var ps = document.getElementById('nav-user-pseudo');
+    var btnMembre = document.querySelector('.nav-btn-membre');
+    if (el) el.classList.add('visible');
+    if (btnMembre) btnMembre.style.display = 'none';
+    if (ps) ps.textContent = u.pseudo;
+    if (av && u.photo) av.innerHTML = '<img src="' + u.photo + '" alt="' + u.pseudo + '">';
+    else if (av) av.textContent = u.pseudo ? u.pseudo[0].toUpperCase() : '?';
+  } catch(e) {}
+}
+
+function decoIndex() {
+  localStorage.removeItem('eclypse_user');
+  sessionStorage.removeItem('eclypse_user');
+  var el = document.getElementById('nav-user-connected');
+  var btnMembre = document.querySelector('.nav-btn-membre');
+  if (el) el.classList.remove('visible');
+  if (btnMembre) btnMembre.style.display = '';
+}
+
+/* ── ROSTER MEMBRES ── */
+async function loadMemberData() {
+  var grid = document.getElementById('membres-grid');
+  if (!grid) return;
+  try {
+    var res  = await fetch(RAW + '/users.json?t=' + Date.now());
+    var data = await res.json();
+    var xLogo = RAW + '/assets/x_logo.webp';
+    var actifs = (data.users || []).filter(function(u) { return u.actif; });
+    grid.innerHTML = '';
+    actifs.forEach(function(m) {
+      var isChef = m.admin || m.rang === 'Fleet Commander' || m.rang === 'Officier';
+      var card = document.createElement('div');
+      card.className = 'membre-card' + (isChef ? ' chef' : '');
+      var av = document.createElement('div');
+      av.className = 'membre-avatar';
+      if (m.photo) av.innerHTML = '<img src="' + m.photo + '" alt="' + m.pseudo + '">';
+      else av.textContent = m.pseudo[0].toUpperCase();
+      var rang = document.createElement('div');
+      rang.className = 'membre-rank';
+      rang.textContent = (isChef ? '★ ' : '') + (m.rang || 'Membre');
+      var nom = document.createElement('div');
+      nom.className = 'membre-name';
+      nom.textContent = m.pseudo;
+      var role = document.createElement('div');
+      role.className = 'membre-classe';
+      role.textContent = m.role || 'MUD';
+      var xLink = document.createElement('a');
+      xLink.className = 'membre-x-link ' + (m.x_link ? 'actif' : 'inactif');
+      xLink.href = m.x_link || '#';
+      if (m.x_link) xLink.target = '_blank';
+      xLink.innerHTML = '<img src="' + xLogo + '" alt="X">';
+      card.append(av, rang, nom, role, xLink);
+      grid.appendChild(card);
+    });
+    // Rendre visible
+    grid.querySelectorAll('.membre-card').forEach(function(el) {
+      el.style.opacity = '1';
+    });
+  } catch(e) { console.error('loadMemberData:', e); }
+}
+
+/* ── RECRUTEMENT STATUTS ── */
+async function loadRecrutement() {
+  try {
+    var res  = await fetch(RAW + '/recrutement.json?t=' + Date.now());
+    var data = await res.json();
+    var labels = { ouvert: 'Ouvert', limite: 'Limité', complet: 'Complet' };
+    var classes = { ouvert: 'status-ouvert', limite: 'status-limite', complet: 'status-complet' };
+    data.roles.forEach(function(role) {
+      document.querySelectorAll('.role-card').forEach(function(card) {
+        var nameEl = card.querySelector('.role-name');
+        if (!nameEl) return;
+        var cardId = nameEl.textContent.trim().toLowerCase().replace(/ /g,'');
+        if (cardId === role.id) {
+          var badge = card.querySelector('.role-status');
+          if (badge) {
+            badge.className = 'role-status ' + classes[role.statut];
+            badge.textContent = labels[role.statut];
+          }
+        }
+      });
+    });
+  } catch(e) {}
+}
+
+/* ── CANDIDATURE ── */
+async function envoyerCandidature() {
+  var pseudo    = document.getElementById('cand-pseudo').value.trim();
+  var discord   = document.getElementById('cand-discord').value.trim();
+  var role      = document.getElementById('cand-role').value;
+  var faction   = document.getElementById('cand-faction').value;
+  var vaisseaux = document.getElementById('cand-vaisseaux').value.trim();
+  var motiv     = document.getElementById('cand-motivation').value.trim();
+  var msg       = document.getElementById('cand-msg');
+
+  if (!pseudo || !discord || !role || !faction) {
+    msg.className = 'cand-msg err';
+    msg.textContent = '❌ Remplis les champs obligatoires.';
+    return;
+  }
+  msg.className = 'cand-msg ok';
+  msg.textContent = '⏳ Envoi en cours…';
+
+  try {
+    var apiUrl = 'https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/candidatures.json';
+    var tok = await (async function() {
+      var l = localStorage.getItem('eck');
+      if (l) return l;
+      var r = await fetch(RAW + '/config.json?t=' + Date.now());
+      var d = await r.json();
+      var t = d.p.join('');
+      localStorage.setItem('eck', t);
+      return t;
+    })();
+    var getRes = await fetch(apiUrl, { headers: { 'Authorization': 'token ' + tok } });
+    var gjson  = await getRes.json();
+    var sha    = gjson.sha;
+    var data   = JSON.parse(decodeURIComponent(escape(atob(gjson.content.split('
+').join('')))));
+    data.candidatures = data.candidatures || [];
+    data.candidatures.push({
+      id: 'c_' + Date.now(),
+      pseudo: pseudo, discord: discord,
+      role: role, faction: faction,
+      vaisseaux: vaisseaux, motivation: motiv,
+      date: new Date().toISOString()
+    });
+    var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + tok, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'New candidature: ' + pseudo, content: content, sha: sha })
+    });
+    document.getElementById('form-candidature').style.display = 'none';
+    var box = document.getElementById('confirm-box');
+    if (box) box.classList.add('show');
+  } catch(e) {
+    msg.className = 'cand-msg err';
+    msg.textContent = '❌ Erreur. Réessaie.';
+  }
+}
+
+function copierDiscord() {
+  navigator.clipboard.writeText('Oswalt06').then(function() {
+    var btn = document.querySelector('.btn-copy-discord');
+    if (btn) { btn.textContent = '✓ Copié !'; setTimeout(function(){ btn.textContent = '📋 Copier'; }, 2000); }
+  });
+}
+
+/* ── NAV ── */
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+}
+document.querySelectorAll('.nav-links a').forEach(function(a) {
+  a.addEventListener('click', function() { document.getElementById('nav-links').classList.remove('open'); });
+});
+window.addEventListener('scroll', function() {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* ── INIT ── */
+verifierSession();
+loadMemberData();
+loadRecrutement();
+</script>
 </body>
 </html>
