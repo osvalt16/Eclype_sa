@@ -73,6 +73,21 @@
       "actif": true,
       "statut": "approuve",
       "createdAt": "2026-05-28T16:22:45.951Z"
+    },
+    {
+      "id": "tikaff_1780056849553",
+      "pseudo": "Tikaff",
+      "token": "ECL-TIKA-VCTH-JKXF",
+      "rang": "Membre",
+      "role": "",
+      "faction": "MUD",
+      "photo": "",
+      "x_link": "",
+      "dashboard": false,
+      "admin": false,
+      "actif": true,
+      "statut": "approuve",
+      "createdAt": "2026-05-29T12:14:09.553Z"
     }
   ]
 }
