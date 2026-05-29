@@ -60,12 +60,12 @@ nav.scrolled { background: rgba(3,2,8,0.97); border-bottom: 1px solid var(--bor)
  50%{opacity:1;} }
 
 /* ── SECTIONS ── */
-section { position: relative; padding: 7rem 2rem; }
+section { position: relative; padding: 9rem 2rem; }
 .container { max-width: 1200px; margin: 0 auto; }
-.section-label { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--or); margin-bottom: 1rem; display: block; }
-.section-title { font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: clamp(2rem,4vw,3.2rem); font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 2rem; }
+.section-label { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.45em; text-transform: uppercase; color: var(--or); margin-bottom: 1.2rem; display: block; }
+.section-title { font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: clamp(2rem,4vw,3.2rem); font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 3rem; }
 .section-title span { color: var(--or); }
-.ornament { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; }
+.ornament { display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; }
 .ornament-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--bor)); }
 .ornament-line.right { background: linear-gradient(to left, transparent, var(--bor)); }
 .ornament-diamond { width: 8px; height: 8px; background: var(--or); transform: rotate(45deg); flex-shrink: 0; }
@@ -73,11 +73,11 @@ section { position: relative; padding: 7rem 2rem; }
 
 /* ── À PROPOS ── */
 #apropos { background: linear-gradient(180deg, rgba(3,2,8,0) 0%, rgba(26,15,46,0.3) 50%, rgba(3,2,8,0) 100%); }
-.apropos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-.apropos-text p { color: var(--tx); margin-bottom: 1.2rem; font-size: 1.05rem; line-height: 1.85; }
+.apropos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; }
+.apropos-text p { color: var(--tx); margin-bottom: 1.8rem; font-size: 1.05rem; line-height: 1.95; }
 .apropos-text p strong { color: var(--orc); font-style: italic; font-weight: 400; }
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-.stat-card { border: 1px solid var(--bov); padding: 2rem 1.5rem; text-align: center; background: rgba(10,8,20,0.8); transition: border-color 0.3s; position: relative; overflow: hidden; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.stat-card { border: 1px solid var(--bov); padding: 2.5rem 2rem; text-align: center; background: rgba(10,8,20,0.8); transition: border-color 0.3s; position: relative; overflow: hidden; }
 .stat-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, var(--or), transparent); }
 .stat-card:hover { border-color: var(--bor); }
 .stat-number { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--or); line-height: 1; margin-bottom: 0.5rem; }
